@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #F4F3EF;
+  --text-color: #05121C;
+  --accent-color: #05121C;
+  --secondary-color: #5F94BD;
+}
+
+html,
+body {
+  @apply scroll-smooth;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+body {
+  font-family: 'YiSunShinDotumM', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  body {
+    background-color: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide header, footer, and other non-print elements if they were global */
+  /* But since PrintPage is a separate route without Header/Footer components, we are good */
+}

@@ -1,0 +1,3597 @@
+{
+  "block": {
+    "2bea986a-264f-80a7-ba07-f5c5c2416536": {
+      "value": {
+        "id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "version": 244,
+        "type": "page",
+        "properties": {
+          "=nOH": [
+            [
+              "신명기 8:1-10"
+            ]
+          ],
+          "jPL[": [
+            [
+              "‣",
+              [
+                [
+                  "d",
+                  {
+                    "type": "date",
+                    "start_date": "2025-12-07"
+                  }
+                ]
+              ]
+            ]
+          ],
+          "x`mU": [
+            [
+              "‣",
+              [
+                [
+                  "u",
+                  "91e24b48-2eb3-4871-8895-8042fed0977f"
+                ]
+              ]
+            ]
+          ],
+          "title": [
+            [
+              "네 마음이 어떠한지 알게 하심이라   ",
+              [
+                [
+                  "b"
+                ]
+              ]
+            ]
+          ]
+        },
+        "content": [
+          "2bea986a-264f-80ba-805a-c7d6588ebc68",
+          "2bea986a-264f-805a-8e70-d661b19c084d",
+          "2bea986a-264f-8076-b022-f5bba3bce73f",
+          "2bea986a-264f-8010-911a-f7d504b7ff98",
+          "2bea986a-264f-8022-9600-d4abd9d62f1b",
+          "2bea986a-264f-8075-9b7f-ef4c369292c4",
+          "2bea986a-264f-80cc-a2c5-cc56858e0ca7",
+          "2bea986a-264f-8054-8c85-c12814c86a57",
+          "2bea986a-264f-805d-9c49-eac8a0d60f73",
+          "2bea986a-264f-8070-b05c-c40398c8f692",
+          "2bea986a-264f-80eb-84b8-c84270644422"
+        ],
+        "format": {
+          "page_small_text": false
+        },
+        "created_time": 1764763435659,
+        "last_edited_time": 1764798002684,
+        "parent_id": "2bea986a-264f-8065-b25c-000bf3b3ebcb",
+        "parent_table": "collection",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "InfeENA3Kq97K1T0WyzJQQ,\"start\",\"end\"",
+            "n": {
+              "InfeENA3Kq97K1T0WyzJQQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "InfeENA3Kq97K1T0WyzJQQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        2
+                      ],
+                      "o": "start",
+                      "l": 21,
+                      "c": "네 마음이 어떠한지 알게 하심이라   ",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "InfeENA3Kq97K1T0WyzJQQ",
+                          "l": "",
+                          "i": [
+                            "MzD8k5sB672d",
+                            23
+                          ],
+                          "s": {
+                            "i": [
+                              "MzD8k5sB672d",
+                              2
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": [
+                              "MzD8k5sB672d",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "a": [
+                            "b"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -1,
+                      "b": []
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "Lg4UnQTbxPHseHB4exMg6A,[\"MzD8k5sB672d\",43],\"end\""
+                ]
+              },
+              "Lg4UnQTbxPHseHB4exMg6A,[\"MzD8k5sB672d\",43],\"end\"": {
+                "s": {
+                  "x": "Lg4UnQTbxPHseHB4exMg6A",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        43
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "4ewF0pQEcQAB",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -21,
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "Lg4UnQTbxPHseHB4exMg6A",
+                          "l": "",
+                          "i": [
+                            "4ewF0pQEcQAB",
+                            22
+                          ],
+                          "s": {
+                            "i": [
+                              "4ewF0pQEcQAB",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "b"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": [
+                  "NCc36YYMe2Fr5l0MrLudsA,[\"MzD8k5sB672d\",31],\"end\""
+                ]
+              },
+              "NCc36YYMe2Fr5l0MrLudsA,[\"MzD8k5sB672d\",31],\"end\"": {
+                "s": {
+                  "x": "NCc36YYMe2Fr5l0MrLudsA",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        31
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "-qsMiDBSvLfv",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -10
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8001-8f27-e00ad6cb8c64": {
+      "value": {
+        "id": "2bea986a-264f-8001-8f27-e00ad6cb8c64",
+        "version": 41,
+        "type": "collection_view_page",
+        "view_ids": [
+          "2bea986a-264f-8097-a58e-000c61f59bd2"
+        ],
+        "collection_id": "2bea986a-264f-8065-b25c-000bf3b3ebcb",
+        "format": {
+          "site_id": "2bea986a-264f-80b7-bae3-0079ec820a10",
+          "collection_pointer": {
+            "id": "2bea986a-264f-8065-b25c-000bf3b3ebcb",
+            "table": "collection",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          },
+          "collection_pointers": [
+            {
+              "id": "2bea986a-264f-8065-b25c-000bf3b3ebcb",
+              "table": "collection",
+              "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+            }
+          ]
+        },
+        "permissions": [
+          {
+            "role": "reader",
+            "type": "public_permission",
+            "is_site": true,
+            "added_timestamp": 1764763837078
+          }
+        ],
+        "created_time": 1764763416050,
+        "last_edited_time": 1764763836827,
+        "parent_id": "2bea986a-264f-80db-ac5a-cec932fd5ec1",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "FIzCpWg2bgcEMFq1dplKKA,\"start\",\"end\"",
+            "n": {
+              "FIzCpWg2bgcEMFq1dplKKA,\"start\",\"end\"": {
+                "s": {
+                  "x": "FIzCpWg2bgcEMFq1dplKKA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80db-ac5a-cec932fd5ec1": {
+      "role": "none"
+    },
+    "2bea986a-264f-8078-8e98-fde6b78efac0": {
+      "role": "none"
+    },
+    "237a986a-264f-806e-8321-e09c9203b3af": {
+      "role": "none"
+    },
+    "2bea986a-264f-80ba-805a-c7d6588ebc68": {
+      "value": {
+        "id": "2bea986a-264f-80ba-805a-c7d6588ebc68",
+        "version": 5,
+        "type": "column_list",
+        "content": [
+          "2bea986a-264f-80bc-9b2b-e4e7a62969fa",
+          "2bea986a-264f-809e-a423-d8036260dcd4"
+        ],
+        "created_time": 1764797612546,
+        "last_edited_time": 1764797612556,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "H16eo-1UrUqQEQpceKb5mA,\"start\",\"end\"",
+            "n": {
+              "H16eo-1UrUqQEQpceKb5mA,\"start\",\"end\"": {
+                "s": {
+                  "x": "H16eo-1UrUqQEQpceKb5mA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-805a-8e70-d661b19c084d": {
+      "value": {
+        "id": "2bea986a-264f-805a-8e70-d661b19c084d",
+        "version": 3,
+        "type": "divider",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8054-8c85-c12814c86a57",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764798002682,
+        "last_edited_time": 1764798002684,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8054-8c85-c12814c86a57",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "tO6WEDSPKg--evbgrmcqmA,\"start\",\"end\"",
+            "n": {
+              "tO6WEDSPKg--evbgrmcqmA,\"start\",\"end\"": {
+                "s": {
+                  "x": "tO6WEDSPKg--evbgrmcqmA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8076-b022-f5bba3bce73f": {
+      "value": {
+        "id": "2bea986a-264f-8076-b022-f5bba3bce73f",
+        "version": 5,
+        "type": "column_list",
+        "content": [
+          "2bea986a-264f-804a-aa36-c71308dffee0",
+          "2bea986a-264f-80a9-a1a3-f26425eae596"
+        ],
+        "created_time": 1764797814547,
+        "last_edited_time": 1764797814549,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "aqfuX1tbO_YsO1J0cUL1qA,\"start\",\"end\"",
+            "n": {
+              "aqfuX1tbO_YsO1J0cUL1qA,\"start\",\"end\"": {
+                "s": {
+                  "x": "aqfuX1tbO_YsO1J0cUL1qA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8010-911a-f7d504b7ff98": {
+      "value": {
+        "id": "2bea986a-264f-8010-911a-f7d504b7ff98",
+        "version": 3,
+        "type": "divider",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8054-8c85-c12814c86a57",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764797999270,
+        "last_edited_time": 1764797999272,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8054-8c85-c12814c86a57",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "aDfcu_hT5SgRIO_Z-ODYng,\"start\",\"end\"",
+            "n": {
+              "aDfcu_hT5SgRIO_Z-ODYng,\"start\",\"end\"": {
+                "s": {
+                  "x": "aDfcu_hT5SgRIO_Z-ODYng",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8022-9600-d4abd9d62f1b": {
+      "value": {
+        "id": "2bea986a-264f-8022-9600-d4abd9d62f1b",
+        "version": 5,
+        "type": "column_list",
+        "content": [
+          "2bea986a-264f-80f7-8478-ecab93effd4c",
+          "2bea986a-264f-80cc-893a-d4e825a36ef2"
+        ],
+        "created_time": 1764797669938,
+        "last_edited_time": 1764797669940,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "PR9b6-LHROCT9dHfifgsDg,\"start\",\"end\"",
+            "n": {
+              "PR9b6-LHROCT9dHfifgsDg,\"start\",\"end\"": {
+                "s": {
+                  "x": "PR9b6-LHROCT9dHfifgsDg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8075-9b7f-ef4c369292c4": {
+      "value": {
+        "id": "2bea986a-264f-8075-9b7f-ef4c369292c4",
+        "version": 3,
+        "type": "divider",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8054-8c85-c12814c86a57",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764797996546,
+        "last_edited_time": 1764797996554,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8054-8c85-c12814c86a57",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "Oe4S7n0GM6HSO3mHexk4xw,\"start\",\"end\"",
+            "n": {
+              "Oe4S7n0GM6HSO3mHexk4xw,\"start\",\"end\"": {
+                "s": {
+                  "x": "Oe4S7n0GM6HSO3mHexk4xw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80cc-a2c5-cc56858e0ca7": {
+      "value": {
+        "id": "2bea986a-264f-80cc-a2c5-cc56858e0ca7",
+        "version": 5,
+        "type": "column_list",
+        "content": [
+          "2bea986a-264f-804d-bbc2-c61442321026",
+          "2bea986a-264f-80c0-a1a6-f85b87fa3dac"
+        ],
+        "created_time": 1764797872748,
+        "last_edited_time": 1764797872750,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "hDEyOC_jVvrXGjaXeuFvRg,\"start\",\"end\"",
+            "n": {
+              "hDEyOC_jVvrXGjaXeuFvRg,\"start\",\"end\"": {
+                "s": {
+                  "x": "hDEyOC_jVvrXGjaXeuFvRg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8054-8c85-c12814c86a57": {
+      "value": {
+        "id": "2bea986a-264f-8054-8c85-c12814c86a57",
+        "version": 18,
+        "type": "divider",
+        "created_time": 1764797974336,
+        "last_edited_time": 1764797984132,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "2-NKf3XG0NZ-q_bXZS_ABA,\"start\",\"end\"",
+            "n": {
+              "2-NKf3XG0NZ-q_bXZS_ABA,\"start\",\"end\"": {
+                "s": {
+                  "x": "2-NKf3XG0NZ-q_bXZS_ABA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        3
+                      ],
+                      "o": "start",
+                      "l": -2
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -2
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-805d-9c49-eac8a0d60f73": {
+      "value": {
+        "id": "2bea986a-264f-805d-9c49-eac8a0d60f73",
+        "version": 5,
+        "type": "column_list",
+        "content": [
+          "2bea986a-264f-807e-b605-e0fc58b0c2d9",
+          "2bea986a-264f-800d-88bb-d24d7470e70d"
+        ],
+        "created_time": 1764797912116,
+        "last_edited_time": 1764797912120,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "zbnykOBvMBqHHhP6Cip0TQ,\"start\",\"end\"",
+            "n": {
+              "zbnykOBvMBqHHhP6Cip0TQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "zbnykOBvMBqHHhP6Cip0TQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8070-b05c-c40398c8f692": {
+      "value": {
+        "id": "2bea986a-264f-8070-b05c-c40398c8f692",
+        "version": 3,
+        "type": "divider",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8054-8c85-c12814c86a57",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764798010887,
+        "last_edited_time": 1764798010889,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8054-8c85-c12814c86a57",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "cWxvZyI8g_6bA9gjshkrcg,\"start\",\"end\"",
+            "n": {
+              "cWxvZyI8g_6bA9gjshkrcg,\"start\",\"end\"": {
+                "s": {
+                  "x": "cWxvZyI8g_6bA9gjshkrcg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80eb-84b8-c84270644422": {
+      "value": {
+        "id": "2bea986a-264f-80eb-84b8-c84270644422",
+        "version": 3,
+        "type": "text",
+        "created_time": 1764798012983,
+        "last_edited_time": 1764798012984,
+        "parent_id": "2bea986a-264f-80a7-ba07-f5c5c2416536",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "DrdC8Sw82xfNaHHDgPVByg,\"start\",\"end\"",
+            "n": {
+              "DrdC8Sw82xfNaHHDgPVByg,\"start\",\"end\"": {
+                "s": {
+                  "x": "DrdC8Sw82xfNaHHDgPVByg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80bc-9b2b-e4e7a62969fa": {
+      "value": {
+        "id": "2bea986a-264f-80bc-9b2b-e4e7a62969fa",
+        "version": 13,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-8073-a39e-df36b0800704",
+          "2bea986a-264f-8054-a760-cb31b8712374"
+        ],
+        "format": {
+          "column_ratio": 0.6875
+        },
+        "created_time": 1764797612537,
+        "last_edited_time": 1764797700648,
+        "parent_id": "2bea986a-264f-80ba-805a-c7d6588ebc68",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "B5njtxT-oPb8VeFKGLjPhw,\"start\",\"end\"",
+            "n": {
+              "B5njtxT-oPb8VeFKGLjPhw,\"start\",\"end\"": {
+                "s": {
+                  "x": "B5njtxT-oPb8VeFKGLjPhw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-809e-a423-d8036260dcd4": {
+      "value": {
+        "id": "2bea986a-264f-809e-a423-d8036260dcd4",
+        "version": 32,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-80d6-a0e7-c2b0883200aa",
+          "2bea986a-264f-8041-9ca9-d37633ebe9aa"
+        ],
+        "format": {
+          "column_ratio": 0.3125
+        },
+        "created_time": 1764797612550,
+        "last_edited_time": 1764797845222,
+        "parent_id": "2bea986a-264f-80ba-805a-c7d6588ebc68",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "s0-ksJZQJX88PvSbccwqcQ,\"start\",\"end\"",
+            "n": {
+              "s0-ksJZQJX88PvSbccwqcQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "s0-ksJZQJX88PvSbccwqcQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8073-a39e-df36b0800704": {
+      "value": {
+        "id": "2bea986a-264f-8073-a39e-df36b0800704",
+        "version": 32,
+        "type": "sub_header",
+        "properties": {
+          "title": [
+            [
+              "1. 하나님은 지금 우리의 “마음”을 보고 계십니다"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-801f-aa7c-fdcef51bd1c0",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442366,
+        "last_edited_time": 1764797612556,
+        "parent_id": "2bea986a-264f-80bc-9b2b-e4e7a62969fa",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-801f-aa7c-fdcef51bd1c0",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "m4jAtcpHaaAd6BUxu7Ywsg,\"start\",[\"MzD8k5sB672d\",49]",
+            "n": {
+              "m4jAtcpHaaAd6BUxu7Ywsg,\"start\",[\"MzD8k5sB672d\",49]": {
+                "s": {
+                  "x": "m4jAtcpHaaAd6BUxu7Ywsg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        49
+                      ],
+                      "o": "start"
+                    }
+                  ],
+                  "l": "L"
+                },
+                "c": [
+                  "m4jAtcpHaaAd6BUxu7Ywsg,[\"MzD8k5sB672d\",49],\"end\""
+                ]
+              },
+              "m4jAtcpHaaAd6BUxu7Ywsg,[\"MzD8k5sB672d\",49],\"end\"": {
+                "s": {
+                  "x": "m4jAtcpHaaAd6BUxu7Ywsg",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        49
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "JzVbkevFpZAq",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 28,
+                      "c": "1. 하나님은 지금 우리의 “마음”을 보고 계십니다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8054-a760-cb31b8712374": {
+      "value": {
+        "id": "2bea986a-264f-8054-a760-cb31b8712374",
+        "version": 21,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "신명기 8장은 광야를 지나는 이스라엘에게 “네 마음이 어떠한지” 보시려는 하나님의 깊은 사랑을 드러냅니다. 우리 교회가 작고 연약해 보일 때라도 하나님은 환경이 아니라 우리의 마음을 붙들고 계십니다. "
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-809f-9fcb-f84b04d55c49",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442367,
+        "last_edited_time": 1764797628425,
+        "parent_id": "2bea986a-264f-80bc-9b2b-e4e7a62969fa",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-809f-9fcb-f84b04d55c49",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "bHp18eTgNH4JVXPjryewlQ,\"start\",\"end\"",
+            "n": {
+              "bHp18eTgNH4JVXPjryewlQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "bHp18eTgNH4JVXPjryewlQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "casU_sJFRRpX",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 59,
+                      "c": "신명기 8장은 광야를 지나는 이스라엘에게 “네 마음이 어떠한지” 보시려는 하나님의 깊은 사랑을 드러냅니다."
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        60
+                      ],
+                      "o": [
+                        "casU_sJFRRpX",
+                        59
+                      ],
+                      "l": 1,
+                      "c": " "
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "9sQLtg5Ee9_Om_H9Bl2Qhg,[\"OqmonD6z1yld\",72],\"end\""
+                ]
+              },
+              "9sQLtg5Ee9_Om_H9Bl2Qhg,[\"OqmonD6z1yld\",72],\"end\"": {
+                "s": {
+                  "x": "9sQLtg5Ee9_Om_H9Bl2Qhg",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        72
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "-PzPhOuV2bhR",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 51,
+                      "c": "우리 교회가 작고 연약해 보일 때라도 하나님은 환경이 아니라 우리의 마음을 붙들고 계십니다."
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        73
+                      ],
+                      "o": [
+                        "-PzPhOuV2bhR",
+                        51
+                      ],
+                      "l": 1,
+                      "c": " "
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": [
+                  "qjt-BsfnKUIRWzFtMtkGyA,[\"gQHPiQW6UQaG\",21],\"end\""
+                ]
+              },
+              "qjt-BsfnKUIRWzFtMtkGyA,[\"gQHPiQW6UQaG\",21],\"end\"": {
+                "s": {
+                  "x": "qjt-BsfnKUIRWzFtMtkGyA",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": [
+                  "DhQQA87gNec-wytYXCsmZg,[\"OqmonD6z1yld\",81],\"end\""
+                ]
+              },
+              "DhQQA87gNec-wytYXCsmZg,[\"OqmonD6z1yld\",81],\"end\"": {
+                "s": {
+                  "x": "DhQQA87gNec-wytYXCsmZg",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        81
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        59
+                      ],
+                      "o": "start",
+                      "l": -2
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "TzJognKuoJMi",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -58
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80d6-a0e7-c2b0883200aa": {
+      "value": {
+        "id": "2bea986a-264f-80d6-a0e7-c2b0883200aa",
+        "version": 41,
+        "type": "quote",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8073-9a49-edb75337b755",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442368,
+        "last_edited_time": 1764797794806,
+        "parent_id": "2bea986a-264f-809e-a423-d8036260dcd4",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8073-9a49-edb75337b755",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "Mt9ngxAD8lPFlZ9zTS_NGw,\"start\",\"end\"",
+            "n": {
+              "Mt9ngxAD8lPFlZ9zTS_NGw,\"start\",\"end\"": {
+                "s": {
+                  "x": "Mt9ngxAD8lPFlZ9zTS_NGw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "fIapissj2hcE",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -72,
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "Mt9ngxAD8lPFlZ9zTS_NGw",
+                          "l": "",
+                          "i": [
+                            "OqmonD6z1yld",
+                            73
+                          ],
+                          "s": {
+                            "i": [
+                              "fIapissj2hcE",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "i"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "dIUIhDprH8n6uWNHn0dZaw,[\"OqmonD6z1yld\",21],\"end\""
+                ]
+              },
+              "dIUIhDprH8n6uWNHn0dZaw,[\"OqmonD6z1yld\",21],\"end\"": {
+                "s": {
+                  "x": "dIUIhDprH8n6uWNHn0dZaw",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": [
+                  "BpfJAfTg_XUp5sDfxq8TxA,[\"OqmonD6z1yld\",27],\"end\""
+                ]
+              },
+              "BpfJAfTg_XUp5sDfxq8TxA,[\"OqmonD6z1yld\",27],\"end\"": {
+                "s": {
+                  "x": "BpfJAfTg_XUp5sDfxq8TxA",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        27
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        3
+                      ],
+                      "o": "start",
+                      "l": -3
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        6
+                      ],
+                      "o": [
+                        "OqmonD6z1yld",
+                        5
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -2
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8041-9ca9-d37633ebe9aa": {
+      "value": {
+        "id": "2bea986a-264f-8041-9ca9-d37633ebe9aa",
+        "version": 11,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“네 하나님 여호와께서 이 사십 년 동안에 네게 광야 길을 걷게 하신 것을 기억하라…” (신명기 8:2)",
+              [
+                [
+                  "i"
+                ]
+              ]
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80de-ba89-fac84be7bdde",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764797693204,
+        "last_edited_time": 1764797845222,
+        "parent_id": "2bea986a-264f-809e-a423-d8036260dcd4",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80de-ba89-fac84be7bdde",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "3J51vYaob_MqKg36elT2Mg,\"start\",\"end\"",
+            "n": {
+              "3J51vYaob_MqKg36elT2Mg,\"start\",\"end\"": {
+                "s": {
+                  "x": "3J51vYaob_MqKg36elT2Mg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "t5-iy9WFbTm-",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 58,
+                      "c": "“네 하나님 여호와께서 이 사십 년 동안에 네게 광야 길을 걷게 하신 것을 기억하라…” (신명기 8:2)",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "3J51vYaob_MqKg36elT2Mg",
+                          "l": "",
+                          "i": [
+                            "t5-iy9WFbTm-",
+                            59
+                          ],
+                          "s": {
+                            "i": [
+                              "t5-iy9WFbTm-",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "i"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-804a-aa36-c71308dffee0": {
+      "value": {
+        "id": "2bea986a-264f-804a-aa36-c71308dffee0",
+        "version": 13,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-8019-a7c6-fd1a9b7a28dd",
+          "2bea986a-264f-8026-9a08-cb5705b98fc5",
+          "2bea986a-264f-80ae-818d-fec8744d9739",
+          "2bea986a-264f-8038-bc9d-eb1abc0a3acc"
+        ],
+        "format": {
+          "column_ratio": 0.6875
+        },
+        "created_time": 1764797814546,
+        "last_edited_time": 1764797833337,
+        "parent_id": "2bea986a-264f-8076-b022-f5bba3bce73f",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "B1hHI_nGFD9Qj70Usw1r0g,\"start\",\"end\"",
+            "n": {
+              "B1hHI_nGFD9Qj70Usw1r0g,\"start\",\"end\"": {
+                "s": {
+                  "x": "B1hHI_nGFD9Qj70Usw1r0g",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80a9-a1a3-f26425eae596": {
+      "value": {
+        "id": "2bea986a-264f-80a9-a1a3-f26425eae596",
+        "version": 9,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-807f-979e-c854e159b403",
+          "2bea986a-264f-80de-ba89-fac84be7bdde"
+        ],
+        "format": {
+          "column_ratio": 0.31250000000000006
+        },
+        "created_time": 1764797814547,
+        "last_edited_time": 1764797837790,
+        "parent_id": "2bea986a-264f-8076-b022-f5bba3bce73f",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "H-Mj69n6J1f3xQ7gsEnIKg,\"start\",\"end\"",
+            "n": {
+              "H-Mj69n6J1f3xQ7gsEnIKg,\"start\",\"end\"": {
+                "s": {
+                  "x": "H-Mj69n6J1f3xQ7gsEnIKg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8019-a7c6-fd1a9b7a28dd": {
+      "value": {
+        "id": "2bea986a-264f-8019-a7c6-fd1a9b7a28dd",
+        "version": 75,
+        "type": "sub_header",
+        "properties": {
+          "title": [
+            [
+              "2. 광야는 하나님의 버림이 아니라 간섭이다"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80eb-864f-e2b1cc33ccc3",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442370,
+        "last_edited_time": 1764797814549,
+        "parent_id": "2bea986a-264f-804a-aa36-c71308dffee0",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80eb-864f-e2b1cc33ccc3",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "h_XhaRLpZDS90aRkpzETXA,\"start\",\"end\"",
+            "n": {
+              "h_XhaRLpZDS90aRkpzETXA,\"start\",\"end\"": {
+                "s": {
+                  "x": "h_XhaRLpZDS90aRkpzETXA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "baq9ejWD7T4z",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 24,
+                      "c": "2. 광야는 하나님의 버림이 아니라 간섭이다"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        25
+                      ],
+                      "o": [
+                        "baq9ejWD7T4z",
+                        24
+                      ],
+                      "l": -15
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8026-9a08-cb5705b98fc5": {
+      "value": {
+        "id": "2bea986a-264f-8026-9a08-cb5705b98fc5",
+        "version": 9,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "이스라엘이 보기에는 “실패의 시간”이었지만 하나님은 그 광야를 통해 그들을 가장 깊이 간섭하시고 보호하셨습니다."
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-808f-91bd-d23947d8f633",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442371,
+        "last_edited_time": 1764797827607,
+        "parent_id": "2bea986a-264f-804a-aa36-c71308dffee0",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-808f-91bd-d23947d8f633",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "w7PUCBb09-inmqCwfybjTA,\"start\",\"end\"",
+            "n": {
+              "w7PUCBb09-inmqCwfybjTA,\"start\",\"end\"": {
+                "s": {
+                  "x": "w7PUCBb09-inmqCwfybjTA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "H5RM-JurScw1",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 62,
+                      "c": "이스라엘이 보기에는 “실패의 시간”이었지만 하나님은 그 광야를 통해 그들을 가장 깊이 간섭하시고 보호하셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80ae-818d-fec8744d9739": {
+      "value": {
+        "id": "2bea986a-264f-80ae-818d-fec8744d9739",
+        "version": 10,
+        "type": "bulleted_list",
+        "properties": {
+          "title": [
+            [
+              "광야는 멈춤이 아니라 하나님의 손 안에 놓인 시간"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80ab-81ec-c265d1393760",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442371,
+        "last_edited_time": 1764797830475,
+        "parent_id": "2bea986a-264f-804a-aa36-c71308dffee0",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80ab-81ec-c265d1393760",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "52Zym3vwp1tCH1R7m8LhJQ,\"start\",\"end\"",
+            "n": {
+              "52Zym3vwp1tCH1R7m8LhJQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "52Zym3vwp1tCH1R7m8LhJQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "5twrpkaBqvsk",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 27,
+                      "c": "광야는 멈춤이 아니라 하나님의 손 안에 놓인 시간"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8038-bc9d-eb1abc0a3acc": {
+      "value": {
+        "id": "2bea986a-264f-8038-bc9d-eb1abc0a3acc",
+        "version": 11,
+        "type": "bulleted_list",
+        "properties": {
+          "title": [
+            [
+              "문제는 지연이 아니라 하나님의 훈련시키는 자리"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8099-bf29-fdf6b49deae6",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442372,
+        "last_edited_time": 1764797833337,
+        "parent_id": "2bea986a-264f-804a-aa36-c71308dffee0",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8099-bf29-fdf6b49deae6",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "0WAx1TDxbz4R0W0u5H3y7A,\"start\",\"end\"",
+            "n": {
+              "0WAx1TDxbz4R0W0u5H3y7A,\"start\",\"end\"": {
+                "s": {
+                  "x": "0WAx1TDxbz4R0W0u5H3y7A",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "bmHJamSEex4O",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 25,
+                      "c": "문제는 지연이 아니라 하나님의 훈련시키는 자리"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "HYcG4KwOg_QmmScSunpB-g,[\"OqmonD6z1yld\",21],\"end\""
+                ]
+              },
+              "HYcG4KwOg_QmmScSunpB-g,[\"OqmonD6z1yld\",21],\"end\"": {
+                "s": {
+                  "x": "HYcG4KwOg_QmmScSunpB-g",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-807f-979e-c854e159b403": {
+      "value": {
+        "id": "2bea986a-264f-807f-979e-c854e159b403",
+        "version": 13,
+        "type": "quote",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80d6-a0e7-c2b0883200aa",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764797655781,
+        "last_edited_time": 1764797814549,
+        "parent_id": "2bea986a-264f-80a9-a1a3-f26425eae596",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80d6-a0e7-c2b0883200aa",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "9Nal0k9F6FFfDtGj1BAvCg,\"start\",\"end\"",
+            "n": {
+              "9Nal0k9F6FFfDtGj1BAvCg,\"start\",\"end\"": {
+                "s": {
+                  "x": "9Nal0k9F6FFfDtGj1BAvCg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "H0VgqALqMVyPp_sPhRaaZw,[\"gQHPiQW6UQaG\",21],\"end\""
+                ]
+              },
+              "H0VgqALqMVyPp_sPhRaaZw,[\"gQHPiQW6UQaG\",21],\"end\"": {
+                "s": {
+                  "x": "H0VgqALqMVyPp_sPhRaaZw",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80de-ba89-fac84be7bdde": {
+      "value": {
+        "id": "2bea986a-264f-80de-ba89-fac84be7bdde",
+        "version": 18,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“네 하나님 여호와께서 이 사십 년 동안에 네게 광야 길을 걷게 하신 것을 기억하라…” (신명기 8:2)",
+              [
+                [
+                  "i"
+                ]
+              ]
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-807e-9795-dd14aaec28e0",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442370,
+        "last_edited_time": 1764797837790,
+        "parent_id": "2bea986a-264f-80a9-a1a3-f26425eae596",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-807e-9795-dd14aaec28e0",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "RTXxREvW4U3BKT16x3F0dw,\"start\",\"end\"",
+            "n": {
+              "RTXxREvW4U3BKT16x3F0dw,\"start\",\"end\"": {
+                "s": {
+                  "x": "RTXxREvW4U3BKT16x3F0dw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "TUIBQ2GTZ3h9",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 58,
+                      "c": "“네 하나님 여호와께서 이 사십 년 동안에 네게 광야 길을 걷게 하신 것을 기억하라…” (신명기 8:2)",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "RTXxREvW4U3BKT16x3F0dw",
+                          "l": "",
+                          "i": [
+                            "OqmonD6z1yld",
+                            59
+                          ],
+                          "s": {
+                            "i": [
+                              "TUIBQ2GTZ3h9",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "i"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80f7-8478-ecab93effd4c": {
+      "value": {
+        "id": "2bea986a-264f-80f7-8478-ecab93effd4c",
+        "version": 13,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-8052-8458-edbe8791b30f",
+          "2bea986a-264f-80af-aafb-fc71529ecdad"
+        ],
+        "format": {
+          "column_ratio": 0.6875
+        },
+        "created_time": 1764797669938,
+        "last_edited_time": 1764797882977,
+        "parent_id": "2bea986a-264f-8022-9600-d4abd9d62f1b",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "A7p5JgfAM404FTjYUWU6NQ,\"start\",\"end\"",
+            "n": {
+              "A7p5JgfAM404FTjYUWU6NQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "A7p5JgfAM404FTjYUWU6NQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80cc-893a-d4e825a36ef2": {
+      "value": {
+        "id": "2bea986a-264f-80cc-893a-d4e825a36ef2",
+        "version": 13,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-8053-adfe-d471dc06ff6f",
+          "2bea986a-264f-80fd-871d-d689c8723b63"
+        ],
+        "format": {
+          "column_ratio": 0.3125
+        },
+        "created_time": 1764797669939,
+        "last_edited_time": 1764797882977,
+        "parent_id": "2bea986a-264f-8022-9600-d4abd9d62f1b",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "BRIJ21Dq6a3JQe-UsubPQw,\"start\",\"end\"",
+            "n": {
+              "BRIJ21Dq6a3JQe-UsubPQw,\"start\",\"end\"": {
+                "s": {
+                  "x": "BRIJ21Dq6a3JQe-UsubPQw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8052-8458-edbe8791b30f": {
+      "value": {
+        "id": "2bea986a-264f-8052-8458-edbe8791b30f",
+        "version": 17,
+        "type": "sub_header",
+        "properties": {
+          "title": [
+            [
+              "3. 광야는 ‘마음을’ 드러내는 자리이다"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80b6-b20f-de29928246be",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442373,
+        "last_edited_time": 1764797669940,
+        "parent_id": "2bea986a-264f-80f7-8478-ecab93effd4c",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80b6-b20f-de29928246be",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "XB5vBNsAs0yf8170Ar_OIw,\"start\",\"end\"",
+            "n": {
+              "XB5vBNsAs0yf8170Ar_OIw,\"start\",\"end\"": {
+                "s": {
+                  "x": "XB5vBNsAs0yf8170Ar_OIw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "uVXtmbewki-_",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 22,
+                      "c": "3. 광야는 ‘마음을’ 드러내는 자리이다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80af-aafb-fc71529ecdad": {
+      "value": {
+        "id": "2bea986a-264f-80af-aafb-fc71529ecdad",
+        "version": 19,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "하나님은 환경보다 사람의 마음을 보십니다. 이스라엘이 가나안에서 갈릴 때, 그들의 마음이 하나님을 떠날까 염려하셨습니다."
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-806c-92a6-c6276c162b9d",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442374,
+        "last_edited_time": 1764797853023,
+        "parent_id": "2bea986a-264f-80f7-8478-ecab93effd4c",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-806c-92a6-c6276c162b9d",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "QXQZ9RaarUrtZ6AQhaAfqw,\"start\",\"end\"",
+            "n": {
+              "QXQZ9RaarUrtZ6AQhaAfqw,\"start\",\"end\"": {
+                "s": {
+                  "x": "QXQZ9RaarUrtZ6AQhaAfqw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "Tnu4kwMIvz4H",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 23,
+                      "c": "하나님은 환경보다 사람의 마음을 보십니다."
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        24
+                      ],
+                      "o": [
+                        "Tnu4kwMIvz4H",
+                        23
+                      ],
+                      "l": 1,
+                      "c": " "
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "H5ulgIyQ2hKgbiULEuinqQ,[\"OqmonD6z1yld\",64],\"end\""
+                ]
+              },
+              "H5ulgIyQ2hKgbiULEuinqQ,[\"OqmonD6z1yld\",64],\"end\"": {
+                "s": {
+                  "x": "H5ulgIyQ2hKgbiULEuinqQ",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        64
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "2no_5BHTPD3M",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 43,
+                      "c": "이스라엘이 가나안에서 갈릴 때, 그들의 마음이 하나님을 떠날까 염려하셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8053-adfe-d471dc06ff6f": {
+      "value": {
+        "id": "2bea986a-264f-8053-adfe-d471dc06ff6f",
+        "version": 6,
+        "type": "quote",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80d6-a0e7-c2b0883200aa",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764797666062,
+        "last_edited_time": 1764797669940,
+        "parent_id": "2bea986a-264f-80cc-893a-d4e825a36ef2",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80d6-a0e7-c2b0883200aa",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "NHgxPjidIS0tCWbM6zcJiw,\"start\",\"end\"",
+            "n": {
+              "NHgxPjidIS0tCWbM6zcJiw,\"start\",\"end\"": {
+                "s": {
+                  "x": "NHgxPjidIS0tCWbM6zcJiw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80fd-871d-d689c8723b63": {
+      "value": {
+        "id": "2bea986a-264f-80fd-871d-d689c8723b63",
+        "version": 29,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“이는 너를 낮추시며 너를 시험하사 네 마음이 어떠한지 그 명령을 지키는지 지키지 않는지 알려 하심이라.” (신명기 8:2)",
+              [
+                [
+                  "i"
+                ]
+              ]
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80ca-8ab6-daf8de370fe7",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442374,
+        "last_edited_time": 1764797856173,
+        "parent_id": "2bea986a-264f-80cc-893a-d4e825a36ef2",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80ca-8ab6-daf8de370fe7",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "eQvQuQ8phbuRC3DjsHoopA,\"start\",\"end\"",
+            "n": {
+              "eQvQuQ8phbuRC3DjsHoopA,\"start\",\"end\"": {
+                "s": {
+                  "x": "eQvQuQ8phbuRC3DjsHoopA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "z7xt9VNfNe4M",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 69,
+                      "c": "“이는 너를 낮추시며 너를 시험하사 네 마음이 어떠한지 그 명령을 지키는지 지키지 않는지 알려 하심이라.” (신명기 8:2)",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "eQvQuQ8phbuRC3DjsHoopA",
+                          "l": "",
+                          "i": [
+                            "OqmonD6z1yld",
+                            70
+                          ],
+                          "s": {
+                            "i": [
+                              "z7xt9VNfNe4M",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "i"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "ta-lQw8c4Qmu2RYJIsRJpw,[\"OqmonD6z1yld\",21],\"end\""
+                ]
+              },
+              "ta-lQw8c4Qmu2RYJIsRJpw,[\"OqmonD6z1yld\",21],\"end\"": {
+                "s": {
+                  "x": "ta-lQw8c4Qmu2RYJIsRJpw",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-804d-bbc2-c61442321026": {
+      "value": {
+        "id": "2bea986a-264f-804d-bbc2-c61442321026",
+        "version": 11,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-80c4-b3b8-fe8f637f881b",
+          "2bea986a-264f-80f0-855b-c40f0409903c",
+          "2bea986a-264f-8007-8346-f4fa9455b73d"
+        ],
+        "format": {
+          "column_ratio": 0.6875
+        },
+        "created_time": 1764797872747,
+        "last_edited_time": 1764797926236,
+        "parent_id": "2bea986a-264f-80cc-a2c5-cc56858e0ca7",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "Ez5HL1QC-ZeZO62Q5HQBUg,\"start\",\"end\"",
+            "n": {
+              "Ez5HL1QC-ZeZO62Q5HQBUg,\"start\",\"end\"": {
+                "s": {
+                  "x": "Ez5HL1QC-ZeZO62Q5HQBUg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80c0-a1a6-f85b87fa3dac": {
+      "value": {
+        "id": "2bea986a-264f-80c0-a1a6-f85b87fa3dac",
+        "version": 17,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-80da-807f-c5df3f8f0018",
+          "2bea986a-264f-8084-884f-c0244492c078"
+        ],
+        "format": {
+          "column_ratio": 0.31250000000000006
+        },
+        "created_time": 1764797872749,
+        "last_edited_time": 1764797991192,
+        "parent_id": "2bea986a-264f-80cc-a2c5-cc56858e0ca7",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "GxX5NuYU2vSo2OYkgSGRYg,\"start\",\"end\"",
+            "n": {
+              "GxX5NuYU2vSo2OYkgSGRYg,\"start\",\"end\"": {
+                "s": {
+                  "x": "GxX5NuYU2vSo2OYkgSGRYg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80c4-b3b8-fe8f637f881b": {
+      "value": {
+        "id": "2bea986a-264f-80c4-b3b8-fe8f637f881b",
+        "version": 17,
+        "type": "sub_header",
+        "properties": {
+          "title": [
+            [
+              "4. 하나님은 떡을 주셔서 ‘떡으로만’ 살지 않음을 깨닫게 하신다"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80b4-8780-e78c739d3892",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442376,
+        "last_edited_time": 1764797872750,
+        "parent_id": "2bea986a-264f-804d-bbc2-c61442321026",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80b4-8780-e78c739d3892",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "xLWLHIqY98TkGx_OhgF3bA,\"start\",\"end\"",
+            "n": {
+              "xLWLHIqY98TkGx_OhgF3bA,\"start\",\"end\"": {
+                "s": {
+                  "x": "xLWLHIqY98TkGx_OhgF3bA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "XHCZSOv3p1h7",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 36,
+                      "c": "4. 하나님은 떡을 주셔서 ‘떡으로만’ 살지 않음을 깨닫게 하신다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80f0-855b-c40f0409903c": {
+      "value": {
+        "id": "2bea986a-264f-80f0-855b-c40f0409903c",
+        "version": 22,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "하나님은 만나를 주시면서도 만나가 삶의 전부가 아님을 드러내셨습니다. 예수님도 참된 생명은 말씀에서 온다고 선언(마태복음 4:4)하셨습니다."
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8003-95cd-fe51e7591f1f",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442377,
+        "last_edited_time": 1764797926236,
+        "parent_id": "2bea986a-264f-804d-bbc2-c61442321026",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8003-95cd-fe51e7591f1f",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "dF42p2S7H-FJw_2fT-HK-g,\"start\",\"end\"",
+            "n": {
+              "dF42p2S7H-FJw_2fT-HK-g,\"start\",\"end\"": {
+                "s": {
+                  "x": "dF42p2S7H-FJw_2fT-HK-g",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "YTgF8yQBoiVO",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 38,
+                      "c": "하나님은 만나를 주시면서도 만나가 삶의 전부가 아님을 드러내셨습니다."
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        39
+                      ],
+                      "o": [
+                        "YTgF8yQBoiVO",
+                        38
+                      ],
+                      "l": 1,
+                      "c": " "
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "1WuPZzL55saV9wxloHhD1Q,[\"OqmonD6z1yld\",60],\"end\""
+                ]
+              },
+              "1WuPZzL55saV9wxloHhD1Q,[\"OqmonD6z1yld\",60],\"end\"": {
+                "s": {
+                  "x": "1WuPZzL55saV9wxloHhD1Q",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        60
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "dgrZJHYFpxaD",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 39,
+                      "c": "예수님도 참된 생명은 말씀에서 온다고 선언(마태복음 4:4)하셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8007-8346-f4fa9455b73d": {
+      "value": {
+        "id": "2bea986a-264f-8007-8346-f4fa9455b73d",
+        "version": 3,
+        "type": "text",
+        "created_time": 1764797896915,
+        "last_edited_time": 1764797896915,
+        "parent_id": "2bea986a-264f-804d-bbc2-c61442321026",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "2lRzY31XCu9x3USP4-MeTQ,\"start\",\"end\"",
+            "n": {
+              "2lRzY31XCu9x3USP4-MeTQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "2lRzY31XCu9x3USP4-MeTQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80da-807f-c5df3f8f0018": {
+      "value": {
+        "id": "2bea986a-264f-80da-807f-c5df3f8f0018",
+        "version": 6,
+        "type": "quote",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8053-adfe-d471dc06ff6f",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764797898222,
+        "last_edited_time": 1764797901647,
+        "parent_id": "2bea986a-264f-80c0-a1a6-f85b87fa3dac",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8053-adfe-d471dc06ff6f",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "m2odnNU4gjPL7fE6Szlang,\"start\",\"end\"",
+            "n": {
+              "m2odnNU4gjPL7fE6Szlang,\"start\",\"end\"": {
+                "s": {
+                  "x": "m2odnNU4gjPL7fE6Szlang",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8084-884f-c0244492c078": {
+      "value": {
+        "id": "2bea986a-264f-8084-884f-c0244492c078",
+        "version": 32,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“너를 낮추시며 너를 주리게 하시며 또 너도 알지 못하며 네 조상들도 알지 못하던 만나를 네게 먹이신 것은 사람이 떡으로만 사는 것이 아니요 여호와의 입에서 나오는 모든 말씀으로 사는 줄을 네게 알게 하려 하심이라.” (신명기 8:3)",
+              [
+                [
+                  "i"
+                ]
+              ]
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-805a-b874-ccb2dbf495d3",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442376,
+        "last_edited_time": 1764797892994,
+        "parent_id": "2bea986a-264f-80c0-a1a6-f85b87fa3dac",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-805a-b874-ccb2dbf495d3",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "yvEYgPpvCkFsPNOb-ttd9A,\"start\",\"end\"",
+            "n": {
+              "yvEYgPpvCkFsPNOb-ttd9A,\"start\",\"end\"": {
+                "s": {
+                  "x": "yvEYgPpvCkFsPNOb-ttd9A",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "GRG9CRPtH0BW",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 131,
+                      "c": "“너를 낮추시며 너를 주리게 하시며 또 너도 알지 못하며 네 조상들도 알지 못하던 만나를 네게 먹이신 것은 사람이 떡으로만 사는 것이 아니요 여호와의 입에서 나오는 모든 말씀으로 사는 줄을 네게 알게 하려 하심이라.” (신명기 8:3)",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "yvEYgPpvCkFsPNOb-ttd9A",
+                          "l": "",
+                          "i": [
+                            "OqmonD6z1yld",
+                            132
+                          ],
+                          "s": {
+                            "i": [
+                              "GRG9CRPtH0BW",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "i"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "YiHvX2DNgXrS-WVB_Sot-Q,[\"OqmonD6z1yld\",21],\"end\""
+                ]
+              },
+              "YiHvX2DNgXrS-WVB_Sot-Q,[\"OqmonD6z1yld\",21],\"end\"": {
+                "s": {
+                  "x": "YiHvX2DNgXrS-WVB_Sot-Q",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": [
+                  "wqOEkw5c0pZjzHqZT6FuVA,[\"gQHPiQW6UQaG\",21],\"end\""
+                ]
+              },
+              "wqOEkw5c0pZjzHqZT6FuVA,[\"gQHPiQW6UQaG\",21],\"end\"": {
+                "s": {
+                  "x": "wqOEkw5c0pZjzHqZT6FuVA",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-807e-b605-e0fc58b0c2d9": {
+      "value": {
+        "id": "2bea986a-264f-807e-b605-e0fc58b0c2d9",
+        "version": 21,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-80aa-91c8-f5cbae3335d7",
+          "2bea986a-264f-80fa-8d54-d468e534e7d7",
+          "2bea986a-264f-80a8-aecf-d74702f97e07"
+        ],
+        "format": {
+          "column_ratio": 0.6875
+        },
+        "created_time": 1764797912115,
+        "last_edited_time": 1764797967243,
+        "parent_id": "2bea986a-264f-805d-9c49-eac8a0d60f73",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "bRnHaD7S57dHv6iVpnucjA,\"start\",\"end\"",
+            "n": {
+              "bRnHaD7S57dHv6iVpnucjA,\"start\",\"end\"": {
+                "s": {
+                  "x": "bRnHaD7S57dHv6iVpnucjA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-800d-88bb-d24d7470e70d": {
+      "value": {
+        "id": "2bea986a-264f-800d-88bb-d24d7470e70d",
+        "version": 11,
+        "type": "column",
+        "content": [
+          "2bea986a-264f-802b-83a4-d8afe4342f56",
+          "2bea986a-264f-804c-8c70-d46da7b66fff",
+          "2bea986a-264f-80c7-94fa-d2a8a8420373"
+        ],
+        "format": {
+          "column_ratio": 0.31250000000000006
+        },
+        "created_time": 1764797912119,
+        "last_edited_time": 1764797938036,
+        "parent_id": "2bea986a-264f-805d-9c49-eac8a0d60f73",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "xerP9D8IgfwC0n6WBcregg,\"start\",\"end\"",
+            "n": {
+              "xerP9D8IgfwC0n6WBcregg,\"start\",\"end\"": {
+                "s": {
+                  "x": "xerP9D8IgfwC0n6WBcregg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80aa-91c8-f5cbae3335d7": {
+      "value": {
+        "id": "2bea986a-264f-80aa-91c8-f5cbae3335d7",
+        "version": 29,
+        "type": "sub_header",
+        "properties": {
+          "title": [
+            [
+              "5. 하나님의 징계는 벌이 아니라 ‘자녀를 빚는 사랑’이다"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80cf-9cc0-d2f92fabdafb",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442378,
+        "last_edited_time": 1764797964918,
+        "parent_id": "2bea986a-264f-807e-b605-e0fc58b0c2d9",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80cf-9cc0-d2f92fabdafb",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "tJAnfdrl5-qFoq3Nhe-xUA,\"start\",[\"gQHPiQW6UQaG\",53]",
+            "n": {
+              "tJAnfdrl5-qFoq3Nhe-xUA,\"start\",[\"gQHPiQW6UQaG\",53]": {
+                "s": {
+                  "x": "tJAnfdrl5-qFoq3Nhe-xUA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "p",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        53
+                      ],
+                      "o": "start"
+                    }
+                  ],
+                  "l": "L"
+                },
+                "c": [
+                  "tJAnfdrl5-qFoq3Nhe-xUA,[\"gQHPiQW6UQaG\",53],\"end\""
+                ]
+              },
+              "tJAnfdrl5-qFoq3Nhe-xUA,[\"gQHPiQW6UQaG\",53],\"end\"": {
+                "s": {
+                  "x": "tJAnfdrl5-qFoq3Nhe-xUA",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "gQHPiQW6UQaG",
+                        53
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "8QDyaO82IZ_w",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 32,
+                      "c": "5. 하나님의 징계는 벌이 아니라 ‘자녀를 빚는 사랑’이다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80fa-8d54-d468e534e7d7": {
+      "value": {
+        "id": "2bea986a-264f-80fa-8d54-d468e534e7d7",
+        "version": 19,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "‘징계’(파이데이아)는 벌이 아니라 자녀를 만들어 가는 훈련, 간섭, 양육을 의미합니다. 하나님은 당신의 자녀에게 절대로 무관심하지 않으십니다."
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-802a-9714-c3ff0fc3346f",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442378,
+        "last_edited_time": 1764797920759,
+        "parent_id": "2bea986a-264f-807e-b605-e0fc58b0c2d9",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-802a-9714-c3ff0fc3346f",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "hDIceTiv0g9guixiWPZM0A,\"start\",\"end\"",
+            "n": {
+              "hDIceTiv0g9guixiWPZM0A,\"start\",\"end\"": {
+                "s": {
+                  "x": "hDIceTiv0g9guixiWPZM0A",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "zmktnZyYshHO",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 49,
+                      "c": "‘징계’(파이데이아)는 벌이 아니라 자녀를 만들어 가는 훈련, 간섭, 양육을 의미합니다."
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "OqmonD6z1yld",
+                        50
+                      ],
+                      "o": [
+                        "zmktnZyYshHO",
+                        49
+                      ],
+                      "l": 1,
+                      "c": " "
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "IkQYnI5m79xYQjTow1mgxw,[\"OqmonD6z1yld\",51],\"end\""
+                ]
+              },
+              "IkQYnI5m79xYQjTow1mgxw,[\"OqmonD6z1yld\",51],\"end\"": {
+                "s": {
+                  "x": "IkQYnI5m79xYQjTow1mgxw",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "OqmonD6z1yld",
+                        51
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "v2MsNND8gVf-",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 30,
+                      "c": "하나님은 당신의 자녀에게 절대로 무관심하지 않으십니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80a8-aecf-d74702f97e07": {
+      "value": {
+        "id": "2bea986a-264f-80a8-aecf-d74702f97e07",
+        "version": 17,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "간섭하시는 이유: 우리를 진짜 하나님의 사람으로 만들기 위해"
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80fe-ac62-cae820d621e5",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442379,
+        "last_edited_time": 1764797923577,
+        "parent_id": "2bea986a-264f-807e-b605-e0fc58b0c2d9",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80fe-ac62-cae820d621e5",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "OV4Sj5M3mewpw3hVFLZstw,\"start\",\"end\"",
+            "n": {
+              "OV4Sj5M3mewpw3hVFLZstw,\"start\",\"end\"": {
+                "s": {
+                  "x": "OV4Sj5M3mewpw3hVFLZstw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "8TZLQbKhnkwM",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 33,
+                      "c": "간섭하시는 이유: 우리를 진짜 하나님의 사람으로 만들기 위해"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-802b-83a4-d8afe4342f56": {
+      "value": {
+        "id": "2bea986a-264f-802b-83a4-d8afe4342f56",
+        "version": 6,
+        "type": "quote",
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8053-adfe-d471dc06ff6f",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764797907086,
+        "last_edited_time": 1764797912120,
+        "parent_id": "2bea986a-264f-800d-88bb-d24d7470e70d",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8053-adfe-d471dc06ff6f",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "v0H8qiwqHbZwH7Z1HJL_cg,\"start\",\"end\"",
+            "n": {
+              "v0H8qiwqHbZwH7Z1HJL_cg,\"start\",\"end\"": {
+                "s": {
+                  "x": "v0H8qiwqHbZwH7Z1HJL_cg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-804c-8c70-d46da7b66fff": {
+      "value": {
+        "id": "2bea986a-264f-804c-8c70-d46da7b66fff",
+        "version": 35,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“사람이 그 아들을 징계함 같이 네 하나님 여호와께서 너를 징계하시는 줄 마음에 생각하라…” (신명기 8:5)",
+              [
+                [
+                  "i"
+                ]
+              ]
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-8081-b9f3-c3bbcc93b71f",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442378,
+        "last_edited_time": 1764797935641,
+        "parent_id": "2bea986a-264f-800d-88bb-d24d7470e70d",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-8081-b9f3-c3bbcc93b71f",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "MHMls40fo-NkLDAFQCWgSA,\"start\",\"end\"",
+            "n": {
+              "MHMls40fo-NkLDAFQCWgSA,\"start\",\"end\"": {
+                "s": {
+                  "x": "MHMls40fo-NkLDAFQCWgSA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "TlYt8fXYns_O",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 61,
+                      "c": "“사람이 그 아들을 징계함 같이 네 하나님 여호와께서 너를 징계하시는 줄 마음에 생각하라…” (신명기 8:5)",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "MHMls40fo-NkLDAFQCWgSA",
+                          "l": "",
+                          "i": [
+                            "OqmonD6z1yld",
+                            62
+                          ],
+                          "s": {
+                            "i": [
+                              "TlYt8fXYns_O",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "i"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80c7-94fa-d2a8a8420373": {
+      "value": {
+        "id": "2bea986a-264f-80c7-94fa-d2a8a8420373",
+        "version": 36,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“주께서 그 사랑하시는 자를 징계하시고 그가 받아들이시는 아들마다 채찍질하심이라 하였느니라” (히브리서 12:6)",
+              [
+                [
+                  "i"
+                ]
+              ]
+            ]
+          ]
+        },
+        "format": {
+          "copied_from_pointer": {
+            "id": "2bea986a-264f-80be-a0e0-c5afe90aebc6",
+            "table": "block",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "created_time": 1764763442380,
+        "last_edited_time": 1764797938036,
+        "parent_id": "2bea986a-264f-800d-88bb-d24d7470e70d",
+        "parent_table": "block",
+        "alive": true,
+        "copied_from": "2bea986a-264f-80be-a0e0-c5afe90aebc6",
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "EPb_-h2vXUi9L3KNxvv0NQ,\"start\",\"end\"",
+            "n": {
+              "EPb_-h2vXUi9L3KNxvv0NQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "EPb_-h2vXUi9L3KNxvv0NQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "JNoW7WAJU0Jr",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 63,
+                      "c": "“주께서 그 사랑하시는 자를 징계하시고 그가 받아들이시는 아들마다 채찍질하심이라 하였느니라” (히브리서 12:6)",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "EPb_-h2vXUi9L3KNxvv0NQ",
+                          "l": "",
+                          "i": [
+                            "OqmonD6z1yld",
+                            64
+                          ],
+                          "s": {
+                            "i": [
+                              "JNoW7WAJU0Jr",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": "end",
+                            "a": "b"
+                          },
+                          "a": [
+                            "i"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "e",
+                      "b": []
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    }
+  },
+  "collection": {
+    "2bea986a-264f-8065-b25c-000bf3b3ebcb": {
+      "value": {
+        "id": "2bea986a-264f-8065-b25c-000bf3b3ebcb",
+        "version": 74,
+        "name": [
+          [
+            "주일 예배"
+          ]
+        ],
+        "schema": {
+          "=nOH": {
+            "icon": "/icons/book_gray.svg",
+            "name": "구절",
+            "type": "text",
+            "description": ""
+          },
+          "jPL[": {
+            "name": "날짜",
+            "type": "date",
+            "time_format": " "
+          },
+          "x`mU": {
+            "name": "목회자",
+            "type": "person"
+          },
+          "title": {
+            "name": "Name",
+            "type": "title"
+          }
+        },
+        "format": {
+          "layout_pointer": {
+            "id": "2bea986a-264f-8020-b4a7-006e79eea595",
+            "table": "layout",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          },
+          "property_visibility": [
+            {
+              "property": "x`mU",
+              "visibility": "show"
+            },
+            {
+              "property": "=nOH",
+              "visibility": "show"
+            },
+            {
+              "property": "jPL[",
+              "visibility": "show"
+            }
+          ],
+          "ai_suggested_properties": [
+            {
+              "name": "Service Date",
+              "type": "date"
+            },
+            {
+              "name": "Speaker",
+              "type": "person"
+            },
+            {
+              "name": "Service Type",
+              "type": "select",
+              "options": [
+                {
+                  "id": "~?xh",
+                  "color": "red",
+                  "value": "Traditional"
+                },
+                {
+                  "id": "EHMR",
+                  "color": "default",
+                  "value": "Contemporary"
+                },
+                {
+                  "id": "\\xmY",
+                  "color": "yellow",
+                  "value": "Special Event"
+                }
+              ]
+            },
+            {
+              "name": "Attendance Count",
+              "type": "number"
+            }
+          ],
+          "page_section_visibility": {
+            "comments": "section_hide",
+            "backlinks": "section_collapsed",
+            "margin_comments": "inline"
+          }
+        },
+        "parent_id": "2bea986a-264f-8001-8f27-e00ad6cb8c64",
+        "parent_table": "block",
+        "alive": true,
+        "migrated": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "created_time": 1764763416051,
+        "last_edited_time": 1764763721909,
+        "created_by_table": "notion_user",
+        "created_by_id": "91e24b48-2eb3-4871-8895-8042fed0977f",
+        "last_edited_by_table": "notion_user",
+        "last_edited_by_id": "91e24b48-2eb3-4871-8895-8042fed0977f"
+      },
+      "role": "reader"
+    }
+  },
+  "layout": {
+    "2bea986a-264f-8020-b4a7-006e79eea595": {
+      "value": {
+        "id": "2bea986a-264f-8020-b4a7-006e79eea595",
+        "version": 41,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "parent_table": "collection",
+        "parent_id": "2bea986a-264f-8065-b25c-000bf3b3ebcb",
+        "created_by_id": "91e24b48-2eb3-4871-8895-8042fed0977f",
+        "created_by_table": "notion_user",
+        "created_time": 1764763496014,
+        "last_edited_by_id": "91e24b48-2eb3-4871-8895-8042fed0977f",
+        "last_edited_by_table": "notion_user",
+        "last_edited_time": 1764763762709,
+        "modules": {
+          "page_layout_schema": [
+            {
+              "id": "cover",
+              "type": "cover"
+            },
+            {
+              "id": "BOuV",
+              "type": "titleWithIcon",
+              "propertyIds": [
+                "=nOH",
+                "x`mU",
+                "jPL["
+              ],
+              "propertyLabels": "hide"
+            },
+            {
+              "id": "YPa`",
+              "type": "properties"
+            },
+            {
+              "id": "discussions",
+              "type": "discussions"
+            },
+            {
+              "id": "editor",
+              "type": "editor"
+            }
+          ]
+        },
+        "format": {
+          "property_icons_visibility": "hide"
+        }
+      },
+      "role": "reader"
+    }
+  },
+  "collection_view": {
+    "2bea986a-264f-8097-a58e-000c61f59bd2": {
+      "value": {
+        "id": "2bea986a-264f-8097-a58e-000c61f59bd2",
+        "version": 4,
+        "type": "table",
+        "format": {
+          "table_wrap": true,
+          "table_properties": [
+            {
+              "width": 280,
+              "visible": true,
+              "property": "title"
+            },
+            {
+              "visible": true,
+              "property": "LeMD"
+            }
+          ],
+          "collection_pointer": {
+            "id": "2bea986a-264f-8065-b25c-000bf3b3ebcb",
+            "table": "collection",
+            "spaceId": "079a8af2-d76f-485d-a575-61f049fc7f3b"
+          }
+        },
+        "parent_id": "2bea986a-264f-8001-8f27-e00ad6cb8c64",
+        "parent_table": "block",
+        "alive": true,
+        "page_sort": [
+          "2bea986a-264f-80a7-ba07-f5c5c2416536"
+        ],
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "created_time": 1764763416054,
+        "last_edited_time": 1764763435663,
+        "created_by_table": "notion_user",
+        "created_by_id": "91e24b48-2eb3-4871-8895-8042fed0977f"
+      },
+      "role": "reader"
+    }
+  },
+  "notion_user": {},
+  "collection_query": {},
+  "signed_urls": {}
+}

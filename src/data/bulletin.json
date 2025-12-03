@@ -1,0 +1,3646 @@
+{
+  "block": {
+    "2bea986a-264f-8092-af12-d0d353387b0a": {
+      "value": {
+        "id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "version": 144,
+        "type": "page",
+        "properties": {
+          "title": [
+            [
+              "주보예제"
+            ]
+          ]
+        },
+        "content": [
+          "2bea986a-264f-80ce-9ecd-c2c6261a47ff",
+          "2bea986a-264f-80dd-8dd7-e313496e176d",
+          "2bea986a-264f-805f-82fd-c8165121d5a2",
+          "2bea986a-264f-80b1-914a-edd8d52fd039",
+          "2bea986a-264f-8092-a341-d53d8fcbe210",
+          "2bea986a-264f-8007-8c74-fa850c7dd673",
+          "2bea986a-264f-80c8-851b-c1a3131bf5bb",
+          "2bea986a-264f-80c6-817c-eb096e47e83f",
+          "2bea986a-264f-80a9-8fda-d7f0f18405ea",
+          "2bea986a-264f-8000-9f31-e5d88db86c72",
+          "2bea986a-264f-80f9-a759-d49d95ed1441",
+          "2bea986a-264f-80f2-b95e-e81e16c25f83",
+          "2bea986a-264f-80b2-8dc2-db852eac14f7",
+          "2bea986a-264f-80a9-9333-cbb0a57acfc7",
+          "2bea986a-264f-8097-9bb8-f094e2e966ea",
+          "2bea986a-264f-8080-91e5-fde8833ed236",
+          "2bea986a-264f-8077-90d2-deb7f8d4d637",
+          "2bea986a-264f-80c9-ba43-f6cac351f7c9",
+          "2bea986a-264f-8085-bdab-cb65b6a4b6e9",
+          "2bea986a-264f-8041-bbaf-caabde93deec",
+          "2bea986a-264f-80e0-9cf4-ef38689f4a46",
+          "2bea986a-264f-8042-b2a3-ea3ab5426e1c",
+          "2bea986a-264f-801f-aa7c-fdcef51bd1c0",
+          "2bea986a-264f-809f-9fcb-f84b04d55c49",
+          "2bea986a-264f-80be-a756-c4cab25eaacc",
+          "2bea986a-264f-8073-9a49-edb75337b755",
+          "2bea986a-264f-80bc-845d-c3908cf36ef3",
+          "2bea986a-264f-8077-95e3-d82aee36593f",
+          "2bea986a-264f-80eb-864f-e2b1cc33ccc3",
+          "2bea986a-264f-807e-9795-dd14aaec28e0",
+          "2bea986a-264f-808f-91bd-d23947d8f633",
+          "2bea986a-264f-80ab-81ec-c265d1393760",
+          "2bea986a-264f-8099-bf29-fdf6b49deae6",
+          "2bea986a-264f-80c9-8bfd-fdbad22e6fb3",
+          "2bea986a-264f-80b6-b20f-de29928246be",
+          "2bea986a-264f-80ca-8ab6-daf8de370fe7",
+          "2bea986a-264f-806c-92a6-c6276c162b9d",
+          "2bea986a-264f-803c-8cb8-d4d196211f6f",
+          "2bea986a-264f-809d-b6e1-d776b91e1351",
+          "2bea986a-264f-80b4-8780-e78c739d3892",
+          "2bea986a-264f-805a-b874-ccb2dbf495d3",
+          "2bea986a-264f-8003-95cd-fe51e7591f1f",
+          "2bea986a-264f-807c-952d-c7ef35297d8c",
+          "2bea986a-264f-805b-9eb1-d8a1b5a7e53b",
+          "2bea986a-264f-80cf-9cc0-d2f92fabdafb",
+          "2bea986a-264f-8081-b9f3-c3bbcc93b71f",
+          "2bea986a-264f-802a-9714-c3ff0fc3346f",
+          "2bea986a-264f-802c-855d-fa4e65049297",
+          "2bea986a-264f-80fe-ac62-cae820d621e5",
+          "2bea986a-264f-80be-a0e0-c5afe90aebc6",
+          "2bea986a-264f-80d5-b235-e74ba12d9029"
+        ],
+        "format": {
+          "site_id": "2bea986a-264f-80ca-af0b-007996f83ae8",
+          "social_media_image_preview_url": "attachment:08f7249a-ccc6-4a0f-b7e5-49a3d169ab34:SocialMediaPreviewImage.png"
+        },
+        "permissions": [
+          {
+            "role": "reader",
+            "type": "public_permission",
+            "is_site": true,
+            "added_timestamp": 1764737891508
+          }
+        ],
+        "created_time": 1764732334747,
+        "last_edited_time": 1764739694039,
+        "parent_id": "2bea986a-264f-80db-ac5a-cec932fd5ec1",
+        "parent_table": "block",
+        "alive": true,
+        "file_ids": [
+          "08f7249a-ccc6-4a0f-b7e5-49a3d169ab34"
+        ],
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "w5NHGurCU0YbVCGjErc5EQ,\"start\",\"end\"",
+            "n": {
+              "w5NHGurCU0YbVCGjErc5EQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "w5NHGurCU0YbVCGjErc5EQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        5
+                      ],
+                      "o": "start",
+                      "l": 1,
+                      "c": "주"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        8
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        5
+                      ],
+                      "l": 1,
+                      "c": "보"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        11
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        8
+                      ],
+                      "l": 2,
+                      "c": "예제"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        8
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        9
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        8
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        5
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        5
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        4
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        3
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        2
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80db-ac5a-cec932fd5ec1": {
+      "role": "none"
+    },
+    "2bea986a-264f-8078-8e98-fde6b78efac0": {
+      "role": "none"
+    },
+    "237a986a-264f-806e-8321-e09c9203b3af": {
+      "role": "none"
+    },
+    "2bea986a-264f-80ce-9ecd-c2c6261a47ff": {
+      "value": {
+        "id": "2bea986a-264f-80ce-9ecd-c2c6261a47ff",
+        "version": 7,
+        "type": "text",
+        "created_time": 1764737833831,
+        "last_edited_time": 1764737867644,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "0OLhn9nMMi44kJT6Sm_FUA,\"start\",\"end\"",
+            "n": {
+              "0OLhn9nMMi44kJT6Sm_FUA,\"start\",\"end\"": {
+                "s": {
+                  "x": "0OLhn9nMMi44kJT6Sm_FUA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80dd-8dd7-e313496e176d": {
+      "value": {
+        "id": "2bea986a-264f-80dd-8dd7-e313496e176d",
+        "version": 87,
+        "type": "header",
+        "properties": {
+          "title": [
+            [
+              "가스펠편지"
+            ]
+          ]
+        },
+        "created_time": 1764732338923,
+        "last_edited_time": 1764732545143,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "UU50onQMfNY-j59GhGTylQ,\"start\",\"end\"",
+            "n": {
+              "UU50onQMfNY-j59GhGTylQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "UU50onQMfNY-j59GhGTylQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        17
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        19
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        17
+                      ],
+                      "l": -2
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        25
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        20
+                      ],
+                      "l": -3
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        24
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        20
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        23
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        20
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        22
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        20
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        21
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        20
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        18
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        17
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        16
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        15
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        13
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        12
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        11
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        9
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        8
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        5
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        4
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        3
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        2
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "qOoi4GlPOqQxFjzGSYq5iw,[\"MzD8k5sB672d\",39],\"end\""
+                ]
+              },
+              "qOoi4GlPOqQxFjzGSYq5iw,[\"MzD8k5sB672d\",39],\"end\"": {
+                "s": {
+                  "x": "qOoi4GlPOqQxFjzGSYq5iw",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        39
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "WqaDEanT2OY7",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -18
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": [
+                  "c8WG7LiKuYApaISpV71Sog,[\"MzD8k5sB672d\",31],\"end\""
+                ]
+              },
+              "c8WG7LiKuYApaISpV71Sog,[\"MzD8k5sB672d\",31],\"end\"": {
+                "s": {
+                  "x": "c8WG7LiKuYApaISpV71Sog",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        31
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        32
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        31
+                      ],
+                      "l": 5,
+                      "c": "가스펠편지"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "yLgaO2jYV5fq",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -10
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": [
+                  "DFBHNIbulM0VyqcleLeb-g,[\"MzD8k5sB672d\",41],\"end\""
+                ]
+              },
+              "DFBHNIbulM0VyqcleLeb-g,[\"MzD8k5sB672d\",41],\"end\"": {
+                "s": {
+                  "x": "DFBHNIbulM0VyqcleLeb-g",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        41
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        18
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "l": -3
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        17
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        16
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        15
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        14
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        13
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        12
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        11
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        9
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        8
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        5
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        4
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        2
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "l": -2
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-805f-82fd-c8165121d5a2": {
+      "value": {
+        "id": "2bea986a-264f-805f-82fd-c8165121d5a2",
+        "version": 5,
+        "type": "sub_header",
+        "properties": {
+          "title": [
+            [
+              "하나님의 깊은 사랑"
+            ]
+          ]
+        },
+        "created_time": 1764732548150,
+        "last_edited_time": 1764732548559,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "tpNdtkRZBDHwYmuMSNemAQ,\"start\",\"end\"",
+            "n": {
+              "tpNdtkRZBDHwYmuMSNemAQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "tpNdtkRZBDHwYmuMSNemAQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 10,
+                      "c": "하나님의 깊은 사랑"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80b1-914a-edd8d52fd039": {
+      "value": {
+        "id": "2bea986a-264f-80b1-914a-edd8d52fd039",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "이번주 설교할 신명기 8장을 붙들고 묵상하는데, 제 마음을 오래 붙잡아 놓은 문장이 하나 있습니다.\n“사람이 떡으로만 사는 것이 아니요”(신 8:3)\n참 익숙한 말씀이지만, 이 말씀이 제 마음 깊은 곳을 건드렸습니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423456,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "AUdRtJOGy2wcmw0uqXX9gg,\"start\",\"end\"",
+            "n": {
+              "AUdRtJOGy2wcmw0uqXX9gg,\"start\",\"end\"": {
+                "s": {
+                  "x": "AUdRtJOGy2wcmw0uqXX9gg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "-FY5TBg-xB3N",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 121,
+                      "c": "이번주 설교할 신명기 8장을 붙들고 묵상하는데, 제 마음을 오래 붙잡아 놓은 문장이 하나 있습니다.\n“사람이 떡으로만 사는 것이 아니요”(신 8:3)\n참 익숙한 말씀이지만, 이 말씀이 제 마음 깊은 곳을 건드렸습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8092-a341-d53d8fcbe210": {
+      "value": {
+        "id": "2bea986a-264f-8092-a341-d53d8fcbe210",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "돌아보면, 목회를 하면서 저는 참 많은 ‘떡을 구하는 기도’를 드렸습니다.\n“주님, 이것만 해결해 주세요.”\n“주님, 이 문제만 지나가게 해주세요.”\n“주님, 이 부분만 채워주시면 제가 잘 해볼게요.”"
+            ]
+          ]
+        },
+        "created_time": 1764732423457,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "b_BHF4srIiizxGe5jl2BMA,\"start\",\"end\"",
+            "n": {
+              "b_BHF4srIiizxGe5jl2BMA,\"start\",\"end\"": {
+                "s": {
+                  "x": "b_BHF4srIiizxGe5jl2BMA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "nT9_puMYBjRn",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 112,
+                      "c": "돌아보면, 목회를 하면서 저는 참 많은 ‘떡을 구하는 기도’를 드렸습니다.\n“주님, 이것만 해결해 주세요.”\n“주님, 이 문제만 지나가게 해주세요.”\n“주님, 이 부분만 채워주시면 제가 잘 해볼게요.”"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8007-8c74-fa850c7dd673": {
+      "value": {
+        "id": "2bea986a-264f-8007-8c74-fa850c7dd673",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "아마 여러분도 그런 기도 해보셨을 겁니다.\n우리는 문제 하나만 해결되면 마음이 풀리고, 신앙이 살아날 것이라 생각합니다.\n그런데 신명기 8장은 그 믿음을 완전히 뒤집어 버립니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423457,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "iF74elqQ7W_pUa9cSJg_oQ,\"start\",\"end\"",
+            "n": {
+              "iF74elqQ7W_pUa9cSJg_oQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "iF74elqQ7W_pUa9cSJg_oQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "PIk4_8JqFIhv",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 99,
+                      "c": "아마 여러분도 그런 기도 해보셨을 겁니다.\n우리는 문제 하나만 해결되면 마음이 풀리고, 신앙이 살아날 것이라 생각합니다.\n그런데 신명기 8장은 그 믿음을 완전히 뒤집어 버립니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80c8-851b-c1a3131bf5bb": {
+      "value": {
+        "id": "2bea986a-264f-80c8-851b-c1a3131bf5bb",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "하나님은 이스라엘에게 40년 동안 만나를 먹이셨습니다.\n그런데 하나님은 그 만나를 주시면서 이렇게 말씀하십니다.\n“너희에게 떡을 준 것은, 떡으로 사는 게 아니라는 걸 알게 하려 한 것이다.”"
+            ]
+          ]
+        },
+        "created_time": 1764732423458,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "8JETI-dTQzAzdgioVGEFvg,\"start\",\"end\"",
+            "n": {
+              "8JETI-dTQzAzdgioVGEFvg,\"start\",\"end\"": {
+                "s": {
+                  "x": "8JETI-dTQzAzdgioVGEFvg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "YvY3T0L6YuV7",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 107,
+                      "c": "하나님은 이스라엘에게 40년 동안 만나를 먹이셨습니다.\n그런데 하나님은 그 만나를 주시면서 이렇게 말씀하십니다.\n“너희에게 떡을 준 것은, 떡으로 사는 게 아니라는 걸 알게 하려 한 것이다.”"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80c6-817c-eb096e47e83f": {
+      "value": {
+        "id": "2bea986a-264f-80c6-817c-eb096e47e83f",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "저는 이 말씀이 얼마나 큰 역설인지 새삼 깨닫습니다.\n떡을 주시고는, 떡이 아니라 말씀으로 산다고 하십니다.\n우리에게 필요한 것은 문제 해결이 아니라 하나님을 신뢰하는 마음이라는 뜻입니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423458,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "CLdCpkK5oucGfAYkQnBKGQ,\"start\",\"end\"",
+            "n": {
+              "CLdCpkK5oucGfAYkQnBKGQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "CLdCpkK5oucGfAYkQnBKGQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "HkI0mCI1k5WW",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 105,
+                      "c": "저는 이 말씀이 얼마나 큰 역설인지 새삼 깨닫습니다.\n떡을 주시고는, 떡이 아니라 말씀으로 산다고 하십니다.\n우리에게 필요한 것은 문제 해결이 아니라 하나님을 신뢰하는 마음이라는 뜻입니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80a9-8fda-d7f0f18405ea": {
+      "value": {
+        "id": "2bea986a-264f-80a9-8fda-d7f0f18405ea",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "저도 돌이켜보면, 하나님께서 제게 기도보다 먼저 다루셨던 것은 ‘환경’이 아니라 ‘마음’이었습니다.\n문제가 없어지는 것이 아니라, 문제 속에서 하나님을 어떻게 바라보는지,\n물질이 채워지는 것이 아니라, 채워지지 않아도 하나님을 신뢰할 수 있는지…\n이것을 깊이 배우게 하셨습니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423459,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "dzsw_EbuTaCi7OWZ_tMg4Q,\"start\",\"end\"",
+            "n": {
+              "dzsw_EbuTaCi7OWZ_tMg4Q,\"start\",\"end\"": {
+                "s": {
+                  "x": "dzsw_EbuTaCi7OWZ_tMg4Q",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "HmAip2tJJw92",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 155,
+                      "c": "저도 돌이켜보면, 하나님께서 제게 기도보다 먼저 다루셨던 것은 ‘환경’이 아니라 ‘마음’이었습니다.\n문제가 없어지는 것이 아니라, 문제 속에서 하나님을 어떻게 바라보는지,\n물질이 채워지는 것이 아니라, 채워지지 않아도 하나님을 신뢰할 수 있는지…\n이것을 깊이 배우게 하셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8000-9f31-e5d88db86c72": {
+      "value": {
+        "id": "2bea986a-264f-8000-9f31-e5d88db86c72",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "이 말씀이 저를 얼마나 조용하게 깨우는지 모릅니다.\n하나님은 이스라엘에게 광야 생활을 반복해서 기억하라고 하셨습니다.\n가나안에 들어가서 배부르고 등 따시고, 안정되면\n하나님을 잊어버릴까 염려하셨기 때문입니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423459,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "-Pabp7czyzr3PSXBGnkkzA,\"start\",\"end\"",
+            "n": {
+              "-Pabp7czyzr3PSXBGnkkzA,\"start\",\"end\"": {
+                "s": {
+                  "x": "-Pabp7czyzr3PSXBGnkkzA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "dotA84T7PKOf",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 116,
+                      "c": "이 말씀이 저를 얼마나 조용하게 깨우는지 모릅니다.\n하나님은 이스라엘에게 광야 생활을 반복해서 기억하라고 하셨습니다.\n가나안에 들어가서 배부르고 등 따시고, 안정되면\n하나님을 잊어버릴까 염려하셨기 때문입니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80f9-a759-d49d95ed1441": {
+      "value": {
+        "id": "2bea986a-264f-80f9-a759-d49d95ed1441",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "“너는 기억하라.”\n광야를, 이끌림을, 만나를, 하나님의 인도하심을 기억하라는 것입니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423460,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "2FcyBBd1yK-c1pR4GepwRQ,\"start\",\"end\"",
+            "n": {
+              "2FcyBBd1yK-c1pR4GepwRQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "2FcyBBd1yK-c1pR4GepwRQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "E2m_aZdyEsjD",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 49,
+                      "c": "“너는 기억하라.”\n광야를, 이끌림을, 만나를, 하나님의 인도하심을 기억하라는 것입니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80f2-b95e-e81e16c25f83": {
+      "value": {
+        "id": "2bea986a-264f-80f2-b95e-e81e16c25f83",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "우리 삶에도 각자의 광야가 있습니다.\n때로는 경제의 광야, 때로는 관계의 광야, 때로는 마음의 광야를 걷고 있습니다.\n그런데 이상하게도 광야에 있을 때 우리는 하나님을 더 잘 부릅니다.\n광야에서는 하나님이 더 크게 들립니다.\n광야에서는 하나님이 더 가까이 계십니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423460,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "QOGN369WmpwX3han42ls9A,\"start\",\"end\"",
+            "n": {
+              "QOGN369WmpwX3han42ls9A,\"start\",\"end\"": {
+                "s": {
+                  "x": "QOGN369WmpwX3han42ls9A",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "bYk8KSUso7FC",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 148,
+                      "c": "우리 삶에도 각자의 광야가 있습니다.\n때로는 경제의 광야, 때로는 관계의 광야, 때로는 마음의 광야를 걷고 있습니다.\n그런데 이상하게도 광야에 있을 때 우리는 하나님을 더 잘 부릅니다.\n광야에서는 하나님이 더 크게 들립니다.\n광야에서는 하나님이 더 가까이 계십니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80b2-8dc2-db852eac14f7": {
+      "value": {
+        "id": "2bea986a-264f-80b2-8dc2-db852eac14f7",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "신명기를 준비하면서 제 안에 이런 고백이 자꾸 떠올랐습니다.\n“하나님, 제가 떡을 구하기 전에, 말씀으로 살게 해주십시오.”\n“문제가 풀리기 전에, 하나님을 먼저 바라보게 해주십시오.”\n“환경보다 주님이 제 중심을 먼저 다루게 하소서.”"
+            ]
+          ]
+        },
+        "created_time": 1764732423460,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "A5CWrMWjExFlnbCiBKsBOQ,\"start\",\"end\"",
+            "n": {
+              "A5CWrMWjExFlnbCiBKsBOQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "A5CWrMWjExFlnbCiBKsBOQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "UytgTAaGGktl",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 132,
+                      "c": "신명기를 준비하면서 제 안에 이런 고백이 자꾸 떠올랐습니다.\n“하나님, 제가 떡을 구하기 전에, 말씀으로 살게 해주십시오.”\n“문제가 풀리기 전에, 하나님을 먼저 바라보게 해주십시오.”\n“환경보다 주님이 제 중심을 먼저 다루게 하소서.”"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80a9-9333-cbb0a57acfc7": {
+      "value": {
+        "id": "2bea986a-264f-80a9-9333-cbb0a57acfc7",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "문제가 해결되는 것이 아니라, 문제 속에서 하나님을 배우는 것이 은혜입니다.\n환경이 바뀌는 것이 아니라, 그 환경을 지나가며 하나님을 신뢰하게 되는 것이 은혜입니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423461,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "6vcOdaI9ocjrTfx_XuxLAQ,\"start\",\"end\"",
+            "n": {
+              "6vcOdaI9ocjrTfx_XuxLAQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "6vcOdaI9ocjrTfx_XuxLAQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "d1JyB7Ifh0M4",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 92,
+                      "c": "문제가 해결되는 것이 아니라, 문제 속에서 하나님을 배우는 것이 은혜입니다.\n환경이 바뀌는 것이 아니라, 그 환경을 지나가며 하나님을 신뢰하게 되는 것이 은혜입니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8097-9bb8-f094e2e966ea": {
+      "value": {
+        "id": "2bea986a-264f-8097-9bb8-f094e2e966ea",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "저는 우리 교회가 이런 은혜를 잃지 않기를 바랍니다.\n우리의 필요를 채워주시는 하나님만 바라보다가\n정작 하나님을 잊어버리는 어리석음이 없기를 바랍니다.\n등 따시고 배부를 때 더 정신을 차리고, 더 하나님을 붙잡는 교회가 되기를 원합니다."
+            ]
+          ]
+        },
+        "created_time": 1764732423461,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "667C7RTePuOrg0w-q96dWA,\"start\",\"end\"",
+            "n": {
+              "667C7RTePuOrg0w-q96dWA,\"start\",\"end\"": {
+                "s": {
+                  "x": "667C7RTePuOrg0w-q96dWA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "5MBt9tszswv5",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 132,
+                      "c": "저는 우리 교회가 이런 은혜를 잃지 않기를 바랍니다.\n우리의 필요를 채워주시는 하나님만 바라보다가\n정작 하나님을 잊어버리는 어리석음이 없기를 바랍니다.\n등 따시고 배부를 때 더 정신을 차리고, 더 하나님을 붙잡는 교회가 되기를 원합니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8080-91e5-fde8833ed236": {
+      "value": {
+        "id": "2bea986a-264f-8080-91e5-fde8833ed236",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "“우리는 떡으로만 사는 게 아니라 말씀으로 산다”"
+            ]
+          ]
+        },
+        "created_time": 1764732423461,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "52zvtTn6JLvvYJL1kQBShA,\"start\",\"end\"",
+            "n": {
+              "52zvtTn6JLvvYJL1kQBShA,\"start\",\"end\"": {
+                "s": {
+                  "x": "52zvtTn6JLvvYJL1kQBShA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "1Cu7dzDp2Vyf",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 27,
+                      "c": "“우리는 떡으로만 사는 게 아니라 말씀으로 산다”"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8077-90d2-deb7f8d4d637": {
+      "value": {
+        "id": "2bea986a-264f-8077-90d2-deb7f8d4d637",
+        "version": 4,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "_주님만이 전부이십니다, 오승주목사"
+            ]
+          ]
+        },
+        "created_time": 1764732423461,
+        "last_edited_time": 1764732423473,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "mM5icjrXE45VXf74aVXKFQ,\"start\",\"end\"",
+            "n": {
+              "mM5icjrXE45VXf74aVXKFQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "mM5icjrXE45VXf74aVXKFQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "2iu__pFDTu8D",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 19,
+                      "c": "_주님만이 전부이십니다, 오승주목사"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "T71sWLz9QWnZYkmlTCOg7A,[\"MzD8k5sB672d\",21],\"end\""
+                ]
+              },
+              "T71sWLz9QWnZYkmlTCOg7A,[\"MzD8k5sB672d\",21],\"end\"": {
+                "s": {
+                  "x": "T71sWLz9QWnZYkmlTCOg7A",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        21
+                      ],
+                      "o": "start"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80c9-ba43-f6cac351f7c9": {
+      "value": {
+        "id": "2bea986a-264f-80c9-ba43-f6cac351f7c9",
+        "version": 3,
+        "type": "text",
+        "created_time": 1764738542861,
+        "last_edited_time": 1764738542863,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "7Thv5gGn4v7ldNa5G_bkgQ,\"start\",\"end\"",
+            "n": {
+              "7Thv5gGn4v7ldNa5G_bkgQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "7Thv5gGn4v7ldNa5G_bkgQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8085-bdab-cb65b6a4b6e9": {
+      "value": {
+        "id": "2bea986a-264f-8085-bdab-cb65b6a4b6e9",
+        "version": 15,
+        "type": "divider",
+        "created_time": 1764732434626,
+        "last_edited_time": 1764738538437,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "4R2Js2UjjVqUOCzbE8fUew,\"start\",\"end\"",
+            "n": {
+              "4R2Js2UjjVqUOCzbE8fUew,\"start\",\"end\"": {
+                "s": {
+                  "x": "4R2Js2UjjVqUOCzbE8fUew",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        3
+                      ],
+                      "o": "start",
+                      "l": -2
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -2
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8041-bbaf-caabde93deec": {
+      "value": {
+        "id": "2bea986a-264f-8041-bbaf-caabde93deec",
+        "version": 32,
+        "type": "header",
+        "properties": {
+          "title": [
+            [
+              "주일예배"
+            ]
+          ]
+        },
+        "created_time": 1764732435829,
+        "last_edited_time": 1764732442832,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "dVDpzmVy_daPk7N7Wz-3mA,\"start\",\"end\"",
+            "n": {
+              "dVDpzmVy_daPk7N7Wz-3mA,\"start\",\"end\"": {
+                "s": {
+                  "x": "dVDpzmVy_daPk7N7Wz-3mA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        4
+                      ],
+                      "o": "start",
+                      "l": 1,
+                      "c": "주"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        4
+                      ],
+                      "l": 1,
+                      "c": "일"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        10
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "l": 2,
+                      "c": "예배"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        9
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        8
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        7
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        6
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        5
+                      ],
+                      "o": [
+                        "MzD8k5sB672d",
+                        4
+                      ],
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        3
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        2
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MzD8k5sB672d",
+                        1
+                      ],
+                      "o": "start",
+                      "l": -1
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80e0-9cf4-ef38689f4a46": {
+      "value": {
+        "id": "2bea986a-264f-80e0-9cf4-ef38689f4a46",
+        "version": 17,
+        "type": "sub_header",
+        "properties": {
+          "title": [
+            [
+              "네 마음이 어떠한지 알게 하심이라   ",
+              [
+                [
+                  "b"
+                ]
+              ]
+            ]
+          ]
+        },
+        "format": {
+          "toggleable": false
+        },
+        "created_time": 1764738746538,
+        "last_edited_time": 1764738770372,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "Lh6Xsd7CD8Gs8ClwRdLEFA,\"start\",[\"MzD8k5sB672d\",32]",
+            "n": {
+              "Lh6Xsd7CD8Gs8ClwRdLEFA,\"start\",[\"MzD8k5sB672d\",32]": {
+                "s": {
+                  "x": "Lh6Xsd7CD8Gs8ClwRdLEFA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "UGu7vf9Q7G3z",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 21,
+                      "c": "네 마음이 어떠한지 알게 하심이라   ",
+                      "b": [
+                        {
+                          "t": "a",
+                          "x": "Lh6Xsd7CD8Gs8ClwRdLEFA",
+                          "l": "",
+                          "i": [
+                            "MzD8k5sB672d",
+                            33
+                          ],
+                          "s": {
+                            "i": [
+                              "UGu7vf9Q7G3z",
+                              1
+                            ],
+                            "a": "b"
+                          },
+                          "e": {
+                            "i": [
+                              "MzD8k5sB672d",
+                              32
+                            ],
+                            "a": "b"
+                          },
+                          "a": [
+                            "b"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        32
+                      ],
+                      "o": [
+                        "UGu7vf9Q7G3z",
+                        21
+                      ],
+                      "b": []
+                    }
+                  ],
+                  "l": "L"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8042-b2a3-ea3ab5426e1c": {
+      "value": {
+        "id": "2bea986a-264f-8042-b2a3-ea3ab5426e1c",
+        "version": 10,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "신명기 8:1-10"
+            ]
+          ]
+        },
+        "created_time": 1764738754389,
+        "last_edited_time": 1764738770372,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "UhW_XrICv_LXEQR-p7DAaw,\"start\",\"end\"",
+            "n": {
+              "UhW_XrICv_LXEQR-p7DAaw,\"start\",\"end\"": {
+                "s": {
+                  "x": "UhW_XrICv_LXEQR-p7DAaw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": [
+                  "Lh6Xsd7CD8Gs8ClwRdLEFA,[\"MzD8k5sB672d\",32],\"end\""
+                ]
+              },
+              "Lh6Xsd7CD8Gs8ClwRdLEFA,[\"MzD8k5sB672d\",32],\"end\"": {
+                "s": {
+                  "x": "Lh6Xsd7CD8Gs8ClwRdLEFA",
+                  "i": [
+                    {
+                      "t": "p",
+                      "i": [
+                        "MzD8k5sB672d",
+                        32
+                      ],
+                      "o": [
+                        "UGu7vf9Q7G3z",
+                        21
+                      ]
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "UGu7vf9Q7G3z",
+                        22
+                      ],
+                      "o": [
+                        "UGu7vf9Q7G3z",
+                        21
+                      ],
+                      "l": 10,
+                      "c": "신명기 8:1-10"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": "l"
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-801f-aa7c-fdcef51bd1c0": {
+      "value": {
+        "id": "2bea986a-264f-801f-aa7c-fdcef51bd1c0",
+        "version": 3,
+        "type": "sub_sub_header",
+        "properties": {
+          "title": [
+            [
+              "1. 하나님은 지금 우리의 “마음”을 보고 계십니다"
+            ]
+          ]
+        },
+        "created_time": 1764738746539,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "60I7C6M4y2zteOeAKtTDKQ,\"start\",\"end\"",
+            "n": {
+              "60I7C6M4y2zteOeAKtTDKQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "60I7C6M4y2zteOeAKtTDKQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "WpVfMbPzq2Yl",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 28,
+                      "c": "1. 하나님은 지금 우리의 “마음”을 보고 계십니다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-809f-9fcb-f84b04d55c49": {
+      "value": {
+        "id": "2bea986a-264f-809f-9fcb-f84b04d55c49",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "신명기 8장은 광야를 지나는 이스라엘에게 “네 마음이 어떠한지” 보시려는 하나님의 깊은 사랑을 드러냅니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746539,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "L2YEF0WkpbZYQiaCVWJ7Sg,\"start\",\"end\"",
+            "n": {
+              "L2YEF0WkpbZYQiaCVWJ7Sg,\"start\",\"end\"": {
+                "s": {
+                  "x": "L2YEF0WkpbZYQiaCVWJ7Sg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "I71vBIt2aRUA",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 59,
+                      "c": "신명기 8장은 광야를 지나는 이스라엘에게 “네 마음이 어떠한지” 보시려는 하나님의 깊은 사랑을 드러냅니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80be-a756-c4cab25eaacc": {
+      "value": {
+        "id": "2bea986a-264f-80be-a756-c4cab25eaacc",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "우리 교회가 작고 연약해 보일 때라도 하나님은 환경이 아니라 우리의 마음을 붙들고 계십니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746540,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "0LSz-af58PplAoX5y1aRRQ,\"start\",\"end\"",
+            "n": {
+              "0LSz-af58PplAoX5y1aRRQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "0LSz-af58PplAoX5y1aRRQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "LNkX8nr_5p_7",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 51,
+                      "c": "우리 교회가 작고 연약해 보일 때라도 하나님은 환경이 아니라 우리의 마음을 붙들고 계십니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8073-9a49-edb75337b755": {
+      "value": {
+        "id": "2bea986a-264f-8073-9a49-edb75337b755",
+        "version": 3,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“네 하나님 여호와를 잊어버리지 않도록 삼갈지어다…네 마음이 교만하여… 여호와를 잊어버릴까 염려하노라.” (신명기 8:11–14)"
+            ]
+          ]
+        },
+        "created_time": 1764738746540,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "fDZ39IqbwmP7NQihN9wPnw,\"start\",\"end\"",
+            "n": {
+              "fDZ39IqbwmP7NQihN9wPnw,\"start\",\"end\"": {
+                "s": {
+                  "x": "fDZ39IqbwmP7NQihN9wPnw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "gjaVhEn7xzY1",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 72,
+                      "c": "“네 하나님 여호와를 잊어버리지 않도록 삼갈지어다…네 마음이 교만하여… 여호와를 잊어버릴까 염려하노라.” (신명기 8:11–14)"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80bc-845d-c3908cf36ef3": {
+      "value": {
+        "id": "2bea986a-264f-80bc-845d-c3908cf36ef3",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "가나안의 풍요는 축복이지만, 동시에 더 큰 위험입니다. 등 따시고 배부를 때 잊지 말아야 할 것: 하나님"
+            ]
+          ]
+        },
+        "created_time": 1764738746541,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "KVLcOIucfLdTM-v7lpyj7w,\"start\",\"end\"",
+            "n": {
+              "KVLcOIucfLdTM-v7lpyj7w,\"start\",\"end\"": {
+                "s": {
+                  "x": "KVLcOIucfLdTM-v7lpyj7w",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "uDy240UPgXuz",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 58,
+                      "c": "가나안의 풍요는 축복이지만, 동시에 더 큰 위험입니다. 등 따시고 배부를 때 잊지 말아야 할 것: 하나님"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8077-95e3-d82aee36593f": {
+      "value": {
+        "id": "2bea986a-264f-8077-95e3-d82aee36593f",
+        "version": 3,
+        "type": "text",
+        "created_time": 1764739700692,
+        "last_edited_time": 1764739700695,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "vBDqpeDxZimr0pFEE3XmgA,\"start\",\"end\"",
+            "n": {
+              "vBDqpeDxZimr0pFEE3XmgA,\"start\",\"end\"": {
+                "s": {
+                  "x": "vBDqpeDxZimr0pFEE3XmgA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80eb-864f-e2b1cc33ccc3": {
+      "value": {
+        "id": "2bea986a-264f-80eb-864f-e2b1cc33ccc3",
+        "version": 3,
+        "type": "sub_sub_header",
+        "properties": {
+          "title": [
+            [
+              "2. 광야는 하나님의 버림이 아니라 간섭이다"
+            ]
+          ]
+        },
+        "created_time": 1764738746541,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "ciCCuluDg0FnFnpE50QrOA,\"start\",\"end\"",
+            "n": {
+              "ciCCuluDg0FnFnpE50QrOA,\"start\",\"end\"": {
+                "s": {
+                  "x": "ciCCuluDg0FnFnpE50QrOA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "BvfSy8HSPNI7",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 24,
+                      "c": "2. 광야는 하나님의 버림이 아니라 간섭이다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-807e-9795-dd14aaec28e0": {
+      "value": {
+        "id": "2bea986a-264f-807e-9795-dd14aaec28e0",
+        "version": 3,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“네 하나님 여호와께서 이 사십 년 동안에 네게 광야 길을 걷게 하신 것을 기억하라…” (신명기 8:2)"
+            ]
+          ]
+        },
+        "created_time": 1764738746541,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "vL2SCQVENiUOBol0nKdOYw,\"start\",\"end\"",
+            "n": {
+              "vL2SCQVENiUOBol0nKdOYw,\"start\",\"end\"": {
+                "s": {
+                  "x": "vL2SCQVENiUOBol0nKdOYw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "h-B9GZQVVS3t",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 58,
+                      "c": "“네 하나님 여호와께서 이 사십 년 동안에 네게 광야 길을 걷게 하신 것을 기억하라…” (신명기 8:2)"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-808f-91bd-d23947d8f633": {
+      "value": {
+        "id": "2bea986a-264f-808f-91bd-d23947d8f633",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "이스라엘이 보기에는 “실패의 시간”이었지만 하나님은 그 광야를 통해 그들을 가장 깊이 간섭하시고 보호하셨습니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746542,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "3ZoxXrTvAyox5IsU3Bw9yQ,\"start\",\"end\"",
+            "n": {
+              "3ZoxXrTvAyox5IsU3Bw9yQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "3ZoxXrTvAyox5IsU3Bw9yQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "Zi5hRvA5KTfy",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 62,
+                      "c": "이스라엘이 보기에는 “실패의 시간”이었지만 하나님은 그 광야를 통해 그들을 가장 깊이 간섭하시고 보호하셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80ab-81ec-c265d1393760": {
+      "value": {
+        "id": "2bea986a-264f-80ab-81ec-c265d1393760",
+        "version": 3,
+        "type": "bulleted_list",
+        "properties": {
+          "title": [
+            [
+              "광야는 멈춤이 아니라 하나님의 손 안에 놓인 시간"
+            ]
+          ]
+        },
+        "created_time": 1764738746542,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "pI9P4xm67eA7vJ3zei_9FQ,\"start\",\"end\"",
+            "n": {
+              "pI9P4xm67eA7vJ3zei_9FQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "pI9P4xm67eA7vJ3zei_9FQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "ZQGta3fWaQnz",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 27,
+                      "c": "광야는 멈춤이 아니라 하나님의 손 안에 놓인 시간"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8099-bf29-fdf6b49deae6": {
+      "value": {
+        "id": "2bea986a-264f-8099-bf29-fdf6b49deae6",
+        "version": 3,
+        "type": "bulleted_list",
+        "properties": {
+          "title": [
+            [
+              "문제는 지연이 아니라 하나님의 훈련시키는 자리"
+            ]
+          ]
+        },
+        "created_time": 1764738746543,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "72qL80h-lf8hgKl8RUeD3A,\"start\",\"end\"",
+            "n": {
+              "72qL80h-lf8hgKl8RUeD3A,\"start\",\"end\"": {
+                "s": {
+                  "x": "72qL80h-lf8hgKl8RUeD3A",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "EHEyu5oU4AIN",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 25,
+                      "c": "문제는 지연이 아니라 하나님의 훈련시키는 자리"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80c9-8bfd-fdbad22e6fb3": {
+      "value": {
+        "id": "2bea986a-264f-80c9-8bfd-fdbad22e6fb3",
+        "version": 5,
+        "type": "text",
+        "created_time": 1764739704488,
+        "last_edited_time": 1764739705103,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "TwQopXI_D42VPh81uXkYtw,\"start\",\"end\"",
+            "n": {
+              "TwQopXI_D42VPh81uXkYtw,\"start\",\"end\"": {
+                "s": {
+                  "x": "TwQopXI_D42VPh81uXkYtw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80b6-b20f-de29928246be": {
+      "value": {
+        "id": "2bea986a-264f-80b6-b20f-de29928246be",
+        "version": 3,
+        "type": "sub_sub_header",
+        "properties": {
+          "title": [
+            [
+              "3. 광야는 ‘마음을’ 드러내는 자리이다"
+            ]
+          ]
+        },
+        "created_time": 1764738746543,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "KYc-nVzme9PzAiqsj713Eg,\"start\",\"end\"",
+            "n": {
+              "KYc-nVzme9PzAiqsj713Eg,\"start\",\"end\"": {
+                "s": {
+                  "x": "KYc-nVzme9PzAiqsj713Eg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "AS1NgSzuyRPo",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 22,
+                      "c": "3. 광야는 ‘마음을’ 드러내는 자리이다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80ca-8ab6-daf8de370fe7": {
+      "value": {
+        "id": "2bea986a-264f-80ca-8ab6-daf8de370fe7",
+        "version": 3,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“이는 너를 낮추시며 너를 시험하사 네 마음이 어떠한지 그 명령을 지키는지 지키지 않는지 알려 하심이라.” (신명기 8:2)"
+            ]
+          ]
+        },
+        "created_time": 1764738746544,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "e6N4EUHKsJhCB06ZadWwFg,\"start\",\"end\"",
+            "n": {
+              "e6N4EUHKsJhCB06ZadWwFg,\"start\",\"end\"": {
+                "s": {
+                  "x": "e6N4EUHKsJhCB06ZadWwFg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "P18p6ptei4Kt",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 69,
+                      "c": "“이는 너를 낮추시며 너를 시험하사 네 마음이 어떠한지 그 명령을 지키는지 지키지 않는지 알려 하심이라.” (신명기 8:2)"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-806c-92a6-c6276c162b9d": {
+      "value": {
+        "id": "2bea986a-264f-806c-92a6-c6276c162b9d",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "하나님은 환경보다 사람의 마음을 보십니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746544,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "9--1Qo4ZE1ilb66mCzEyPA,\"start\",\"end\"",
+            "n": {
+              "9--1Qo4ZE1ilb66mCzEyPA,\"start\",\"end\"": {
+                "s": {
+                  "x": "9--1Qo4ZE1ilb66mCzEyPA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "_9jw7CqPBuAs",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 23,
+                      "c": "하나님은 환경보다 사람의 마음을 보십니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-803c-8cb8-d4d196211f6f": {
+      "value": {
+        "id": "2bea986a-264f-803c-8cb8-d4d196211f6f",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "이스라엘이 가나안에서 갈릴 때, 그들의 마음이 하나님을 떠날까 염려하셨습니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746544,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "_KOmvAgcocd6VERdp1-tWA,\"start\",\"end\"",
+            "n": {
+              "_KOmvAgcocd6VERdp1-tWA,\"start\",\"end\"": {
+                "s": {
+                  "x": "_KOmvAgcocd6VERdp1-tWA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "1id4dA_t98RD",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 43,
+                      "c": "이스라엘이 가나안에서 갈릴 때, 그들의 마음이 하나님을 떠날까 염려하셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-809d-b6e1-d776b91e1351": {
+      "value": {
+        "id": "2bea986a-264f-809d-b6e1-d776b91e1351",
+        "version": 3,
+        "type": "text",
+        "created_time": 1764739712714,
+        "last_edited_time": 1764739712716,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "Il75kRWFuQXlxtgpWNABUA,\"start\",\"end\"",
+            "n": {
+              "Il75kRWFuQXlxtgpWNABUA,\"start\",\"end\"": {
+                "s": {
+                  "x": "Il75kRWFuQXlxtgpWNABUA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80b4-8780-e78c739d3892": {
+      "value": {
+        "id": "2bea986a-264f-80b4-8780-e78c739d3892",
+        "version": 3,
+        "type": "sub_sub_header",
+        "properties": {
+          "title": [
+            [
+              "4. 하나님은 떡을 주셔서 ‘떡으로만’ 살지 않음을 깨닫게 하신다"
+            ]
+          ]
+        },
+        "created_time": 1764738746545,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "XsiCIqwGRPt6nsNAsmpS7A,\"start\",\"end\"",
+            "n": {
+              "XsiCIqwGRPt6nsNAsmpS7A,\"start\",\"end\"": {
+                "s": {
+                  "x": "XsiCIqwGRPt6nsNAsmpS7A",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "CzDX3JLRXdg0",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 36,
+                      "c": "4. 하나님은 떡을 주셔서 ‘떡으로만’ 살지 않음을 깨닫게 하신다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-805a-b874-ccb2dbf495d3": {
+      "value": {
+        "id": "2bea986a-264f-805a-b874-ccb2dbf495d3",
+        "version": 3,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“너를 낮추시며 너를 주리게 하시며 또 너도 알지 못하며 네 조상들도 알지 못하던 만나를 네게 먹이신 것은 사람이 떡으로만 사는 것이 아니요 여호와의 입에서 나오는 모든 말씀으로 사는 줄을 네게 알게 하려 하심이라.” (신명기 8:3)"
+            ]
+          ]
+        },
+        "created_time": 1764738746545,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "aKSpG3fgFlLkxzI6KkHWNw,\"start\",\"end\"",
+            "n": {
+              "aKSpG3fgFlLkxzI6KkHWNw,\"start\",\"end\"": {
+                "s": {
+                  "x": "aKSpG3fgFlLkxzI6KkHWNw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "IPpfP9xN55Vu",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 131,
+                      "c": "“너를 낮추시며 너를 주리게 하시며 또 너도 알지 못하며 네 조상들도 알지 못하던 만나를 네게 먹이신 것은 사람이 떡으로만 사는 것이 아니요 여호와의 입에서 나오는 모든 말씀으로 사는 줄을 네게 알게 하려 하심이라.” (신명기 8:3)"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8003-95cd-fe51e7591f1f": {
+      "value": {
+        "id": "2bea986a-264f-8003-95cd-fe51e7591f1f",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "하나님은 만나를 주시면서도 만나가 삶의 전부가 아님을 드러내셨습니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746545,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "OhLoYslrJCJ9yq9jyqFEYg,\"start\",\"end\"",
+            "n": {
+              "OhLoYslrJCJ9yq9jyqFEYg,\"start\",\"end\"": {
+                "s": {
+                  "x": "OhLoYslrJCJ9yq9jyqFEYg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "IFjYLq73H-AQ",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 38,
+                      "c": "하나님은 만나를 주시면서도 만나가 삶의 전부가 아님을 드러내셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-807c-952d-c7ef35297d8c": {
+      "value": {
+        "id": "2bea986a-264f-807c-952d-c7ef35297d8c",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "예수님도 참된 생명은 말씀에서 온다고 선언(마태복음 4:4)하셨습니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746545,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "Oh299yhoSOcErxAi2InQLw,\"start\",\"end\"",
+            "n": {
+              "Oh299yhoSOcErxAi2InQLw,\"start\",\"end\"": {
+                "s": {
+                  "x": "Oh299yhoSOcErxAi2InQLw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "RlHHS41tPP5O",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 39,
+                      "c": "예수님도 참된 생명은 말씀에서 온다고 선언(마태복음 4:4)하셨습니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-805b-9eb1-d8a1b5a7e53b": {
+      "value": {
+        "id": "2bea986a-264f-805b-9eb1-d8a1b5a7e53b",
+        "version": 3,
+        "type": "text",
+        "created_time": 1764739717865,
+        "last_edited_time": 1764739717867,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "cmRGhVH0VA4Fx3jKHOE7pg,\"start\",\"end\"",
+            "n": {
+              "cmRGhVH0VA4Fx3jKHOE7pg,\"start\",\"end\"": {
+                "s": {
+                  "x": "cmRGhVH0VA4Fx3jKHOE7pg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80cf-9cc0-d2f92fabdafb": {
+      "value": {
+        "id": "2bea986a-264f-80cf-9cc0-d2f92fabdafb",
+        "version": 3,
+        "type": "sub_sub_header",
+        "properties": {
+          "title": [
+            [
+              "5. 하나님의 징계는 벌이 아니라 ‘자녀를 빚는 사랑’이다"
+            ]
+          ]
+        },
+        "created_time": 1764738746546,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "Z4LTz4hL1KGd9Q3g8EITQQ,\"start\",\"end\"",
+            "n": {
+              "Z4LTz4hL1KGd9Q3g8EITQQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "Z4LTz4hL1KGd9Q3g8EITQQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "MBIz8QtU5Jl6",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 32,
+                      "c": "5. 하나님의 징계는 벌이 아니라 ‘자녀를 빚는 사랑’이다"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-8081-b9f3-c3bbcc93b71f": {
+      "value": {
+        "id": "2bea986a-264f-8081-b9f3-c3bbcc93b71f",
+        "version": 3,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“사람이 그 아들을 징계함 같이 네 하나님 여호와께서 너를 징계하시는 줄 마음에 생각하라…” (신명기 8:5)"
+            ]
+          ]
+        },
+        "created_time": 1764738746546,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "RODJMA1WuZwD9GrlfdXITw,\"start\",\"end\"",
+            "n": {
+              "RODJMA1WuZwD9GrlfdXITw,\"start\",\"end\"": {
+                "s": {
+                  "x": "RODJMA1WuZwD9GrlfdXITw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "3mROIVKkmGAj",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 61,
+                      "c": "“사람이 그 아들을 징계함 같이 네 하나님 여호와께서 너를 징계하시는 줄 마음에 생각하라…” (신명기 8:5)"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-802a-9714-c3ff0fc3346f": {
+      "value": {
+        "id": "2bea986a-264f-802a-9714-c3ff0fc3346f",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "‘징계’(파이데이아)는 벌이 아니라 자녀를 만들어 가는 훈련, 간섭, 양육을 의미합니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746546,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "71Fnux75oGDxGFYp3HtMMg,\"start\",\"end\"",
+            "n": {
+              "71Fnux75oGDxGFYp3HtMMg,\"start\",\"end\"": {
+                "s": {
+                  "x": "71Fnux75oGDxGFYp3HtMMg",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "yiJ1p_ZZzdcY",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 49,
+                      "c": "‘징계’(파이데이아)는 벌이 아니라 자녀를 만들어 가는 훈련, 간섭, 양육을 의미합니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-802c-855d-fa4e65049297": {
+      "value": {
+        "id": "2bea986a-264f-802c-855d-fa4e65049297",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "하나님은 당신의 자녀에게 절대로 무관심하지 않으십니다."
+            ]
+          ]
+        },
+        "created_time": 1764738746547,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "hB3pTIt3oZkks9JMm2L7SQ,\"start\",\"end\"",
+            "n": {
+              "hB3pTIt3oZkks9JMm2L7SQ,\"start\",\"end\"": {
+                "s": {
+                  "x": "hB3pTIt3oZkks9JMm2L7SQ",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "pM_lyaFOTvfo",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 30,
+                      "c": "하나님은 당신의 자녀에게 절대로 무관심하지 않으십니다."
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80fe-ac62-cae820d621e5": {
+      "value": {
+        "id": "2bea986a-264f-80fe-ac62-cae820d621e5",
+        "version": 3,
+        "type": "text",
+        "properties": {
+          "title": [
+            [
+              "간섭하시는 이유: 우리를 진짜 하나님의 사람으로 만들기 위해"
+            ]
+          ]
+        },
+        "created_time": 1764738746547,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "SvJmAnkdbXXMoNLaUUbMRA,\"start\",\"end\"",
+            "n": {
+              "SvJmAnkdbXXMoNLaUUbMRA,\"start\",\"end\"": {
+                "s": {
+                  "x": "SvJmAnkdbXXMoNLaUUbMRA",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "cKZWQxKC1KAT",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 33,
+                      "c": "간섭하시는 이유: 우리를 진짜 하나님의 사람으로 만들기 위해"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80be-a0e0-c5afe90aebc6": {
+      "value": {
+        "id": "2bea986a-264f-80be-a0e0-c5afe90aebc6",
+        "version": 3,
+        "type": "quote",
+        "properties": {
+          "title": [
+            [
+              "“주께서 그 사랑하시는 자를 징계하시고 그가 받아들이시는 아들마다 채찍질하심이라 하였느니라” (히브리서 12:6)"
+            ]
+          ]
+        },
+        "created_time": 1764738746547,
+        "last_edited_time": 1764738746566,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "4dqlNjTBdqfA7Wlt8DWQAw,\"start\",\"end\"",
+            "n": {
+              "4dqlNjTBdqfA7Wlt8DWQAw,\"start\",\"end\"": {
+                "s": {
+                  "x": "4dqlNjTBdqfA7Wlt8DWQAw",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "t",
+                      "i": [
+                        "97zRzOOnOkHY",
+                        1
+                      ],
+                      "o": "start",
+                      "l": 63,
+                      "c": "“주께서 그 사랑하시는 자를 징계하시고 그가 받아들이시는 아들마다 채찍질하심이라 하였느니라” (히브리서 12:6)"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    },
+    "2bea986a-264f-80d5-b235-e74ba12d9029": {
+      "value": {
+        "id": "2bea986a-264f-80d5-b235-e74ba12d9029",
+        "version": 3,
+        "type": "text",
+        "created_time": 1764739720031,
+        "last_edited_time": 1764739720033,
+        "parent_id": "2bea986a-264f-8092-af12-d0d353387b0a",
+        "parent_table": "block",
+        "alive": true,
+        "space_id": "079a8af2-d76f-485d-a575-61f049fc7f3b",
+        "crdt_format_version": 1,
+        "crdt_data": {
+          "title": {
+            "r": "lyJd0fkCcj54EVhU99s71g,\"start\",\"end\"",
+            "n": {
+              "lyJd0fkCcj54EVhU99s71g,\"start\",\"end\"": {
+                "s": {
+                  "x": "lyJd0fkCcj54EVhU99s71g",
+                  "i": [
+                    {
+                      "t": "s"
+                    },
+                    {
+                      "t": "e"
+                    }
+                  ],
+                  "l": ""
+                },
+                "c": []
+              }
+            }
+          }
+        }
+      },
+      "role": "reader"
+    }
+  },
+  "collection": {},
+  "collection_view": {},
+  "notion_user": {},
+  "collection_query": {},
+  "signed_urls": {}
+}
