@@ -19,18 +19,18 @@ const Effect2 = ({ activeSection }) => {
                     transition={{ duration: 1.6, ease: "easeInOut" }}
                     className="max-w-xl text-center px-12"
                 >
-                    <div className="font-sans font-medium text-2xl xl:text-3xl leading-relaxed tracking-wide text-[#05121C]">
+                    <div className="font-sans font-medium text-xl xl:text-2xl leading-relaxed tracking-wide text-[#05121C]">
                         {currentVerse.text}
                     </div>
-                    <div className="text-xs font-bold tracking-[0.2em] uppercase mt-6 font-mono text-gray-400">
+                    <div className="font-korean font-light text-lg xl:text-xl leading-relaxed mt-4 text-[#2A4458]">
+                        {currentVerse.textKo}
+                    </div>
+                    <div className="text-sm font-medium tracking-[0.2em] uppercase mt-6 font-mono text-[#2A4458]">
                         {currentVerse.ref}
                     </div>
                 </motion.div>
             </AnimatePresence>
 
-            <div className="absolute top-4 right-4 text-xs font-mono text-gray-300">
-                MODE: 2 (APPEAR/DISAPPEAR)
-            </div>
         </div>
     );
 };

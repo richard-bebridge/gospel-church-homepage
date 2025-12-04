@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="space-y-12">
                     <h3 className="font-bold text-xl font-korean text-white tracking-wide">대한예수교장로회 가스펠교회</h3>
 
-                    <div className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-4 text-sm font-mono text-gray-400">
+                    <div className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-4 text-base font-mono text-gray-400">
                         <span className="font-bold text-[#5F94BD]">T.</span>
                         <span>02-583-2014</span>
 

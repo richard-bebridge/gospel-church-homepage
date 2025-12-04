@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --bg-color: #F4F3EF;
   --text-color: #05121C;
@@ -19,7 +20,7 @@ body {
 }
 
 body {
-  font-family: 'YiSunShinDotumM', sans-serif;
+  font-family: 'YiSunShin', sans-serif;
 }
 
 h1,

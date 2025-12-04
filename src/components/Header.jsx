@@ -3,7 +3,7 @@ import logo from '../assets/logo.png';
 
 const Header = () => {
     return (
-        <header className="fixed top-0 left-0 w-full h-24 px-8 md:px-12 flex justify-between items-center bg-[#05121C] z-[100]">
+        <header className="fixed top-0 left-0 w-full h-24 px-8 lg:px-24 flex justify-between items-center bg-[#05121C] z-[100]">
             <div className="w-48">
                 <img src={logo} alt="Gospel Church Logo" className="w-full h-auto brightness-0 invert" />
             </div>

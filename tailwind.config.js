@@ -10,9 +10,9 @@ export default {
                 sans: ['Montserrat', 'Inter', 'sans-serif'],
                 serif: ['Playfair Display', 'serif'],
                 mono: ['Pretendard', 'Roboto Mono', 'monospace'], // User asked for code/small text to be Pretendard too
-                korean: ['YiSunShinDotumM', 'sans-serif'],
+                korean: ['YiSunShin', 'sans-serif'],
                 pretendard: ['Pretendard', 'sans-serif'],
-                yisunshin: ['YiSunShinDotumM', 'sans-serif'],
+                yisunshin: ['YiSunShin', 'sans-serif'],
             },
             animation: {
                 'spin-slow': 'spin 20s linear infinite',

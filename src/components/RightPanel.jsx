@@ -69,7 +69,7 @@ const RightPanel = ({ activeSection }) => {
                                 className="w-full text-center px-16"
                             >
                                 <motion.div
-                                    className="font-sans font-medium text-xl xl:text-2xl leading-relaxed tracking-wide text-[#05121C]"
+                                    className="font-sans font-light text-lg xl:text-xl leading-relaxed tracking-wide text-[#05121C]"
                                 >
                                     {verse.text}
                                 </motion.div>
