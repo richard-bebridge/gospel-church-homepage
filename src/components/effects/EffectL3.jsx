@@ -13,10 +13,10 @@ const Section = ({ title, subtitle, children, index, setActiveSection }) => {
     }, [isInView, index, setActiveSection]);
 
     return (
-        <div ref={ref} className="h-screen snap-start flex flex-col justify-center px-8 lg:px-24 border-b border-gray-200 last:border-0 py-24">
+        <div ref={ref} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-24 border-b border-gray-200 last:border-0 py-16 sm:py-20 md:py-24 pt-[calc(6rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
             {/* Title appears first */}
             <motion.h2
-                className="font-sans font-bold text-4xl md:text-6xl mb-16 leading-tight text-[#05121C] uppercase tracking-tight"
+                className="font-sans font-bold text-3xl sm:text-4xl md:text-6xl mb-8 sm:mb-12 md:mb-16 leading-tight text-[#05121C] uppercase tracking-tight"
                 initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
@@ -27,7 +27,7 @@ const Section = ({ title, subtitle, children, index, setActiveSection }) => {
 
             {/* Content appears after title with delay */}
             <motion.div
-                className="text-xl md:text-2xl text-[#05121C] leading-loose space-y-8 max-w-xl font-light font-korean"
+                className="text-lg sm:text-xl md:text-2xl text-[#05121C] leading-relaxed sm:leading-loose space-y-4 sm:space-y-6 md:space-y-8 max-w-xl font-light font-korean"
                 initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
@@ -38,14 +38,14 @@ const Section = ({ title, subtitle, children, index, setActiveSection }) => {
 
             {/* Subtitle and arrow appear last */}
             <motion.div
-                className="mt-16 flex items-center gap-4 cursor-pointer group"
+                className="mt-8 sm:mt-12 md:mt-16 flex items-center gap-4 cursor-pointer group"
                 initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.6 }}
                 viewport={{ once: false, amount: 0.3 }}
             >
-                <ArrowUpRight className="w-8 h-8 text-[#2A4458] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                <span className="font-sans font-bold text-sm tracking-wide text-[#2A4458]">{subtitle}</span>
+                <ArrowUpRight className="w-6 h-6 sm:w-8 sm:h-8 text-[#2A4458] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <span className="font-sans font-bold text-xs sm:text-sm tracking-wide text-[#2A4458]">{subtitle}</span>
             </motion.div>
         </div>
     );
@@ -65,8 +65,8 @@ const EffectL3 = ({ setActiveSection }) => {
         <div className="w-full lg:w-1/2 bg-[#F4F3EF]">
 
             {/* Hero Section - Side by Side Layout */}
-            <div ref={heroRef} className="h-screen snap-start flex flex-col justify-center px-8 lg:px-12 xl:px-24 py-24 pt-24">
-                <div className="grid grid-cols-1 gap-8">
+            <div ref={heroRef} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-12 xl:px-24 py-16 sm:py-20 md:py-24 pt-[calc(8rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
+                <div className="grid grid-cols-1 gap-6 sm:gap-8">
                     {/* English Title - appears first */}
                     <motion.div
                         initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
@@ -74,7 +74,7 @@ const EffectL3 = ({ setActiveSection }) => {
                         transition={{ duration: 1.5 }}
                         viewport={{ once: false }}
                     >
-                        <h1 className="font-sans font-bold text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] tracking-tighter text-[#05121C] uppercase">
+                        <h1 className="font-sans font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] tracking-tighter text-[#05121C] uppercase">
                             In the Word,<br />
                             We Rise.
                         </h1>
@@ -82,13 +82,13 @@ const EffectL3 = ({ setActiveSection }) => {
 
                     {/* Korean Text - appears after with delay */}
                     <motion.div
-                        className="flex justify-end pt-12 pr-4 lg:pr-0"
+                        className="flex justify-end pt-8 sm:pt-12 pr-4 lg:pr-0"
                         initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
                         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                         transition={{ duration: 1.5, delay: 0.4 }}
                         viewport={{ once: false }}
                     >
-                        <div className="space-y-6 text-2xl md:text-3xl font-light text-[#05121C] leading-relaxed font-korean text-right max-w-md">
+                        <div className="space-y-3 sm:space-y-4 md:space-y-6 text-lg sm:text-xl md:text-2xl font-light text-[#05121C] leading-relaxed font-korean text-right max-w-md">
                             <p>말씀 안에서,</p>
                             <p>하나님을 찾고 그분 앞에 서며</p>
                             <p>새로워지는 사람들.</p>

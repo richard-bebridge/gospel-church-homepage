@@ -13,15 +13,15 @@ const Section = ({ title, children, index, setActiveSection }) => {
     }, [isInView, index, setActiveSection]);
 
     return (
-        <div ref={ref} className="h-screen snap-start flex flex-col justify-center px-8 lg:px-24 border-b border-gray-200 last:border-0 py-24">
+        <div ref={ref} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-24 border-b border-gray-200 last:border-0 py-16 sm:py-20 md:py-24 pt-[calc(6rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
             <motion.div
                 initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 viewport={{ once: false, amount: 0.3 }}
             >
-                <h2 className="font-sans font-bold text-4xl md:text-6xl mb-12 leading-tight text-[#05121C] uppercase tracking-tight">{title}</h2>
-                <div className="text-xl md:text-2xl text-[#05121C] leading-loose space-y-8 max-w-xl font-light font-korean">
+                <h2 className="font-sans font-bold text-3xl sm:text-4xl md:text-6xl mb-8 sm:mb-12 leading-tight text-[#05121C] uppercase tracking-tight">{title}</h2>
+                <div className="text-lg sm:text-xl md:text-2xl text-[#05121C] leading-relaxed sm:leading-loose space-y-4 sm:space-y-6 md:space-y-8 max-w-xl font-light font-korean">
                     {children}
                 </div>
                 <div className="mt-16 pt-8 border-t border-gray-300 w-24">
@@ -40,7 +40,7 @@ const EffectL1 = ({ setActiveSection }) => {
         <div className="w-full lg:w-1/2 bg-[#F4F3EF]">
 
             {/* Hero Section - Side by Side Layout */}
-            <div className="h-screen snap-start flex flex-col justify-center px-8 lg:px-12 xl:px-24 py-24">
+            <div className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-12 xl:px-24 py-16 sm:py-20 md:py-24 pt-[calc(8rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
                 <motion.div
                     initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
                     whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

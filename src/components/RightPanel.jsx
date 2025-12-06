@@ -55,7 +55,7 @@ const RightPanel = ({ activeSection }) => {
                     WebkitMaskImage: `linear-gradient(to bottom, transparent 0%, black ${clearZoneStart}, black ${clearZoneEnd}, transparent 100%)`
                 }}
             >
-                <motion.div
+                {/* <motion.div
                     className="relative w-full flex flex-col items-center gap-6 transition-opacity duration-1000"
                     style={{
                         y: smoothY,
@@ -69,7 +69,7 @@ const RightPanel = ({ activeSection }) => {
                                 className="w-full text-center px-16"
                             >
                                 <motion.div
-                                    className="font-sans font-light text-lg xl:text-xl leading-relaxed tracking-wide text-[#05121C]"
+                                    className="font-sans font-medium text-xl xl:text-2xl leading-relaxed tracking-wide text-[#05121C]"
                                 >
                                     {verse.text}
                                 </motion.div>
@@ -82,7 +82,7 @@ const RightPanel = ({ activeSection }) => {
                             </motion.div>
                         );
                     })}
-                </motion.div>
+                </motion.div> */}
             </div>
 
             {/* Footer Slogan & Social - Fades in in Footer */}
@@ -111,16 +111,17 @@ const RightPanel = ({ activeSection }) => {
 
             {/* Overlay Box - Bottom Right (Hidden in Footer) */}
             {/* Redesigned: Horizontal, Blue, Icon, Sharp (No Blur) */}
+            {/*
             <div className={`absolute bottom-5 right-5 z-20 transition-opacity duration-500 ${isFooter ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="flex items-center gap-6 text-[#05121C]">
-                    {/* <Sunrise className="w-10 h-10 stroke-[1.5]" /> */}
+
                     <div className="flex items-center gap-6">
                         <span className="font-sans font-medium text-base tracking-widest">{dateString}</span>
                         <span className="font-sans font-medium text-base tracking-widest uppercase">The Nature of Love</span>
                     </div>
                 </div>
             </div>
-
+            */}
         </div>
     );
 };

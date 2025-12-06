@@ -45,7 +45,7 @@ const EffectL2 = ({ setActiveSection }) => {
                 className="relative"
             >
                 {/* Hero Section - Side by Side Layout */}
-                <div className="h-screen snap-start flex flex-col justify-center px-8 lg:px-12 xl:px-24 py-24 relative z-0">
+                <div className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-12 xl:px-24 py-16 sm:py-20 md:py-24 relative z-0 pt-[calc(8rem+env(safe-area-inset-top))]">
                     <motion.div
                         initial={{ opacity: 0, y: 100 }}
                         whileInView={{ opacity: 1, y: 0 }}
