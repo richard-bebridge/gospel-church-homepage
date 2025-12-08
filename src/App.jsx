@@ -5,6 +5,7 @@ import TestPage from './pages/TestPage';
 import BulletinPage from './pages/BulletinPage';
 import BulletinDBPage from './pages/BulletinDBPage';
 import PrintPage from './pages/PrintPage';
+import SermonPage from './pages/SermonPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/bulletindb" element={<BulletinDBPage />} />
         <Route path="/print" element={<PrintPage />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/sermons" element={<SermonPage />} />
       </Routes>
     </Router>
   );

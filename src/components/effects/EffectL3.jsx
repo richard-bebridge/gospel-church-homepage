@@ -65,7 +65,7 @@ const EffectL3 = ({ setActiveSection }) => {
         <div className="w-full lg:w-1/2 bg-[#F4F3EF]">
 
             {/* Hero Section - Side by Side Layout */}
-            <div ref={heroRef} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-12 xl:px-24 py-16 sm:py-20 md:py-24 pt-[calc(8rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
+            <div ref={heroRef} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-24 py-16 sm:py-20 md:py-24 pt-[calc(8rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
                 <div className="grid grid-cols-1 gap-6 sm:gap-8">
                     {/* English Title - appears first */}
                     <motion.div

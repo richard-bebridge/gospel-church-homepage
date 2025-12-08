@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Youtube, Instagram, Facebook } from 'lucide-react';
-import logo from '../assets/logo.png';
+import Lottie from 'lottie-react';
+import logoAnimation from '../assets/Gospel_Church_Symbol (1).json';
 import logoV from '../assets/logo_v.png';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const lottieRef = useRef(null);
 
     // Lock body scroll when menu is open
     useEffect(() => {
@@ -19,6 +21,18 @@ const Header = () => {
         };
     }, [isMenuOpen]);
 
+    // Handle animation complete - pause for 3 seconds then restart
+    const handleAnimationComplete = () => {
+        if (lottieRef.current) {
+            lottieRef.current.pause();
+            setTimeout(() => {
+                if (lottieRef.current) {
+                    lottieRef.current.goToAndPlay(0);
+                }
+            }, 3000);
+        }
+    };
+
     const menuItems = [
         { label: 'Home', href: '/' },
         { label: 'Bulletin', href: '/bulletin' },
@@ -26,7 +40,7 @@ const Header = () => {
         { label: 'Print', href: '/print' },
         { label: 'Test', href: '/test' },
         { label: 'About', href: '#' },
-        { label: 'Sermons', href: '#' },
+        { label: 'Sermons', href: '/sermons' },
         { label: 'Visit', href: '#' },
     ];
 
@@ -37,9 +51,18 @@ const Header = () => {
     return (
         <>
             <header className="fixed top-0 left-0 w-full h-16 md:h-20 px-6 sm:px-8 lg:px-24 flex justify-between items-center bg-[#05121C] z-[110]">
-                {/* Logo */}
+                {/* Logo - Lottie Animation */}
                 <div className="flex items-center gap-3">
-                    <img src={logo} alt="Gospel Church Logo" className="h-8 md:h-10 w-auto brightness-0 invert" />
+                    <div className="h-8 md:h-14 w-auto" style={{ filter: 'brightness(0) invert(1)' }}>
+                        <Lottie
+                            lottieRef={lottieRef}
+                            animationData={logoAnimation}
+                            loop={false}
+                            autoplay={true}
+                            onComplete={handleAnimationComplete}
+                            style={{ height: '100%', width: 'auto' }}
+                        />
+                    </div>
                     {/* <span className="hidden sm:block text-white font-sans font-bold text-sm md:text-base tracking-wider uppercase">Gospel Church</span> */}
                 </div>
 
@@ -76,18 +99,8 @@ const Header = () => {
                         transition={{ duration: 0.3 }}
                         className="fixed inset-0 bg-[#F4F3EF] z-[120] md:hidden overflow-y-auto"
                     >
-                        {/* Header with Logo and Close Button */}
-                        <div className="flex justify-between items-center px-6 py-4 pt-[calc(1rem+env(safe-area-inset-top))]">
-                            {/* Logo */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.1, duration: 0.3 }}
-                                className="flex items-center gap-3"
-                            >
-                                <img src={logo} alt="Gospel Church Logo" className="h-10 w-auto" />
-                            </motion.div>
-
+                        {/* Header with Close Button */}
+                        <div className="flex justify-end items-center px-6 sm:px-8 py-4 pt-[calc(1rem+env(safe-area-inset-top))]">
                             {/* Close Button */}
                             <motion.button
                                 initial={{ opacity: 0 }}
@@ -102,7 +115,7 @@ const Header = () => {
                         </div>
 
                         {/* Menu Items - Full Height */}
-                        <nav className="flex flex-col px-6 py-2 min-h-[calc(100vh-6rem)]">
+                        <nav className="flex flex-col px-6 sm:px-8 py-2 min-h-[calc(100vh-6rem)]">
                             {menuItems.map((item, index) => (
                                 <motion.a
                                     key={item.label}
@@ -111,8 +124,8 @@ const Header = () => {
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{
-                                        opacity: { delay: 0.05 + index * 0.65, duration: 0.1 },
-                                        y: { delay: 0.15 + index * 0.65, duration: 0.5, ease: "easeOut" }
+                                        opacity: { delay: 0.05 + index * 0.25, duration: 0.1 },
+                                        y: { delay: 0.1 + index * 0.25, duration: 0.3, ease: "easeOut" }
                                     }}
                                     className="text-2xl font-bold text-[#05121C] hover:text-[#5F94BD] transition-colors py-3 flex items-center gap-3"
                                 >
@@ -128,8 +141,8 @@ const Header = () => {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{
-                                    opacity: { delay: 0.05 + menuItems.length * 0.65, duration: 0.1 },
-                                    y: { delay: 0.15 + menuItems.length * 0.65, duration: 0.5, ease: "easeOut" }
+                                    opacity: { delay: 0.05 + menuItems.length * 0.25, duration: 0.1 },
+                                    y: { delay: 0.1 + menuItems.length * 0.25, duration: 0.3, ease: "easeOut" }
                                 }}
                                 className="flex gap-6 mt-8 pt-4"
                             >
