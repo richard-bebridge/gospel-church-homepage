@@ -1,0 +1,343 @@
+import React from 'react';
+import Link from 'next/link';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import { getDatabase, getBlocks } from '../../lib/notion';
+import { getVerse, extractBibleTags } from '../../lib/bible';
+
+// Revalidate every hour
+export const revalidate = 3600;
+
+const Text = ({ text }) => {
+    if (!text) {
+        return null;
+    }
+    return text.map((value, i) => {
+        const {
+            annotations: { bold, code, color, italic, strikethrough, underline },
+            text,
+        } = value;
+        return (
+            <span
+                key={i}
+                className={[
+                    bold ? "font-bold" : "",
+                    code ? "bg-gray-100 p-1 rounded font-mono text-sm" : "",
+                    italic ? "italic" : "",
+                    strikethrough ? "line-through" : "",
+                    underline ? "underline" : "",
+                ].join(" ")}
+                style={color !== "default" ? { color } : {}}
+            >
+                {text.link ? <a href={text.link.url} className="underline text-blue-600">{text.content}</a> : text.content}
+            </span>
+        );
+    });
+};
+
+const renderBlock = (block) => {
+    const { type, id } = block;
+    const value = block[type];
+
+    switch (type) {
+        case "paragraph":
+            return (
+                <p className="mb-4 text-lg leading-relaxed text-[#05121C] font-pretendard">
+                    <Text text={value.rich_text} />
+                </p>
+            );
+        case "heading_1":
+            return (
+                <h1 className="text-3xl font-bold mt-8 mb-4 font-yisunshin text-[#05121C]">
+                    <Text text={value.rich_text} />
+                </h1>
+            );
+        case "heading_2":
+            return (
+                <h2 className="text-2xl font-bold mt-6 mb-3 font-yisunshin text-[#05121C]">
+                    <Text text={value.rich_text} />
+                </h2>
+            );
+        case "heading_3":
+            return (
+                <h3 className="text-xl font-bold mt-4 mb-2 font-yisunshin text-[#05121C]">
+                    <Text text={value.rich_text} />
+                </h3>
+            );
+        case "bulleted_list_item":
+        case "numbered_list_item":
+            return (
+                <li className="mb-1 ml-4 text-lg leading-relaxed text-[#05121C] font-pretendard">
+                    <Text text={value.rich_text} />
+                </li>
+            );
+        case "to_do":
+            return (
+                <div className="flex gap-2 mb-2 items-start">
+                    <input type="checkbox" defaultChecked={value.checked} disabled className="mt-1.5" />
+                    <span className={value.checked ? "line-through text-gray-400" : ""}>
+                        <Text text={value.rich_text} />
+                    </span>
+                </div>
+            );
+        case "toggle":
+            return (
+                <details className="mb-4">
+                    <summary className="cursor-pointer font-bold">
+                        <Text text={value.rich_text} />
+                    </summary>
+                    <div className="pl-4 mt-2 text-gray-500 italic">
+                        (Toggle content not fully supported in this view yet)
+                    </div>
+                </details>
+            );
+        case "image":
+            const src = value.type === "external" ? value.external.url : value.file.url;
+            const caption = value.caption ? value.caption[0]?.plain_text : "";
+            return (
+                <figure className="my-8">
+                    <img src={src} alt={caption} className="w-full rounded-lg shadow-sm" />
+                    {caption && <figcaption className="text-center text-sm text-gray-500 mt-2">{caption}</figcaption>}
+                </figure>
+            );
+        case "video":
+            const videoUrl = value.type === "external" ? value.external.url : value.file.url;
+            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                const videoId = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/)?.[1];
+                if (videoId) {
+                    return (
+                        <div className="w-full aspect-video my-8 rounded-lg overflow-hidden shadow-sm">
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src={`https://www.youtube.com/embed/${videoId}`}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    )
+                }
+            }
+            return (
+                <div className="my-8">
+                    <a href={videoUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Watch Video</a>
+                </div>
+            );
+        case "column_list":
+            return (
+                <div className="flex flex-col md:flex-row gap-8 my-8 w-full">
+                    {block.children?.map((child) => (
+                        <div key={child.id} className="flex-1 min-w-0">
+                            {renderBlock(child)}
+                        </div>
+                    ))}
+                </div>
+            );
+        case "column":
+            return (
+                <div className="flex flex-col gap-4">
+                    {block.children?.map((child) => (
+                        <div key={child.id}>{renderBlock(child)}</div>
+                    ))}
+                </div>
+            );
+        case "divider":
+            return <hr className="my-8 border-gray-200" />;
+        case "quote":
+            return (
+                <blockquote className="border-l-4 border-[#05121C] pl-4 py-2 my-6 italic text-xl bg-gray-50 rounded-r">
+                    <Text text={value.rich_text} />
+                </blockquote>
+            );
+        case "bible_verse":
+            return (
+                <div className="my-6 p-6 bg-[#F8F9FA] rounded-lg border-l-4 border-[#5F94BD]">
+                    <p className="text-lg text-[#05121C] font-serif leading-relaxed mb-4">
+                        {value.text}
+                    </p>
+                    <p className="text-base text-[#5F94BD] font-bold text-right font-sans">
+                        {value.reference}
+                    </p>
+                </div>
+            );
+        default:
+            return null;
+    }
+};
+
+// Helper to flatten blocks (remove columns/layout)
+const flattenBlocks = (blocks) => {
+    let flat = [];
+    for (const block of blocks) {
+        if (block.type === 'column_list' || block.type === 'column') {
+            if (block.children) {
+                flat = flat.concat(flattenBlocks(block.children));
+            }
+        } else {
+            flat.push(block);
+        }
+    }
+    return flat;
+};
+
+// Helper to process blocks and inject verses
+const injectVerses = (blocks, seenTags) => {
+    const newBlocks = [];
+
+    for (const block of blocks) {
+        // 1. Check for Heading -> Reset Scope
+        if (block.type === 'heading_1' || block.type === 'heading_2' || block.type === 'heading_3') {
+            seenTags.clear();
+        }
+
+        // 2. Extract text and find tags
+        let richText = null;
+        if (block.type === 'paragraph') richText = block.paragraph.rich_text;
+        else if (block.type === 'heading_1') richText = block.heading_1.rich_text;
+        else if (block.type === 'heading_2') richText = block.heading_2.rich_text;
+        else if (block.type === 'heading_3') richText = block.heading_3.rich_text;
+        else if (block.type === 'bulleted_list_item') richText = block.bulleted_list_item.rich_text;
+        else if (block.type === 'numbered_list_item') richText = block.numbered_list_item.rich_text;
+        else if (block.type === 'quote') richText = block.quote.rich_text;
+
+        const versesToInject = [];
+
+        if (richText) {
+            richText.forEach(rt => {
+                const text = rt.plain_text;
+                const tags = extractBibleTags(text);
+
+                tags.forEach(tag => {
+                    if (!seenTags.has(tag.full)) {
+                        seenTags.add(tag.full);
+                        const verseText = getVerse(tag.book, tag.chapter, tag.verse);
+                        if (verseText) {
+                            versesToInject.push({
+                                id: `verse-${tag.full}-${Math.random()}`,
+                                type: 'bible_verse',
+                                bible_verse: {
+                                    tag: tag.full,
+                                    text: verseText,
+                                    reference: `${tag.book} ${tag.chapter}:${tag.verse}`
+                                }
+                            });
+
+                            // Remove tag from text
+                            if (rt.text) rt.text.content = rt.text.content.replace(tag.full, '');
+                            rt.plain_text = rt.plain_text.replace(tag.full, '');
+                        }
+                    }
+                });
+            });
+        }
+
+        // Push original block (now potentially with tags removed)
+        newBlocks.push(block);
+
+        // Push injected verses
+        versesToInject.forEach(v => newBlocks.push(v));
+    }
+    return newBlocks;
+};
+
+import SermonPresentation from '../../components/SermonPresentation';
+
+// ... (previous imports and helper functions: Text, renderBlock, injectVerses)
+
+// Helper to group blocks into sections
+const groupSections = (blocks) => {
+    const sections = [];
+    let currentSection = { heading: null, content: [], verses: [] };
+
+    blocks.forEach(block => {
+        if (block.type === 'heading_1' || block.type === 'heading_2' || block.type === 'heading_3') {
+            // Push previous section if it has content or verses
+            if (currentSection.content.length > 0 || currentSection.verses.length > 0) {
+                sections.push(currentSection);
+            }
+            // Start new section
+            const headingText = block[block.type].rich_text.map(t => t.plain_text).join('');
+            currentSection = { heading: headingText, content: [], verses: [] };
+        } else if (block.type === 'bible_verse') {
+            currentSection.verses.push(block.bible_verse);
+        } else {
+            // Add other blocks to content
+            currentSection.content.push(block);
+        }
+    });
+
+    // Push last section
+    if (currentSection.content.length > 0 || currentSection.verses.length > 0) {
+        sections.push(currentSection);
+    }
+
+    return sections;
+};
+
+export default async function TestPage() {
+    const databaseId = process.env.NOTION_SERMON_DB_ID;
+    let page = null;
+    let blocks = [];
+    let error = null;
+
+    if (!databaseId) {
+        error = "NOTION_SERMON_DB_ID is not set in .env file.";
+    } else {
+        try {
+            // Fetch the latest sermon
+            const sermons = await getDatabase(databaseId);
+            if (sermons && sermons.length > 0) {
+                page = sermons[0];
+                blocks = await getBlocks(page.id);
+            }
+        } catch (e) {
+            error = "Failed to fetch sermon data. Please check your Notion API Key and Database ID.";
+            console.error(e);
+        }
+    }
+
+    if (page && blocks.length > 0) {
+        // 1. Flatten Blocks (Remove Columns/Layout)
+        blocks = flattenBlocks(blocks);
+
+        // 2. Inject Verses (and remove tags)
+        blocks = injectVerses(blocks, new Set());
+    }
+
+    if (error || !page) {
+        return (
+            <div className="min-h-screen bg-[#F4F3EF] flex items-center justify-center">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold mb-4">Sermon Not Found</h1>
+                    <p className="text-red-500">{error || "No sermon data available."}</p>
+                </div>
+            </div>
+        );
+    }
+
+    // 2. Group Sections
+    const sections = groupSections(blocks);
+    console.log("Debug: Grouped Sections", JSON.stringify(sections, null, 2));
+
+    // 3. Prepare Data for Presentation
+    const sermonData = {
+        title: page.properties?.Name?.title?.[0]?.plain_text || "Untitled Sermon",
+        date: page.properties?.Date?.date?.start || "",
+        preacher: page.properties?.Preacher?.rich_text?.[0]?.plain_text || "",
+        scripture: page.properties?.Scripture?.rich_text?.[0]?.plain_text || "",
+        sections: sections
+    };
+
+    return (
+        <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
+            <Header />
+            <main className="flex-grow pt-20">
+                <SermonPresentation sermon={sermonData}>
+                    <Footer />
+                </SermonPresentation>
+            </main>
+        </div>
+    );
+}
