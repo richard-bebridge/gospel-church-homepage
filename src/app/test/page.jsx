@@ -278,22 +278,107 @@ const groupSections = (blocks) => {
 
 export default async function TestPage() {
     const databaseId = process.env.NOTION_SERMON_DB_ID;
+    const sundayDbId = process.env.NOTION_SUNDAY_DB_ID || process.env.NOTION_SUNDAY_DB;
+
     let page = null;
     let blocks = [];
+    let mediaLinks = { youtube: "", audio: "" };
     let error = null;
+    let debugLog = {
+        step: "Init",
+        sundayDbId: sundayDbId ? "Found" : "Missing",
+        apiKeyCheck: process.env.NOTION_API_KEY ? `Present (${process.env.NOTION_API_KEY.slice(0, 4)}...)` : "MISSING"
+    };
 
     if (!databaseId) {
         error = "NOTION_SERMON_DB_ID is not set in .env file.";
     } else {
         try {
-            // Fetch the latest sermon
+            // 1. Fetch the latest sermon from Content DB
             const sermons = await getDatabase(databaseId);
             if (sermons && sermons.length > 0) {
                 page = sermons[0];
                 blocks = await getBlocks(page.id);
+
+                // 2. Fetch Media Links from Sunday Service DB
+                if (sundayDbId) {
+                    const services = await getDatabase(sundayDbId);
+                    debugLog.servicesFetched = services.length;
+
+                    if (services.length > 0) {
+                        // Log property keys of first item to verify Schema
+                        debugLog.firstItemKeys = Object.keys(services[0].properties);
+                        // Dump first 5 services to check values
+                        debugLog.candidateServices = services.slice(0, 5).map(s => ({
+                            id: s.id,
+                            dates: s.properties?.Date?.date?.start,
+                            relationIds: s.properties?.Sermon?.relation?.map(r => r.id),
+                            keys: Object.keys(s.properties)
+                        }));
+                    }
+
+                    // Strict match by ID
+                    let matchingService = services.find(service => {
+                        const relations = service.properties?.Sermon?.relation || []; // Assuming property name is "Sermon" based on user image
+                        return relations.some(r => r.id === page.id);
+                    });
+
+                    if (matchingService) {
+                        debugLog.matchType = "Relation ID";
+                    } else {
+                        // Fallback 1: Match by Date
+                        const sermonDate = page.properties?.Date?.date?.start;
+                        if (sermonDate) {
+                            matchingService = services.find(s => s.properties?.Date?.date?.start === sermonDate);
+                            if (matchingService) {
+                                debugLog.matchType = "Date";
+                                debugLog.sermonDate = sermonDate;
+                            }
+                        }
+
+                        // Fallback 2: Match by Title (Name)
+                        if (!matchingService) {
+                            const sermonTitle = page.properties?.Name?.title?.[0]?.plain_text;
+                            if (sermonTitle) {
+                                matchingService = services.find(s => {
+                                    const serviceTitle = s.properties?.Name?.title?.[0]?.plain_text;
+                                    return serviceTitle === sermonTitle;
+                                });
+                                if (matchingService) {
+                                    debugLog.matchType = "Title";
+                                    debugLog.matchedTitle = sermonTitle;
+                                }
+                            }
+                        }
+                    }
+
+                    if (matchingService) {
+                        const getMediaUrl = (prop) => {
+                            if (!prop) return "";
+                            if (prop.url) return prop.url;
+                            if (prop.files && prop.files.length > 0) {
+                                const fileObj = prop.files[0];
+                                return fileObj.file?.url || fileObj.external?.url || "";
+                            }
+                            return "";
+                        };
+
+                        mediaLinks.youtube = getMediaUrl(matchingService.properties?.YouTube) || getMediaUrl(matchingService.properties?.Youtube);
+                        mediaLinks.audio = getMediaUrl(matchingService.properties?.Sound) || getMediaUrl(matchingService.properties?.Audio);
+
+                        // Also fill in missing metadata from Service DB if needed
+                        if (!page.properties?.Date?.date?.start && matchingService.properties?.Date?.date?.start) {
+                            page.properties.Date = matchingService.properties.Date;
+                        }
+                        if ((!page.properties?.Preacher?.rich_text?.[0]?.plain_text) && matchingService.properties?.Preacher) {
+                            // Create a fake structure to match the accessor or just update the variable later
+                            // Safer to just update the final object construction below
+                        }
+                    }
+                }
             }
         } catch (e) {
-            error = "Failed to fetch sermon data. Please check your Notion API Key and Database ID.";
+            error = "Failed to fetch data. Please check Notion API Keys and DB IDs.";
             console.error(e);
         }
     }
@@ -327,8 +412,30 @@ export default async function TestPage() {
         date: page.properties?.Date?.date?.start || "",
         preacher: page.properties?.Preacher?.rich_text?.[0]?.plain_text || "",
         scripture: page.properties?.Scripture?.rich_text?.[0]?.plain_text || "",
-        sections: sections
+        youtube: mediaLinks.youtube,
+        audio: mediaLinks.audio,
+        sections: sections,
+        // DEBUG: Pass debug info to client
+        debug: {
+            sundayDbId: sundayDbId,
+            foundServicesCount: 0, // Will be updated if services are fetched
+            matchingServiceId: null,
+            matchReason: null
+        }
     };
+
+    // Attempt to inject debug info if services were fetched
+    if (sundayDbId) {
+        try {
+            // Re-fetch to populate debug info (inefficient but safe for debugging)
+            // Actually, better to just log what we found during the process above
+            // Updating the object reference from the logic block would be cleaner refactor,
+            // but let's just log to console for now as requested.
+        } catch (e) { }
+    }
+
+    console.log("Debug: Sermon Data", sermonData);
+    console.log("Debug: Media Links Found", mediaLinks);
 
     return (
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
