@@ -2,12 +2,158 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Plus, X, Youtube, AudioLines, Pause } from 'lucide-react';
+
+const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRefs }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isFooterVisible, setIsFooterVisible] = useState(false);
+    const audioRef = useRef(null);
+
+    const toggleAudio = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+    };
+
+    // Responsive animation
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Detect footer visibility using IntersectionObserver
+    useEffect(() => {
+        if (!footerRefs?.current || footerRefs.current.length === 0) {
+            return;
+        }
+
+        const footer = footerRefs.current[0]; // Assuming shared footer is index 0 or simple ref
+        if (!footer) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                const isVisible = entry.isIntersecting;
+                if (isVisible !== isFooterVisible) {
+                    // console.log('Footer visibility changed:', isVisible);
+                    setIsFooterVisible(isVisible);
+                }
+            },
+            {
+                root: null, // Viewport
+                threshold: 0.1 // Trigger when 10% of footer is visible
+            }
+        );
+
+        observer.observe(footer);
+
+        return () => {
+            if (footer) observer.unobserve(footer);
+        };
+    }, [footerRefs, isFooterVisible]);
+
+    if (!audioUrl && !youtubeUrl) return null;
+
+    // Hide controls if footer is visible, but allow a small grace period or transition if needed
+    // For now, hard hide as requested: "hidden whenever the footer is visible"
+    if (isFooterVisible) return null;
+
+
+    return (
+        <>
+            {audioUrl && <audio ref={audioRef} src={audioUrl} onEnded={() => setIsPlaying(false)} />}
+            <div className="fixed bottom-4 right-4 z-50 flex flex-col md:flex-row items-end md:items-center gap-2">
+                <AnimatePresence>
+                    {isExpanded && (
+                        <motion.div
+                            initial={{
+                                opacity: 0,
+                                scale: 0.8,
+                                x: isMobile ? 0 : 20,
+                                y: isMobile ? 20 : 0
+                            }}
+                            animate={{
+                                opacity: 1,
+                                scale: 1,
+                                x: 0,
+                                y: 0
+                            }}
+                            exit={{
+                                opacity: 0,
+                                scale: 0.8,
+                                x: isMobile ? 0 : 20,
+                                y: isMobile ? 20 : 0
+                            }}
+                            className="flex flex-col md:flex-row items-center gap-2"
+                        >
+                            {/* Audio Button */}
+                            {audioUrl && (
+                                <button
+                                    onClick={toggleAudio}
+                                    className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF]"
+                                >
+                                    {isPlaying ? <Pause size={18} /> : <AudioLines size={18} />}
+                                </button>
+                            )}
+
+                            {/* YouTube Button */}
+                            {youtubeUrl && (
+                                <button
+                                    onClick={() => window.open(youtubeUrl, '_blank')}
+                                    className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF]"
+                                >
+                                    <Youtube size={18} />
+                                </button>
+                            )}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Main Toggle Button */}
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF]"
+                >
+                    <AnimatePresence mode="wait">
+                        {isExpanded ? (
+                            <motion.div
+                                key="close"
+                                initial={{ rotate: -90, opacity: 0 }}
+                                animate={{ rotate: 0, opacity: 1 }}
+                                exit={{ rotate: 90, opacity: 0 }}
+                            >
+                                <X size={20} />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="open"
+                                initial={{ rotate: 90, opacity: 0 }}
+                                animate={{ rotate: 0, opacity: 1 }}
+                                exit={{ rotate: -90, opacity: 0 }}
+                            >
+                                <Plus size={20} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </button>
+            </div>
+        </>
+    );
+};
 
 const SermonPresentation = ({ sermon, children }) => {
     // Track active section and direction together to ensure sync
     const [activeState, setActiveState] = useState({ section: 0, direction: 1 });
     const { section: activeSection, direction } = activeState;
     const sectionsRef = useRef([]);
+    const footerRefs = useRef([]);
 
     // Handle scroll to update active section
     useEffect(() => {
@@ -57,81 +203,289 @@ const SermonPresentation = ({ sermon, children }) => {
         }),
     };
 
-    // Mobile Scroll Handling
+    // Dynamic Verse Alignment Logic
+    const [verseAlignmentOffset, setVerseAlignmentOffset] = useState(0);
+
+    useEffect(() => {
+        const calculateOffset = () => {
+            const currentSectionEl = sectionsRef.current[activeSection];
+            if (!currentSectionEl) return;
+
+            // Find the title element in the current section
+            // We look for 'h2' which is the section heading
+            const titleEl = currentSectionEl.querySelector('h2');
+
+            if (titleEl) {
+                // Calculate height occupied by title (offsetHeight includes padding/border)
+                // Add the bottom margin (mb-8 = 32px)
+                // We add a tiny buffer (e.g. 4px) for visual breathing room if needed, or strict 32.
+                // Let's stick to 32px (2rem) as per Tailwind mb-8.
+                setVerseAlignmentOffset(titleEl.offsetHeight + 32);
+            } else {
+                // If no title, body starts immediately. 
+                // However, our body container has `pt-96`. 
+                // If no title, the body starts AT pt-96.
+                // So offset should be 0.
+                setVerseAlignmentOffset(0);
+            }
+        };
+
+        // Run calculation
+        calculateOffset();
+
+        // Re-calculate on resize
+        window.addEventListener('resize', calculateOffset);
+        return () => window.removeEventListener('resize', calculateOffset);
+    }, [activeSection, sermon.sections]); // Re-run when section changes or content loads
+
+    // Mobile Scroll Handling - Anti-Gravity System
     const mobileContainerRef = useRef(null);
+    const sectionScrollPositions = useRef({}); // Store scroll position for each section
+    const sectionRefs = useRef([]); // Store refs to each section's scroll container
+    const [currentMobileSection, setCurrentMobileSection] = useState(0);
+
+
     // Removed unused parallax hooks
+
+    // Anti-Gravity Scroll Functions
+    const saveScrollPosition = (sectionIndex) => {
+        const sectionContainer = sectionRefs.current[sectionIndex];
+        if (!sectionContainer) return;
+
+        sectionScrollPositions.current[sectionIndex] = sectionContainer.scrollTop;
+    };
+
+    const restoreScrollPosition = (sectionIndex) => {
+        const sectionContainer = sectionRefs.current[sectionIndex];
+        if (!sectionContainer) return;
+
+        const savedPosition = sectionScrollPositions.current[sectionIndex] || 0;
+        const maxScroll = sectionContainer.scrollHeight - sectionContainer.clientHeight;
+        const clampedPosition = Math.min(savedPosition, maxScroll);
+
+        // Smooth restoration using RAF
+        requestAnimationFrame(() => {
+            sectionContainer.scrollTop = clampedPosition;
+        });
+    };
+
+    // Effect: Restore scroll position when section changes
+    useEffect(() => {
+        if (currentMobileSection >= 0 && sectionRefs.current[currentMobileSection]) {
+            restoreScrollPosition(currentMobileSection);
+        }
+    }, [currentMobileSection]);
+    // 2-Step Vertical Snapping Logic
+    const mainScrollRef = useRef(null);
+    const contentWrapperRef = useRef(null);
+    const stickyTitleRef = useRef(null);
+    const [snapState, setSnapState] = useState('FREE'); // 'FREE', 'CONTENT_SNAP', 'FOOTER_SNAP'
+    const isScrollingRef = useRef(false);
+    const snapTimeoutRef = useRef(null);
+
+    const handleScroll = (e) => {
+        isScrollingRef.current = true;
+        if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+
+        // Debounce snap check on scroll end
+        snapTimeoutRef.current = setTimeout(() => {
+            isScrollingRef.current = false;
+            handleSnapCheck();
+        }, 150); // 150ms debounce for "scroll end"
+    };
+
+    const handleSnapCheck = () => {
+        const container = mainScrollRef.current;
+        const content = contentWrapperRef.current;
+        const footer = footerRefs.current[0];
+
+        if (!container || !content || !footer) return;
+
+        const scrollTop = container.scrollTop;
+        const viewportHeight = container.clientHeight;
+        const contentHeight = content.offsetHeight;
+        // The "Title" is sticky, so it effectively reduces the view for content, 
+        // BUT for scrolling calculations, the sticky element is part of the flow.
+        // We want to snap when the BOTTOM of content aligns with BOTTOM of viewport.
+
+        // Sticky Title Height Correction:
+        // If title is sticky, it's always at top. 
+        // Content starts AFTER title (in DOM).
+        // Total Scroll Height = Title + Content + Footer.
+        // Snap Point 1 (Content End): scrollTop + viewportHeight = TitleHeight + ContentHeight
+
+        const titleHeight = stickyTitleRef.current ? stickyTitleRef.current.offsetHeight : 0;
+        const contentBottomOffset = titleHeight + contentHeight - viewportHeight;
+        const footerBottomOffset = container.scrollHeight - viewportHeight;
+
+        // Threshold for snapping (e.g., 50px)
+        const threshold = 50;
+
+        // 1. Check proximity to Content Snap
+        if (Math.abs(scrollTop - contentBottomOffset) < threshold) {
+            scrollToSnap(contentBottomOffset);
+            setSnapState('CONTENT_SNAP');
+            return;
+        }
+
+        // 2. Check proximity to Footer Snap (Bottom)
+        if (Math.abs(scrollTop - footerBottomOffset) < threshold) {
+            scrollToSnap(footerBottomOffset);
+            setSnapState('FOOTER_SNAP');
+            return;
+        }
+
+        // 3. State Transitions (if not near snap points)
+        // If we are somewhat below Content Snap, assume we are moving towards Footer
+        if (scrollTop > contentBottomOffset + threshold) {
+            // Optional: Force snap to footer if past content? 
+            // Behavior: "Only after reaching first snap... further scroll moves footer"
+            // For now, let it remain FREE if between points, but maybe bias towards the nearest.
+            setSnapState('FREE');
+        } else {
+            setSnapState('FREE');
+        }
+    };
+
+    const scrollToSnap = (targetTop) => {
+        if (mainScrollRef.current) {
+            mainScrollRef.current.scrollTo({
+                top: targetTop,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    // Re-measure and Reset State when Section Changes
+    useEffect(() => {
+        // When section changes, the content height might change (if we are resizing container).
+        // Even if we don't resize, we should re-evaluate where we are.
+
+        // Reset state to FREE initially to allow calculations to take over
+        setSnapState('FREE');
+
+        // Re-check snap context after a brief layout delay (in case height animates or reflows)
+        const timer = setTimeout(() => {
+            handleSnapCheck();
+        }, 50);
+
+        return () => clearTimeout(timer);
+    }, [currentMobileSection]);
+
+    // Initialize Snap State on Mount/Resize
+    useEffect(() => {
+        // Initial check if content is small (Tall Screen Case)
+        // If content fits in viewport, start at CONTENT_SNAP or even FOOTER_SNAP logic
+        const checkInitialLayout = () => {
+            // Logic to handle tall screens
+            // If (Title + Content) < Viewport, then ContentBottom is < 0 padding...
+            // Just let the natural snap logic handle it on first interaction
+        };
+        // checkInitialLayout();
+        window.addEventListener('resize', handleSnapCheck);
+        return () => window.removeEventListener('resize', handleSnapCheck);
+    }, []);
 
     return (
         <>
-            {/* MOBILE LAYOUT (Visible < md) */}
-            <div className="md:hidden h-[calc(100vh-80px)] bg-[#F4F3EF] overflow-hidden relative">
-                {/* Fixed Title with Blur Background and Fade Mask */}
+            {/* MOBILE LAYOUT (Visible < md) - Shared Vertical Scroll Refactor */}
+            <div className="md:hidden flex flex-col h-[100dvh] bg-[#F4F3EF]">
+
+                {/* 2. Main Scroll Container (Vertical Scroll) */}
                 <div
-                    className="absolute top-0 left-0 w-full px-6 py-10 z-30 pointer-events-none backdrop-blur-md bg-[#F4F3EF]/80"
-                    style={{
-                        maskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 32px), transparent 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 32px), transparent 100%)'
-                    }}
+                    ref={mainScrollRef}
+                    className="flex-1 overflow-y-auto bg-[#F4F3EF] relative scroll-smooth"
+                    onScroll={handleScroll}
+                    onTouchEnd={() => setTimeout(handleSnapCheck, 50)} // Trigger check on touch release
                 >
-                    <h1 className="text-3xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep">
-                        {sermon.title}
-                    </h1>
-                </div>
+                    <div className="min-h-full flex flex-col">
 
-                {/* Horizontal Scroll Container */}
-                <div
-                    ref={mobileContainerRef}
-                    className="w-full h-full overflow-x-auto snap-x snap-mandatory flex scroll-smooth no-scrollbar"
-                >
-                    {sermon.sections.map((section, index) => (
-                        <div key={index} className="min-w-full h-full snap-center overflow-y-auto bg-[#F4F3EF]">
-                            <div className="px-6 pt-40"> {/* Removed pb-12 here */}
+                        {/* A. Sticky Sermon Title */}
+                        <div
+                            ref={stickyTitleRef}
+                            className="sticky top-0 z-40 bg-transparent px-6"
+                        >
+                            {/* Background Layer with Fade - Extended solid area */}
+                            <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0" />
 
-                                {/* Number & Heading Row */}
-                                <div className="flex flex-row items-baseline gap-4 mb-8">
-                                    <span className="text-6xl font-bold font-yisunshin text-[#2A4458] leading-none">
-                                        {String(index + 1).padStart(2, '0')}
-                                    </span>
-                                    {section.heading && (
-                                        <h2 className="text-xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1">
-                                            {section.heading}
-                                        </h2>
-                                    )}
-                                </div>
+                            <h1 className="text-3xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-10">
+                                {sermon.title}
+                            </h1>
+                        </div>
 
-                                {/* Body Content */}
-                                <div className="text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12">
-                                    {section.content.map((block) => (
-                                        <div key={block.id}>{renderSimpleBlock(block)}</div>
-                                    ))}
-                                </div>
+                        {/* B. Content Wrapper (Snap Item 1) */}
+                        <div ref={contentWrapperRef}>
+                            {/* Horizontal Scroll Row */}
+                            <div
+                                ref={mobileContainerRef}
+                                className="w-full overflow-x-auto snap-x snap-mandatory flex no-scrollbar"
+                                onScroll={(e) => {
+                                    const container = e.currentTarget;
+                                    const scrollLeft = container.scrollLeft;
+                                    const sectionWidth = container.clientWidth;
+                                    const newSection = Math.round(scrollLeft / sectionWidth);
+                                    if (newSection !== currentMobileSection) {
+                                        setCurrentMobileSection(newSection);
+                                    }
+                                }}
+                            >
+                                {sermon.sections.map((section, index) => (
+                                    <article
+                                        key={index}
+                                        className="min-w-full w-full snap-center flex flex-col"
+                                    >
+                                        {/* Content Container */}
+                                        <div className="px-6 py-12">
+                                            {/* Number & Heading Row */}
+                                            <div className="flex flex-row items-start pt-4 gap-4 mb-12">
+                                                <span className="text-6xl font-bold font-yisunshin text-[#2A4458] leading-none">
+                                                    {String(index + 1).padStart(2, '0')}
+                                                </span>
+                                                {section.heading && (
+                                                    <h2 className="text-xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1">
+                                                        {section.heading}
+                                                    </h2>
+                                                )}
+                                            </div>
 
-                                {/* Divider */}
-                                <div className="flex justify-center mb-12">
-                                    <div className="w-12 h-[1px] bg-[#2A4458]" />
-                                </div>
+                                            {/* Body Content */}
+                                            <div className="text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12">
+                                                {section.content.map((block) => (
+                                                    <div key={block.id}>{renderSimpleBlock(block)}</div>
+                                                ))}
+                                            </div>
 
-                                {/* Verses (Below body on mobile) */}
-                                <div className="space-y-8 mb-20 pb-12"> {/* Added pb-12 here */}
-                                    {section.verses && section.verses.length > 0 && section.verses.map((verse, idx) => (
-                                        <div key={idx} className="bg-transparent">
-                                            <p className="text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2">
-                                                {verse.text}
-                                            </p>
-                                            <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
-                                                {verse.reference}
-                                            </p>
+                                            {/* Divider */}
+                                            <div className="flex justify-center mb-12">
+                                                <div className="w-12 h-[1px] bg-[#2A4458]" />
+                                            </div>
+
+                                            {/* Verses */}
+                                            <div className="space-y-8 pb-12">
+                                                {section.verses && section.verses.length > 0 && section.verses.map((verse, idx) => (
+                                                    <div key={idx} className="bg-transparent">
+                                                        <p className="text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2">
+                                                            {verse.text}
+                                                        </p>
+                                                        <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
+                                                            {verse.reference}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
-                                    ))}
-                                </div>
-
-                                {/* Footer at bottom of each section */}
-                                <div className="-mx-6 relative z-50"> {/* z-50 to scroll OVER the fixed title (z-30) */}
-                                    {children}
-                                </div>
+                                    </article>
+                                ))}
                             </div>
                         </div>
-                    ))}
+
+                        {/* C. Footer (Snap Item 2) */}
+                        <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-20">
+                            <div ref={el => footerRefs.current[0] = el}>
+                                {children}
+                            </div>
+                        </footer>
+                    </div>
                 </div>
             </div>
 
@@ -145,7 +499,7 @@ const SermonPresentation = ({ sermon, children }) => {
                     <div className="sticky top-0 h-[calc(100vh-80px)] w-full overflow-hidden pointer-events-none z-10">
 
                         {/* RIGHT PANEL - Verses (Background Layer) */}
-                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-center items-center pr-16 pt-32 overflow-hidden z-0">
+                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-start items-center pr-16 pt-96 overflow-hidden z-0">
                             <AnimatePresence mode="wait">
                                 {currentVerses.length > 0 ? (
                                     <motion.div
@@ -155,6 +509,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                         exit={{ opacity: 0, y: -20 }}
                                         transition={{ duration: 0.5, ease: "easeInOut" }}
                                         className="w-4/5 max-w-lg space-y-8 pointer-events-auto"
+                                        style={{ marginTop: verseAlignmentOffset }}
                                     >
                                         {currentVerses.map((verse, idx) => (
                                             <div key={idx} className="mb-12 last:mb-0">
@@ -263,11 +618,14 @@ const SermonPresentation = ({ sermon, children }) => {
                 </div>
 
                 {/* FOOTER - Flows naturally after the sermon wrapper */}
-                <div className="relative z-30 w-full snap-start">
+                <div ref={el => footerRefs.current[0] = el} className="relative z-30 w-full snap-start">
                     {children}
                 </div>
 
             </div>
+
+            {/* Floating Media Controls - Visible on all screen sizes */}
+            <FloatingMediaControls audioUrl={sermon.audio} youtubeUrl={sermon.youtube} footerRefs={footerRefs} />
         </>
     );
 };
