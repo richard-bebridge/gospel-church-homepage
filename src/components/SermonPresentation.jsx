@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 
 const SermonPresentation = ({ sermon, children }) => {
     // Track active section and direction together to ensure sync
@@ -57,147 +57,218 @@ const SermonPresentation = ({ sermon, children }) => {
         }),
     };
 
+    // Mobile Scroll Handling
+    const mobileContainerRef = useRef(null);
+    // Removed unused parallax hooks
+
     return (
-        <div className="relative h-[calc(100vh-80px)] overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar font-pretendard">
+        <>
+            {/* MOBILE LAYOUT (Visible < md) */}
+            <div className="md:hidden h-[calc(100vh-80px)] bg-[#F4F3EF] overflow-hidden relative">
+                {/* Fixed Title with Blur Background and Fade Mask */}
+                <div
+                    className="absolute top-0 left-0 w-full px-6 py-10 z-30 pointer-events-none backdrop-blur-md bg-[#F4F3EF]/80"
+                    style={{
+                        maskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 32px), transparent 100%)',
+                        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 32px), transparent 100%)'
+                    }}
+                >
+                    <h1 className="text-3xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep">
+                        {sermon.title}
+                    </h1>
+                </div>
 
-            {/* SERMON EXPERIENCE WRAPPER - Minimum height to hold content, allows scrolling past it */}
-            <div className="relative w-full bg-[#F4F3EF]">
+                {/* Horizontal Scroll Container */}
+                <div
+                    ref={mobileContainerRef}
+                    className="w-full h-full overflow-x-auto snap-x snap-mandatory flex scroll-smooth no-scrollbar"
+                >
+                    {sermon.sections.map((section, index) => (
+                        <div key={index} className="min-w-full h-full snap-center overflow-y-auto bg-[#F4F3EF]">
+                            <div className="px-6 pt-40"> {/* Removed pb-12 here */}
 
-                {/* STICKY UI CONTAINER - Stays fixed while viewing sermon, scrolls up when footer arrives */}
-                <div className="sticky top-0 h-[calc(100vh-80px)] w-full overflow-hidden pointer-events-none z-10">
+                                {/* Number & Heading Row */}
+                                <div className="flex flex-row items-baseline gap-4 mb-8">
+                                    <span className="text-6xl font-bold font-yisunshin text-[#2A4458] leading-none">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </span>
+                                    {section.heading && (
+                                        <h2 className="text-xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1">
+                                            {section.heading}
+                                        </h2>
+                                    )}
+                                </div>
 
-                    {/* RIGHT PANEL - Verses (Background Layer) */}
-                    <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-center items-center pr-16 pt-32 overflow-hidden z-0">
-                        <AnimatePresence mode="wait">
-                            {currentVerses.length > 0 ? (
-                                <motion.div
-                                    key={activeSection}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
-                                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                                    className="max-w-lg space-y-8 pointer-events-auto"
-                                >
-                                    {currentVerses.map((verse, idx) => (
-                                        <div key={idx} className="mb-12 last:mb-0">
-                                            <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 break-keep font-light font-korean" style={{ wordBreak: 'keep-all' }}>
+                                {/* Body Content */}
+                                <div className="text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12">
+                                    {section.content.map((block) => (
+                                        <div key={block.id}>{renderSimpleBlock(block)}</div>
+                                    ))}
+                                </div>
+
+                                {/* Divider */}
+                                <div className="flex justify-center mb-12">
+                                    <div className="w-12 h-[1px] bg-[#2A4458]" />
+                                </div>
+
+                                {/* Verses (Below body on mobile) */}
+                                <div className="space-y-8 mb-20 pb-12"> {/* Added pb-12 here */}
+                                    {section.verses && section.verses.length > 0 && section.verses.map((verse, idx) => (
+                                        <div key={idx} className="bg-transparent">
+                                            <p className="text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2">
                                                 {verse.text}
                                             </p>
-                                            <div className="h-4" />
                                             <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
                                                 {verse.reference}
                                             </p>
                                         </div>
                                     ))}
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key="empty"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="text-gray-300 text-center pointer-events-auto"
-                                >
-                                    {/* Empty state */}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                                </div>
 
-                    {/* LEFT UI LAYERS (Title, Number) */}
-                    <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200">
-                        {/* Fixed Title Layer */}
-                        <div className="absolute top-12 left-44 w-full p-12">
-                            <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep max-w-md md:max-w-lg">
-                                {sermon.title}
-                            </h1>
+                                {/* Footer at bottom of each section */}
+                                <div className="-mx-6 relative z-50"> {/* z-50 to scroll OVER the fixed title (z-30) */}
+                                    {children}
+                                </div>
+                            </div>
                         </div>
+                    ))}
+                </div>
+            </div>
 
-                        {/* Fixed Number Layer with Slide Animation */}
-                        <div className="absolute top-[384px] left-12 overflow-hidden h-32 w-40 flex items-start pl-12">
-                            <AnimatePresence mode="popLayout" custom={direction}>
-                                <motion.span
-                                    key={activeSection}
-                                    custom={direction}
-                                    variants={variants}
-                                    initial="enter"
-                                    animate="center"
-                                    exit="exit"
-                                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                                    className="text-8xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
-                                >
-                                    {String(activeSection + 1).padStart(2, '0')}
-                                </motion.span>
+            {/* DESKTOP LAYOUT (Visible >= md) */}
+            <div className="hidden md:block relative h-[calc(100vh-80px)] overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar font-pretendard">
+
+                {/* SERMON EXPERIENCE WRAPPER - Minimum height to hold content, allows scrolling past it */}
+                <div className="relative w-full bg-[#F4F3EF]">
+
+                    {/* STICKY UI CONTAINER - Stays fixed while viewing sermon, scrolls up when footer arrives */}
+                    <div className="sticky top-0 h-[calc(100vh-80px)] w-full overflow-hidden pointer-events-none z-10">
+
+                        {/* RIGHT PANEL - Verses (Background Layer) */}
+                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-center items-center pr-16 pt-32 overflow-hidden z-0">
+                            <AnimatePresence mode="wait">
+                                {currentVerses.length > 0 ? (
+                                    <motion.div
+                                        key={activeSection}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        className="w-4/5 max-w-lg space-y-8 pointer-events-auto"
+                                    >
+                                        {currentVerses.map((verse, idx) => (
+                                            <div key={idx} className="mb-12 last:mb-0">
+                                                <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 break-keep font-light font-korean" style={{ wordBreak: 'keep-all' }}>
+                                                    {verse.text}
+                                                </p>
+                                                <div className="h-4" />
+                                                <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
+                                                    {verse.reference}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="empty"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="text-gray-300 text-center pointer-events-auto"
+                                    >
+                                        {/* Empty state */}
+                                    </motion.div>
+                                )}
                             </AnimatePresence>
                         </div>
 
-                        {/* Scroll Indicator */}
-                        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-                            <span className="text-2xl text-gray-400 animate-bounce">↓</span>
+                        {/* LEFT UI LAYERS (Title, Number) */}
+                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200">
+                            {/* Fixed Title Layer */}
+                            <div className="absolute top-12 left-44 w-full p-12">
+                                <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep max-w-md md:max-w-lg">
+                                    {sermon.title}
+                                </h1>
+                            </div>
+
+                            {/* Fixed Number Layer with Slide Animation */}
+                            <div className="absolute top-[384px] left-12 overflow-hidden h-32 w-40 flex items-start pl-12">
+                                <AnimatePresence mode="popLayout" custom={direction}>
+                                    <motion.span
+                                        key={activeSection}
+                                        custom={direction}
+                                        variants={variants}
+                                        initial="enter"
+                                        animate="center"
+                                        exit="exit"
+                                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                                        className="text-8xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
+                                    >
+                                        {String(activeSection + 1).padStart(2, '0')}
+                                    </motion.span>
+                                </AnimatePresence>
+                            </div>
+
+                            {/* Scroll Indicator */}
+                            {/* <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+                                <span className="text-2xl text-gray-400 animate-bounce">↓</span>
+                            </div> */}
+                        </div>
+                    </div>
+
+                    {/* SCROLLABLE CONTENT LAYER - Interactive Text */}
+
+                    <div className="relative z-20 w-full pointer-events-none">
+
+                        <div className="w-1/2 relative pointer-events-auto -mt-[calc(100vh-80px)]">
+
+                            {/* Spacer for Title */}
+                            <div className="h-[160px] w-full shrink-0" />
+
+                            {sermon.sections.map((section, index) => (
+                                <section
+                                    key={index}
+                                    ref={el => sectionsRef.current[index] = el}
+                                    className="min-h-[70vh] snap-start mb-24 px-12 flex flex-row items-start justify-start pt-96"
+                                >
+                                    <div className="flex flex-row items-start w-full max-w-2xl">
+                                        {/* Number Column (Invisible Spacer) */}
+                                        <div className="w-32 shrink-0 pr-8 opacity-0">
+                                            <span className="text-8xl font-bold font-yisunshin text-[#05121C] block leading-none pt-1">
+                                                {String(index + 1).padStart(2, '0')}
+                                            </span>
+                                        </div>
+
+                                        {/* Content Column (Heading + Body) */}
+                                        <div className="flex-1 pl-12">
+                                            {section.heading && (
+                                                <h2 className="text-2xl font-bold text-[#05121C] break-keep font-pretendard leading-tight mb-8 pt-2">
+                                                    {section.heading}
+                                                </h2>
+                                            )}
+
+                                            <div className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean">
+                                                {section.content.map((block, i) => (
+                                                    <div key={block.id}>{renderSimpleBlock(block)}</div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            ))}
+                            {/* Spacer at bottom of sermon content to separate from footer */}
+                            <div className="h-[20vh] w-full shrink-0" />
                         </div>
                     </div>
                 </div>
 
-                {/* SCROLLABLE CONTENT LAYER - Interactive Text */}
-                {/* Positioned absolutely on top of the sticky container within the wrapper, BUT relies on the wrapper's height */}
-                {/* Actually, for typical sticky behavior, the content needs to be in the normal flow so it pushes the height. */}
-                {/* To achieve the "overlay" effect while keeping content strictly on the left, we use a relative container with negative margin or absolute positioning that respects the flow. */}
-                {/* Let's try: The content is the "height provider". It behaves normally. The sticky container is just a background. */}
-
-                <div className="relative z-20 w-full pointer-events-none">
-                    {/* We need the content to actually scroll. The content div must be inside the main scrollable parent (the top-level div). */}
-                    {/* The structure implies: Top Level (Scroll) -> Wrapper -> Sticky UI (Top 0) + Content (Normal Flow). */}
-
-                    <div className="w-1/2 relative pointer-events-auto -mt-[calc(100vh-80px)]">
-                        {/* Negative margin pulls content up to overlap the sticky container, effectively starting at top */}
-                        {/* Wait, sticky needs space to stick. If content overlaps it entirely, it's fine. */}
-
-                        {/* Spacer for Title */}
-                        <div className="h-[160px] w-full shrink-0" />
-
-                        {sermon.sections.map((section, index) => (
-                            <section
-                                key={index}
-                                ref={el => sectionsRef.current[index] = el}
-                                className="min-h-[70vh] snap-start mb-24 px-12 flex flex-row items-start justify-start pt-96"
-                            >
-                                <div className="flex flex-row items-start w-full max-w-2xl">
-                                    {/* Number Column (Invisible Spacer) */}
-                                    <div className="w-32 shrink-0 pr-8 opacity-0">
-                                        <span className="text-8xl font-bold font-yisunshin text-[#05121C] block leading-none pt-1">
-                                            {String(index + 1).padStart(2, '0')}
-                                        </span>
-                                    </div>
-
-                                    {/* Content Column (Heading + Body) */}
-                                    <div className="flex-1 pl-12">
-                                        {section.heading && (
-                                            <h2 className="text-2xl font-bold text-[#05121C] break-keep font-pretendard leading-tight mb-8 pt-2">
-                                                {section.heading}
-                                            </h2>
-                                        )}
-
-                                        <div className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean">
-                                            {section.content.map((block, i) => (
-                                                <div key={block.id}>{renderSimpleBlock(block)}</div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        ))}
-                        {/* Spacer at bottom of sermon content to separate from footer */}
-                        <div className="h-[20vh] w-full shrink-0" />
-                    </div>
+                {/* FOOTER - Flows naturally after the sermon wrapper */}
+                <div className="relative z-30 w-full snap-start">
+                    {children}
                 </div>
-            </div>
 
-            {/* FOOTER - Flows naturally after the sermon wrapper */}
-            <div className="relative z-30 w-full snap-start">
-                {children}
             </div>
-
-        </div>
+        </>
     );
 };
 

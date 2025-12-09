@@ -1,7 +1,11 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Youtube, Instagram, Facebook } from 'lucide-react';
 import Lottie from 'lottie-react';
+import Link from 'next/link';
+import Image from 'next/image';
 import logoAnimation from '../assets/Gospel_Church_Symbol (1).json';
 import logoV from '../assets/logo_v.png';
 
@@ -37,6 +41,7 @@ const Header = () => {
         { label: 'Home', href: '/' },
         { label: 'Bulletin', href: '/bulletin' },
         { label: 'BulletinDB', href: '/bulletindb' },
+        { label: 'Letters', href: '/letters' },
         { label: 'Print', href: '/print' },
         { label: 'Test', href: '/test' },
         { label: 'About', href: '#' },
@@ -69,13 +74,13 @@ const Header = () => {
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-6 lg:gap-8">
                     {menuItems.map((item) => (
-                        <a
+                        <Link
                             key={item.label}
                             href={item.href}
-                            className="text-sm font-bold tracking-wide hover:text-[#5F94BD] transition-colors uppercase text-white"
+                            className="text-sm font-sans font-bold tracking-wide hover:text-[#5F94BD] transition-colors uppercase text-white"
                         >
                             {item.label}
-                        </a>
+                        </Link>
                     ))}
                 </nav>
 
@@ -96,7 +101,7 @@ const Header = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.2 }}
                         className="fixed inset-0 bg-[#F4F3EF] z-[120] md:hidden overflow-y-auto"
                     >
                         {/* Header with Close Button */}
@@ -117,23 +122,26 @@ const Header = () => {
                         {/* Menu Items - Full Height */}
                         <nav className="flex flex-col px-6 sm:px-8 py-2 min-h-[calc(100vh-6rem)]">
                             {menuItems.map((item, index) => (
-                                <motion.a
+                                <motion.div
                                     key={item.label}
-                                    href={item.href}
-                                    onClick={handleLinkClick}
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{
-                                        opacity: { delay: 0.05 + index * 0.25, duration: 0.1 },
-                                        y: { delay: 0.1 + index * 0.25, duration: 0.3, ease: "easeOut" }
+                                        opacity: { delay: 0.05 + index * 0.2, duration: 0.1 },
+                                        y: { delay: 0.0 + index * 0.2, duration: 0.3, ease: "easeInOut" }
                                     }}
-                                    className="text-2xl font-bold text-[#05121C] hover:text-[#5F94BD] transition-colors py-3 flex items-center gap-3"
                                 >
-                                    {item.label}
-                                    {(item.label === 'New Here?' || item.label === 'Ministries') && (
-                                        <span className="text-xl">→</span>
-                                    )}
-                                </motion.a>
+                                    <Link
+                                        href={item.href}
+                                        onClick={handleLinkClick}
+                                        className="text-2xl font-bold font-sans uppercase text-[#05121C] hover:text-[#5F94BD] transition-colors py-3 flex items-center gap-3"
+                                    >
+                                        {item.label}
+                                        {(item.label === 'New Here?' || item.label === 'Ministries') && (
+                                            <span className="text-xl">→</span>
+                                        )}
+                                    </Link>
+                                </motion.div>
                             ))}
 
                             {/* Social Icons - Below Menu Items */}
@@ -141,8 +149,8 @@ const Header = () => {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{
-                                    opacity: { delay: 0.05 + menuItems.length * 0.25, duration: 0.1 },
-                                    y: { delay: 0.1 + menuItems.length * 0.25, duration: 0.3, ease: "easeOut" }
+                                    opacity: { delay: 0.05 + menuItems.length * 0.2, duration: 0.1 },
+                                    y: { delay: 0.0 + menuItems.length * 0.2, duration: 0.3, ease: "easeInOut" }
                                 }}
                                 className="flex gap-6 mt-8 pt-4"
                             >
@@ -160,14 +168,17 @@ const Header = () => {
 
                         {/* Logo at bottom right - No opacity */}
                         <div className="absolute bottom-6 right-6 pb-[env(safe-area-inset-bottom)]">
-                            <motion.img
+                            <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.5, duration: 0.3 }}
-                                src={logoV}
-                                alt="Gospel Church"
-                                className="w-24 h-auto"
-                            />
+                            >
+                                <Image
+                                    src={logoV}
+                                    alt="Gospel Church"
+                                    className="w-24 h-auto"
+                                />
+                            </motion.div>
                         </div>
                     </motion.div>
                 )}
