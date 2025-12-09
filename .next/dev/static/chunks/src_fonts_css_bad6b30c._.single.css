@@ -1,0 +1,26 @@
+/* [project]/src/fonts.css [app-client] (css) */
+@font-face {
+  font-family: YiSunShin;
+  src: url("../media/Yisunshin(L).9ae5f63c.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: YiSunShin;
+  src: url("../media/Yisunshin(M).5b05eb90.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: YiSunShin;
+  src: url("../media/Yisunshin(B).adf4b3e3.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*# sourceMappingURL=src_fonts_css_bad6b30c._.single.css.map*/
