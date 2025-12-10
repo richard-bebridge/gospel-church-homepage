@@ -7,53 +7,29 @@ import { Plus, X, Youtube, AudioLines, Pause } from 'lucide-react';
 // =========================================
 // 0. Swipe Indicator Component (New)
 //    - Visualizes current section index
-//    - One-time "Simulated Swipe" on mount (Active Bar moves)
+//    - Sliding Dot Animation (2px x 2px)
 // =========================================
 const SwipeIndicator = ({ total, current, className }) => {
-    const [demoIndex, setDemoIndex] = useState(null);
-    const hasSimulatedRef = useRef(false);
-
-    // Initial "Simulated Swipe" Animation (Bar moves right then back)
-    useEffect(() => {
-        if (hasSimulatedRef.current) return;
-
-        // Sequence: Wait 800ms -> Move to 2nd item -> Wait 400ms -> Move back
-        const timeout1 = setTimeout(() => {
-            if (total > 1) {
-                setDemoIndex(1); // Bar "moves" to index 1
-                const timeout2 = setTimeout(() => {
-                    setDemoIndex(null); // Bar "moves" back to current
-                    hasSimulatedRef.current = true;
-                }, 400);
-                return () => clearTimeout(timeout2);
-            }
-        }, 800);
-
-        return () => clearTimeout(timeout1);
-    }, [total]);
-
-    // Determine active index
-    const activeIndex = demoIndex !== null ? demoIndex : current;
-
     return (
-        <div className={`flex items-center justify-center gap-1.5 ${className}`}>
+        <div className={`flex items-center justify-center gap-2 ${className}`}>
             {Array.from({ length: total }).map((_, i) => (
-                <motion.div
-                    key={i}
-                    layout // Physical movement layout transition
-                    className={`rounded-full ${i === activeIndex ? 'bg-[#05121C]' : 'bg-[#05121C]/20'}`}
-                    initial={false}
-                    animate={{
-                        width: i === activeIndex ? 24 : 3, // Active: Bar (24px), Inactive: Dot (3px)
-                        height: 3, // Fixed Height 3px
-                        opacity: 1
-                    }}
-                    transition={{
-                        duration: 0.3, // Simple duration based transition
-                        ease: "easeInOut" // Smooth, no bounce/shake
-                    }}
-                    style={{ minWidth: i === activeIndex ? 24 : 3 }} // Force min-width
-                />
+                <div key={i} className="relative">
+                    {/* Background Dot (Always visible) */}
+                    <div className="w-[2px] h-[2px] rounded-full bg-[#05121C]/20" />
+
+                    {/* Active Sliding Dot */}
+                    {i === current && (
+                        <motion.div
+                            layoutId="active-indicator"
+                            className="absolute inset-0 w-[2px] h-[2px] rounded-full bg-[#05121C]"
+                            transition={{
+                                type: "spring",
+                                stiffness: 500,
+                                damping: 40 // Minimal bounce, mostly smooth slide
+                            }}
+                        />
+                    )}
+                </div>
             ))}
         </div>
     );
