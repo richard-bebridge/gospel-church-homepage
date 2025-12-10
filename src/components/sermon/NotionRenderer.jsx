@@ -43,9 +43,9 @@ const NotionRenderer = ({ block }) => {
         case 'heading_3':
             return <h3 className="text-xl font-bold mt-2 mb-1"><Text text={value.rich_text} /></h3>;
         case 'bulleted_list_item':
-            return <li className="list-disc ml-4"><Text text={value.rich_text} /></li>;
+            return <div className="list-disc ml-4" style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>;
         case 'numbered_list_item':
-            return <li className="list-decimal ml-4"><Text text={value.rich_text} /></li>;
+            return <div className="list-decimal ml-4" style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>;
         case 'quote':
             return <blockquote className="border-l-4 border-gray-300 pl-4 italic"><Text text={value.rich_text} /></blockquote>;
         case 'callout':
