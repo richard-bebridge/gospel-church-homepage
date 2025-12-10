@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
-import { Plus, X, Youtube, AudioLines, Pause } from 'lucide-react';
+import { Plus, X, Youtube, AudioLines, Pause, Quote } from 'lucide-react';
+import Image from 'next/image';
+import symbolImg from '../assets/symbol.png';
 
 // =========================================
 // 0. Swipe Indicator Component (New)
@@ -35,17 +37,17 @@ const SwipeIndicator = ({ total, current, className, idPrefix = 'nav' }) => {
     const activeIndex = demoIndex !== null ? demoIndex : current;
 
     return (
-        <div className={`flex items-center justify-center gap-[10px] ${className}`}>
+        <div className={`flex items-center justify-center gap-[5px] ${className}`}>
             {Array.from({ length: total }).map((_, i) => (
                 <motion.div
                     key={i}
                     layout // Animate width and position changes
                     initial={false}
                     animate={{
-                        width: i === activeIndex ? 24 : 3, // Active 24px, Inactive 3px
-                        opacity: i === activeIndex ? 1 : 0.4
+                        width: i === activeIndex ? 20 : 2, // Active 24px, Inactive 3px
+                        opacity: i === activeIndex ? 1 : 0.8
                     }}
-                    style={{ height: 3, borderRadius: 999 }} // Fixed height 3px, full rounded
+                    style={{ height: 2, borderRadius: 999 }} // Fixed height 3px, full rounded
                     className={`bg-[#05121C]`}
                     transition={{
                         duration: 0.3, // Smooth duration
@@ -464,7 +466,7 @@ const SermonPresentation = ({ sermon, children }) => {
                         </div>
 
                         {/* B. Top Navigation (Scrolls with Content) */}
-                        <div className="w-full flex justify-center py-10 relative z-10 px-8">
+                        <div className="w-full flex justify-center py-12 relative z-10 px-8">
                             <SwipeIndicator
                                 total={sermon.sections.length}
                                 current={currentMobileSection}
@@ -486,7 +488,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                         ref={el => mobileSectionRefs.current[index] = el}
                                         className="min-w-full w-full snap-start flex flex-col"
                                     >
-                                        <div className="px-8 py-4">
+                                        <div className="px-8 py-6">
                                             {/* Section Header: Number + Heading */}
                                             <div className="flex flex-row items-start pt-2 gap-4 mb-12">
                                                 <span className="text-7xl font-bold font-yisunshin text-[#2A4458] leading-none">
@@ -506,11 +508,17 @@ const SermonPresentation = ({ sermon, children }) => {
                                                 ))}
                                             </div>
 
-                                            {/* Divider */}
-                                            <div className="flex justify-center mb-12">
-                                                <div className="w-12 h-[1px] bg-[#2A4458]" />
+                                            {/* Symbol Divider */}
+                                            <div className="flex justify-center mb-12 opacity-100">
+                                                <div className="relative w-3 h-3">
+                                                    <Image
+                                                        src={symbolImg}
+                                                        alt="Gospel Church Symbol"
+                                                        fill
+                                                        className="object-contain opacity-100"
+                                                    />
+                                                </div>
                                             </div>
-
                                             {/* Bible Verses */}
                                             <div className="space-y-8 pb-12">
                                                 {section.verses?.map((verse, idx) => (
@@ -531,7 +539,7 @@ const SermonPresentation = ({ sermon, children }) => {
                         </div>
 
                         {/* D. Bottom Navigation (New) */}
-                        <div className="w-full flex justify-center py-10 relative z-10 px-8 mb-8">
+                        <div className="w-full flex justify-center py-20 relative z-10 px-8 mb-8">
                             <SwipeIndicator
                                 total={sermon.sections.length}
                                 current={currentMobileSection}
