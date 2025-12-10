@@ -1173,6 +1173,10 @@ img, video {
   background-color: #05121c4d;
 }
 
+.bg-\[\#05121C\]\/20 {
+  background-color: #05121c33;
+}
+
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }

@@ -7,45 +7,55 @@ import { Plus, X, Youtube, AudioLines, Pause } from 'lucide-react';
 // =========================================
 // 0. Swipe Indicator Component (New)
 //    - Visualizes current section index
-//    - One-time nudge animation on mount
+//    - One-time "Simulated Swipe" on mount (Active Bar moves)
 // =========================================
 const SwipeIndicator = ({ total, current, className }) => {
-    const controls = useAnimation();
-    const hasNudgedRef = useRef(false);
+    const [demoIndex, setDemoIndex] = useState(null);
+    const hasSimulatedRef = useRef(false);
 
+    // Initial "Simulated Swipe" Animation (Bar moves right then back)
     useEffect(() => {
-        if (hasNudgedRef.current) return;
+        if (hasSimulatedRef.current) return;
 
-        const timer = setTimeout(() => {
-            controls.start({
-                x: [0, 8, 0], // Subtle nudge right (8px)
-                transition: { duration: 0.6, ease: "easeInOut" }
-            });
-            hasNudgedRef.current = true;
-        }, 800); // 800ms delay
+        // Sequence: Wait 800ms -> Move to 2nd item -> Wait 400ms -> Move back
+        const timeout1 = setTimeout(() => {
+            if (total > 1) {
+                setDemoIndex(1); // Bar "moves" to index 1
+                const timeout2 = setTimeout(() => {
+                    setDemoIndex(null); // Bar "moves" back to current
+                    hasSimulatedRef.current = true;
+                }, 400);
+                return () => clearTimeout(timeout2);
+            }
+        }, 800);
 
-        return () => clearTimeout(timer);
-    }, [controls]);
+        return () => clearTimeout(timeout1);
+    }, [total]);
+
+    // Determine active index
+    const activeIndex = demoIndex !== null ? demoIndex : current;
 
     return (
-        <motion.div
-            animate={controls}
-            className={`flex items-center gap-1.5 ${className}`} // Reduced gap for tighter grouping
-        >
+        <div className={`flex items-center justify-center gap-1.5 ${className}`}>
             {Array.from({ length: total }).map((_, i) => (
                 <motion.div
                     key={i}
-                    layout // Animate layout changes smoothly
-                    className={`h-0.5 rounded-full ${i === current ? 'bg-[#05121C]' : 'bg-[#05121C]/30'}`} // Thinner line (h-0.5)
+                    layout // Physical movement layout transition
+                    className={`rounded-full ${i === activeIndex ? 'bg-[#05121C]' : 'bg-[#05121C]/20'}`}
                     initial={false}
                     animate={{
-                        width: i === current ? 32 : 4, // Active: Long Dash (32px), Inactive: Dot (4px)
-                        opacity: i === current ? 1 : 0.5
+                        width: i === activeIndex ? 24 : 3, // Active: Bar (24px), Inactive: Dot (3px)
+                        height: 3, // Fixed Height 3px
+                        opacity: 1
                     }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    transition={{
+                        duration: 0.3, // Simple duration based transition
+                        ease: "easeInOut" // Smooth, no bounce/shake
+                    }}
+                    style={{ minWidth: i === activeIndex ? 24 : 3 }} // Force min-width
                 />
             ))}
-        </motion.div>
+        </div>
     );
 };
 
