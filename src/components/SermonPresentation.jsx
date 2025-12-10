@@ -7,29 +7,51 @@ import { Plus, X, Youtube, AudioLines, Pause } from 'lucide-react';
 // =========================================
 // 0. Swipe Indicator Component (New)
 //    - Visualizes current section index
-//    - Sliding Dot Animation (2px x 2px)
+//    - One-time "Simulated Swipe" on mount (Active Bar moves)
 // =========================================
-const SwipeIndicator = ({ total, current, className }) => {
-    return (
-        <div className={`flex items-center justify-center gap-2 ${className}`}>
-            {Array.from({ length: total }).map((_, i) => (
-                <div key={i} className="relative">
-                    {/* Background Dot (Always visible) */}
-                    <div className="w-[2px] h-[2px] rounded-full bg-[#05121C]/20" />
+const SwipeIndicator = ({ total, current, className, idPrefix = 'nav' }) => {
+    const [demoIndex, setDemoIndex] = useState(null);
+    const hasSimulatedRef = useRef(false);
 
-                    {/* Active Sliding Dot */}
-                    {i === current && (
-                        <motion.div
-                            layoutId="active-indicator"
-                            className="absolute inset-0 w-[2px] h-[2px] rounded-full bg-[#05121C]"
-                            transition={{
-                                type: "spring",
-                                stiffness: 500,
-                                damping: 40 // Minimal bounce, mostly smooth slide
-                            }}
-                        />
-                    )}
-                </div>
+    // Initial "Simulated Swipe" Animation
+    useEffect(() => {
+        if (hasSimulatedRef.current) return;
+
+        const timeout1 = setTimeout(() => {
+            if (total > 1) {
+                setDemoIndex(1); // Move to 2nd pos
+                const timeout2 = setTimeout(() => {
+                    setDemoIndex(null); // Move back
+                    hasSimulatedRef.current = true;
+                }, 400);
+                return () => clearTimeout(timeout2);
+            }
+        }, 800);
+
+        return () => clearTimeout(timeout1);
+    }, [total]);
+
+    // Determine active index
+    const activeIndex = demoIndex !== null ? demoIndex : current;
+
+    return (
+        <div className={`flex items-center justify-center gap-[10px] ${className}`}>
+            {Array.from({ length: total }).map((_, i) => (
+                <motion.div
+                    key={i}
+                    layout // Animate width and position changes
+                    initial={false}
+                    animate={{
+                        width: i === activeIndex ? 24 : 3, // Active 24px, Inactive 3px
+                        opacity: i === activeIndex ? 1 : 0.4
+                    }}
+                    style={{ height: 3, borderRadius: 999 }} // Fixed height 3px, full rounded
+                    className={`bg-[#05121C]`}
+                    transition={{
+                        duration: 0.3, // Smooth duration
+                        ease: "easeInOut" // Linear-like ease, no bounce/stretch effect
+                    }}
+                />
             ))}
         </div>
     );
@@ -279,22 +301,23 @@ const SermonPresentation = ({ sermon, children }) => {
     };
 
     // Derived Classes based on Font Scale
+    // Derived Classes based on Font Scale
     const bodyTextClass = fontScale === 'normal'
-        ? "text-xl leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12"
-        : "text-2xl leading-loose text-gray-700 space-y-8 break-keep font-light font-korean mb-12"; // Larger text & looser leading
+        ? "text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12"
+        : "text-xl leading-loose text-gray-700 space-y-8 break-keep font-light font-korean mb-12";
 
     const verseTextClass = fontScale === 'normal'
-        ? "text-xl leading-relaxed text-gray-600 break-keep font-light font-korean mb-2"
-        : "text-2xl leading-loose text-gray-700 break-keep font-light font-korean mb-3";
+        ? "text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2"
+        : "text-xl leading-loose text-gray-700 break-keep font-light font-korean mb-3";
 
     // Desktop classes (if we want to apply sharing)
     const desktopBodyClass = fontScale === 'normal'
-        ? "text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean"
-        : "text-lg sm:text-xl md:text-2xl leading-loose text-gray-700 space-y-6 sm:space-y-8 md:space-y-10 break-keep font-light font-korean";
+        ? "text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean"
+        : "text-base sm:text-lg md:text-xl leading-loose text-gray-700 space-y-6 sm:space-y-8 md:space-y-10 break-keep font-light font-korean";
 
     const desktopVerseClass = fontScale === 'normal'
-        ? "text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 break-keep font-light font-korean"
-        : "text-lg sm:text-xl md:text-2xl leading-loose text-gray-700 break-keep font-light font-korean";
+        ? "text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 break-keep font-light font-korean"
+        : "text-base sm:text-lg md:text-xl leading-loose text-gray-700 break-keep font-light font-korean";
 
 
     // ------------------------------------------------------------------
@@ -431,24 +454,25 @@ const SermonPresentation = ({ sermon, children }) => {
                         {/* A. Sticky Sermon Title */}
                         {/* Header is fixed h-16 (4rem). Page has pt-20 (5rem). Gap is 1rem. */}
                         {/* We use -mt-4 to pull it up 1rem so it sticks immediately at top-16 (4rem) */}
-                        <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-6 -mt-4">
+                        <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 -mt-4 pointer-events-none">
                             {/* Background: Opaque at Top -> Transparent at Bottom */}
-                            <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0" />
+                            <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
 
-                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-6">
+                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-8 pb-4 pointer-events-auto">
                                 {sermon.title}
                             </h1>
-
-                            {/* Swipe Indicator (Visible below Title) */}
-                            <div className="relative z-10 pb-6">
-                                <SwipeIndicator
-                                    total={sermon.sections.length}
-                                    current={currentMobileSection}
-                                />
-                            </div>
                         </div>
 
-                        {/* B. Content Wrapper */}
+                        {/* B. Top Navigation (Scrolls with Content) */}
+                        <div className="w-full flex justify-center py-10 relative z-10 px-8">
+                            <SwipeIndicator
+                                total={sermon.sections.length}
+                                current={currentMobileSection}
+                                idPrefix="top"
+                            />
+                        </div>
+
+                        {/* C. Content Wrapper */}
                         {/* Dynamic Height applied here to match active section perfectly */}
                         <div ref={contentWrapperRef} style={{ height: contentHeight }} className="overflow-hidden relative w-full">
                             {/* Horizontal Slider for Sections */}
@@ -462,9 +486,9 @@ const SermonPresentation = ({ sermon, children }) => {
                                         ref={el => mobileSectionRefs.current[index] = el}
                                         className="min-w-full w-full snap-start flex flex-col"
                                     >
-                                        <div className="px-6 py-12">
+                                        <div className="px-8 py-4">
                                             {/* Section Header: Number + Heading */}
-                                            <div className="flex flex-row items-start pt-4 gap-4 mb-12">
+                                            <div className="flex flex-row items-start pt-2 gap-4 mb-12">
                                                 <span className="text-7xl font-bold font-yisunshin text-[#2A4458] leading-none">
                                                     {String(index + 1).padStart(2, '0')}
                                                 </span>
@@ -506,7 +530,16 @@ const SermonPresentation = ({ sermon, children }) => {
                             </div>
                         </div>
 
-                        {/* C. Footer (Snap Item 2) */}
+                        {/* D. Bottom Navigation (New) */}
+                        <div className="w-full flex justify-center py-10 relative z-10 px-8 mb-8">
+                            <SwipeIndicator
+                                total={sermon.sections.length}
+                                current={currentMobileSection}
+                                idPrefix="bottom"
+                            />
+                        </div>
+
+                        {/* E. Footer (Snap Item 2) */}
                         <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50">
                             <div ref={footerRef}>
                                 {children}

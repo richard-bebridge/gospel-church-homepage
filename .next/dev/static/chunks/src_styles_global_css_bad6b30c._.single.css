@@ -330,6 +330,10 @@ img, video {
   visibility: visible;
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -396,6 +400,10 @@ img, video {
 
 .top-\[384px\] {
   top: 384px;
+}
+
+.top-1\/2 {
+  top: 50%;
 }
 
 .z-0 {
@@ -677,6 +685,18 @@ img, video {
   height: 2px;
 }
 
+.h-3 {
+  height: .75rem;
+}
+
+.h-\[3px\] {
+  height: 3px;
+}
+
+.h-\[6px\] {
+  height: 6px;
+}
+
 .min-h-\[100dvh\] {
   min-height: 100dvh;
 }
@@ -773,6 +793,14 @@ img, video {
   width: 2px;
 }
 
+.w-\[3px\] {
+  width: 3px;
+}
+
+.w-\[6px\] {
+  width: 6px;
+}
+
 .min-w-0 {
   min-width: 0;
 }
@@ -823,6 +851,11 @@ img, video {
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .transform {
@@ -931,6 +964,30 @@ img, video {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.gap-1 {
+  gap: .25rem;
+}
+
+.gap-0\.5 {
+  gap: .125rem;
+}
+
+.gap-2\.5 {
+  gap: .625rem;
+}
+
+.gap-\[15px\] {
+  gap: 15px;
+}
+
+.gap-\[10px\] {
+  gap: 10px;
+}
+
+.gap-\[20px\] {
+  gap: 20px;
 }
 
 .gap-x-6 {
@@ -1257,6 +1314,16 @@ img, video {
   padding-bottom: 1rem;
 }
 
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
 .pb-12 {
   padding-bottom: 3rem;
 }
@@ -1355,6 +1422,10 @@ img, video {
 
 .pt-\[calc\(8rem\+env\(safe-area-inset-top\)\)\] {
   padding-top: calc(8rem + env(safe-area-inset-top));
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
 }
 
 .text-left {
@@ -1874,6 +1945,11 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.75rem;
   }
 
+  .sm\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
   .sm\:leading-loose {
     line-height: 2;
   }
@@ -1990,6 +2066,11 @@ h1, h2, h3, h4, h5, h6 {
 
   .md\:text-xl {
     font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .md\:text-lg {
+    font-size: 1.125rem;
     line-height: 1.75rem;
   }
 }
