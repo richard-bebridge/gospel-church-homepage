@@ -1,16 +1,62 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { Plus, X, Youtube, AudioLines, Pause } from 'lucide-react';
+
+// =========================================
+// 0. Swipe Indicator Component (New)
+//    - Visualizes current section index
+//    - One-time nudge animation on mount
+// =========================================
+const SwipeIndicator = ({ total, current, className }) => {
+    const controls = useAnimation();
+    const hasNudgedRef = useRef(false);
+
+    useEffect(() => {
+        if (hasNudgedRef.current) return;
+
+        const timer = setTimeout(() => {
+            controls.start({
+                x: [0, 8, 0], // Subtle nudge right (8px)
+                transition: { duration: 0.6, ease: "easeInOut" }
+            });
+            hasNudgedRef.current = true;
+        }, 800); // 800ms delay
+
+        return () => clearTimeout(timer);
+    }, [controls]);
+
+    return (
+        <motion.div
+            animate={controls}
+            className={`flex items-center gap-1.5 ${className}`} // Reduced gap for tighter grouping
+        >
+            {Array.from({ length: total }).map((_, i) => (
+                <motion.div
+                    key={i}
+                    layout // Animate layout changes smoothly
+                    className={`h-0.5 rounded-full ${i === current ? 'bg-[#05121C]' : 'bg-[#05121C]/30'}`} // Thinner line (h-0.5)
+                    initial={false}
+                    animate={{
+                        width: i === current ? 32 : 4, // Active: Long Dash (32px), Inactive: Dot (4px)
+                        opacity: i === current ? 1 : 0.5
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+            ))}
+        </motion.div>
+    );
+};
 
 // =========================================
 // 1. FloatingMediaControls Component
 //    - Handles Play/Pause of Audio
 //    - Handles YouTube Link
+//    - Handles Font Size Toggle (A+/A-)
 //    - Auto-hides when Footer is visible
 // =========================================
-const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef }) => {
+const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onToggleFontScale }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFooterVisible, setIsFooterVisible] = useState(false);
@@ -93,6 +139,14 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef }) => {
                             variants={controlsVariants}
                             className="flex flex-col md:flex-row items-center gap-2"
                         >
+                            {/* Font Size Toggle Button */}
+                            <button
+                                onClick={onToggleFontScale}
+                                className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF] font-bold font-serif"
+                            >
+                                {fontScale === 'normal' ? 'A+' : 'A-'}
+                            </button>
+
                             {/* Audio Button */}
                             {audioUrl && (
                                 <button
@@ -220,6 +274,43 @@ const SermonPresentation = ({ sermon, children }) => {
     // ------------------------------------------------------------------
     const footerRef = useRef(null); // Reference to the shared footer
 
+    // Font Scale State
+    const [fontScale, setFontScale] = useState('normal');
+
+    // Load Font Scale from Local Storage
+    useEffect(() => {
+        const savedScale = localStorage.getItem('fontScale');
+        if (savedScale === 'large' || savedScale === 'normal') {
+            setFontScale(savedScale);
+        }
+    }, []);
+
+    // Toggle Font Scale Handler
+    const handleToggleFontScale = () => {
+        const newScale = fontScale === 'normal' ? 'large' : 'normal';
+        setFontScale(newScale);
+        localStorage.setItem('fontScale', newScale);
+    };
+
+    // Derived Classes based on Font Scale
+    const bodyTextClass = fontScale === 'normal'
+        ? "text-xl leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12"
+        : "text-2xl leading-loose text-gray-700 space-y-8 break-keep font-light font-korean mb-12"; // Larger text & looser leading
+
+    const verseTextClass = fontScale === 'normal'
+        ? "text-xl leading-relaxed text-gray-600 break-keep font-light font-korean mb-2"
+        : "text-2xl leading-loose text-gray-700 break-keep font-light font-korean mb-3";
+
+    // Desktop classes (if we want to apply sharing)
+    const desktopBodyClass = fontScale === 'normal'
+        ? "text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean"
+        : "text-lg sm:text-xl md:text-2xl leading-loose text-gray-700 space-y-6 sm:space-y-8 md:space-y-10 break-keep font-light font-korean";
+
+    const desktopVerseClass = fontScale === 'normal'
+        ? "text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 break-keep font-light font-korean"
+        : "text-lg sm:text-xl md:text-2xl leading-loose text-gray-700 break-keep font-light font-korean";
+
+
     // ------------------------------------------------------------------
     // A. Desktop Logic (Horizontal Slide + Vertical Scroll)
     // ------------------------------------------------------------------
@@ -230,6 +321,7 @@ const SermonPresentation = ({ sermon, children }) => {
 
     // [Desktop] Active Section Detection
     useEffect(() => {
+        // ... (existing observer logic)
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -261,6 +353,7 @@ const SermonPresentation = ({ sermon, children }) => {
     // Measures the height of the currently active Section Title to align verses correctly
     useEffect(() => {
         const calculateOffset = () => {
+            // ... (existing offset logic)
             const currentSectionEl = desktopSectionsRef.current[activeSection];
             if (!currentSectionEl) return;
 
@@ -276,7 +369,7 @@ const SermonPresentation = ({ sermon, children }) => {
         calculateOffset();
         window.addEventListener('resize', calculateOffset);
         return () => window.removeEventListener('resize', calculateOffset);
-    }, [activeSection, sermon.sections]);
+    }, [activeSection, sermon.sections, fontScale]); // Add fontScale dependency as it affects height!
 
 
     // ------------------------------------------------------------------
@@ -322,7 +415,7 @@ const SermonPresentation = ({ sermon, children }) => {
         return () => {
             observer.disconnect();
         };
-    }, [currentMobileSection, sermon.sections]);
+    }, [currentMobileSection, sermon.sections, fontScale]); // Add fontScale dependency
     // Note: No window.resize listener needed because ResizeObserver handles it.
 
 
@@ -356,9 +449,17 @@ const SermonPresentation = ({ sermon, children }) => {
                             {/* Background: Opaque at Top -> Transparent at Bottom */}
                             <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0" />
 
-                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-10">
+                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-6">
                                 {sermon.title}
                             </h1>
+
+                            {/* Swipe Indicator (Visible below Title) */}
+                            <div className="relative z-10 pb-6">
+                                <SwipeIndicator
+                                    total={sermon.sections.length}
+                                    current={currentMobileSection}
+                                />
+                            </div>
                         </div>
 
                         {/* B. Content Wrapper */}
@@ -389,7 +490,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                             </div>
 
                                             {/* Body Text */}
-                                            <div className="text-xl leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12">
+                                            <div className={bodyTextClass}>
                                                 {section.content.map(block => (
                                                     <div key={block.id}>{renderSimpleBlock(block)}</div>
                                                 ))}
@@ -404,7 +505,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                             <div className="space-y-8 pb-12">
                                                 {section.verses?.map((verse, idx) => (
                                                     <div key={idx} className="bg-transparent">
-                                                        <p className="text-xl leading-relaxed text-gray-600 break-keep font-light font-korean mb-2">
+                                                        <p className={verseTextClass}>
                                                             {verse.text}
                                                         </p>
                                                         <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
@@ -456,7 +557,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                     >
                                         {desktopVerses.map((verse, idx) => (
                                             <div key={idx} className="mb-12 last:mb-0">
-                                                <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 break-keep font-light font-korean" style={{ wordBreak: 'keep-all' }}>
+                                                <p className={desktopVerseClass} style={{ wordBreak: 'keep-all' }}>
                                                     {verse.text}
                                                 </p>
                                                 <div className="h-4" />
@@ -485,6 +586,13 @@ const SermonPresentation = ({ sermon, children }) => {
                                 <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep max-w-md md:max-w-lg">
                                     {sermon.title}
                                 </h1>
+                                {/* Swipe Indicator (Desktop) */}
+                                <div className="mt-8">
+                                    <SwipeIndicator
+                                        total={sermon.sections.length}
+                                        current={activeSection}
+                                    />
+                                </div>
                             </div>
 
                             {/* Animated Number */}
@@ -530,7 +638,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                                     {section.heading}
                                                 </h2>
                                             )}
-                                            <div className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean">
+                                            <div className={desktopBodyClass}>
                                                 {section.content.map(block => (
                                                     <div key={block.id}>{renderSimpleBlock(block)}</div>
                                                 ))}
@@ -556,6 +664,8 @@ const SermonPresentation = ({ sermon, children }) => {
                 audioUrl={sermon.audio}
                 youtubeUrl={sermon.youtube}
                 footerRef={footerRef}
+                fontScale={fontScale}
+                onToggleFontScale={handleToggleFontScale}
             />
         </>
     );
