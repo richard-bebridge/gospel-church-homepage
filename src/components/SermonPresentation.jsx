@@ -283,14 +283,47 @@ const SermonPresentation = ({ sermon, children }) => {
     // B. Mobile Logic (Shared Vertical Scroll + Horizontal Swipe)
     // ------------------------------------------------------------------
     const [currentMobileSection, setCurrentMobileSection] = useState(0);
+    const [contentHeight, setContentHeight] = useState('auto');
 
     // Refs
-    const mainScrollRef = useRef(null);      // The main vertical scroll container
-    const contentWrapperRef = useRef(null);  // Wraps the horizontal slider (Content area)
-    const stickyTitleRef = useRef(null);     // The fixed title header
+    // const mainScrollRef = useRef(null); // Removed: Window scroll is used now
+    const contentWrapperRef = useRef(null);
+    const stickyTitleRef = useRef(null);
+    const mobileSectionRefs = useRef([]);
 
-    // Note: Vertical snapping logic has been removed for natural scrolling physics.
-    // The previous refs are kept if needed for other measurements (e.g. FloatingControls visibility).
+    // [Mobile] Handle Horizontal Swipe Section Change
+    const handleHorizontalScroll = (e) => {
+        const container = e.currentTarget;
+        const newSection = Math.round(container.scrollLeft / container.clientWidth);
+
+        if (newSection !== currentMobileSection) {
+            setCurrentMobileSection(newSection);
+            // 1. Reset Vertical Scroll to Top
+            window.scrollTo({ top: 0, behavior: 'instant' }); // Use instant to avoid fighting with scroll snap momentum
+        }
+    };
+
+    // [Mobile] Dynamic Height Adjustment using ResizeObserver
+    // This ensures that even if images load or content expands, the wrapper height updates.
+    useEffect(() => {
+        const currentElement = mobileSectionRefs.current[currentMobileSection];
+        if (!currentElement) return;
+
+        const observer = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                // Use borderBoxSize if available, fallback to clientHeight
+                const height = entry.borderBoxSize?.[0]?.blockSize || entry.target.getBoundingClientRect().height;
+                setContentHeight(height);
+            }
+        });
+
+        observer.observe(currentElement);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [currentMobileSection, sermon.sections]);
+    // Note: No window.resize listener needed because ResizeObserver handles it.
 
 
     // ------------------------------------------------------------------
@@ -310,17 +343,16 @@ const SermonPresentation = ({ sermon, children }) => {
             {/* ======================================================== */}
             {/* MOBILE LAYOUT (< md)                                     */}
             {/* ======================================================== */}
-            <div className="md:hidden flex flex-col h-[100dvh] bg-[#F4F3EF]">
+            <div className="md:hidden min-h-screen bg-[#F4F3EF] flex flex-col">
 
-                {/* ONE Shared Vertical Scroll Container */}
-                <div
-                    ref={mainScrollRef}
-                    className="flex-1 overflow-y-auto bg-[#F4F3EF] relative scroll-smooth"
-                >
-                    <div className="min-h-full flex flex-col">
+                {/* Vertical Scroll is now handled by the Window/Body */}
+                <div className="relative w-full">
+                    <div className="flex flex-col w-full">
 
                         {/* A. Sticky Sermon Title */}
-                        <div ref={stickyTitleRef} className="sticky top-0 z-40 bg-transparent px-6">
+                        {/* Header is fixed h-16 (4rem). Page has pt-20 (5rem). Gap is 1rem. */}
+                        {/* We use -mt-4 to pull it up 1rem so it sticks immediately at top-16 (4rem) */}
+                        <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-6 -mt-4">
                             {/* Background: Opaque at Top -> Transparent at Bottom */}
                             <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0" />
 
@@ -329,21 +361,20 @@ const SermonPresentation = ({ sermon, children }) => {
                             </h1>
                         </div>
 
-                        {/* B. Content Wrapper (Snap Item 1) */}
-                        <div ref={contentWrapperRef}>
+                        {/* B. Content Wrapper */}
+                        {/* Dynamic Height applied here to match active section perfectly */}
+                        <div ref={contentWrapperRef} style={{ height: contentHeight }} className="overflow-hidden relative w-full">
                             {/* Horizontal Slider for Sections */}
                             <div
-                                className="w-full overflow-x-auto snap-x snap-mandatory flex no-scrollbar"
-                                onScroll={(e) => {
-                                    const container = e.currentTarget;
-                                    const newSection = Math.round(container.scrollLeft / container.clientWidth);
-                                    if (newSection !== currentMobileSection) {
-                                        setCurrentMobileSection(newSection);
-                                    }
-                                }}
+                                className="w-full overflow-x-auto snap-x snap-mandatory flex items-start no-scrollbar"
+                                onScroll={handleHorizontalScroll}
                             >
                                 {sermon.sections.map((section, index) => (
-                                    <article key={index} className="min-w-full w-full snap-center flex flex-col">
+                                    <article
+                                        key={index}
+                                        ref={el => mobileSectionRefs.current[index] = el}
+                                        className="min-w-full w-full snap-start flex flex-col"
+                                    >
                                         <div className="px-6 py-12">
                                             {/* Section Header: Number + Heading */}
                                             <div className="flex flex-row items-start pt-4 gap-4 mb-12">
