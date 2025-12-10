@@ -1268,6 +1268,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                 src: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$assets$2f$symbol$2e$png$2e$mjs__$7b$__IMAGE__$3d3e$__$225b$project$5d2f$src$2f$assets$2f$symbol$2e$png__$28$static__in__ecmascript$2c$__tag__client$2922$__$7d$__$5b$app$2d$client$5d$__$28$structured__image__object__with__data__url$2c$__ecmascript$29$__["default"],
                                                                 alt: "Gospel Church Symbol",
                                                                 fill: true,
+                                                                sizes: "32px",
                                                                 className: "object-contain opacity-100"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
@@ -1294,7 +1295,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                         children: verse.text
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                        lineNumber: 526,
+                                                                        lineNumber: 527,
                                                                         columnNumber: 57
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1302,18 +1303,18 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                         children: verse.reference
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                        lineNumber: 529,
+                                                                        lineNumber: 530,
                                                                         columnNumber: 57
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, idx, true, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 525,
+                                                                lineNumber: 526,
                                                                 columnNumber: 53
                                                             }, ("TURBOPACK compile-time value", void 0)))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 523,
+                                                        lineNumber: 524,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
@@ -1345,12 +1346,12 @@ const SermonPresentation = ({ sermon, children })=>{
                                     idPrefix: "bottom"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 543,
+                                    lineNumber: 544,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 542,
+                                lineNumber: 543,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
@@ -1360,12 +1361,12 @@ const SermonPresentation = ({ sermon, children })=>{
                                     children: children
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 552,
+                                    lineNumber: 553,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 551,
+                                lineNumber: 552,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
@@ -1429,14 +1430,14 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                 children: verse.text
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 587,
+                                                                lineNumber: 588,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 590,
+                                                                lineNumber: 591,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1444,18 +1445,18 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                 children: verse.reference
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 591,
+                                                                lineNumber: 592,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, idx, true, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 586,
+                                                        lineNumber: 587,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)))
                                             }, activeSection, false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 576,
+                                                lineNumber: 577,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                                                 initial: {
@@ -1470,17 +1471,17 @@ const SermonPresentation = ({ sermon, children })=>{
                                                 className: "text-gray-300 text-center pointer-events-auto"
                                             }, "empty", false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 598,
+                                                lineNumber: 599,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                            lineNumber: 574,
+                                            lineNumber: 575,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 573,
+                                        lineNumber: 574,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1494,7 +1495,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                         children: sermon.title
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 613,
+                                                        lineNumber: 614,
                                                         columnNumber: 33
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1504,18 +1505,18 @@ const SermonPresentation = ({ sermon, children })=>{
                                                             current: activeSection
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                            lineNumber: 618,
+                                                            lineNumber: 619,
                                                             columnNumber: 37
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 617,
+                                                        lineNumber: 618,
                                                         columnNumber: 33
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 612,
+                                                lineNumber: 613,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1537,29 +1538,29 @@ const SermonPresentation = ({ sermon, children })=>{
                                                         children: String(activeSection + 1).padStart(2, '0')
                                                     }, activeSection, false, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 628,
+                                                        lineNumber: 629,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                    lineNumber: 627,
+                                                    lineNumber: 628,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 626,
+                                                lineNumber: 627,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 610,
+                                        lineNumber: 611,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 570,
+                                lineNumber: 571,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1571,7 +1572,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                             className: "h-[160px] w-full shrink-0"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                            lineNumber: 649,
+                                            lineNumber: 650,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         sermon.sections.map((section, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1585,7 +1586,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                             children: "..."
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                            lineNumber: 659,
+                                                            lineNumber: 660,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1596,7 +1597,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                     children: section.heading
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                    lineNumber: 664,
+                                                                    lineNumber: 665,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1605,53 +1606,53 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                             children: renderSimpleBlock(block)
                                                                         }, block.id, false, {
                                                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                            lineNumber: 670,
+                                                                            lineNumber: 671,
                                                                             columnNumber: 53
                                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                    lineNumber: 668,
+                                                                    lineNumber: 669,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                            lineNumber: 662,
+                                                            lineNumber: 663,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                    lineNumber: 657,
+                                                    lineNumber: 658,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, index, false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 652,
+                                                lineNumber: 653,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "h-[20vh] w-full shrink-0"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                            lineNumber: 678,
+                                            lineNumber: 679,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 647,
+                                    lineNumber: 648,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 646,
+                                lineNumber: 647,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 567,
+                        lineNumber: 568,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1660,13 +1661,13 @@ const SermonPresentation = ({ sermon, children })=>{
                         children: children
                     }, void 0, false, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 684,
+                        lineNumber: 685,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 564,
+                lineNumber: 565,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FloatingMediaControls, {
@@ -1677,7 +1678,7 @@ const SermonPresentation = ({ sermon, children })=>{
                 onToggleFontScale: handleToggleFontScale
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 690,
+                lineNumber: 691,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]

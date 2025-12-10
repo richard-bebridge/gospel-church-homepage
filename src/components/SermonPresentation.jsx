@@ -515,6 +515,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                                         src={symbolImg}
                                                         alt="Gospel Church Symbol"
                                                         fill
+                                                        sizes="32px"
                                                         className="object-contain opacity-100"
                                                     />
                                                 </div>
