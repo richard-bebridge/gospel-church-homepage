@@ -455,71 +455,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 ;
 ;
 // =========================================
-// 0. Swipe Indicator Component (New)
-//    - Visualizes current section index
-//    - One-time "Simulated Swipe" on mount (Active Bar moves)
-// =========================================
-const SwipeIndicator = ({ total, current, className, idPrefix = 'nav' })=>{
-    const [demoIndex, setDemoIndex] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const hasSimulatedRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
-    // Initial "Simulated Swipe" Animation
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (hasSimulatedRef.current) return;
-        const timeout1 = setTimeout(()=>{
-            if (total > 1) {
-                setDemoIndex(1); // Move to 2nd pos
-                const timeout2 = setTimeout(()=>{
-                    setDemoIndex(null); // Move back
-                    hasSimulatedRef.current = true;
-                }, 400);
-                return ()=>clearTimeout(timeout2);
-            }
-        }, 800);
-        return ()=>clearTimeout(timeout1);
-    }, [
-        total
-    ]);
-    // Determine active index
-    const activeIndex = demoIndex !== null ? demoIndex : current;
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: `flex items-center justify-center gap-[5px] ${className}`,
-        children: Array.from({
-            length: total
-        }).map((_, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
-                layout: true,
-                initial: false,
-                animate: {
-                    width: i === activeIndex ? 20 : 2,
-                    opacity: i === activeIndex ? 1 : 0.8
-                },
-                style: {
-                    height: 2,
-                    borderRadius: 999
-                },
-                className: `bg-[#05121C]`,
-                transition: {
-                    duration: 0.3,
-                    ease: "easeInOut" // Linear-like ease, no bounce/stretch effect
-                }
-            }, i, false, {
-                fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 40,
-                columnNumber: 17
-            }, ("TURBOPACK compile-time value", void 0)))
-    }, void 0, false, {
-        fileName: "[project]/src/components/SermonPresentation.jsx",
-        lineNumber: 38,
-        columnNumber: 9
-    }, ("TURBOPACK compile-time value", void 0));
-};
-// =========================================
 // 1. FloatingMediaControls Component
 //    - Handles Play/Pause of Audio
 //    - Handles YouTube Link
-//    - Handles Font Size Toggle (A+/A-)
 //    - Auto-hides when Footer is visible
 // =========================================
-const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onToggleFontScale })=>{
+const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef })=>{
     const [isExpanded, setIsExpanded] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isPlaying, setIsPlaying] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isFooterVisible, setIsFooterVisible] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -588,7 +529,7 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                 onEnded: ()=>setIsPlaying(false)
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 139,
+                lineNumber: 85,
                 columnNumber: 26
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -602,15 +543,6 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                             variants: controlsVariants,
                             className: "flex flex-col md:flex-row items-center gap-2",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: onToggleFontScale,
-                                    className: "w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF] font-bold font-serif",
-                                    children: fontScale === 'normal' ? 'A+' : 'A-'
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 151,
-                                    columnNumber: 29
-                                }, ("TURBOPACK compile-time value", void 0)),
                                 audioUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     onClick: toggleAudio,
                                     className: "w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF]",
@@ -618,18 +550,18 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                                         size: 18
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 164,
+                                        lineNumber: 102,
                                         columnNumber: 50
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$audio$2d$lines$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AudioLines$3e$__["AudioLines"], {
                                         size: 18
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 164,
+                                        lineNumber: 102,
                                         columnNumber: 72
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 160,
+                                    lineNumber: 98,
                                     columnNumber: 33
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 youtubeUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -639,23 +571,23 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                                         size: 18
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 174,
+                                        lineNumber: 112,
                                         columnNumber: 37
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 170,
+                                    lineNumber: 108,
                                     columnNumber: 33
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                            lineNumber: 143,
+                            lineNumber: 89,
                             columnNumber: 25
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 141,
+                        lineNumber: 87,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -680,12 +612,12 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                                     size: 20
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 194,
+                                    lineNumber: 132,
                                     columnNumber: 33
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, "close", false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 188,
+                                lineNumber: 126,
                                 columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
                                 initial: {
@@ -704,28 +636,28 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                                     size: 20
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 203,
+                                    lineNumber: 141,
                                     columnNumber: 33
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, "open", false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 197,
+                                lineNumber: 135,
                                 columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                            lineNumber: 186,
+                            lineNumber: 124,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 182,
+                        lineNumber: 120,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 140,
+                lineNumber: 86,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
@@ -755,12 +687,12 @@ const Text = ({ text })=>{
                 children: text.content
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 237,
+                lineNumber: 175,
                 columnNumber: 30
             }, ("TURBOPACK compile-time value", void 0)) : text.content
         }, i, false, {
             fileName: "[project]/src/components/SermonPresentation.jsx",
-            lineNumber: 226,
+            lineNumber: 164,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0));
     });
@@ -776,57 +708,57 @@ const renderSimpleBlock = (block)=>{
                     text: value.rich_text
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 250,
+                    lineNumber: 188,
                     columnNumber: 23
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 250,
+                lineNumber: 188,
                 columnNumber: 20
             }, ("TURBOPACK compile-time value", void 0));
         case 'heading_1':
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                className: "text-3xl font-bold mt-4 mb-2",
+                className: "text-2xl font-bold mt-4 mb-2",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
                     text: value.rich_text
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 252,
+                    lineNumber: 190,
                     columnNumber: 65
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 252,
+                lineNumber: 190,
                 columnNumber: 20
             }, ("TURBOPACK compile-time value", void 0));
         case 'heading_2':
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mt-3 mb-2",
+                className: "text-xl font-bold mt-3 mb-2",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
                     text: value.rich_text
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 254,
-                    columnNumber: 65
-                }, ("TURBOPACK compile-time value", void 0))
-            }, void 0, false, {
-                fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 254,
-                columnNumber: 20
-            }, ("TURBOPACK compile-time value", void 0));
-        case 'heading_3':
-            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                className: "text-xl font-bold mt-2 mb-1",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
-                    text: value.rich_text
-                }, void 0, false, {
-                    fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 256,
+                    lineNumber: 192,
                     columnNumber: 64
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 256,
+                lineNumber: 192,
+                columnNumber: 20
+            }, ("TURBOPACK compile-time value", void 0));
+        case 'heading_3':
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                className: "text-lg font-bold mt-2 mb-1",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
+                    text: value.rich_text
+                }, void 0, false, {
+                    fileName: "[project]/src/components/SermonPresentation.jsx",
+                    lineNumber: 194,
+                    columnNumber: 64
+                }, ("TURBOPACK compile-time value", void 0))
+            }, void 0, false, {
+                fileName: "[project]/src/components/SermonPresentation.jsx",
+                lineNumber: 194,
                 columnNumber: 20
             }, ("TURBOPACK compile-time value", void 0));
         case 'bulleted_list_item':
@@ -836,12 +768,12 @@ const renderSimpleBlock = (block)=>{
                     text: value.rich_text
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 258,
+                    lineNumber: 196,
                     columnNumber: 51
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 258,
+                lineNumber: 196,
                 columnNumber: 20
             }, ("TURBOPACK compile-time value", void 0));
         case 'numbered_list_item':
@@ -851,12 +783,12 @@ const renderSimpleBlock = (block)=>{
                     text: value.rich_text
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 260,
+                    lineNumber: 198,
                     columnNumber: 54
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 260,
+                lineNumber: 198,
                 columnNumber: 20
             }, ("TURBOPACK compile-time value", void 0));
         case 'quote':
@@ -866,12 +798,12 @@ const renderSimpleBlock = (block)=>{
                     text: value.rich_text
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 262,
+                    lineNumber: 200,
                     columnNumber: 83
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 262,
+                lineNumber: 200,
                 columnNumber: 20
             }, ("TURBOPACK compile-time value", void 0));
         case 'callout':
@@ -882,7 +814,7 @@ const renderSimpleBlock = (block)=>{
                         children: value.icon.emoji
                     }, void 0, false, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 266,
+                        lineNumber: 204,
                         columnNumber: 43
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -890,18 +822,18 @@ const renderSimpleBlock = (block)=>{
                             text: value.rich_text
                         }, void 0, false, {
                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                            lineNumber: 267,
+                            lineNumber: 205,
                             columnNumber: 26
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 267,
+                        lineNumber: 205,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 265,
+                lineNumber: 203,
                 columnNumber: 17
             }, ("TURBOPACK compile-time value", void 0));
         default:
@@ -916,28 +848,6 @@ const SermonPresentation = ({ sermon, children })=>{
     // Shared Resources
     // ------------------------------------------------------------------
     const footerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null); // Reference to the shared footer
-    // Font Scale State
-    const [fontScale, setFontScale] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('normal');
-    // Load Font Scale from Local Storage
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const savedScale = localStorage.getItem('fontScale');
-        if (savedScale === 'large' || savedScale === 'normal') {
-            setFontScale(savedScale);
-        }
-    }, []);
-    // Toggle Font Scale Handler
-    const handleToggleFontScale = ()=>{
-        const newScale = fontScale === 'normal' ? 'large' : 'normal';
-        setFontScale(newScale);
-        localStorage.setItem('fontScale', newScale);
-    };
-    // Derived Classes based on Font Scale
-    // Derived Classes based on Font Scale
-    const bodyTextClass = fontScale === 'normal' ? "text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12" : "text-xl leading-loose text-gray-700 space-y-8 break-keep font-light font-korean mb-12";
-    const verseTextClass = fontScale === 'normal' ? "text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2" : "text-xl leading-loose text-gray-700 break-keep font-light font-korean mb-3";
-    // Desktop classes (if we want to apply sharing)
-    const desktopBodyClass = fontScale === 'normal' ? "text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean" : "text-base sm:text-lg md:text-xl leading-loose text-gray-700 space-y-6 sm:space-y-8 md:space-y-10 break-keep font-light font-korean";
-    const desktopVerseClass = fontScale === 'normal' ? "text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 break-keep font-light font-korean" : "text-base sm:text-lg md:text-xl leading-loose text-gray-700 break-keep font-light font-korean";
     // ------------------------------------------------------------------
     // A. Desktop Logic (Horizontal Slide + Vertical Scroll)
     // ------------------------------------------------------------------
@@ -950,7 +860,6 @@ const SermonPresentation = ({ sermon, children })=>{
     const [verseAlignmentOffset, setVerseAlignmentOffset] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0); // For matching Right Panel Verse to Left Panel Body
     // [Desktop] Active Section Detection
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // ... (existing observer logic)
         const observer = new IntersectionObserver((entries)=>{
             entries.forEach((entry)=>{
                 if (entry.isIntersecting) {
@@ -981,7 +890,6 @@ const SermonPresentation = ({ sermon, children })=>{
     // Measures the height of the currently active Section Title to align verses correctly
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const calculateOffset = ()=>{
-            // ... (existing offset logic)
             const currentSectionEl = desktopSectionsRef.current[activeSection];
             if (!currentSectionEl) return;
             const titleEl = currentSectionEl.querySelector('h2');
@@ -997,54 +905,75 @@ const SermonPresentation = ({ sermon, children })=>{
         return ()=>window.removeEventListener('resize', calculateOffset);
     }, [
         activeSection,
-        sermon.sections,
-        fontScale
-    ]); // Add fontScale dependency as it affects height!
+        sermon.sections
+    ]);
     // ------------------------------------------------------------------
     // B. Mobile Logic (Shared Vertical Scroll + Horizontal Swipe)
     // ------------------------------------------------------------------
     const [currentMobileSection, setCurrentMobileSection] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
-    const [contentHeight, setContentHeight] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('auto');
-    // Refs
-    // const mainScrollRef = useRef(null); // Removed: Window scroll is used now
-    const contentWrapperRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const stickyTitleRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const mobileSectionRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])([]);
-    // [Mobile] Handle Horizontal Swipe Section Change
-    const handleHorizontalScroll = (e)=>{
-        const container = e.currentTarget;
-        const newSection = Math.round(container.scrollLeft / container.clientWidth);
-        if (newSection !== currentMobileSection) {
-            setCurrentMobileSection(newSection);
-            // 1. Reset Vertical Scroll to Top
-            window.scrollTo({
-                top: 0,
-                behavior: 'instant'
-            }); // Use instant to avoid fighting with scroll snap momentum
+    const [snapState, setSnapState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('FREE'); // 'FREE', 'CONTENT_SNAP', 'FOOTER_SNAP'
+    // Refs for Snapping & Measuring
+    const mainScrollRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null); // The main vertical scroll container
+    const contentWrapperRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null); // Wraps the horizontal slider (Content area)
+    const stickyTitleRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null); // The fixed title header
+    const isScrollingRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
+    const snapTimeoutRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // [Mobile] Scroll Handler (Debounced Snap Check)
+    const handleScroll = ()=>{
+        isScrollingRef.current = true;
+        if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+        snapTimeoutRef.current = setTimeout(()=>{
+            isScrollingRef.current = false;
+            handleSnapCheck();
+        }, 150);
+    };
+    // [Mobile] 2-Step Snap Logic
+    // 1. Content Snap: Bottom of content aligns with Viewport Bottom
+    // 2. Footer Snap: Bottom of Footer aligns with Viewport Bottom
+    const handleSnapCheck = ()=>{
+        const container = mainScrollRef.current;
+        const content = contentWrapperRef.current;
+        const footer = footerRef.current;
+        if (!container || !content || !footer) return;
+        const scrollTop = container.scrollTop;
+        const viewportHeight = container.clientHeight;
+        const contentHeight = content.offsetHeight;
+        const titleHeight = stickyTitleRef.current ? stickyTitleRef.current.offsetHeight : 0;
+        // Calculate Snap Targets
+        const contentBottomOffset = titleHeight + contentHeight - viewportHeight;
+        const footerBottomOffset = container.scrollHeight - viewportHeight;
+        const threshold = 50;
+        // Check Proximity
+        if (Math.abs(scrollTop - contentBottomOffset) < threshold) {
+            container.scrollTo({
+                top: contentBottomOffset,
+                behavior: 'smooth'
+            });
+            setSnapState('CONTENT_SNAP');
+        } else if (Math.abs(scrollTop - footerBottomOffset) < threshold) {
+            container.scrollTo({
+                top: footerBottomOffset,
+                behavior: 'smooth'
+            });
+            setSnapState('FOOTER_SNAP');
+        } else {
+            setSnapState('FREE');
         }
     };
-    // [Mobile] Dynamic Height Adjustment using ResizeObserver
-    // This ensures that even if images load or content expands, the wrapper height updates.
+    // [Mobile] Reset Snap State on Section Change
+    // Re-measure after a brief delay to allow layout stability
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const currentElement = mobileSectionRefs.current[currentMobileSection];
-        if (!currentElement) return;
-        const observer = new ResizeObserver((entries)=>{
-            for (let entry of entries){
-                // Use borderBoxSize if available, fallback to clientHeight
-                const height = entry.borderBoxSize?.[0]?.blockSize || entry.target.getBoundingClientRect().height;
-                setContentHeight(height);
-            }
-        });
-        observer.observe(currentElement);
-        return ()=>{
-            observer.disconnect();
-        };
+        setSnapState('FREE');
+        const timer = setTimeout(handleSnapCheck, 50);
+        return ()=>clearTimeout(timer);
     }, [
-        currentMobileSection,
-        sermon.sections,
-        fontScale
-    ]); // Add fontScale dependency
-    // Note: No window.resize listener needed because ResizeObserver handles it.
+        currentMobileSection
+    ]);
+    // [Mobile] Initial Resize Listener
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        window.addEventListener('resize', handleSnapCheck);
+        return ()=>window.removeEventListener('resize', handleSnapCheck);
+    }, []);
     // ------------------------------------------------------------------
     // Render Variables
     // ------------------------------------------------------------------
@@ -1064,105 +993,107 @@ const SermonPresentation = ({ sermon, children })=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "md:hidden min-h-screen bg-[#F4F3EF] flex flex-col",
+                className: "md:hidden flex flex-col h-[100dvh] bg-[#F4F3EF]",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "relative w-full",
+                    ref: mainScrollRef,
+                    className: "flex-1 overflow-y-auto bg-[#F4F3EF] relative scroll-smooth",
+                    onScroll: handleScroll,
+                    onTouchEnd: ()=>setTimeout(handleSnapCheck, 50),
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col w-full",
+                        className: "min-h-full flex flex-col",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 ref: stickyTitleRef,
-                                className: "sticky top-16 z-40 bg-transparent px-8 -mt-4 pointer-events-none",
+                                className: "sticky top-0 z-40 bg-transparent px-6",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0 pointer-events-auto"
+                                        className: "absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 459,
+                                        lineNumber: 385,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                        className: "text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-8 pb-4 pointer-events-auto",
+                                        className: "text-3xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-10",
                                         children: sermon.title
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 461,
+                                        lineNumber: 387,
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 457,
-                                columnNumber: 25
-                            }, ("TURBOPACK compile-time value", void 0)),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-full flex justify-center py-12 relative z-10 px-8",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SwipeIndicator, {
-                                    total: sermon.sections.length,
-                                    current: currentMobileSection,
-                                    idPrefix: "top"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 468,
-                                    columnNumber: 29
-                                }, ("TURBOPACK compile-time value", void 0))
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 467,
+                                lineNumber: 383,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 ref: contentWrapperRef,
-                                style: {
-                                    height: contentHeight
-                                },
-                                className: "overflow-hidden relative w-full",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "w-full overflow-x-auto snap-x snap-mandatory flex items-start no-scrollbar",
-                                    onScroll: handleHorizontalScroll,
+                                    className: "w-full overflow-x-auto snap-x snap-mandatory flex no-scrollbar",
+                                    onScroll: (e)=>{
+                                        const container = e.currentTarget;
+                                        const newSection = Math.round(container.scrollLeft / container.clientWidth);
+                                        if (newSection !== currentMobileSection) {
+                                            setCurrentMobileSection(newSection);
+                                        }
+                                    },
                                     children: sermon.sections.map((section, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
-                                            ref: (el)=>mobileSectionRefs.current[index] = el,
-                                            className: "min-w-full w-full snap-start flex flex-col",
+                                            className: "min-w-full w-full snap-center flex flex-col",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "px-8 py-6",
+                                                className: "px-6 py-12",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex flex-row items-start pt-2 gap-4 mb-12",
+                                                        className: "flex flex-row items-start pt-4 gap-4 mb-12",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-7xl font-bold font-yisunshin text-[#2A4458] leading-none",
+                                                                className: "text-6xl font-bold font-yisunshin text-[#2A4458] leading-none",
                                                                 children: String(index + 1).padStart(2, '0')
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 492,
+                                                                lineNumber: 410,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             section.heading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                                className: "text-2xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1",
+                                                                className: "text-xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1",
                                                                 children: section.heading
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 496,
+                                                                lineNumber: 414,
                                                                 columnNumber: 53
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 491,
+                                                        lineNumber: 409,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: bodyTextClass,
+                                                        className: "text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12",
                                                         children: section.content.map((block)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 children: renderSimpleBlock(block)
                                                             }, block.id, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 505,
+                                                                lineNumber: 423,
                                                                 columnNumber: 53
                                                             }, ("TURBOPACK compile-time value", void 0)))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 503,
+                                                        lineNumber: 421,
+                                                        columnNumber: 45
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex justify-center mb-12",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "w-12 h-[1px] bg-[#2A4458]"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/SermonPresentation.jsx",
+                                                            lineNumber: 429,
+                                                            columnNumber: 49
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/SermonPresentation.jsx",
+                                                        lineNumber: 428,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1171,98 +1102,82 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                 className: "bg-transparent",
                                                                 children: [
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: verseTextClass,
+                                                                        className: "text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2",
                                                                         children: verse.text
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                        lineNumber: 521,
+                                                                        lineNumber: 436,
                                                                         columnNumber: 57
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-base text-[#2A4458] font-bold text-right font-pretendard",
+                                                                        className: "text-sm text-[#2A4458] font-bold text-right font-pretendard",
                                                                         children: verse.reference
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                        lineNumber: 524,
+                                                                        lineNumber: 439,
                                                                         columnNumber: 57
                                                                     }, ("TURBOPACK compile-time value", void 0))
                                                                 ]
                                                             }, idx, true, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 520,
+                                                                lineNumber: 435,
                                                                 columnNumber: 53
                                                             }, ("TURBOPACK compile-time value", void 0)))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 518,
+                                                        lineNumber: 433,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 489,
+                                                lineNumber: 407,
                                                 columnNumber: 41
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, index, false, {
                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                            lineNumber: 484,
+                                            lineNumber: 406,
                                             columnNumber: 37
                                         }, ("TURBOPACK compile-time value", void 0)))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 479,
+                                    lineNumber: 395,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 477,
-                                columnNumber: 25
-                            }, ("TURBOPACK compile-time value", void 0)),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-full flex justify-center py-20 relative z-10 px-8 mb-8",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SwipeIndicator, {
-                                    total: sermon.sections.length,
-                                    current: currentMobileSection,
-                                    idPrefix: "bottom"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 538,
-                                    columnNumber: 29
-                                }, ("TURBOPACK compile-time value", void 0))
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 537,
+                                lineNumber: 393,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-                                className: "shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50",
+                                className: "shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-20",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     ref: footerRef,
                                     children: children
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 547,
+                                    lineNumber: 453,
                                     columnNumber: 29
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 546,
+                                lineNumber: 452,
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 452,
+                        lineNumber: 380,
                         columnNumber: 21
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                    lineNumber: 451,
+                    lineNumber: 374,
                     columnNumber: 17
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 448,
+                lineNumber: 371,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1303,21 +1218,21 @@ const SermonPresentation = ({ sermon, children })=>{
                                                         className: "mb-12 last:mb-0",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                className: desktopVerseClass,
+                                                                className: "text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 break-keep font-light font-korean",
                                                                 style: {
                                                                     wordBreak: 'keep-all'
                                                                 },
                                                                 children: verse.text
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 582,
+                                                                lineNumber: 488,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 585,
+                                                                lineNumber: 491,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1325,18 +1240,18 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                 children: verse.reference
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                lineNumber: 586,
+                                                                lineNumber: 492,
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, idx, true, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 581,
+                                                        lineNumber: 487,
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)))
                                             }, activeSection, false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 571,
+                                                lineNumber: 477,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
                                                 initial: {
@@ -1351,17 +1266,17 @@ const SermonPresentation = ({ sermon, children })=>{
                                                 className: "text-gray-300 text-center pointer-events-auto"
                                             }, "empty", false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 593,
+                                                lineNumber: 499,
                                                 columnNumber: 37
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                            lineNumber: 569,
+                                            lineNumber: 475,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 568,
+                                        lineNumber: 474,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1369,34 +1284,17 @@ const SermonPresentation = ({ sermon, children })=>{
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "absolute top-12 left-44 w-full p-12",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                                        className: "text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep max-w-md md:max-w-lg",
-                                                        children: sermon.title
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 608,
-                                                        columnNumber: 33
-                                                    }, ("TURBOPACK compile-time value", void 0)),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "mt-8",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SwipeIndicator, {
-                                                            total: sermon.sections.length,
-                                                            current: activeSection
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                            lineNumber: 613,
-                                                            columnNumber: 37
-                                                        }, ("TURBOPACK compile-time value", void 0))
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 612,
-                                                        columnNumber: 33
-                                                    }, ("TURBOPACK compile-time value", void 0))
-                                                ]
-                                            }, void 0, true, {
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                                    className: "text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep max-w-md md:max-w-lg",
+                                                    children: sermon.title
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/SermonPresentation.jsx",
+                                                    lineNumber: 514,
+                                                    columnNumber: 33
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            }, void 0, false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 607,
+                                                lineNumber: 513,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1418,29 +1316,29 @@ const SermonPresentation = ({ sermon, children })=>{
                                                         children: String(activeSection + 1).padStart(2, '0')
                                                     }, activeSection, false, {
                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                        lineNumber: 623,
+                                                        lineNumber: 522,
                                                         columnNumber: 37
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                    lineNumber: 622,
+                                                    lineNumber: 521,
                                                     columnNumber: 33
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 621,
+                                                lineNumber: 520,
                                                 columnNumber: 29
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                                        lineNumber: 605,
+                                        lineNumber: 511,
                                         columnNumber: 25
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 565,
+                                lineNumber: 471,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1452,7 +1350,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                             className: "h-[160px] w-full shrink-0"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                            lineNumber: 644,
+                                            lineNumber: 543,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         sermon.sections.map((section, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1466,7 +1364,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                             children: "..."
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                            lineNumber: 654,
+                                                            lineNumber: 553,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1477,62 +1375,62 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                     children: section.heading
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                    lineNumber: 659,
+                                                                    lineNumber: 558,
                                                                     columnNumber: 49
                                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: desktopBodyClass,
+                                                                    className: "text-base sm:text-lg md:text-xl leading-relaxed text-gray-600 space-y-4 sm:space-y-6 md:space-y-8 break-keep font-light font-korean",
                                                                     children: section.content.map((block)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                             children: renderSimpleBlock(block)
                                                                         }, block.id, false, {
                                                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                            lineNumber: 665,
+                                                                            lineNumber: 564,
                                                                             columnNumber: 53
                                                                         }, ("TURBOPACK compile-time value", void 0)))
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                                    lineNumber: 663,
+                                                                    lineNumber: 562,
                                                                     columnNumber: 45
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                            lineNumber: 657,
+                                                            lineNumber: 556,
                                                             columnNumber: 41
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                    lineNumber: 652,
+                                                    lineNumber: 551,
                                                     columnNumber: 37
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, index, false, {
                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                                lineNumber: 647,
+                                                lineNumber: 546,
                                                 columnNumber: 33
                                             }, ("TURBOPACK compile-time value", void 0))),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "h-[20vh] w-full shrink-0"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SermonPresentation.jsx",
-                                            lineNumber: 673,
+                                            lineNumber: 572,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SermonPresentation.jsx",
-                                    lineNumber: 642,
+                                    lineNumber: 541,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                                lineNumber: 641,
+                                lineNumber: 540,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 562,
+                        lineNumber: 468,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1541,24 +1439,22 @@ const SermonPresentation = ({ sermon, children })=>{
                         children: children
                     }, void 0, false, {
                         fileName: "[project]/src/components/SermonPresentation.jsx",
-                        lineNumber: 679,
+                        lineNumber: 578,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 559,
+                lineNumber: 465,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FloatingMediaControls, {
                 audioUrl: sermon.audio,
                 youtubeUrl: sermon.youtube,
-                footerRef: footerRef,
-                fontScale: fontScale,
-                onToggleFontScale: handleToggleFontScale
+                footerRef: footerRef
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
-                lineNumber: 685,
+                lineNumber: 584,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]

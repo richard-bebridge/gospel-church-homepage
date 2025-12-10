@@ -709,6 +709,10 @@ img, video {
   height: .5rem;
 }
 
+.h-\[100dvh\] {
+  height: 100dvh;
+}
+
 .min-h-\[100dvh\] {
   min-height: 100dvh;
 }
@@ -727,6 +731,10 @@ img, video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-full {
+  min-height: 100%;
 }
 
 .w-1\/2 {
@@ -913,6 +921,10 @@ img, video {
 
 .snap-start {
   scroll-snap-align: start;
+}
+
+.snap-center {
+  scroll-snap-align: center;
 }
 
 .list-decimal {
@@ -1482,6 +1494,10 @@ img, video {
   padding-bottom: 4rem;
 }
 
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1579,6 +1595,11 @@ img, video {
 .text-xs {
   font-size: .75rem;
   line-height: 1rem;
+}
+
+.text-6xl {
+  font-size: 3.75rem;
+  line-height: 1;
 }
 
 .font-bold {

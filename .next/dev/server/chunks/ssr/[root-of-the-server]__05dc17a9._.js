@@ -1069,7 +1069,6 @@ async function TestPage() {
     }
     // 2. Group Sections
     const sections = groupSections(blocks);
-    console.log("Debug: Grouped Sections", JSON.stringify(sections, null, 2));
     // 3. Prepare Data for Presentation
     const sermonData = {
         title: page.properties?.Name?.title?.[0]?.plain_text || "Untitled Sermon",
@@ -1096,14 +1095,12 @@ async function TestPage() {
         // but let's just log to console for now as requested.
         } catch (e) {}
     }
-    console.log("Debug: Sermon Data", sermonData);
-    console.log("Debug: Media Links Found", mediaLinks);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-[#F4F3EF] flex flex-col",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Header$2e$jsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/test/page.jsx",
-                lineNumber: 442,
+                lineNumber: 441,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1112,23 +1109,23 @@ async function TestPage() {
                     sermon: sermonData,
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Footer$2e$jsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/src/app/test/page.jsx",
-                        lineNumber: 445,
+                        lineNumber: 444,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/test/page.jsx",
-                    lineNumber: 444,
+                    lineNumber: 443,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/test/page.jsx",
-                lineNumber: 443,
+                lineNumber: 442,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/test/page.jsx",
-        lineNumber: 441,
+        lineNumber: 440,
         columnNumber: 9
     }, this);
 }

@@ -404,7 +404,7 @@ export default async function TestPage() {
 
     // 2. Group Sections
     const sections = groupSections(blocks);
-    console.log("Debug: Grouped Sections", JSON.stringify(sections, null, 2));
+
 
     // 3. Prepare Data for Presentation
     const sermonData = {
@@ -434,8 +434,7 @@ export default async function TestPage() {
         } catch (e) { }
     }
 
-    console.log("Debug: Sermon Data", sermonData);
-    console.log("Debug: Media Links Found", mediaLinks);
+
 
     return (
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
