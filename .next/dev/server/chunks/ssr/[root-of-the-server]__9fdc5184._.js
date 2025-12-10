@@ -718,7 +718,7 @@ const renderSimpleBlock = (block)=>{
             }, ("TURBOPACK compile-time value", void 0));
         case 'heading_1':
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                className: "text-2xl font-bold mt-4 mb-2",
+                className: "text-3xl font-bold mt-4 mb-2",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
                     text: value.rich_text
                 }, void 0, false, {
@@ -733,13 +733,13 @@ const renderSimpleBlock = (block)=>{
             }, ("TURBOPACK compile-time value", void 0));
         case 'heading_2':
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-xl font-bold mt-3 mb-2",
+                className: "text-2xl font-bold mt-3 mb-2",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
                     text: value.rich_text
                 }, void 0, false, {
                     fileName: "[project]/src/components/SermonPresentation.jsx",
                     lineNumber: 192,
-                    columnNumber: 64
+                    columnNumber: 65
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/components/SermonPresentation.jsx",
@@ -748,7 +748,7 @@ const renderSimpleBlock = (block)=>{
             }, ("TURBOPACK compile-time value", void 0));
         case 'heading_3':
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                className: "text-lg font-bold mt-2 mb-1",
+                className: "text-xl font-bold mt-2 mb-1",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Text, {
                     text: value.rich_text
                 }, void 0, false, {
@@ -1014,7 +1014,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                         columnNumber: 29
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                        className: "text-3xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-10",
+                                        className: "text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-10",
                                         children: sermon.title
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SermonPresentation.jsx",
@@ -1047,7 +1047,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                         className: "flex flex-row items-start pt-4 gap-4 mb-12",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-6xl font-bold font-yisunshin text-[#2A4458] leading-none",
+                                                                className: "text-7xl font-bold font-yisunshin text-[#2A4458] leading-none",
                                                                 children: String(index + 1).padStart(2, '0')
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
@@ -1055,7 +1055,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                 columnNumber: 49
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             section.heading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                                className: "text-xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1",
+                                                                className: "text-2xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1",
                                                                 children: section.heading
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/SermonPresentation.jsx",
@@ -1069,7 +1069,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                         columnNumber: 45
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12",
+                                                        className: "text-xl leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12",
                                                         children: section.content.map((block)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 children: renderSimpleBlock(block)
                                                             }, block.id, false, {
@@ -1102,7 +1102,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                 className: "bg-transparent",
                                                                 children: [
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2",
+                                                                        className: "text-xl leading-relaxed text-gray-600 break-keep font-light font-korean mb-2",
                                                                         children: verse.text
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
@@ -1110,7 +1110,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                                                         columnNumber: 57
                                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-sm text-[#2A4458] font-bold text-right font-pretendard",
+                                                                        className: "text-base text-[#2A4458] font-bold text-right font-pretendard",
                                                                         children: verse.reference
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/SermonPresentation.jsx",
@@ -1150,7 +1150,7 @@ const SermonPresentation = ({ sermon, children })=>{
                                 columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-                                className: "shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-20",
+                                className: "shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     ref: footerRef,
                                     children: children

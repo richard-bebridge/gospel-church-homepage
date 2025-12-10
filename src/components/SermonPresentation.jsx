@@ -187,11 +187,11 @@ const renderSimpleBlock = (block) => {
         case 'paragraph':
             return <p><Text text={value.rich_text} /></p>;
         case 'heading_1':
-            return <h1 className="text-2xl font-bold mt-4 mb-2"><Text text={value.rich_text} /></h1>;
+            return <h1 className="text-3xl font-bold mt-4 mb-2"><Text text={value.rich_text} /></h1>;
         case 'heading_2':
-            return <h2 className="text-xl font-bold mt-3 mb-2"><Text text={value.rich_text} /></h2>;
+            return <h2 className="text-2xl font-bold mt-3 mb-2"><Text text={value.rich_text} /></h2>;
         case 'heading_3':
-            return <h3 className="text-lg font-bold mt-2 mb-1"><Text text={value.rich_text} /></h3>;
+            return <h3 className="text-xl font-bold mt-2 mb-1"><Text text={value.rich_text} /></h3>;
         case 'bulleted_list_item':
             return <li className="list-disc ml-4"><Text text={value.rich_text} /></li>;
         case 'numbered_list_item':
@@ -384,7 +384,7 @@ const SermonPresentation = ({ sermon, children }) => {
                             {/* Background: Opaque at Top -> Transparent at Bottom */}
                             <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-75% to-[#F4F3EF]/0 z-0" />
 
-                            <h1 className="text-3xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-10">
+                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-6 pb-10">
                                 {sermon.title}
                             </h1>
                         </div>
@@ -407,18 +407,18 @@ const SermonPresentation = ({ sermon, children }) => {
                                         <div className="px-6 py-12">
                                             {/* Section Header: Number + Heading */}
                                             <div className="flex flex-row items-start pt-4 gap-4 mb-12">
-                                                <span className="text-6xl font-bold font-yisunshin text-[#2A4458] leading-none">
+                                                <span className="text-7xl font-bold font-yisunshin text-[#2A4458] leading-none">
                                                     {String(index + 1).padStart(2, '0')}
                                                 </span>
                                                 {section.heading && (
-                                                    <h2 className="text-xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1">
+                                                    <h2 className="text-2xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1">
                                                         {section.heading}
                                                     </h2>
                                                 )}
                                             </div>
 
                                             {/* Body Text */}
-                                            <div className="text-lg leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12">
+                                            <div className="text-xl leading-relaxed text-gray-600 space-y-6 break-keep font-light font-korean mb-12">
                                                 {section.content.map(block => (
                                                     <div key={block.id}>{renderSimpleBlock(block)}</div>
                                                 ))}
@@ -433,10 +433,10 @@ const SermonPresentation = ({ sermon, children }) => {
                                             <div className="space-y-8 pb-12">
                                                 {section.verses?.map((verse, idx) => (
                                                     <div key={idx} className="bg-transparent">
-                                                        <p className="text-lg leading-relaxed text-gray-600 break-keep font-light font-korean mb-2">
+                                                        <p className="text-xl leading-relaxed text-gray-600 break-keep font-light font-korean mb-2">
                                                             {verse.text}
                                                         </p>
-                                                        <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
+                                                        <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
                                                             {verse.reference}
                                                         </p>
                                                     </div>
@@ -449,7 +449,7 @@ const SermonPresentation = ({ sermon, children }) => {
                         </div>
 
                         {/* C. Footer (Snap Item 2) */}
-                        <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-20">
+                        <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50">
                             <div ref={footerRef}>
                                 {children}
                             </div>
