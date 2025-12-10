@@ -483,7 +483,7 @@ const Section = ({ title, subtitle, children, index, setActiveSection })=>{
         className: "h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-24 border-b border-gray-200 last:border-0 py-16 sm:py-20 md:py-24 pt-[calc(6rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].h2, {
-                className: "font-sans font-bold text-3xl sm:text-4xl md:text-6xl mb-8 sm:mb-12 md:mb-16 leading-tight text-[#05121C] uppercase tracking-tight",
+                className: "font-sans font-bold text-4xl sm:text-4xl md:text-6xl mb-8 sm:mb-12 md:mb-16 leading-tight text-[#05121C] uppercase tracking-tight",
                 initial: {
                     opacity: 0,
                     y: 100,
@@ -509,7 +509,7 @@ const Section = ({ title, subtitle, children, index, setActiveSection })=>{
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                className: "text-lg sm:text-xl md:text-2xl text-[#05121C] leading-relaxed sm:leading-loose space-y-4 sm:space-y-6 md:space-y-8 max-w-xl font-light font-korean",
+                className: "text-xl sm:text-xl md:text-2xl text-[#05121C] leading-relaxed sm:leading-loose space-y-4 sm:space-y-6 md:space-y-8 max-w-xl font-light font-korean",
                 initial: {
                     opacity: 0,
                     y: 100,
@@ -565,7 +565,7 @@ const Section = ({ title, subtitle, children, index, setActiveSection })=>{
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "font-sans font-bold text-xs sm:text-sm tracking-wide text-[#2A4458]",
+                        className: "font-sans font-bold text-sm sm:text-sm tracking-wide text-[#2A4458]",
                         children: subtitle
                     }, void 0, false, {
                         fileName: "[project]/src/components/LeftPanel.jsx",
@@ -631,7 +631,7 @@ const LeftPanel = ({ setActiveSection })=>{
                                 duration: 1.5
                             },
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                className: "font-sans font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] tracking-tighter text-[#05121C] uppercase",
+                                className: "font-sans font-bold text-5xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] tracking-tighter text-[#05121C] uppercase",
                                 children: [
                                     "In the Word,",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
@@ -668,7 +668,7 @@ const LeftPanel = ({ setActiveSection })=>{
                                 delay: 0.4
                             },
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "space-y-3 sm:space-y-4 md:space-y-6 text-lg sm:text-xl md:text-2xl font-light text-[#05121C] leading-relaxed font-korean text-right max-w-md",
+                                className: "space-y-3 sm:space-y-4 md:space-y-6 text-xl sm:text-xl md:text-2xl font-light text-[#05121C] leading-relaxed font-korean text-right max-w-md",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         children: "말씀 안에서,"
