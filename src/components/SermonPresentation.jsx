@@ -283,72 +283,14 @@ const SermonPresentation = ({ sermon, children }) => {
     // B. Mobile Logic (Shared Vertical Scroll + Horizontal Swipe)
     // ------------------------------------------------------------------
     const [currentMobileSection, setCurrentMobileSection] = useState(0);
-    const [snapState, setSnapState] = useState('FREE'); // 'FREE', 'CONTENT_SNAP', 'FOOTER_SNAP'
 
-    // Refs for Snapping & Measuring
+    // Refs
     const mainScrollRef = useRef(null);      // The main vertical scroll container
     const contentWrapperRef = useRef(null);  // Wraps the horizontal slider (Content area)
     const stickyTitleRef = useRef(null);     // The fixed title header
 
-    const isScrollingRef = useRef(false);
-    const snapTimeoutRef = useRef(null);
-
-    // [Mobile] Scroll Handler (Debounced Snap Check)
-    const handleScroll = () => {
-        isScrollingRef.current = true;
-        if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
-
-        snapTimeoutRef.current = setTimeout(() => {
-            isScrollingRef.current = false;
-            handleSnapCheck();
-        }, 150);
-    };
-
-    // [Mobile] 2-Step Snap Logic
-    // 1. Content Snap: Bottom of content aligns with Viewport Bottom
-    // 2. Footer Snap: Bottom of Footer aligns with Viewport Bottom
-    const handleSnapCheck = () => {
-        const container = mainScrollRef.current;
-        const content = contentWrapperRef.current;
-        const footer = footerRef.current;
-
-        if (!container || !content || !footer) return;
-
-        const scrollTop = container.scrollTop;
-        const viewportHeight = container.clientHeight;
-        const contentHeight = content.offsetHeight;
-        const titleHeight = stickyTitleRef.current ? stickyTitleRef.current.offsetHeight : 0;
-
-        // Calculate Snap Targets
-        const contentBottomOffset = titleHeight + contentHeight - viewportHeight;
-        const footerBottomOffset = container.scrollHeight - viewportHeight;
-        const threshold = 50;
-
-        // Check Proximity
-        if (Math.abs(scrollTop - contentBottomOffset) < threshold) {
-            container.scrollTo({ top: contentBottomOffset, behavior: 'smooth' });
-            setSnapState('CONTENT_SNAP');
-        } else if (Math.abs(scrollTop - footerBottomOffset) < threshold) {
-            container.scrollTo({ top: footerBottomOffset, behavior: 'smooth' });
-            setSnapState('FOOTER_SNAP');
-        } else {
-            setSnapState('FREE');
-        }
-    };
-
-    // [Mobile] Reset Snap State on Section Change
-    // Re-measure after a brief delay to allow layout stability
-    useEffect(() => {
-        setSnapState('FREE');
-        const timer = setTimeout(handleSnapCheck, 50);
-        return () => clearTimeout(timer);
-    }, [currentMobileSection]);
-
-    // [Mobile] Initial Resize Listener
-    useEffect(() => {
-        window.addEventListener('resize', handleSnapCheck);
-        return () => window.removeEventListener('resize', handleSnapCheck);
-    }, []);
+    // Note: Vertical snapping logic has been removed for natural scrolling physics.
+    // The previous refs are kept if needed for other measurements (e.g. FloatingControls visibility).
 
 
     // ------------------------------------------------------------------
@@ -374,8 +316,6 @@ const SermonPresentation = ({ sermon, children }) => {
                 <div
                     ref={mainScrollRef}
                     className="flex-1 overflow-y-auto bg-[#F4F3EF] relative scroll-smooth"
-                    onScroll={handleScroll}
-                    onTouchEnd={() => setTimeout(handleSnapCheck, 50)}
                 >
                     <div className="min-h-full flex flex-col">
 
