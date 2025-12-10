@@ -93,6 +93,12 @@
       "regex": "^/sermons(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/sermons(?:/)?$"
+    },
+    {
+      "page": "/test",
+      "regex": "^/test(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/test(?:/)?$"
     }
   ],
   "dataRoutes": [],

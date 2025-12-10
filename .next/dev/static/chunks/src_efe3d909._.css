@@ -1254,6 +1254,10 @@ img, video {
   --tw-gradient-via-position: 75%;
 }
 
+.via-80\% {
+  --tw-gradient-via-position: 80%;
+}
+
 .to-\[\#F4F3EF\]\/0 {
   --tw-gradient-to: #f4f3ef00 var(--tw-gradient-to-position);
 }
@@ -1468,6 +1472,14 @@ img, video {
 
 .pb-4 {
   padding-bottom: 1rem;
+}
+
+.pb-24 {
+  padding-bottom: 6rem;
+}
+
+.pb-16 {
+  padding-bottom: 4rem;
 }
 
 .text-left {

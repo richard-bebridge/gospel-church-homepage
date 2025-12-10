@@ -1,0 +1,5 @@
+:HL["/_next/static/chunks/f15643f6a178e87a.css","style"]
+:HC["/",""]
+:HL["https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap","style"]
+:HL["https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css","style",{"crossOrigin":"anonymous"}]
+0:{"buildId":"oSU10mmYeu-XsJgEEZIJR","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"test","paramType":null,"paramKey":"test","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
