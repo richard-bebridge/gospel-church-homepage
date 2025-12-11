@@ -138,9 +138,9 @@ export const getVerse = (book, chapter, verse) => {
 
 export const extractBibleTags = (text) => {
     if (!text) return [];
-    // Regex for #BookChapter:Verse (e.g., #신명기10:1 or #신명기 10:1)
-    // Assumes Book is Korean characters
-    const regex = /#([가-힣]+)\s*(\d+):(\d+)/g;
+    // Regex for #BookChapter:Verse or (BookChapter:Verse)
+    // Matches: #신명기10:1, #신명기 10:1, (신명기10:1), (신명기 10:1)
+    const regex = /(?:#|\()([가-힣]+)\s*(\d+):(\d+)(?:\))?/g;
     const matches = [];
     let match;
 

@@ -4,16 +4,17 @@ const notion = new Client({
     auth: process.env.NOTION_API_KEY,
 });
 
-export const getDatabase = async (databaseId) => {
+export const getDatabase = async (databaseId, options = {}) => {
     try {
         const response = await notion.databases.query({
             database_id: databaseId,
-            sorts: [
+            sorts: options.sorts || [
                 {
                     timestamp: 'created_time',
                     direction: 'descending',
                 },
             ],
+            page_size: options.page_size,
         });
         return response.results;
     } catch (error) {

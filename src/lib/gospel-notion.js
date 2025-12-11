@@ -74,6 +74,40 @@ export async function getLatestGospelLetter() {
     }
 }
 
+/**
+ * Fetches a list of Gospel Letters.
+ * @param {number} limit
+ */
+export async function getGospelLetters(limit = 10) {
+    if (!NOTION_GOSPEL_DB_ID || !NOTION_API_KEY) return [];
+
+    try {
+        const response = await notion.databases.query({
+            database_id: NOTION_GOSPEL_DB_ID,
+            sorts: [
+                {
+                    property: 'Date',
+                    direction: 'descending',
+                },
+            ],
+            page_size: limit,
+        });
+
+        return response.results.map(page => {
+            const title = page.properties.Title?.title?.[0]?.plain_text || "Untitled";
+            const date = page.properties.Date?.date?.start || "";
+            return {
+                id: page.id,
+                title,
+                date,
+            };
+        });
+    } catch (error) {
+        console.error("Error fetching Gospel Letters:", error);
+        return [];
+    }
+}
+
 async function fetchBlocks(blockId) {
     const blocks = [];
     let cursor;

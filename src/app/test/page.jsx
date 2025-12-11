@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getDatabase, getBlocks } from '../../lib/notion';
 import { getVerse, extractBibleTags } from '../../lib/bible';
+import { getGospelLetters } from '../../lib/gospel-notion';
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -282,6 +283,7 @@ export default async function TestPage() {
 
     let page = null;
     let blocks = [];
+    let sermons = [];
     let mediaLinks = { youtube: "", audio: "" };
     let error = null;
     let debugLog = {
@@ -295,8 +297,18 @@ export default async function TestPage() {
     } else {
         try {
             // 1. Fetch the latest sermon from Content DB
-            const sermons = await getDatabase(databaseId);
+            // Fetching a batch to sort by Date explicitly in JS
+            sermons = await getDatabase(databaseId, {
+                page_size: 20
+            });
+
+            // Sort by Date Descending in JS
             if (sermons && sermons.length > 0) {
+                sermons.sort((a, b) => {
+                    const dateA = a.properties?.Date?.date?.start || a.created_time;
+                    const dateB = b.properties?.Date?.date?.start || b.created_time;
+                    return new Date(dateB) - new Date(dateA);
+                });
                 page = sermons[0];
                 blocks = await getBlocks(page.id);
 
@@ -406,6 +418,8 @@ export default async function TestPage() {
     const sections = groupSections(blocks);
 
 
+
+
     // 3. Prepare Data for Presentation
     const sermonData = {
         title: page.properties?.Name?.title?.[0]?.plain_text || "Untitled Sermon",
@@ -418,29 +432,98 @@ export default async function TestPage() {
         // DEBUG: Pass debug info to client
         debug: {
             sundayDbId: sundayDbId,
-            foundServicesCount: 0, // Will be updated if services are fetched
+            foundServicesCount: 0,
             matchingServiceId: null,
             matchReason: null
         }
     };
 
-    // Attempt to inject debug info if services were fetched
-    if (sundayDbId) {
-        try {
-            // Re-fetch to populate debug info (inefficient but safe for debugging)
-            // Actually, better to just log what we found during the process above
-            // Updating the object reference from the logic block would be cleaner refactor,
-            // but let's just log to console for now as requested.
-        } catch (e) { }
+    // --- MESSAGES SUMMARY DATA FETCHING ---
+    let messagesSummary = {
+        latestLetter: null,
+        olderLetters: [],
+        previousSermon: null,
+        olderSermons: []
+    };
+
+    try {
+        // 1. GOSPEL LETTERS
+        // Fetch top 4 letters (1 Latest for display + 3 for list)
+        const letters = await getGospelLetters(4);
+        if (letters && letters.length > 0) {
+            const latestLetterPage = letters[0];
+            // Fetch blocks for snippet
+            try {
+                const letterBlocks = await getBlocks(latestLetterPage.id);
+                // Simple snippet extraction: Find first paragraph logic or use flatten
+                const flatLetter = flattenBlocks(letterBlocks);
+                // Find first paragraph with content
+                const firstPara = flatLetter.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
+                const snippet = firstPara
+                    ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
+                    : "";
+
+                // For Letters, the "Latest" is the big one.
+                // The list should show the NEXT 3.
+                messagesSummary.latestLetter = {
+                    ...latestLetterPage,
+                    snippet: snippet
+                };
+                messagesSummary.olderLetters = letters.slice(1); // indices 1,2,3 (max 3 items)
+            } catch (e) {
+                console.error("Error fetching letter details", e);
+                // Fallback without snippet
+                messagesSummary.latestLetter = latestLetterPage;
+                messagesSummary.olderLetters = letters.slice(1);
+            }
+        }
+
+        // 2. SERMONS (Previous + Older)
+        if (sermons && sermons.length > 0) {
+            // Filter out current sermon by ID to avoid duplication
+            // page.id is the current sermon ID
+            const otherSermons = sermons.filter(s => s.id !== page.id);
+
+            if (otherSermons.length > 0) {
+                const prevSermonPage = otherSermons[0];
+                try {
+                    const prevSermonBlocks = await getBlocks(prevSermonPage.id);
+                    const flatSermon = flattenBlocks(prevSermonBlocks);
+                    const firstPara = flatSermon.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
+                    const snippet = firstPara
+                        ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
+                        : "";
+
+                    messagesSummary.previousSermon = {
+                        id: prevSermonPage.id,
+                        title: prevSermonPage.properties?.Name?.title?.[0]?.plain_text || "Untitled",
+                        date: prevSermonPage.properties?.Date?.date?.start || "",
+                        snippet: snippet
+                    };
+                } catch (e) {
+                    console.error("Error fetching sermon details", e);
+                }
+
+                // Older sermons: We want 3 items in the list.
+                // otherSermons[0] is used for "previousSermon" (Big).
+                // So we need indices 1, 2, 3.
+                // slice(1, 4) gives indices 1, 2, 3.
+                messagesSummary.olderSermons = otherSermons.slice(1, 4).map(s => ({
+                    id: s.id,
+                    title: s.properties?.Name?.title?.[0]?.plain_text || "Untitled",
+                    date: s.properties?.Date?.date?.start || ""
+                }));
+            }
+        }
+    } catch (e) {
+        console.error("Error fetching summary data", e);
     }
-
-
 
     return (
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
             <Header />
             <main className="flex-grow pt-20">
-                <SermonPresentation sermon={sermonData}>
+                <SermonPresentation sermon={sermonData} messagesSummary={messagesSummary}>
                     <Footer />
                 </SermonPresentation>
             </main>

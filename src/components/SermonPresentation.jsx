@@ -11,12 +11,14 @@ import FloatingMediaControls from './sermon/FloatingMediaControls';
 import NotionRenderer from './sermon/NotionRenderer';
 
 // Hooks
+import MessagesSummarySection from './messages/MessagesSummarySection';
 import { useFontScale } from '../hooks/sermon/useFontScale';
 import { useDesktopObserver } from '../hooks/sermon/useDesktopObserver';
 import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
 
-const SermonPresentation = ({ sermon, children }) => {
+const SermonPresentation = ({ sermon, children, messagesSummary }) => {
+    console.log("DEBUG: SermonPresentation messagesSummary", messagesSummary);
     // ------------------------------------------------------------------
     // Shared Resources & Hooks
     // ------------------------------------------------------------------
@@ -65,7 +67,7 @@ const SermonPresentation = ({ sermon, children }) => {
                         {/* We use -mt-4 to pull it up 1rem so it sticks immediately at top-16 (4rem) */}
                         <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 -mt-4 pointer-events-none">
                             <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
-                            <span className="relative z-10 text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-2 block pt-8 pointer-events-auto">
+                            <span className="relative z-10 text-[#2A4458] font-sans font-bold text-xs tracking-widest uppercase mb-2 block pt-8 pointer-events-auto">
                                 THIS WEEK'S SERMON
                             </span>
                             <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto">
@@ -175,15 +177,15 @@ const SermonPresentation = ({ sermon, children }) => {
                     {/* Left/Right Container */}
                     <div className="sticky top-0 h-[calc(100vh-80px)] w-full overflow-hidden pointer-events-none z-10">
                         {/* Right Panel: Verses */}
-                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-start items-center pt-96 overflow-hidden z-0">
+                        <div className={`absolute right-0 top-0 w-1/2 h-full flex flex-col justify-start items-center pt-96 overflow-hidden z-0 transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                             <AnimatePresence mode="wait">
                                 {desktopVerses.length > 0 ? (
                                     <motion.div
                                         key={activeSection}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        exit={{ opacity: 0, y: -50 }}
+                                        transition={{ duration: 0.3, ease: "easeOut" }}
                                         className="w-full max-w-[60%] space-y-8 pointer-events-auto"
                                         style={{ marginTop: verseAlignmentOffset }}
                                     >
@@ -222,7 +224,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                 </h1>
                             </div>
 
-                            <div className="absolute top-[384px] left-12 overflow-hidden h-32 w-40 flex items-start pl-12">
+                            <div className={`hidden min-[1450px]:flex absolute top-[384px] left-12 overflow-hidden h-32 w-40 items-start pl-12 transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 <AnimatePresence mode="popLayout" custom={desktopDirection}>
                                     <motion.span
                                         key={activeSection}
@@ -234,7 +236,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                         transition={{ duration: 0.4, ease: "easeInOut" }}
                                         className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
                                     >
-                                        {String(activeSection + 1).padStart(2, '0')}
+                                        {String(Math.min(activeSection + 1, sermon.sections.length)).padStart(2, '0')}
                                     </motion.span>
                                 </AnimatePresence>
                             </div>
@@ -244,7 +246,6 @@ const SermonPresentation = ({ sermon, children }) => {
                     {/* Scrollable Content */}
                     <div className="relative z-20 w-full pointer-events-none">
                         <div className="w-1/2 relative pointer-events-auto -mt-[calc(100vh-80px)]">
-                            <div className="h-[160px] w-full shrink-0" />
                             {sermon.sections.map((section, index) => (
                                 <section
                                     key={index}
@@ -265,12 +266,31 @@ const SermonPresentation = ({ sermon, children }) => {
                                     </div>
                                 </section>
                             ))}
+
+
+
                             <div className="h-[20vh] w-full shrink-0" />
                         </div>
                     </div>
+
+                    {/* Messages Summary (Desktop) - Inside Long BG Wrapper to keep Title Sticky */}
+                    {messagesSummary && (
+                        <div
+                            ref={el => desktopSectionsRef.current[sermon.sections.length] = el}
+                            className="snap-start relative z-30"
+                            style={{ scrollSnapStop: 'always', scrollMarginTop: '0px' }}
+                        >
+                            <MessagesSummarySection
+                                seriesTitle={sermon.title}
+                                {...messagesSummary}
+                            />
+                        </div>
+                    )}
                 </div>
 
-                <div ref={footerRef} className="relative z-30 w-full snap-start">
+
+
+                <div ref={footerRef} className="relative z-30 w-full">
                     {children}
                 </div>
             </div>
