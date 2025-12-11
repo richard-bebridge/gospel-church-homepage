@@ -5,24 +5,6 @@ import { getDatabase, getBlocks } from '../../lib/notion';
 import { getGospelLetters } from '../../lib/gospel-notion';
 import SermonPresentation from '../../components/SermonPresentation';
 import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-utils';
-// Note: NotionBlockRenderer is not used directly here anymore as handling is done via SermonPresentation -> but wait, SermonPresentation uses "sections" which are pre-processed. 
-// Ah, page.jsx does NOT use renderBlock directly anymore?
-// Let's check: renderBlock was used in `src/app/test/page.jsx` ONLY inside the `renderBlock` function definition, but that function was NEVER CALLED in the main `TestPage` component logic for the SERMON view.
-// Wait, looking at the previous file content:
-// `const sections = groupSections(blocks);`
-// `sections` contains blocks. `SermonPresentation` receives `sections`.
-// `SermonPresentation.jsx` likely renders these blocks.
-// Let's check `SermonPresentation.jsx` to see if IT uses `NotionBlockRenderer` or if it implements its own rendering.
-// If `SermonPresentation` implements its own rendering, then `renderBlock` in `page.jsx` was DEAD CODE.
-// Let's verify `SermonPresentation.jsx` content before wrapping up.
-// Actually, `SermonPresentation` almost certainly iterates over `section.content`.
-// If `page.jsx` had `renderBlock` but didn't use it, then removing it is correct.
-// The previous `page.jsx` had `renderBlock` defined but I don't see it being used in `TestPage` (except recursively in itself).
-// `TestPage` returns `<SermonPresentation ... />`.
-// It does NOT render blocks directly.
-// So `renderBlock` and `Text` were indeed Unused or Dead Code in `page.jsx` (or only used if `SermonPresentation` wasn't there).
-// So I can safely remove them.
-// I will just Refactor `page.jsx` to be clean.
 
 // Revalidate every hour
 export const revalidate = 3600;
