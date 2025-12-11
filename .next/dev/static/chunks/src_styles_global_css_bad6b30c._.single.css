@@ -438,6 +438,14 @@ img, video {
   top: 18rem;
 }
 
+.left-4 {
+  left: 1rem;
+}
+
+.left-6 {
+  left: 1.5rem;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -1626,6 +1634,10 @@ img, video {
 
 .pt-44 {
   padding-top: 11rem;
+}
+
+.pl-56 {
+  padding-left: 14rem;
 }
 
 .text-left {

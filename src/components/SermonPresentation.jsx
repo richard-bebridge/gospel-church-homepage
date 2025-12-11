@@ -172,9 +172,10 @@ const SermonPresentation = ({ sermon, children }) => {
                 <div className="relative w-full bg-[#F4F3EF]">
 
                     {/* Left/Right Container */}
+                    {/* Left/Right Container */}
                     <div className="sticky top-0 h-[calc(100vh-80px)] w-full overflow-hidden pointer-events-none z-10">
                         {/* Right Panel: Verses */}
-                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-start items-center pr-16 pt-96 overflow-hidden z-0">
+                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-start items-center pt-96 overflow-hidden z-0">
                             <AnimatePresence mode="wait">
                                 {desktopVerses.length > 0 ? (
                                     <motion.div
@@ -183,7 +184,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}
                                         transition={{ duration: 0.5, ease: "easeInOut" }}
-                                        className="w-4/5 max-w-lg space-y-8 pointer-events-auto"
+                                        className="w-full max-w-[60%] space-y-8 pointer-events-auto"
                                         style={{ marginTop: verseAlignmentOffset }}
                                     >
                                         {desktopVerses.map((verse, idx) => (
@@ -211,15 +212,14 @@ const SermonPresentation = ({ sermon, children }) => {
                         </div>
 
                         {/* Left Panel: Title & Number */}
-                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200">
-                            <div className="absolute top-12 left-44 w-full p-12">
+                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-24">
+                            <div className="w-full max-w-[60%]">
                                 <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
                                     THIS WEEK'S SERMON
                                 </span>
-                                <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep max-w-md md:max-w-lg">
+                                <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep">
                                     {sermon.title}
                                 </h1>
-
                             </div>
 
                             <div className="absolute top-[384px] left-12 overflow-hidden h-32 w-40 flex items-start pl-12">
@@ -232,7 +232,7 @@ const SermonPresentation = ({ sermon, children }) => {
                                         animate="center"
                                         exit="exit"
                                         transition={{ duration: 0.4, ease: "easeInOut" }}
-                                        className="text-8xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
+                                        className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
                                     >
                                         {String(activeSection + 1).padStart(2, '0')}
                                     </motion.span>
@@ -249,21 +249,18 @@ const SermonPresentation = ({ sermon, children }) => {
                                 <section
                                     key={index}
                                     ref={el => desktopSectionsRef.current[index] = el}
-                                    className="min-h-[70vh] snap-start mb-24 px-12 flex flex-row items-start justify-start pt-96"
+                                    className="min-h-[70vh] snap-start mb-24 flex flex-col items-center pt-96"
                                 >
-                                    <div className="flex flex-row items-start w-full max-w-2xl">
-                                        <div className="w-32 shrink-0 pr-8 opacity-0">...</div>
-                                        <div className="flex-1 pl-12">
-                                            {section.heading && (
-                                                <h2 className="text-2xl font-bold text-[#05121C] break-keep font-pretendard leading-tight mb-8 pt-2">
-                                                    {section.heading}
-                                                </h2>
-                                            )}
-                                            <div className={desktopBodyClass}>
-                                                {section.content.map(block => (
-                                                    <div key={block.id}><NotionRenderer block={block} /></div>
-                                                ))}
-                                            </div>
+                                    <div className="w-full max-w-[60%]">
+                                        {section.heading && (
+                                            <h2 className="text-2xl font-bold text-[#05121C] break-keep font-pretendard leading-tight mb-8 pt-2">
+                                                {section.heading}
+                                            </h2>
+                                        )}
+                                        <div className={desktopBodyClass}>
+                                            {section.content.map(block => (
+                                                <div key={block.id}><NotionRenderer block={block} /></div>
+                                            ))}
                                         </div>
                                     </div>
                                 </section>
