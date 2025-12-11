@@ -43,6 +43,7 @@ const Header = () => {
         { label: 'BulletinDB', href: '/bulletindb' },
         { label: 'Letters', href: '/letters' },
         { label: 'Print', href: '/print' },
+        { label: 'test2', href: '/test2' },
         { label: 'Test', href: '/test' },
         { label: 'About', href: '#' },
         { label: 'Sermons', href: '/sermons' },

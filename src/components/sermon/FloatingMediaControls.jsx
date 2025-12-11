@@ -49,8 +49,11 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
         return () => observer.disconnect();
     }, [footerRef]);
 
-    // Render Guard
-    if ((!audioUrl && !youtubeUrl) || isFooterVisible) return null;
+    // Render Guard: Return null only if strictly NO controls are usable.
+    // We assume if this component is rendered, we might want font controls.
+    // If you want to hide it completely when no media, pass a prop or handle parent logic.
+    // But for Gospel Letter, we want Font controls only.
+    if (isFooterVisible) return null;
 
     // Animation Variants
     const controlsVariants = {

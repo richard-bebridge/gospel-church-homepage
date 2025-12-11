@@ -10,7 +10,8 @@
     "[project]/src/app/print/page": [],
     "[project]/src/app/sermons/[id]/page": [],
     "[project]/src/app/sermons/page": [],
-    "[project]/src/app/test/page": []
+    "[project]/src/app/test/page": [],
+    "[project]/src/app/test2/page": []
   },
   "appUsingSizeAdjust": false,
   "pages": {},

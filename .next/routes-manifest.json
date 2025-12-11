@@ -99,6 +99,12 @@
       "regex": "^/test(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/test(?:/)?$"
+    },
+    {
+      "page": "/test2",
+      "regex": "^/test2(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/test2(?:/)?$"
     }
   ],
   "dataRoutes": [],

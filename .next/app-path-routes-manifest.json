@@ -10,5 +10,6 @@
   "/print/page": "/print",
   "/sermons/[id]/page": "/sermons/[id]",
   "/sermons/page": "/sermons",
-  "/test/page": "/test"
+  "/test/page": "/test",
+  "/test2/page": "/test2"
 }

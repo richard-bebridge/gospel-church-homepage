@@ -10,5 +10,6 @@
   "/print/page": "app/print/page.js",
   "/sermons/[id]/page": "app/sermons/[id]/page.js",
   "/sermons/page": "app/sermons/page.js",
-  "/test/page": "app/test/page.js"
+  "/test/page": "app/test/page.js",
+  "/test2/page": "app/test2/page.js"
 }

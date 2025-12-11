@@ -65,7 +65,10 @@ const SermonPresentation = ({ sermon, children }) => {
                         {/* We use -mt-4 to pull it up 1rem so it sticks immediately at top-16 (4rem) */}
                         <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 -mt-4 pointer-events-none">
                             <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
-                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pt-8 pb-12 pointer-events-auto">
+                            <span className="relative z-10 text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-2 block pt-8 pointer-events-auto">
+                                THIS WEEK'S SERMON
+                            </span>
+                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto">
                                 {sermon.title}
                             </h1>
                         </div>
@@ -210,6 +213,9 @@ const SermonPresentation = ({ sermon, children }) => {
                         {/* Left Panel: Title & Number */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200">
                             <div className="absolute top-12 left-44 w-full p-12">
+                                <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
+                                    THIS WEEK'S SERMON
+                                </span>
                                 <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep max-w-md md:max-w-lg">
                                     {sermon.title}
                                 </h1>
