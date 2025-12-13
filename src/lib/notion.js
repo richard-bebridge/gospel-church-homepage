@@ -29,15 +29,26 @@ export const getPage = async (pageId) => {
 };
 
 export const getBlocks = async (blockId) => {
-    const response = await notion.blocks.children.list({
-        block_id: blockId,
-        page_size: 50,
-    });
+    let results = [];
+    let cursor = undefined;
 
-    const blocks = response.results;
+    while (true) {
+        const response = await notion.blocks.children.list({
+            block_id: blockId,
+            page_size: 100, // Max page size
+            start_cursor: cursor,
+        });
+
+        results = [...results, ...response.results];
+
+        if (!response.has_more) {
+            break;
+        }
+        cursor = response.next_cursor;
+    }
 
     // Recursively fetch children for blocks that have them
-    const blocksWithChildren = await Promise.all(blocks.map(async (block) => {
+    const blocksWithChildren = await Promise.all(results.map(async (block) => {
         if (block.has_children) {
             const children = await getBlocks(block.id);
             return { ...block, children };

@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, X, Youtube, AudioLines, Pause } from 'lucide-react';
+import { Plus, X, Youtube, AudioLines, Pause, Share2 } from 'lucide-react';
 
-const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onToggleFontScale }) => {
+const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onToggleFontScale, shareTitle }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFooterVisible, setIsFooterVisible] = useState(false);
@@ -48,6 +48,29 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
         observer.observe(footer);
         return () => observer.disconnect();
     }, [footerRef]);
+
+    // Share Handler
+    const handleShare = async () => {
+        const url = window.location.href;
+        const title = shareTitle || document.title;
+        const text = 'Gospel Church';
+
+        if (navigator.share) {
+            try {
+                await navigator.share({ title, text, url });
+            } catch (error) {
+                console.log('Error sharing:', error);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(url);
+                // Simple feedback for desktop (could be upgraded to a toast later)
+                alert('URL이 복사되었습니다.');
+            } catch (err) {
+                console.error('Failed to copy content: ', err);
+            }
+        }
+    };
 
     // Render Guard: Return null only if strictly NO controls are usable.
     // We assume if this component is rendered, we might want font controls.
@@ -117,6 +140,14 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                                     <Youtube size={18} />
                                 </button>
                             )}
+
+                            {/* Share Button */}
+                            <button
+                                onClick={handleShare}
+                                className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF]"
+                            >
+                                <Share2 size={18} />
+                            </button>
                         </motion.div>
                     )}
                 </AnimatePresence>

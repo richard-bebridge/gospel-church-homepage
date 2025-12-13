@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getDatabase, getBlocks } from '../../lib/notion';
-import { getGospelLetters } from '../../lib/gospel-notion';
+import { getMessagesSummary } from '../../lib/data/getMessagesSummary'; // Uses the new utility
 import SermonPresentation from '../../components/SermonPresentation';
 import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-utils';
 
@@ -15,7 +15,6 @@ export default async function TestPage() {
 
     let page = null;
     let blocks = [];
-    let sermons = [];
     let mediaLinks = { youtube: "", audio: "" };
     let error = null;
 
@@ -24,7 +23,7 @@ export default async function TestPage() {
     } else {
         try {
             // 1. Fetch the latest sermon from Content DB
-            sermons = await getDatabase(databaseId, {
+            const sermons = await getDatabase(databaseId, {
                 page_size: 20
             });
 
@@ -124,77 +123,9 @@ export default async function TestPage() {
         sections: sections,
     };
 
-    // --- MESSAGES SUMMARY DATA FETCHING ---
-    let messagesSummary = {
-        latestLetter: null,
-        olderLetters: [],
-        previousSermon: null,
-        olderSermons: []
-    };
-
-    try {
-        // 1. GOSPEL LETTERS
-        // Fetch top 4 letters (1 Latest for display + 3 for list)
-        const letters = await getGospelLetters(4);
-        if (letters && letters.length > 0) {
-            const latestLetterPage = letters[0];
-            // Fetch blocks for snippet
-            try {
-                const letterBlocks = await getBlocks(latestLetterPage.id);
-                const flatLetter = flattenBlocks(letterBlocks);
-                const firstPara = flatLetter.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
-                const snippet = firstPara
-                    ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
-                    : "";
-
-                messagesSummary.latestLetter = {
-                    ...latestLetterPage,
-                    snippet: snippet
-                };
-                messagesSummary.olderLetters = letters.slice(1);
-            } catch (e) {
-                console.error("Error fetching letter details", e);
-                messagesSummary.latestLetter = latestLetterPage;
-                messagesSummary.olderLetters = letters.slice(1);
-            }
-        }
-
-        // 2. SERMONS (Previous + Older)
-        if (sermons && sermons.length > 0) {
-            const otherSermons = sermons.filter(s => s.id !== page.id);
-
-            if (otherSermons.length > 0) {
-                const prevSermonPage = otherSermons[0];
-                try {
-                    const prevSermonBlocks = await getBlocks(prevSermonPage.id);
-                    const flatSermon = flattenBlocks(prevSermonBlocks);
-                    const firstPara = flatSermon.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
-                    const snippet = firstPara
-                        ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
-                        : "";
-
-                    messagesSummary.previousSermon = {
-                        id: prevSermonPage.id,
-                        title: prevSermonPage.properties?.Name?.title?.[0]?.plain_text || "Untitled",
-                        date: prevSermonPage.properties?.Date?.date?.start || "",
-                        snippet: snippet
-                    };
-                } catch (e) {
-                    console.error("Error fetching sermon details", e);
-                }
-
-                // Older sermons: We want 3 items in the list.
-                // slice(1, 4) gives indices 1, 2, 3 (max 3 items).
-                messagesSummary.olderSermons = otherSermons.slice(1, 4).map(s => ({
-                    id: s.id,
-                    title: s.properties?.Name?.title?.[0]?.plain_text || "Untitled",
-                    date: s.properties?.Date?.date?.start || ""
-                }));
-            }
-        }
-    } catch (e) {
-        console.error("Error fetching summary data", e);
-    }
+    // --- REFACTORED: MESSAGES SUMMARY DATA FETCHING ---
+    // Pass current page ID to exclude from "older messages"
+    const messagesSummary = await getMessagesSummary(page.id, databaseId);
 
     return (
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col">

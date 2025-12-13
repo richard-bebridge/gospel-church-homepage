@@ -221,6 +221,7 @@ const GospelLetterPresentation = ({ letter }) => {
                 footerRef={footerRef}
                 fontScale={fontScale}
                 onToggleFontScale={toggleFontScale}
+                shareTitle={title}
             />
         </div>
     );

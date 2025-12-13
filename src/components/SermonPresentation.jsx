@@ -18,7 +18,7 @@ import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
 
 const SermonPresentation = ({ sermon, children, messagesSummary }) => {
-    console.log("DEBUG: SermonPresentation messagesSummary", messagesSummary);
+
     // ------------------------------------------------------------------
     // Shared Resources & Hooks
     // ------------------------------------------------------------------
@@ -65,12 +65,12 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                         {/* A. Sticky Sermon Title */}
                         {/* Header is fixed h-16 (4rem). Page has pt-20 (5rem). Gap is 1rem. */}
                         {/* We use -mt-4 to pull it up 1rem so it sticks immediately at top-16 (4rem) */}
-                        <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 -mt-4 pointer-events-none">
+                        <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 pt-4 pointer-events-none">
                             <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
-                            <span className="relative z-10 text-[#2A4458] font-sans font-bold text-xs tracking-widest uppercase mb-2 block pt-8 pointer-events-auto">
+                            {/* <span className="relative z-10 text-[#2A4458] font-sans font-bold text-xs tracking-widest uppercase mb-2 block pt-8 pointer-events-auto">
                                 THIS WEEK'S SERMON
-                            </span>
-                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto">
+                            </span> */}
+                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto line-clamp-3">
                                 {sermon.title}
                             </h1>
                         </div>
@@ -216,10 +216,10 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                         {/* Left Panel: Title & Number */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-24">
                             <div className="w-full max-w-[60%]">
-                                <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
+                                {/* <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
                                     THIS WEEK'S SERMON
-                                </span>
-                                <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep">
+                                </span> */}
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3">
                                     {sermon.title}
                                 </h1>
                             </div>
@@ -302,6 +302,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                 footerRef={footerRef}
                 fontScale={fontScale}
                 onToggleFontScale={toggleFontScale}
+                shareTitle={sermon.title}
             />
         </>
     );

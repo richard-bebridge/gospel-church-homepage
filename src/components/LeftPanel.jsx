@@ -15,7 +15,7 @@ const Section = ({ title, subtitle, children, index, setActiveSection }) => {
     }, [isInView, index, setActiveSection]);
 
     return (
-        <div ref={ref} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-24 border-b border-gray-200 last:border-0 py-16 sm:py-20 md:py-24 pt-[calc(6rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
+        <div ref={ref} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:pl-[10vw] lg:pr-24 border-b border-gray-200 last:border-0 py-16 sm:py-20 md:py-24 pt-[calc(6rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
             {/* Title appears first */}
             <motion.h2
                 className="font-sans font-bold text-4xl sm:text-4xl md:text-6xl mb-8 sm:mb-12 md:mb-16 leading-tight text-[#05121C] uppercase tracking-tight"
@@ -67,7 +67,7 @@ const LeftPanel = ({ setActiveSection }) => {
         <div className="w-full lg:w-1/2 bg-[#F4F3EF]">
 
             {/* Hero Section - Side by Side Layout */}
-            <div ref={heroRef} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:px-24 py-16 sm:py-20 md:py-24 pt-[calc(8rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
+            <div ref={heroRef} className="h-screen min-h-[100dvh] snap-start flex flex-col justify-center px-6 sm:px-8 lg:pl-[10vw] lg:pr-24 py-16 sm:py-20 md:py-24 pt-[calc(8rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))]">
                 <div className="grid grid-cols-1 gap-6 sm:gap-8">
                     {/* English Title - appears first */}
                     <motion.div
@@ -75,7 +75,7 @@ const LeftPanel = ({ setActiveSection }) => {
                         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                         transition={{ duration: 1.5 }}
                     >
-                        <h1 className="font-sans font-bold text-5xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.9] tracking-tighter text-[#05121C] uppercase">
+                        <h1 className="font-sans font-bold text-5xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl leading-[0.9] tracking-tighter text-[#05121C] uppercase">
                             In the Word,<br />
                             We Rise.
                         </h1>

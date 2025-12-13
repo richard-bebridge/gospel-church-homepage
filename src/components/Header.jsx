@@ -38,7 +38,6 @@ const Header = () => {
     };
 
     const menuItems = [
-        { label: 'Home', href: '/' },
         { label: 'Bulletin', href: '/bulletin' },
         { label: 'BulletinDB', href: '/bulletindb' },
         { label: 'Letters', href: '/letters' },
@@ -56,9 +55,9 @@ const Header = () => {
 
     return (
         <>
-            <header className="fixed top-0 left-0 w-full h-16 md:h-20 px-6 sm:px-8 lg:px-24 flex justify-between items-center bg-[#05121C] z-[110]">
+            <header className="fixed top-0 left-0 w-full h-16 md:h-20 px-6 sm:px-8 md:px-[10%] flex justify-between items-center bg-[#05121C] z-[110]">
                 {/* Logo - Lottie Animation */}
-                <div className="flex items-center gap-3">
+                <Link href="/" className="flex items-center gap-3">
                     <div className="h-8 md:h-14 w-auto" style={{ filter: 'brightness(0) invert(1)' }}>
                         <Lottie
                             lottieRef={lottieRef}
@@ -70,7 +69,7 @@ const Header = () => {
                         />
                     </div>
                     {/* <span className="hidden sm:block text-white font-sans font-bold text-sm md:text-base tracking-wider uppercase">Gospel Church</span> */}
-                </div>
+                </Link>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-6 lg:gap-8">
