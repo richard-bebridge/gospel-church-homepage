@@ -20,3 +20,11 @@ export const desktopVerseClasses = {
     normal: "text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 break-keep font-light font-korean",
     large: "text-base sm:text-lg md:text-xl leading-loose text-gray-700 break-keep font-light font-korean"
 };
+
+// Layout
+export const HEADER_HEIGHT = 80;
+
+// Gospel Letter Scroll Logic
+export const SCROLL_COOLDOWN_MS = 600;
+export const SCROLL_THRESHOLD_DELTA = 80;
+export const SCROLL_TRIGGER_MARGIN = '0px 0px 50% 0px'; // Triggers when breathing space enters

@@ -16,18 +16,9 @@ import { useFontScale } from '../hooks/sermon/useFontScale';
 import { useDesktopObserver } from '../hooks/sermon/useDesktopObserver';
 import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
+import { renderVerseWithStyledFirstWord } from '../lib/utils/textUtils';
 
-const renderVerseWithStyledFirstWord = (text) => {
-    if (!text) return null;
-    const parts = text.split(' ');
-    const first = parts[0];
-    const rest = parts.slice(1).join(' ');
-    return (
-        <>
-            <span className="font-medium text-[1.6em]">{first}</span>{' '}{rest}
-        </>
-    );
-};
+
 
 const SermonPresentation = ({ sermon, children, messagesSummary }) => {
 

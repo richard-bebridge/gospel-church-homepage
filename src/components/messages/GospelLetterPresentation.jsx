@@ -1,48 +1,44 @@
 'use client';
 
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react'; // Consolidated React imports
 import { AnimatePresence, motion } from 'framer-motion';
 
 // Components
-
 import MessagesSummarySection from '../messages/MessagesSummarySection';
 import NotionRenderer from '../sermon/NotionRenderer';
 import FloatingMediaControls from '../sermon/FloatingMediaControls';
 
-// Hooks
+// Hooks & Utils
 import { useFontScale } from '../../hooks/sermon/useFontScale';
+import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
+import {
+    HEADER_HEIGHT,
+    SCROLL_COOLDOWN_MS,
+    SCROLL_THRESHOLD_DELTA,
+    SCROLL_TRIGGER_MARGIN
+} from '../sermon/constants';
 
-const renderVerseWithStyledFirstWord = (text) => {
-    if (!text) return null;
-    const parts = text.split(' ');
-    const first = parts[0];
-    const rest = parts.slice(1).join(' ');
-    return (
-        <>
-            <span className="font-medium text-[1.6em]">{first}</span>{' '}{rest}
-        </>
-    );
-};
+// Text utility imported from ../../lib/utils/textUtils
 
 const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     // Shared Resources
     const footerRef = useRef(null);
     const letterRef = useRef(null);
+    const letterEndRef = useRef(null); // New Hold Anchor
     const summaryRef = useRef(null);
     const sentinelRef = useRef(null);
     const scrollRef = useRef(null);
 
-    // State Machine: 'letter' | 'summary' | 'footer'
-    const [activeSection, setActiveSection] = React.useState('letter');
+    // State Machine: 'reading' | 'letter_end' | 'summary' | 'footer'
+    const [activeSection, setActiveSection] = useState('reading');
 
     // Gesture Gating & Locking Refs
     const isAutoScrollingRef = useRef(false);
     const wheelAccumRef = useRef(0);
     const lastSnapTsRef = useRef(0);
 
-    // Constants
-    const COOLDOWN_MS = 600;
-    const THRESHOLD_DELTA = 80; // requires intentional scroll
+    // Constants from shared config
+    // SCROLL_COOLDOWN_MS, SCROLL_THRESHOLD_DELTA imported
 
     // Font Scale Logic
     const {
@@ -68,37 +64,43 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
         // 2. Set State
         setActiveSection(targetSection);
 
-        // 3. Scroll
-        // We use offsetTop - 0 because container has [scroll-padding-top:80px]
-        // But for Summary/Footer we want them fully visible. Container relative check:
-        // If container is positioned, offsetTop is relative to it.
-        // Actually, if we use scrollTo(0) for letter, we should use offsetTop for others.
-        // However, standard offsetTop might include the padding? 
-        // Let's rely on standard offsetTop behavior.
-        const top = targetSection === 'letter' ? 0 : targetRef.current.offsetTop;
+        // 3. Scroll Calculation
+        let top = 0;
+        if (targetSection === 'reading') {
+            top = 0;
+        } else if (targetSection === 'letter_end') {
+            // SNAP TO CENTER: Align the "End of Text" to the center of the viewport
+            // effectively showing the last paragraph + 50% breathing space
+            const containerHeight = scrollRef.current.clientHeight;
+            top = targetRef.current.offsetTop - (containerHeight / 1.2);
+        } else {
+            // Standard Snap to Top (Summary / Footer)
+            top = targetRef.current.offsetTop;
+        }
 
+        // 4. Execute Scroll
         scrollRef.current.scrollTo({
             top,
             behavior: 'smooth'
         });
 
-        // 4. Unlock after cooldown
+        // 5. Unlock after cooldown
         setTimeout(() => {
             isAutoScrollingRef.current = false;
             wheelAccumRef.current = 0; // Ensure clean slate
-        }, COOLDOWN_MS);
+        }, SCROLL_COOLDOWN_MS);
     };
 
     // 1. Sentinel Logic (Letter End Detection)
-    // We strictly use this to allow 0 -> 1 transition
+    // We strictly use this to allow reading -> letter_end transition
     const isLetterEndVisible = useRef(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 isLetterEndVisible.current = entry.isIntersecting;
             },
-            { root: scrollRef.current, threshold: 0.1, rootMargin: '0px 0px 60% 0px' }
+            { root: scrollRef.current, threshold: 0.1, rootMargin: SCROLL_TRIGGER_MARGIN }
         );
 
         if (sentinelRef.current) observer.observe(sentinelRef.current);
@@ -106,7 +108,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     }, []);
 
     // 2. Wheel Controller (Robust One-Gesture-One-Action)
-    React.useEffect(() => {
+    useEffect(() => {
         const container = scrollRef.current;
         if (!container) return;
 
@@ -121,18 +123,17 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             wheelAccumRef.current += e.deltaY;
 
             // C. Threshold Check (Gating)
-            if (Math.abs(wheelAccumRef.current) < THRESHOLD_DELTA) {
-                // Not enough force yet, but if we are in 'letter' section and just free-scrolling, 
-                // we should NOT prevent default unless we hit boundaries.
-                // Actually, for 'letter' (0), we want native scroll until we hit bottom.
-                if (activeSection === 'letter' && !isLetterEndVisible.current && e.deltaY > 0) {
-                    // Allow native scroll
+            if (Math.abs(wheelAccumRef.current) < SCROLL_THRESHOLD_DELTA) {
+                // Allow native scroll ONLY if we are in 'reading' and not triggering transition
+                if (activeSection === 'reading' && !isLetterEndVisible.current && e.deltaY > 0) {
                     return;
                 }
-                // For other locked sections, we consume the event to prevent jitter
-                if (activeSection !== 'letter') {
-                    e.preventDefault();
+                // Allow native scroll UP in reading
+                if (activeSection === 'reading' && e.deltaY < 0) {
+                    return;
                 }
+                // Otherwise consume event
+                e.preventDefault();
                 return;
             }
 
@@ -140,43 +141,66 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             const isScrollingDown = wheelAccumRef.current > 0;
             const isScrollingUp = wheelAccumRef.current < 0;
 
-            // E. Transitions
-            // Letter (0) -> Summary (1)
-            if (activeSection === 'letter' && isScrollingDown) {
-                // ONLY if sentinel is visible (end of letter)
+            // E. Transitions (4-State Machine)
+
+            // 1. Reading -> Letter End (Hold)
+            if (activeSection === 'reading' && isScrollingDown) {
                 if (isLetterEndVisible.current) {
                     e.preventDefault();
-                    performSnap(summaryRef, 'summary');
+                    performSnap(letterEndRef, 'letter_end');
                 }
-                // Else allow native scroll (managed by return above or default browser behavior)
+                // Else allow native scroll
             }
 
-            // Summary (1) -> Footer (2)
+            // 2. Letter End -> Summary
+            else if (activeSection === 'letter_end' && isScrollingDown) {
+                e.preventDefault();
+                performSnap(summaryRef, 'summary');
+            }
+
+            // 3. Summary -> Footer
             else if (activeSection === 'summary' && isScrollingDown) {
                 e.preventDefault();
                 performSnap(footerRef, 'footer');
             }
 
-            // Summary (1) -> Letter (0)
-            else if (activeSection === 'summary' && isScrollingUp) {
-                e.preventDefault();
-                performSnap(letterRef, 'letter');
-            }
-
-            // Footer (2) -> Summary (1)
+            // 4. Footer -> Summary
             else if (activeSection === 'footer' && isScrollingUp) {
                 e.preventDefault();
                 performSnap(summaryRef, 'summary');
             }
 
-            // Footer (2) -> Down (Block)
+            // 5. Summary -> Letter End
+            else if (activeSection === 'summary' && isScrollingUp) {
+                e.preventDefault();
+                performSnap(letterEndRef, 'letter_end');
+            }
+
+            // 6. Letter End -> Reading (Unlock/Scroll Up)
+            else if (activeSection === 'letter_end' && isScrollingUp) {
+                // Seamless Release: Just switch back to reading mode
+                // Do not snap to top. Let the user control the scroll.
+                setActiveSection('reading');
+                // We intentionally don't preventDefault here to allow "breaking free"
+                // But since we are in the handler, this specific event is consumed if passing through logic?
+                // No, we haven't preventDefaulted yet.
+                // However, the `handleWheel` logic flow:
+                // We are in this block. We should probably prevent default and manual scroll,
+                // OR just return and let native happen?
+                // If we return, the event is processed natively.
+                // But we want to ensure state change happens.
+                // State change is async.
+                // Let's just return?
+                // But wait, if we return, the `wheelAccum` logic still ran.
+                // Let's reset accumulator and return.
+                wheelAccumRef.current = 0;
+                return;
+            }
+
+            // Footer -> Down (Block)
             else if (activeSection === 'footer' && isScrollingDown) {
                 e.preventDefault();
             }
-
-            // Cleanup: If we acted (or blocked), reset accumulator if we are not locked?
-            // If we didn't lock (e.g. invalid move), we might want to reset to avoid stuck accumulation.
-            // But if we let native scroll happen (Letter mid-scroll), we don't reset.
         };
 
         container.addEventListener('wheel', handleWheel, { passive: false });
@@ -200,8 +224,8 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             className="hidden md:flex fixed right-0 top-0 w-1/2 h-full flex-col items-center z-10 pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{
-                opacity: activeSection === 'letter' ? 1 : 0,
-                y: activeSection === 'letter' ? 0 : -20
+                opacity: (activeSection === 'reading' || activeSection === 'letter_end') ? 1 : 0,
+                y: (activeSection === 'reading' || activeSection === 'letter_end') ? 0 : -20
             }}
             transition={{ duration: 0.5 }}
         >
@@ -296,6 +320,9 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                                         </div>
                                     );
                                 })}
+                                {/* Letter End Snap Target (Invisible Anchor) */}
+                                <div ref={letterEndRef} className="h-px w-full" aria-hidden="true" />
+
                                 {/* Breathing Space Buffer */}
                                 <div className="h-[50vh] w-full" aria-hidden="true" />
                             </div>
