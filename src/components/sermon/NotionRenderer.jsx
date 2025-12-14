@@ -1,6 +1,6 @@
-'use client';
-
 import React from 'react';
+import Image from 'next/image';
+import symbolImg from '../../assets/symbol.png';
 
 // Sub-component for rendering enriched text
 const Text = ({ text }) => {
@@ -43,7 +43,22 @@ const NotionRenderer = ({ block }) => {
         case 'heading_3':
             return <h3 className="text-xl font-bold mt-2 mb-1"><Text text={value.rich_text} /></h3>;
         case 'bulleted_list_item':
-            return <div className="list-disc ml-4" style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>;
+            return (
+                <div className="flex items-start gap-3 ml-1">
+                    <div className="relative w-3 h-3 mt-[0.45em] shrink-0 opacity-80">
+                        <Image
+                            src={symbolImg}
+                            alt="bullet"
+                            fill
+                            sizes="12px"
+                            className="object-contain"
+                        />
+                    </div>
+                    <div className="flex-1 leading-relaxed">
+                        <Text text={value.rich_text} />
+                    </div>
+                </div>
+            );
         case 'numbered_list_item':
             return <div className="list-decimal ml-4" style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>;
         case 'quote':

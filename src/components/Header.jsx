@@ -38,15 +38,10 @@ const Header = () => {
     };
 
     const menuItems = [
-        { label: 'Bulletin', href: '/bulletin' },
-        { label: 'BulletinDB', href: '/bulletindb' },
-        { label: 'Letters', href: '/letters' },
-        { label: 'Print', href: '/print' },
-        { label: 'test2', href: '/test2' },
-        { label: 'Test', href: '/test' },
         { label: 'About', href: '#' },
-        { label: 'Sermons', href: '/sermons' },
+        { label: 'Messages', href: '/messages' },
         { label: 'Visit', href: '#' },
+        { label: 'Print', href: '/print' },
     ];
 
     const handleLinkClick = () => {

@@ -3,7 +3,7 @@ import { Instagram, Youtube, Facebook } from 'lucide-react';
 
 const Footer = () => {
     return (
-        <footer className="w-full bg-[#05121C] text-white px-8 lg:px-24 py-16 lg:py-20 snap-start">
+        <footer className="w-full bg-[#05121C] text-white px-6 sm:px-8 md:px-[10%] py-16 lg:py-20 snap-start">
             <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-0">
                 {/* Left Column: Info */}
                 <div className="space-y-8">
