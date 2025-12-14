@@ -1,4 +1,4 @@
-import { getVerse, extractBibleTags } from './bible';
+import { getVerse, extractBibleTags } from './bible.js';
 
 // Helper to flatten blocks (remove columns/layout)
 export const flattenBlocks = (blocks) => {

@@ -55,10 +55,15 @@ export const getScripture = (reference) => {
     const verse = locParts[1];
 
     const text = getVerse(book, chapter, verse);
-    return { text: text || null };
+    const fullBookName = BOOK_MAPPING[book] || book;
+
+    return {
+        text: text || null,
+        normalizedReference: `${fullBookName} ${chapter}:${verse}`
+    };
 };
 
-const BOOK_MAPPING = {
+export const BOOK_MAPPING = {
     '창': '창세기',
     '출': '출애굽기',
     '레': '레위기',

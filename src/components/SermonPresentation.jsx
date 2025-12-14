@@ -17,6 +17,18 @@ import { useDesktopObserver } from '../hooks/sermon/useDesktopObserver';
 import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
 
+const renderVerseWithStyledFirstWord = (text) => {
+    if (!text) return null;
+    const parts = text.split(' ');
+    const first = parts[0];
+    const rest = parts.slice(1).join(' ');
+    return (
+        <>
+            <span className="font-medium text-[1.6em]">{first}</span>{' '}{rest}
+        </>
+    );
+};
+
 const SermonPresentation = ({ sermon, children, messagesSummary }) => {
 
     // ------------------------------------------------------------------
@@ -134,7 +146,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                                                 {section.verses?.map((verse, idx) => (
                                                     <div key={idx} className="bg-transparent">
                                                         <p className={verseTextClass}>
-                                                            {verse.text}
+                                                            {renderVerseWithStyledFirstWord(verse.text)}
                                                         </p>
                                                         <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
                                                             {verse.reference}
@@ -182,23 +194,42 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                                 {desktopVerses.length > 0 ? (
                                     <motion.div
                                         key={activeSection}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -50 }}
-                                        transition={{ duration: 0.3, ease: "easeOut" }}
+                                        initial="hidden"
+                                        animate="visible"
+                                        exit="exit"
+                                        variants={{
+                                            hidden: { opacity: 0 },
+                                            visible: {
+                                                opacity: 1,
+                                                transition: { staggerChildren: 0.3 }
+                                            },
+                                            exit: { opacity: 0, transition: { duration: 0.2 } }
+                                        }}
                                         className="w-full max-w-[60%] space-y-8 pointer-events-auto"
                                         style={{ marginTop: verseAlignmentOffset }}
                                     >
                                         {desktopVerses.map((verse, idx) => (
-                                            <div key={idx} className="mb-12 last:mb-0">
+                                            <motion.div
+                                                key={idx}
+                                                variants={{
+                                                    hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+                                                    visible: {
+                                                        opacity: 1,
+                                                        y: 0,
+                                                        filter: 'blur(0px)',
+                                                        transition: { duration: 0.5, ease: "easeOut" }
+                                                    }
+                                                }}
+                                                className="mb-12 last:mb-0"
+                                            >
                                                 <p className={desktopVerseClass} style={{ wordBreak: 'keep-all' }}>
-                                                    {verse.text}
+                                                    {renderVerseWithStyledFirstWord(verse.text)}
                                                 </p>
                                                 <div className="h-4" />
                                                 <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
                                                     {verse.reference}
                                                 </p>
-                                            </div>
+                                            </motion.div>
                                         ))}
                                     </motion.div>
                                 ) : (
@@ -215,7 +246,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
 
                         {/* Left Panel: Title & Number */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-24">
-                            <div className="w-full max-w-[60%]">
+                            <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 {/* <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
                                     THIS WEEK'S SERMON
                                 </span> */}
@@ -224,7 +255,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                                 </h1>
                             </div>
 
-                            <div className={`hidden min-[1450px]:flex absolute top-[384px] left-12 overflow-hidden h-32 w-40 items-start pl-12 transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                            <div className={`hidden min-[1450px]:flex absolute top-[384px] left-12 overflow-hidden h-[72px] w-[90px] items-start transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 <AnimatePresence mode="popLayout" custom={desktopDirection}>
                                     <motion.span
                                         key={activeSection}
@@ -258,10 +289,17 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                                                 {section.heading}
                                             </h2>
                                         )}
-                                        <div className={desktopBodyClass}>
-                                            {section.content.map(block => (
-                                                <div key={block.id}><NotionRenderer block={block} /></div>
-                                            ))}
+                                        <div className="w-full">
+                                            {section.content.map(block => {
+                                                const isBullet = block.type === 'bulleted_list_item';
+                                                const spacingClass = isBullet ? 'mb-0' : 'mb-8';
+
+                                                return (
+                                                    <div key={block.id} className={`${desktopBodyClass} ${spacingClass}`}>
+                                                        <NotionRenderer block={block} />
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 </section>

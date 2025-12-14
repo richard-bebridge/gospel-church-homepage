@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import { getScripture } from './bible';
+import { getScripture } from './bible.js';
 
 const NOTION_GOSPEL_DB_ID = process.env.NOTION_GOSPEL_DB_ID;
 const NOTION_API_KEY = process.env.NOTION_API_KEY;

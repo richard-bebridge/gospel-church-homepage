@@ -30,9 +30,13 @@ export const useVerseAlignment = (activeSection, sectionsRef, fontScale) => {
             const currentSectionEl = sectionsRef.current[activeSection];
             if (!currentSectionEl) return;
 
+            // User Request: Align verses with Section Heading (Title)
+            // Section Heading has 'pt-2' (8px) top padding.
+            // Right Panel has same base padding (pt-96) as Section.
+            // So we add 8px to align baselines/tops.
             const titleEl = currentSectionEl.querySelector('h2');
             if (titleEl) {
-                setVerseAlignmentOffset(titleEl.offsetHeight + 32);
+                setVerseAlignmentOffset(8);
             } else {
                 setVerseAlignmentOffset(0);
             }

@@ -9,7 +9,7 @@ import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-uti
 // Revalidate every hour
 export const revalidate = 3600;
 
-export default async function TestPage() {
+export default async function MessagesPage() {
     const databaseId = process.env.NOTION_SERMON_DB_ID;
     const sundayDbId = process.env.NOTION_SUNDAY_DB_ID || process.env.NOTION_SUNDAY_DB;
 
