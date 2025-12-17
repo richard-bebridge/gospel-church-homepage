@@ -307,6 +307,14 @@ const NotionRenderer = ({ block, level = 0 }) => {
                             <Text text={value.rich_text} />
                         </div>
                     </div>
+                    {/* Recursively render children if present */}
+                    {block.children && block.children.length > 0 && (
+                        <div className="ml-6 mt-1 flex flex-col gap-1">
+                            {block.children.map(child => (
+                                <NotionRenderer key={child.id} block={child} level={level + 1} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             );
         case 'numbered_list_item':
