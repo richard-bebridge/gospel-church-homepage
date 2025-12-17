@@ -20,28 +20,6 @@ const LinkIcon = () => (
     </span>
 );
 
-const ExternalLinkIconButton = ({ href }) => (
-    <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group inline-flex items-center justify-center ml-1 text-[#2A4458] align-middle"
-        style={{ transform: 'translateY(-2px)' }}
-        aria-label="Open link"
-    >
-        <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
-        >
-            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    </a>
-);
-
 const InlineAssetToken = ({ filename, sizeParam, scaleParam }) => {
     // Direct path usage from /public/assets
     const srcPath = `/assets/${filename}`;
@@ -177,20 +155,45 @@ const Text = ({ text }) => {
             }
         }
 
+        const className = [
+            (bold || text.link) ? "font-bold" : "",
+            code ? "bg-gray-100 p-1 rounded font-mono text-sm" : "",
+            italic ? "italic" : "",
+            strikethrough ? "line-through" : "",
+            underline ? "underline" : "",
+        ].join(" ");
+
+        const style = color !== "default" ? { color } : {};
+
+        const content = (
+            <>
+                {text.content}
+                {text.link && <LinkIcon />}
+            </>
+        );
+
+        if (text.link) {
+            return (
+                <a
+                    key={i}
+                    href={text.link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group ${className} hover:opacity-80 transition-opacity`}
+                    style={style}
+                >
+                    {content}
+                </a>
+            );
+        }
+
         return (
             <span
                 key={i}
-                className={[
-                    (bold || text.link) ? "font-bold" : "",
-                    code ? "bg-gray-100 p-1 rounded font-mono text-sm" : "",
-                    italic ? "italic" : "",
-                    strikethrough ? "line-through" : "",
-                    underline ? "underline" : "",
-                ].join(" ")}
-                style={color !== "default" ? { color } : {}}
+                className={className}
+                style={style}
             >
-                {text.content}
-                {text.link && <ExternalLinkIconButton href={text.link.url} />}
+                {content}
             </span>
         );
     });
