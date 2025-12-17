@@ -236,7 +236,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                         </div>
 
                         {/* Left Panel: Title & Number */}
-                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-24">
+                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[var(--layout-pt-title)]">
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 {/* <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
                                     THIS WEEK'S SERMON
@@ -272,7 +272,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                                 <section
                                     key={index}
                                     ref={el => desktopSectionsRef.current[index] = el}
-                                    className="min-h-[70vh] snap-start mb-24 flex flex-col items-center pt-96"
+                                    className="min-h-[70vh] snap-start mb-24 flex flex-col items-center pt-[var(--layout-pt-body)]"
                                 >
                                     <div className="w-full max-w-[60%]">
                                         {section.heading && (

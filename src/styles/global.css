@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --header-h: 80px;
+  /* Standard Layout Baselines (Padding Top values) */
+  --layout-pt-title: 96px; /* Matches pt-24 */
+  --layout-pt-body: 384px; /* Matches pt-96 */
+}
+
 
 :root {
   --bg-color: #F4F3EF;

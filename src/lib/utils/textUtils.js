@@ -14,7 +14,7 @@ export const renderVerseWithStyledFirstWord = (text) => {
     // Original: <span className="font-medium text-[1.6em]">{first}</span>{' '}{rest}
     return (
         <>
-            <span className="font-medium text-[1.6em]">{first}</span>{' '}{rest}
+            <span className="font-medium" style={{ fontSize: '1.6em' }}>{first}</span>{' '}{rest}
         </>
     );
 };

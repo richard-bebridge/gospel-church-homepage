@@ -38,7 +38,7 @@ const Header = () => {
     };
 
     const menuItems = [
-        { label: 'About', href: '#' },
+        { label: 'About', href: '/about' },
         { label: 'Messages', href: '/messages' },
         { label: 'Visit', href: '#' },
         { label: 'Print', href: '/print' },
