@@ -12,13 +12,12 @@ import FloatingMediaControls from '../sermon/FloatingMediaControls';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
 import {
-    HEADER_HEIGHT,
     SCROLL_COOLDOWN_MS,
     SCROLL_THRESHOLD_DELTA,
     SCROLL_TRIGGER_MARGIN
 } from '../sermon/constants';
 
-// Text utility imported from ../../lib/utils/textUtils
+
 
 const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     // Shared Resources
@@ -184,12 +183,6 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 // We intentionally don't preventDefault here to allow "breaking free"
                 // But since we are in the handler, this specific event is consumed if passing through logic?
                 // No, we haven't preventDefaulted yet.
-                // However, the `handleWheel` logic flow:
-                // We are in this block. We should probably prevent default and manual scroll,
-                // OR just return and let native happen?
-                // If we return, the event is processed natively.
-                // But we want to ensure state change happens.
-                // State change is async.
                 // Let's just return?
                 // But wait, if we return, the `wheelAccum` logic still ran.
                 // Let's reset accumulator and return.

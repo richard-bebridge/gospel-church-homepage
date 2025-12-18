@@ -1,6 +1,6 @@
-import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { getSiteSettings } from '../../lib/site-settings';
 import { getDatabase, getBlocks } from '../../lib/notion';
 import { getMessagesSummary } from '../../lib/data/getMessagesSummary'; // Uses the new utility
 import SermonPresentation from '../../components/SermonPresentation';
@@ -101,14 +101,17 @@ export default async function MessagesPage() {
 
     // --- REFACTORED: MESSAGES SUMMARY DATA FETCHING ---
     // Pass current page ID to exclude from "older messages"
-    const messagesSummary = await getMessagesSummary(page.id, databaseId);
+    const [messagesSummary, siteSettings] = await Promise.all([
+        getMessagesSummary(page.id, databaseId),
+        getSiteSettings()
+    ]);
 
     return (
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
-            <Header />
+            <Header siteSettings={siteSettings} />
             <main className="flex-grow pt-20">
-                <SermonPresentation sermon={sermonData} messagesSummary={messagesSummary}>
-                    <Footer />
+                <SermonPresentation sermon={sermonData} messagesSummary={messagesSummary} siteSettings={siteSettings}>
+                    <Footer siteSettings={siteSettings} />
                 </SermonPresentation>
             </main>
         </div>

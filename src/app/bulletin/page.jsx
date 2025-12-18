@@ -1,7 +1,7 @@
-import React from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getDatabase, getBlocks } from '../../lib/notion';
+import { getSiteSettings } from '../../lib/site-settings';
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -125,29 +125,33 @@ const renderBlock = (block) => {
 
 export default async function BulletinPage() {
     const databaseId = process.env.NOTION_SUNDAY_DB_ID;
-    let page = null;
-    let blocks = [];
     let error = null;
-
-    if (!databaseId) {
-        error = "NOTION_SUNDAY_DB_ID is not set in .env file.";
-    } else {
-        try {
-            // Fetch the latest bulletin from the database
-            const pages = await getDatabase(databaseId);
-            if (pages && pages.length > 0) {
-                page = pages[0]; // Get the most recent one
-                blocks = await getBlocks(page.id);
+    const [siteSettings, bulletinData] = await Promise.all([
+        getSiteSettings(),
+        (async () => {
+            if (!databaseId) return { page: null, blocks: [] };
+            try {
+                const pages = await getDatabase(databaseId);
+                if (pages && pages.length > 0) {
+                    const pageResult = pages[0];
+                    const blocksResult = await getBlocks(pageResult.id);
+                    return { page: pageResult, blocks: blocksResult };
+                }
+                return { page: null, blocks: [] };
+            } catch (e) {
+                const fetchError = "Failed to fetch bulletin data. Please check your Notion API Key and Database ID.";
+                console.error(e);
+                return { page: null, blocks: [], error: fetchError };
             }
-        } catch (e) {
-            error = "Failed to fetch bulletin data. Please check your Notion API Key and Database ID.";
-            console.error(e);
-        }
-    }
+        })()
+    ]);
+
+    const { page, blocks, error: fetchError } = bulletinData;
+    if (fetchError) error = fetchError;
 
     return (
         <div className="min-h-screen bg-[#F4F3EF]">
-            <Header />
+            <Header siteSettings={siteSettings} />
 
             <div className="pt-40 pb-32 relative max-w-3xl mx-auto px-8 lg:px-0">
                 {error ? (
@@ -176,7 +180,7 @@ export default async function BulletinPage() {
                 )}
             </div>
 
-            <Footer />
+            <Footer siteSettings={siteSettings} />
         </div>
     );
 }

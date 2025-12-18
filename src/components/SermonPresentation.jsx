@@ -3,7 +3,6 @@
 import React, { useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import symbolImg from '../assets/symbol.png';
 
 // Components
 import SwipeIndicator from './sermon/SwipeIndicator';
@@ -20,7 +19,7 @@ import { renderVerseWithStyledFirstWord } from '../lib/utils/textUtils';
 
 
 
-const SermonPresentation = ({ sermon, children, messagesSummary }) => {
+const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings }) => {
 
     // ------------------------------------------------------------------
     // Shared Resources & Hooks
@@ -123,10 +122,11 @@ const SermonPresentation = ({ sermon, children, messagesSummary }) => {
                                             <div className="flex justify-center mb-12 opacity-80">
                                                 <div className="relative w-3 h-3">
                                                     <Image
-                                                        src={symbolImg}
+                                                        src="/assets/symbol.png"
                                                         alt="Gospel Church Symbol"
                                                         fill
                                                         sizes="32px"
+                                                        unoptimized
                                                         className="object-contain opacity-100"
                                                     />
                                                 </div>

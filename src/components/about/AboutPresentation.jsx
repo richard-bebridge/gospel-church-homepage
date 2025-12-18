@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import NotionRenderer from '../sermon/NotionRenderer';
+import NotionRenderer, { TableAlignmentProvider } from '../sermon/NotionRenderer';
 import Image from 'next/image';
 import AboutSideNav from './AboutSideNav';
 import Header from '../Header';
@@ -13,8 +13,52 @@ import {
     SCROLL_THRESHOLD_DELTA
 } from '../sermon/constants';
 import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
+import IntroOverlay from '../ui/IntroOverlay';
+import LoadingSequence from '../ui/LoadingSequence';
 
-const AboutPresentation = ({ sections }) => {
+const AboutPresentation = ({ sections, siteSettings }) => {
+    // ----------------------------------------------------------------
+    // Intro & Loading State
+    // ----------------------------------------------------------------
+    const [showIntro, setShowIntro] = useState(true);
+    const [introAnimFinished, setIntroAnimFinished] = useState(false);
+    const [pageContentCache, setPageContentCache] = useState({});
+    const [pageLoading, setPageLoading] = useState(false);
+    const [pageError, setPageError] = useState(null);
+    const [initialFetchDone, setInitialFetchDone] = useState(false);
+    const fetchingRef = useRef(new Set());
+
+    const handleIntroAnimComplete = () => {
+        setIntroAnimFinished(true);
+    };
+
+    // 1. Safety Timeout: Don't stay stuck on intro for more than 3 seconds after anim finishes
+    useEffect(() => {
+        if (showIntro && introAnimFinished) {
+            const timer = setTimeout(() => {
+                setShowIntro(false);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [showIntro, introAnimFinished]);
+
+    // 2. Coordination Effect
+    useEffect(() => {
+        if (!showIntro) return;
+        if (!introAnimFinished) return;
+
+        const checkReadiness = () => {
+            if (!sections || sections.length === 0) return true;
+            if (!initialFetchDone) return false;
+            return true;
+        };
+
+        if (checkReadiness()) {
+            setShowIntro(false);
+            sessionStorage.setItem('intro_seen_about', 'true');
+        }
+    }, [introAnimFinished, showIntro, sections, pageContentCache, initialFetchDone]);
+
     // ----------------------------------------------------------------      
     // 1. State & Refs
     // ----------------------------------------------------------------      
@@ -37,14 +81,6 @@ const AboutPresentation = ({ sections }) => {
     // Font Scale
     const { desktopBodyClass } = useFontScale();
 
-    // Guard
-    if (!sections || sections.length === 0) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-[#F4F3EF] text-gray-500">
-                Loading...
-            </div>
-        );
-    }
 
     // ----------------------------------------------------------------      
     // 2. Snap Logic
@@ -211,6 +247,61 @@ const AboutPresentation = ({ sections }) => {
         };
     }, [activeIndex, sections.length]);
 
+    // ----------------------------------------------------------------      
+    // Data Fetching for 'page' type
+    // ---------------------------------------------------------------- 
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const fetchAllContent = async () => {
+            if (!sections || sections.length === 0) return;
+
+            setPageLoading(true);
+            try {
+                const tasks = sections.map(async (section) => {
+                    if (section.rightPanelType === 'page' && section.relatedPageId) {
+                        const pageId = section.relatedPageId;
+
+                        if (pageContentCache[pageId]) return;
+                        if (fetchingRef.current.has(pageId)) return;
+
+                        fetchingRef.current.add(pageId);
+
+                        try {
+                            const res = await fetch(`/api/notion/page-blocks?pageId=${pageId}`, {
+                                signal: controller.signal
+                            });
+
+                            if (!res.ok) {
+                                throw new Error(`Failed to fetch page content: ${res.status}`);
+                            }
+
+                            const data = await res.json();
+                            setPageContentCache(prev => ({
+                                ...prev,
+                                [pageId]: data.blocks
+                            }));
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                console.error('Fetch Error:', err);
+                                setPageError(`Failed to load content for section: ${section.title}`);
+                            }
+                        } finally {
+                            fetchingRef.current.delete(pageId);
+                        }
+                    }
+                });
+
+                await Promise.all(tasks);
+            } finally {
+                setPageLoading(false);
+                setInitialFetchDone(true);
+            }
+        };
+
+        fetchAllContent();
+        return () => controller.abort();
+    }, [sections]);
 
     // Right Panel Render
     const renderRightPanel = () => {
@@ -219,7 +310,7 @@ const AboutPresentation = ({ sections }) => {
         // Clamp index for safety
         const safeIndex = Math.min(activeIndex, sections.length - 1);
         const section = sections[safeIndex];
-        const { rightPanelType, imgSrc } = section;
+        const { rightPanelType, imgSrc, relatedPageId } = section;
 
         return (
             <AnimatePresence mode="wait">
@@ -229,27 +320,76 @@ const AboutPresentation = ({ sections }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.5 }}
-                    className="w-full h-full flex flex-col items-center justify-center p-8 lg:p-16"
+                    className="w-full h-full"
                 >
                     {rightPanelType === 'image' && imgSrc && (
-                        <div className="relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl">
-                            <Image
-                                src={imgSrc}
-                                alt={section.title}
-                                fill
-                                className="object-cover"
-                            />
+                        <div className="w-full h-full flex flex-col items-center justify-center px-8 lg:px-16">
+                            <div className="relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl">
+                                <Image
+                                    src={imgSrc}
+                                    alt={section.title}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
                         </div>
                     )}
                     {rightPanelType === 'animation' && (
-                        <div className="text-gray-400 italic">Animation Placeholder</div>
-                    )}
-                    {rightPanelType === 'verse' && (
-                        <div className="text-right font-korean font-light text-2xl text-gray-800 break-keep leading-relaxed w-full max-w-md">
-                            <p className="mb-6">&quot;말씀이 육신이 되어 우리 가운데 거하시매...&quot;</p>
-                            <span className="block text-sm text-[#2A4458] font-bold">요한복음 1:14</span>
+                        <div className="w-full h-full flex items-center justify-center">
+                            <div className="text-gray-400 italic">Animation Placeholder</div>
                         </div>
                     )}
+
+                    {rightPanelType === 'page' && (
+                        <div className="w-full h-full overflow-y-auto no-scrollbar">
+                            <div className="min-h-full p-8 lg:p-16 flex flex-col justify-center">
+                                {pageLoading && !pageContentCache[relatedPageId] && (
+                                    <LoadingSequence />
+                                )}
+
+                                {/* Error State */}
+                                {pageError && (
+                                    <div className="p-4 bg-red-50 text-red-600 rounded-md text-sm w-full">
+                                        <p className="font-bold mb-1">Failed to load content</p>
+                                        <p>{pageError}</p>
+                                    </div>
+                                )}
+
+                                {/* Missing Relation State */}
+                                {!relatedPageId && (
+                                    <div className="text-gray-400 italic text-center w-full">
+                                        연결된 페이지가 없습니다.<br />
+                                        Notion DB의 'etc' relation을 확인해 주세요.
+                                    </div>
+                                )}
+
+                                {/* Content Render */}
+                                {relatedPageId && pageContentCache[relatedPageId] && (
+                                    <div className="prose font-korean text-gray-800 w-full">
+                                        <TableAlignmentProvider blocks={pageContentCache[relatedPageId]}>
+                                            {pageContentCache[relatedPageId].map(block => (
+                                                <NotionRenderer
+                                                    key={block.id}
+                                                    block={block}
+                                                    bodyClass="text-gray-800"
+                                                />
+                                            ))}
+                                        </TableAlignmentProvider>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {rightPanelType === 'verse' && (
+                        <div className="w-full h-full flex flex-col items-center justify-center">
+                            <div className="p-8 lg:p-16 text-right font-korean font-light text-2xl text-gray-800 break-keep leading-relaxed w-full max-w-md">
+                                <p className="mb-6">&quot;말씀이 육신이 되어 우리 가운데 거하시매...&quot;</p>
+                                <span className="block text-sm text-[#2A4458] font-bold">요한복음 1:14</span>
+                            </div>
+                        </div>
+                    )}
+
                 </motion.div>
             </AnimatePresence>
         );
@@ -257,8 +397,13 @@ const AboutPresentation = ({ sections }) => {
 
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
+            <AnimatePresence>
+                {showIntro && (
+                    <IntroOverlay onComplete={handleIntroAnimComplete} />
+                )}
+            </AnimatePresence>
             <div className="fixed top-0 left-0 w-full z-[120]">
-                <Header />
+                <Header siteSettings={siteSettings} />
             </div>
 
             <div
@@ -270,7 +415,7 @@ const AboutPresentation = ({ sections }) => {
                     {/* Sticky Container */}
                     <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-10">
                         {/* Right Panel */}
-                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-center items-center overflow-hidden z-0">
+                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-center items-center overflow-hidden z-[40] pointer-events-auto">
                             {renderRightPanel()}
                         </div>
 
@@ -329,16 +474,15 @@ const AboutPresentation = ({ sections }) => {
 
                                         {/* Body: Starts at Body Baseline (Hardcoded 384px) */}
                                         <div className="w-full pointer-events-auto" style={{ paddingTop: '384px' }}>
-                                            {groupGalleryBlocks(section.content).map((block, bIdx) => {
-                                                const isBullet = block.type === 'bulleted_list_item';
-                                                const spacingClass = isBullet ? 'mb-0' : 'mb-8';
-
-                                                return (
-                                                    <div key={block.id} className={`${desktopBodyClass} ${spacingClass} ${bIdx === 0 ? '!mt-0 !pt-0' : ''}`}>
-                                                        <NotionRenderer block={block} />
-                                                    </div>
-                                                );
-                                            })}
+                                            <TableAlignmentProvider blocks={section.content}>
+                                                {groupGalleryBlocks(section.content).map((block) => (
+                                                    <NotionRenderer
+                                                        key={block.id}
+                                                        block={block}
+                                                        bodyClass={desktopBodyClass}
+                                                    />
+                                                ))}
+                                            </TableAlignmentProvider>
                                             {/* Sentinel for End Detection */}
                                             <div ref={el => sectionEndSentinels.current[index] = el} className="h-px w-full bg-transparent" />
                                         </div>
@@ -348,7 +492,7 @@ const AboutPresentation = ({ sections }) => {
 
                             {/* Footer Section */}
                             <div ref={footerRef} className="w-[200%] -ml-0 pointer-events-auto min-h-[50vh] flex items-end">
-                                <Footer />
+                                <Footer siteSettings={siteSettings} />
                             </div>
                         </div>
                     </div>
@@ -365,11 +509,13 @@ const AboutPresentation = ({ sections }) => {
                             {section.heading || section.title}
                         </h2>
                         <div className="prose font-korean text-gray-600">
-                            {section.content.map(block => <NotionRenderer key={block.id} block={block} />)}
+                            {section.content.map(block => (
+                                <NotionRenderer key={block.id} block={block} />
+                            ))}
                         </div>
                     </div>
                 ))}
-                <Footer />
+                <Footer siteSettings={siteSettings} />
             </div>
         </div>
     );

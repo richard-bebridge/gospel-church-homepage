@@ -1,31 +1,30 @@
-import React from 'react';
-import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getDatabase } from '../../lib/notion';
+import { getSiteSettings } from '../../lib/site-settings';
 
 // Revalidate every hour
 export const revalidate = 3600;
 
 export default async function BulletinDBPage() {
     const databaseId = process.env.NOTION_SUNDAY_DB_ID;
-    let bulletins = [];
-    let error = null;
-
-    if (!databaseId) {
-        error = "NOTION_SUNDAY_DB_ID is not set in .env file.";
-    } else {
-        try {
-            bulletins = await getDatabase(databaseId);
-        } catch (e) {
-            error = "Failed to fetch bulletins. Please check your Notion API Key and Database ID.";
-            console.error(e);
-        }
-    }
+    const [bulletins, siteSettings] = await Promise.all([
+        (async () => {
+            if (!databaseId) return [];
+            try {
+                return await getDatabase(databaseId);
+            } catch (e) {
+                error = "Failed to fetch bulletins. Please check your Notion API Key and Database ID.";
+                console.error(e);
+                return [];
+            }
+        })(),
+        getSiteSettings()
+    ]);
 
     return (
         <div className="min-h-screen bg-[#F4F3EF]">
-            <Header />
+            <Header siteSettings={siteSettings} />
 
             <main className="pt-32 pb-20 px-6 sm:px-8 lg:px-24 min-h-screen">
                 <div className="max-w-4xl mx-auto">
@@ -75,7 +74,7 @@ export default async function BulletinDBPage() {
                 </div>
             </main>
 
-            <Footer />
+            <Footer siteSettings={siteSettings} />
         </div>
     );
 }

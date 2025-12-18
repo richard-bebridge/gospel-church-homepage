@@ -6,11 +6,11 @@ import { Menu, X, Youtube, Instagram, Facebook } from 'lucide-react';
 import Lottie from 'lottie-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import logoAnimation from '../assets/Gospel_Church_Symbol (1).json';
-import logoV from '../assets/logo_v.png';
 
-const Header = () => {
+const Header = ({ siteSettings }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // Use settings or fallback
+    const sns = siteSettings?.sns || {};
     const lottieRef = useRef(null);
 
     // Lock body scroll when menu is open
@@ -40,8 +40,9 @@ const Header = () => {
     const menuItems = [
         { label: 'About', href: '/about' },
         { label: 'Messages', href: '/messages' },
-        { label: 'Visit', href: '#' },
+        { label: 'Visit', href: '/visit' },
         { label: 'Print', href: '/print' },
+        { label: 'Test', href: '/test/typography' },
     ];
 
     const handleLinkClick = () => {
@@ -56,7 +57,7 @@ const Header = () => {
                     <div className="h-8 md:h-14 w-auto" style={{ filter: 'brightness(0) invert(1)' }}>
                         <Lottie
                             lottieRef={lottieRef}
-                            animationData={logoAnimation}
+                            path="/assets/symbol_animation.json"
                             loop={false}
                             autoplay={true}
                             onComplete={handleAnimationComplete}
@@ -77,6 +78,19 @@ const Header = () => {
                             {item.label}
                         </Link>
                     ))}
+
+                    {/* Desktop Social Icons */}
+                    <div className="flex items-center gap-4 ml-2 pl-6 border-l border-white/10">
+                        <a href={sns.instagram || "#"} target="_blank" rel="noopener noreferrer" className="text-[#5F94BD] hover:text-white transition-colors">
+                            <Instagram className="w-5 h-5" />
+                        </a>
+                        <a href={sns.youtube || "#"} target="_blank" rel="noopener noreferrer" className="text-[#5F94BD] hover:text-white transition-colors">
+                            <Youtube className="w-5 h-5" />
+                        </a>
+                        <a href={sns.facebook || "#"} target="_blank" rel="noopener noreferrer" className="text-[#5F94BD] hover:text-white transition-colors">
+                            <Facebook className="w-5 h-5" />
+                        </a>
+                    </div>
                 </nav>
 
                 {/* Mobile Hamburger Button */}
@@ -149,13 +163,13 @@ const Header = () => {
                                 }}
                                 className="flex gap-6 mt-8 pt-4"
                             >
-                                <a href="#" className="text-[#05121C] hover:text-[#5F94BD] transition-colors">
+                                <a href={sns.youtube || "#"} target="_blank" rel="noopener noreferrer" className="text-[#05121C] hover:text-[#5F94BD] transition-colors">
                                     <Youtube className="w-8 h-8" />
                                 </a>
-                                <a href="#" className="text-[#05121C] hover:text-[#5F94BD] transition-colors">
+                                <a href={sns.instagram || "#"} target="_blank" rel="noopener noreferrer" className="text-[#05121C] hover:text-[#5F94BD] transition-colors">
                                     <Instagram className="w-8 h-8" />
                                 </a>
-                                <a href="#" className="text-[#05121C] hover:text-[#5F94BD] transition-colors">
+                                <a href={sns.facebook || "#"} target="_blank" rel="noopener noreferrer" className="text-[#05121C] hover:text-[#5F94BD] transition-colors">
                                     <Facebook className="w-8 h-8" />
                                 </a>
                             </motion.div>
@@ -169,8 +183,10 @@ const Header = () => {
                                 transition={{ delay: 0.5, duration: 0.3 }}
                             >
                                 <Image
-                                    src={logoV}
+                                    src="/assets/logo_v.png"
                                     alt="Gospel Church"
+                                    width={96}
+                                    height={48}
                                     className="w-24 h-auto"
                                 />
                             </motion.div>

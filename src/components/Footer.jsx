@@ -1,26 +1,34 @@
-import React from 'react';
 import { Instagram, Youtube, Facebook } from 'lucide-react';
+import { toTelHref } from '../lib/site-settings';
 
-const Footer = () => {
+const Footer = ({ siteSettings }) => {
+    // Fallback constants or use siteSettings
+    const settings = siteSettings || {};
+    const sns = settings.sns || {};
+
     return (
         <footer className="w-full bg-[#05121C] text-white px-6 sm:px-8 md:px-[10%] py-16 lg:py-20 snap-start">
             <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-0">
                 {/* Left Column: Info */}
                 <div className="space-y-8">
-                    <h3 className="font-medium text-xl font-korean text-white">대한예수교장로회 가스펠교회</h3>
+                    <h3 className="font-medium text-xl font-korean text-white">{settings.church_name || '대한예수교장로회 가스펠교회'}</h3>
 
                     <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-base font-mono text-[#5F94BD]">
                         <span className="font-bold text-[#2A4458]">T.</span>
-                        <span className="font-light text-[#5F94BD]">02-583-2014</span>
+                        <a href={toTelHref(settings.phone_main)} className="font-light text-[#5F94BD] hover:text-white transition-colors">
+                            {settings.phone_main || '02-583-2014'}
+                        </a>
 
                         <span className="font-bold text-[#2A4458]">F.</span>
-                        <span className="font-light text-[#5F94BD]">02-6008-5830</span>
+                        <span className="font-light text-[#5F94BD]">{settings.phone_alt || '02-6008-5830'}</span>
 
                         <span className="font-bold text-[#2A4458]">E.</span>
-                        <span className="font-light text-[#5F94BD]">2014gospel@naver.com</span>
+                        <a href={`mailto:${settings.email || '2014gospel@naver.com'}`} className="font-light text-[#5F94BD] hover:text-white transition-colors">
+                            {settings.email || '2014gospel@naver.com'}
+                        </a>
 
                         <span className="font-bold text-[#2A4458]">A.</span>
-                        <span className="font-light text-[#5F94BD]">서울특별시 서초구 서초동 1627-5 B1</span>
+                        <span className="font-light text-[#5F94BD]">{settings.address || '서울특별시 서초구 서초동 1627-5 B1'}</span>
                     </div>
                 </div>
 
@@ -34,13 +42,13 @@ const Footer = () => {
                     </h2>
 
                     <div className="flex gap-4">
-                        <a href="#" className="text-[#5F94BD] hover:text-white transition-colors">
+                        <a href={sns.instagram || "#"} target="_blank" rel="noopener noreferrer" className="text-[#5F94BD] hover:text-white transition-colors">
                             <Instagram className="w-6 h-6" />
                         </a>
-                        <a href="#" className="text-[#5F94BD] hover:text-white transition-colors">
+                        <a href={sns.youtube || "#"} target="_blank" rel="noopener noreferrer" className="text-[#5F94BD] hover:text-white transition-colors">
                             <Youtube className="w-6 h-6" />
                         </a>
-                        <a href="#" className="text-[#5F94BD] hover:text-white transition-colors">
+                        <a href={sns.facebook || "#"} target="_blank" rel="noopener noreferrer" className="text-[#5F94BD] hover:text-white transition-colors">
                             <Facebook className="w-6 h-6" />
                         </a>
                     </div>

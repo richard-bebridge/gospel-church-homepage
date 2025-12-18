@@ -39,12 +39,29 @@ export const getAboutContent = async () => {
             const id = page.id;
             const props = page.properties;
 
-            // Extract Fields
-            const title = props.Name?.title?.[0]?.plain_text || 'Untitled';
-            const rightPanelType = props.right_panel_type?.select?.name || 'none';
-            const imgSrc = props.img_src?.url || null;
-            const subSectionCount = props.sub_section?.number || 0;
-            const subTitle = props.Subtitle?.rich_text?.[0]?.plain_text || ''; // Optional English/Subtitle
+            // Extract Fields (Case-insensitive finding)
+            const findProp = (name) => {
+                const key = Object.keys(props).find(k => k.toLowerCase() === name.toLowerCase());
+                return props[key];
+            };
+
+            const title = findProp('Name')?.title?.[0]?.plain_text || 'Untitled';
+            const rightPanelProp = findProp('right_panel_type');
+            const rightPanelType = rightPanelProp?.select?.name || rightPanelProp?.multi_select?.[0]?.name || 'none';
+            const imgSrc = findProp('img_src')?.url || null;
+            const subSectionCount = findProp('sub_section')?.number || 0;
+            const subTitle = findProp('Subtitle')?.rich_text?.[0]?.plain_text || '';
+
+            // Extract related page ID: specific 'etc' OR first available relation
+            const etcProp = findProp('etc');
+            let relatedPageId = etcProp?.relation?.[0]?.id || null;
+            if (!relatedPageId) {
+                // Fallback: finding ANY relation property
+                const firstRelationKey = Object.keys(props).find(k => props[k].type === 'relation');
+                if (firstRelationKey) {
+                    relatedPageId = props[firstRelationKey].relation?.[0]?.id || null;
+                }
+            }
 
             // Fetch Blocks (Content)
             let blocks = await getBlocks(id);
@@ -68,7 +85,9 @@ export const getAboutContent = async () => {
                 imgSrc,
                 subSectionCount,
                 heading, // e.g. "우리가 존재하는 이유" (Big Title)
-                content: blocks
+                content: blocks,
+                relatedPageId,
+                propertyKeys: Object.keys(props)
             };
         }));
 

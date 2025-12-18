@@ -7,6 +7,7 @@ import { getMessagesSummary } from '../../../lib/data/getMessagesSummary';
 import SermonPresentation from '../../../components/SermonPresentation';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import { getSiteSettings } from '../../../lib/site-settings';
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -54,13 +55,15 @@ export default async function SermonPage({ params }) {
 
     if (!sermon) notFound();
 
+    const siteSettings = await getSiteSettings();
+
     return (
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
-            <Header />
+            <Header siteSettings={siteSettings} />
             {/* Added pt-20 to match TestPage layout and prevent header overlap */}
             <main className="flex-grow pt-20">
-                <SermonPresentation sermon={sermon} messagesSummary={messagesSummary}>
-                    <Footer />
+                <SermonPresentation sermon={sermon} messagesSummary={messagesSummary} siteSettings={siteSettings}>
+                    <Footer siteSettings={siteSettings} />
                 </SermonPresentation>
             </main>
         </div>
