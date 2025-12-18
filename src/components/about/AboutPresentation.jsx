@@ -8,6 +8,8 @@ import AboutSideNav from './AboutSideNav';
 import Header from '../Header';
 import Footer from '../Footer';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
+import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
+
 import {
     SCROLL_COOLDOWN_MS,
     SCROLL_THRESHOLD_DELTA
@@ -408,7 +410,8 @@ const AboutPresentation = ({ sections, siteSettings }) => {
 
             <div
                 ref={containerRef}
-                className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-pretendard pt-[80px]"
+                style={{ paddingTop: `${HEADER_HEIGHT_PX}px` }}
+                className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-pretendard"
             >
                 <div className="relative w-full bg-[#F4F3EF]">
 

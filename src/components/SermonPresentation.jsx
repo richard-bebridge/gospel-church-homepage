@@ -11,6 +11,12 @@ import NotionRenderer from './sermon/NotionRenderer';
 
 // Hooks
 import MessagesSummarySection from './messages/MessagesSummarySection';
+import {
+    HEADER_HEIGHT_PX,
+    SCROLL_AREA_HEIGHT_STYLE
+} from '../lib/layout-metrics';
+
+// Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
 import { useFontScale } from '../hooks/sermon/useFontScale';
 import { useDesktopObserver } from '../hooks/sermon/useDesktopObserver';
 import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
@@ -173,12 +179,18 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
             {/* ======================================================== */}
             {/* DESKTOP LAYOUT (>= md)                                   */}
             {/* ======================================================== */}
-            <div className="hidden md:block relative h-[calc(100vh-80px)] overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar font-pretendard">
+            <div
+                style={SCROLL_AREA_HEIGHT_STYLE}
+                className="hidden md:block relative overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar font-pretendard"
+            >
                 <div className="relative w-full bg-[#F4F3EF]">
 
                     {/* Left/Right Container */}
                     {/* Left/Right Container */}
-                    <div className="sticky top-0 h-[calc(100vh-80px)] w-full overflow-hidden pointer-events-none z-10">
+                    <div
+                        style={SCROLL_AREA_HEIGHT_STYLE}
+                        className="sticky top-0 w-full overflow-hidden pointer-events-none z-10"
+                    >
                         {/* Right Panel: Verses */}
                         <div className={`absolute right-0 top-0 w-1/2 h-full flex flex-col justify-start items-center pt-96 overflow-hidden z-0 transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                             <AnimatePresence mode="wait">
@@ -267,7 +279,10 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
 
                     {/* Scrollable Content */}
                     <div className="relative z-20 w-full pointer-events-none">
-                        <div className="w-1/2 relative pointer-events-auto -mt-[calc(100vh-80px)]">
+                        <div
+                            style={{ marginTop: `calc(-100vh + ${HEADER_HEIGHT_PX}px)` }}
+                            className="w-1/2 relative pointer-events-auto"
+                        >
                             {sermon.sections.map((section, index) => (
                                 <section
                                     key={index}

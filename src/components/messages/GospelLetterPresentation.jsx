@@ -9,6 +9,13 @@ import NotionRenderer from '../sermon/NotionRenderer';
 import FloatingMediaControls from '../sermon/FloatingMediaControls';
 
 // Hooks & Utils
+import {
+    HEADER_HEIGHT_PX,
+    SCROLL_AREA_HEIGHT_STYLE,
+    SCROLL_PADDING_TOP_STYLE
+} from '../../lib/layout-metrics';
+
+// Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
 import {
@@ -280,8 +287,10 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             {/* Main Scroll Container */}
             {/* Added overscroll-behavior-y: contain to prevent bounce issues */}
             <div
+                id="scroll-container"
                 ref={scrollRef}
-                className="hidden md:block relative h-[calc(100vh-80px)] overflow-y-auto no-scrollbar scroll-smooth [scroll-padding-top:80px] overscroll-contain"
+                style={{ ...SCROLL_AREA_HEIGHT_STYLE, ...SCROLL_PADDING_TOP_STYLE, paddingTop: `${HEADER_HEIGHT_PX}px` }}
+                className="hidden md:block relative overflow-y-auto no-scrollbar scroll-smooth snap-y snap-proximity"
             >
                 {/* 1. Letter Section */}
                 <section id="letter-section" ref={letterRef} className="relative min-h-[calc(100vh-80px)]">
