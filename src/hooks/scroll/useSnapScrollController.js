@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { SCROLL_TRIGGER_MARGIN } from '../../components/sermon/constants';
 

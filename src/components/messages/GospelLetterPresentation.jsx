@@ -3,10 +3,23 @@
 import React, { useRef, useEffect, useState } from 'react'; // Consolidated React imports
 import { AnimatePresence, motion } from 'framer-motion';
 
-// Components
-import MessagesSummarySection from '../messages/MessagesSummarySection';
-import NotionRenderer from '../sermon/NotionRenderer';
+// Components - Core
 import FloatingMediaControls from '../sermon/FloatingMediaControls';
+
+// Components - Presentation
+import { PresentationShell } from '../presentation/PresentationShell';
+import { PresentationHeader } from '../presentation/PresentationHeader';
+import { PresentationBody } from '../presentation/PresentationBody';
+import { PresentationSummary } from '../presentation/PresentationSummary';
+import { PresentationFooter } from '../presentation/PresentationFooter';
+import { RightPanelController } from '../presentation/RightPanelController';
+
+// Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
+import { useSnapScrollController } from '../../hooks/scroll/useSnapScrollController';
+import { useFontScale } from '../../hooks/sermon/useFontScale';
+import NotionRenderer from '../sermon/NotionRenderer';
+import { renderVerseWithStyledFirstWord, renderVerseReference } from '../../lib/utils/textUtils';
+import Image from 'next/image';
 
 // Hooks & Utils
 import {
@@ -16,14 +29,14 @@ import {
 } from '../../lib/layout-metrics';
 
 // Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
-import { useSnapScrollController } from '../../hooks/scroll/useSnapScrollController';
-import { useFontScale } from '../../hooks/sermon/useFontScale';
-import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
-import {
-    SCROLL_COOLDOWN_MS,
-    SCROLL_THRESHOLD_DELTA,
-    SCROLL_TRIGGER_MARGIN
-} from '../sermon/constants';
+// import { useSnapScrollController } from '../../hooks/scroll/useSnapScrollController';
+// import { useFontScale } from '../../hooks/sermon/useFontScale';
+// import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
+// import {
+//     SCROLL_COOLDOWN_MS,
+//     SCROLL_THRESHOLD_DELTA,
+//     SCROLL_TRIGGER_MARGIN
+// } from '../sermon/constants';
 
 
 
@@ -37,25 +50,26 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     const { scrollRef, scrollToSection, registerSection } = useSnapScrollController();
 
     // Gesture Gating & Locking Refs
-
-    // Gesture Gating & Locking Refs
     const isAutoScrollingRef = useRef(false);
-    const wheelAccumRef = useRef(0);
     const lastSnapTsRef = useRef(0);
+    const wheelAccumRef = useRef(0);
 
-    // Constants from shared config
-    // SCROLL_COOLDOWN_MS, SCROLL_THRESHOLD_DELTA imported
+    // Constants
+    const SCROLL_COOLDOWN_MS = 1000;
+    const SCROLL_THRESHOLD_DELTA = 30; // Min wheel delta to trigger
+    const SCROLL_TRIGGER_MARGIN = '0px';
 
     // Font Scale Logic
     const {
         fontScale,
         toggleFontScale,
         bodyTextClass,
+        verseTextClass,
         desktopBodyClass,
-        desktopVerseClass
+        desktopVerseClass // Unused currently in simpler setup but available
     } = useFontScale();
 
-    // Data
+    // Data Extraction
     const { title, content, scriptureTags } = letter;
 
     // Helper: Smooth Scroll & Lock
@@ -75,10 +89,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             // SNAP TO CENTER: Align the "End of Text" to the center of the viewport
             const containerHeight = scrollRef.current.clientHeight;
             // Target is 'letter_end' (registered ref)
-            // Offset: We want the element to be at (containerHeight / 1.2) from top? 
-            // Original: top = target.offsetTop - (containerHeight / 1.2);
-            // Hook: top = target.offsetTop + offset
-            // So offset = -(containerHeight / 1.2)
+            // Offset logic: -(containerHeight / 1.2)
             scrollToSection('letter_end', 'smooth', -(containerHeight / 1.2));
         } else {
             // Standard Snap to Top
@@ -93,56 +104,51 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     };
 
     // 1. Sentinel Logic (Letter End Detection)
-    // We strictly use this to allow reading -> letter_end transition
     const isLetterEndVisible = useRef(false);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                isLetterEndVisible.current = entry.isIntersecting;
-            },
-            { root: scrollRef.current, threshold: 0.1, rootMargin: SCROLL_TRIGGER_MARGIN }
-        );
+        const sentinel = sentinelRef.current;
+        if (!sentinel) return;
 
-        if (sentinelRef.current) observer.observe(sentinelRef.current);
+        const observer = new IntersectionObserver(([entry]) => {
+            isLetterEndVisible.current = entry.isIntersecting;
+        }, { rootMargin: '0px', threshold: 0.1 });
+
+        observer.observe(sentinel);
         return () => observer.disconnect();
     }, []);
 
     // 2. Wheel Controller (Robust One-Gesture-One-Action)
-    useEffect(() => {
-        const container = scrollRef.current;
-        if (!container) return;
+    const handleWheel = (e) => {
+        // A. Filter invalid events
+        if (Math.abs(e.deltaY) < 5) return; // micro-scrolls
+        if (e.ctrlKey) return; // Zoom gestures
 
-        const handleWheel = (e) => {
-            // A. Block if locked
-            if (isAutoScrollingRef.current) {
-                e.preventDefault();
-                return;
-            }
+        // B. Check Locks
+        const now = Date.now();
+        const timeSinceSnap = now - lastSnapTsRef.current;
 
-            // B. Accumulate Delta
-            wheelAccumRef.current += e.deltaY;
+        // Cooldown Lock
+        if (isAutoScrollingRef.current || timeSinceSnap < SCROLL_COOLDOWN_MS) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
 
-            // C. Threshold Check (Gating)
-            if (Math.abs(wheelAccumRef.current) < SCROLL_THRESHOLD_DELTA) {
-                // Allow native scroll ONLY if we are in 'reading' and not triggering transition
-                if (activeSection === 'reading' && !isLetterEndVisible.current && e.deltaY > 0) {
-                    return;
-                }
-                // Allow native scroll UP in reading
-                if (activeSection === 'reading' && e.deltaY < 0) {
-                    return;
-                }
-                // Otherwise consume event
-                e.preventDefault();
-                return;
-            }
+        // C. Accumulate Delta (Debounce noise)
+        wheelAccumRef.current += e.deltaY;
 
-            // D. Determine Direction
+        // D. Trigger Threshold Check
+        if (Math.abs(wheelAccumRef.current) > SCROLL_THRESHOLD_DELTA) {
+
+            // Determine Direction
             const isScrollingDown = wheelAccumRef.current > 0;
             const isScrollingUp = wheelAccumRef.current < 0;
 
-            // E. Transitions (4-State Machine)
+            // Reset accum immediately so we don't trigger twice
+            wheelAccumRef.current = 0;
+
+            // E. State Machine Transitions
 
             // 1. Reading -> Letter End (Hold)
             if (activeSection === 'reading' && isScrollingDown) {
@@ -179,153 +185,128 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
 
             // 6. Letter End -> Reading (Unlock/Scroll Up)
             else if (activeSection === 'letter_end' && isScrollingUp) {
-                // Seamless Release: Just switch back to reading mode
-                // Do not snap to top. Let the user control the scroll.
+                // Unlock and scroll up naturally
                 setActiveSection('reading');
-                // We intentionally don't preventDefault here to allow "breaking free"
-                // But since we are in the handler, this specific event is consumed if passing through logic?
-                // No, we haven't preventDefaulted yet.
-                // Let's just return?
-                // But wait, if we return, the `wheelAccum` logic still ran.
-                // Let's reset accumulator and return.
-                wheelAccumRef.current = 0;
-                return;
+                // No snap needed, just let native scroll happen
             }
-
             // Footer -> Down (Block)
             else if (activeSection === 'footer' && isScrollingDown) {
                 e.preventDefault();
             }
-        };
+        }
+    };
+
+    // Attach Wheel Listener Non-Passively to prevent Default
+    useEffect(() => {
+        const container = scrollRef.current;
+        if (!container) return;
 
         container.addEventListener('wheel', handleWheel, { passive: false });
-
-        // Reset accumulator on touch end or mouse leave to prevent stale values
-        const resetAccum = () => { wheelAccumRef.current = 0; };
-        container.addEventListener('pointerup', resetAccum);
-        container.addEventListener('mouseleave', resetAccum);
-
-        return () => {
-            container.removeEventListener('wheel', handleWheel);
-            container.removeEventListener('pointerup', resetAccum);
-            container.removeEventListener('mouseleave', resetAccum);
-        };
-    }, [activeSection]);
+        return () => container.removeEventListener('wheel', handleWheel);
+    }, [activeSection]); // Re-bind when state changes (required for closure to see new activeSection)
 
 
-    // 3. Sync Fixed Panel
-    const FixedScripturePanel = (
-        <motion.div
-            className="hidden md:flex fixed right-0 top-0 w-1/2 h-full flex-col items-center z-10 pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{
-                opacity: (activeSection === 'reading' || activeSection === 'letter_end') ? 1 : 0,
-                y: (activeSection === 'reading' || activeSection === 'letter_end') ? 0 : -20
-            }}
-            transition={{ duration: 0.5 }}
-        >
-            {/* Header Buffer (80px) matched from main layout */}
-            <div className="h-20 w-full shrink-0" />
+    // ------------------------------------------------------------------
+    // Render Variables
+    // ------------------------------------------------------------------
 
-            {/* Ghost Header for Alignment (Invisible) */}
-            {/* This ensures the verses start exactly where the body text starts on the left, accounting for dynamic title height */}
-            <div className="w-full flex flex-col items-center pt-24 pb-12 opacity-0">
-                <div className="w-full max-w-[60%]">
-                    <h1 className="text-5xl md:text-6xl font-bold font-yisunshin leading-tight break-keep">
-                        {title}
-                    </h1>
-                </div>
+    // Mobile Layout Block (Kept Inline for now per plan, can be extracted later)
+    const MobileLayout = (
+        <div className="relative w-full">
+            {/* Sticky Header */}
+            <div className="sticky top-0 z-40 bg-[#F4F3EF]/95 backdrop-blur-sm border-b border-[#2A4458]/10 px-6 py-4 flex justify-between items-center">
+                <span className="text-[#2A4458] font-yisunshin font-bold text-xl truncate pr-4">
+                    {title}
+                </span>
+
+                {/* Mobile Font Toggle */}
+                <button
+                    onClick={toggleFontScale}
+                    className="p-2 -mr-2 text-[#2A4458] opacity-80 active:opacity-100"
+                >
+                    <span className="font-serif italic text-lg pr-1">A</span>
+                    <span className="font-serif text-sm">A</span>
+                </button>
             </div>
 
-            {/* Verse Container (aligned with Body Text pt-32) */}
-            <div className="w-full border-l border-[#2A4458]/10 flex flex-col items-center h-full pt-32 overflow-hidden">
-                {scriptureTags && scriptureTags.length > 0 ? (
-                    <div className="space-y-12 w-full max-w-[60%] pointer-events-auto">
-                        <AnimatePresence>
-                            {scriptureTags.map((tag, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                                    transition={{
-                                        duration: 0.5,
-                                        ease: "easeOut",
-                                        delay: idx * 0.3
-                                    }}
-                                >
-                                    <p className={`${desktopVerseClass} mb-4 break-keep`}>
-                                        {renderVerseWithStyledFirstWord(tag.text || "(Verse not found: " + tag.reference + ")")}
-                                    </p>
-                                    <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
-                                        {tag.reference}
-                                    </p>
-                                </motion.div>
-                            ))}
-                        </AnimatePresence>
+            {/* Content */}
+            <div className="px-6 py-12 pb-32">
+                <div className={bodyTextClass}>
+                    {content.map(block => (
+                        <div key={block.id} className="mb-4">
+                            <NotionRenderer block={block} />
+                        </div>
+                    ))}
+
+                    {/* Symbol Divider */}
+                    <div className="flex justify-center my-16 opacity-80">
+                        <div className="relative w-4 h-4">
+                            <Image
+                                src="/assets/symbol.png"
+                                alt="Gospel Church Symbol"
+                                fill
+                                sizes="32px"
+                                unoptimized
+                                className="object-contain opacity-100"
+                            />
+                        </div>
                     </div>
-                ) : (
-                    <div className="h-full flex items-center justify-center opacity-30 -mt-32">
-                        <p className="text-[#2A4458] font-yisunshin text-2xl">SOLA SCRIPTURA</p>
+                </div>
+
+                {/* Mobile Scripture Panel (Static list at bottom of letter) */}
+                {scriptureTags && scriptureTags.length > 0 && (
+                    <div className="border-t border-[#2A4458]/10 pt-12 mt-12 space-y-8">
+                        {scriptureTags.map((tag, idx) => (
+                            <div key={idx} className="bg-[#F4F3EF]">
+                                <p className={verseTextClass}>
+                                    {renderVerseWithStyledFirstWord(tag.text)}
+                                </p>
+                                <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard mt-4">
+                                    {tag.reference}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>
-        </motion.div>
+
+            {/* Footer */}
+            <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50">
+                <div ref={footerRef}>
+                    {children}
+                </div>
+            </footer>
+        </div>
     );
 
+
     return (
-        <div className="min-h-screen bg-[#F4F3EF] flex flex-col font-pretendard">
-            {/* Header Buffer */}
-            <div className="hidden md:block h-20" />
-
-            {FixedScripturePanel}
-
-            {/* Main Scroll Container */}
-            {/* Added overscroll-behavior-y: contain to prevent bounce issues */}
-            <div
-                id="scroll-container"
-                ref={scrollRef}
-                style={{ ...SCROLL_AREA_HEIGHT_STYLE, ...SCROLL_PADDING_TOP_STYLE, paddingTop: `${HEADER_HEIGHT_PX}px` }}
-                className="hidden md:block relative overflow-y-auto no-scrollbar scroll-smooth snap-y snap-proximity"
+        <>
+            <PresentationShell
+                scrollRef={scrollRef}
+                mobileContent={MobileLayout}
+                rightPanel={
+                    <RightPanelController
+                        isVisible={activeSection === 'reading' || activeSection === 'letter_end'}
+                        mode="scripture"
+                        data={scriptureTags}
+                        title={title}
+                    />
+                }
             >
-                {/* 1. Letter Section */}
-                <section id="letter-section" ref={el => registerSection('reading', el)} className="relative min-h-[calc(100vh-80px)]">
+                {/* 1. Reading Section (Letter) */}
+                <section
+                    id="reading-section"
+                    ref={el => registerSection('reading', el)}
+                    className="relative min-h-[calc(100vh-80px)]"
+                >
+                    <PresentationHeader title={title} />
 
-                    {/* Sticky Header inside Letter */}
-                    <div className="sticky top-0 z-30 flex flex-row w-full pointer-events-none">
-                        <div className="w-1/2 relative pointer-events-auto flex flex-col items-center">
-                            <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-90% to-transparent z-0" />
-                            <div className="relative z-10 w-full max-w-[60%] pt-24 pb-12">
-                                <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep">
-                                    {title}
-                                </h1>
-                            </div>
-                        </div>
-                        <div className="w-1/2" />
-                    </div>
-
-                    {/* Body Content */}
-                    <div className="flex flex-row w-full z-20">
-                        <div className="w-1/2 flex flex-col items-center">
-                            <div className="w-full max-w-[60%] pb-32 pt-32">
-                                {content.map(block => {
-                                    const isBullet = block.type === 'bulleted_list_item';
-                                    const spacingClass = isBullet ? 'mb-0' : 'mb-8';
-
-                                    return (
-                                        <div key={block.id} className={`${desktopBodyClass} ${spacingClass}`}>
-                                            <NotionRenderer block={block} />
-                                        </div>
-                                    );
-                                })}
-                                {/* Letter End Snap Target (Invisible Anchor) */}
-                                <div ref={el => registerSection('letter_end', el)} className="h-px w-full" aria-hidden="true" />
-
-                                {/* Breathing Space Buffer */}
-                                <div className="h-[50vh] w-full" aria-hidden="true" />
-                            </div>
-                        </div>
-                        <div className="w-1/2" />
-                    </div>
+                    <PresentationBody
+                        content={content}
+                        bodyClass={desktopBodyClass}
+                        endRef={el => registerSection('letter_end', el)}
+                    />
                 </section>
 
                 {/* Sentinel (Trigger for Summary) */}
@@ -334,72 +315,29 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                     className="h-px w-full pointer-events-none opacity-0"
                 />
 
-                {/* 3. Summary Section */}
-                <section id="summary-section" ref={el => registerSection('summary', el)} className="bg-[#F4F3EF] min-h-[calc(100vh-80px)] relative z-20 w-full">
-                    {messagesSummary && (
-                        <MessagesSummarySection
-                            {...messagesSummary}
-                            reversed={true}
-                        />
-                    )}
-                </section>
+                {/* 2. Summary Section */}
+                <PresentationSummary
+                    data={messagesSummary}
+                    sectionRef={el => registerSection('summary', el)}
+                />
 
-                {/* 4. Footer Section */}
-                <section id="footer-section" ref={el => { registerSection('footer', el); footerRef.current = el; }} className="w-full relative z-30">
+                {/* 3. Footer Section */}
+                <PresentationFooter
+                    sectionRef={el => { registerSection('footer', el); footerRef.current = el; }}
+                >
                     {children}
-                </section>
+                </PresentationFooter>
 
-            </div>
+            </PresentationShell>
 
-
-            {/* Mobile Layout (unchanged logic) */}
-            <div className="md:hidden flex flex-col w-full">
-                <div className="h-16" />
-                <div className="sticky top-16 z-40 bg-transparent px-8 -mt-4 pointer-events-none">
-                    <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
-                    <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto">
-                        {title}
-                    </h1>
-                </div>
-                <div className="px-8 pb-12">
-                    {content.map(block => (
-                        <div key={block.id} className={bodyTextClass}>
-                            <NotionRenderer block={block} />
-                        </div>
-                    ))}
-                </div>
-                <div className="px-8 pb-24 bg-[#F4F3EF] border-t border-[#2A4458]/10 pt-12">
-                    {scriptureTags && scriptureTags.length > 0 ? (
-                        <div className="space-y-6">
-                            {scriptureTags.map((tag, idx) => (
-                                <div key={idx}>
-                                    <p className={`${desktopVerseClass} mb-2 break-keep text-sm`}>
-                                        {renderVerseWithStyledFirstWord(tag.text || "(Verse not found: " + tag.reference + ")")}
-                                    </p>
-                                    <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
-                                        {tag.reference}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-center text-[#2A4458]/50 text-sm">No scriptures referenced.</p>
-                    )}
-                </div>
-                <div className="w-full">
-                    {children}
-                </div>
-            </div>
-
+            {/* Floating Controls (Desktop & Mobile) */}
             <FloatingMediaControls
-                audioUrl={null}
-                youtubeUrl={null}
                 footerRef={footerRef}
                 fontScale={fontScale}
                 onToggleFontScale={toggleFontScale}
                 shareTitle={title}
             />
-        </div >
+        </>
     );
 };
 

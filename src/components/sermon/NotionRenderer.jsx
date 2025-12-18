@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useMemo } from 'react';
 import Image from 'next/image';
 
@@ -33,7 +35,9 @@ export const TableAlignmentProvider = ({ children, blocks }) => {
             }
         });
 
-        if (maxC1 === 0 && maxC2 === 0) return { active: false };
+        // Only activate grid alignment if we have column lists (c1) to align with.
+        // Otherwise, rely on the standard <table> renderer for standalone tables.
+        if (maxC1 === 0) return { active: false };
 
         // c1 is label track, c2 are content tracks
         const c1 = maxC1 || 1;
@@ -577,12 +581,13 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                             const hasBorder = !isFirst;
                             const paddingClass = isFirst ? 'pb-3' : (isLast ? 'pt-3 pb-8' : 'py-3');
 
+                            // Match Fallback Style: Darker text for Label, normal for content. No opacity.
                             return (
                                 <div
                                     key={cIdx}
-                                    className={`${hasBorder ? 'border-t' : ''} border-gray-200 ${paddingClass} px-1 text-sm font-korean
-                                        ${_isLastItem ? 'text-right opacity-80' : 'text-left'}
-                                        ${isMeta ? 'opacity-60 font-light' : ''}
+                                    className={`${hasBorder ? 'border-t' : ''} border-gray-200 ${paddingClass} px-1 text-sm font-korean align-top
+                                        ${_isLastItem ? 'text-right' : 'text-left'}
+                                        ${cIdx === 0 ? 'text-gray-900 font-medium' : 'text-gray-600'}
                                     `}
                                     style={{
                                         gridColumnStart: (columnIndex === 1 ? gridConfig.c1 : 0) + cIdx + 1,
@@ -607,14 +612,14 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                 <tr className="border-t border-gray-200">
                     {cells.map((cell, cIdx) => {
                         const _isLastItem = cIdx === cellCount - 1;
-                        const isMeta = cIdx > 0 && !_isLastItem;
+                        // Use darker text for the first column (Label), slightly lighter for others
+                        // Match Section 3 style: Remove opacity/font-light affecting readability
                         return (
                             <td
                                 key={cIdx}
-                                className={`py-3 px-1 text-sm font-korean
-                                    ${_isLastItem ? 'text-right opacity-80' : 'text-left'}
-                                    ${isMeta ? 'opacity-60 font-light' : ''}
-                                    ${bodyClass}
+                                className={`py-4 px-1 text-sm font-korean align-top
+                                    ${_isLastItem ? 'text-right' : 'text-left'}
+                                    ${cIdx === 0 ? 'text-gray-900 font-medium' : 'text-gray-600'}
                                 `}
                             >
                                 <Text text={cell} />

@@ -4,25 +4,29 @@ import React, { useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 
-// Components
+// Components - Core
 import SwipeIndicator from './sermon/SwipeIndicator';
 import FloatingMediaControls from './sermon/FloatingMediaControls';
 import NotionRenderer from './sermon/NotionRenderer';
 
-// Hooks
+// Components - Presentation
+import { PresentationShell } from '../components/presentation/PresentationShell';
+import { PresentationSummary } from '../components/presentation/PresentationSummary';
+import { PresentationFooter } from '../components/presentation/PresentationFooter';
+import { RightPanelController } from '../components/presentation/RightPanelController';
+
+// Hooks & Metrics
 import MessagesSummarySection from './messages/MessagesSummarySection';
 import {
     HEADER_HEIGHT_PX,
     SCROLL_AREA_HEIGHT_STYLE
 } from '../lib/layout-metrics';
-
-// Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
-import { useFontScale } from '../hooks/sermon/useFontScale';
 import { useSnapScrollController } from '../hooks/scroll/useSnapScrollController';
+// import { useDesktopObserver } from '../hooks/sermon/useDesktopObserver'; // Removed
+import { useFontScale } from '../hooks/sermon/useFontScale';
 import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
 import { renderVerseWithStyledFirstWord } from '../lib/utils/textUtils';
-
 
 
 const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings }) => {
@@ -37,13 +41,11 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
         fontScale,
         toggleFontScale,
         bodyTextClass,
-        verseTextClass,
-        desktopBodyClass,
-        desktopVerseClass
+        verseTextClass, // Mobile uses this
+        desktopBodyClass
     } = useFontScale();
 
     // Desktop Logic
-    // Contract: Active section determines right panel content and title number animation
     const {
         scrollRef,
         activeSection,
@@ -52,7 +54,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
         getSectionMap
     } = useSnapScrollController({
         dependencies: [sermon.sections.length],
-        rootMargin: '-20% 0px -20% 0px' // Tuned for sermon reading flow
+        rootMargin: '-20% 0px -20% 0px'
     });
 
     const verseAlignmentOffset = useVerseAlignment(activeSection, { current: Array.from(getSectionMap().values()) }, fontScale);
@@ -65,205 +67,195 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
     // Render Variables
     const currentDesktopSection = sermon.sections[activeSection] || {};
     const desktopVerses = currentDesktopSection.verses || [];
+
+    // Animation Variants
     const desktopVariants = {
         enter: (d) => ({ y: d > 0 ? '150%' : '-150%' }),
         center: { y: 0 },
         exit: (d) => ({ y: d > 0 ? '-150%' : '150%' }),
     };
 
-    return (
-        <>
-            {/* ======================================================== */}
-            {/* MOBILE LAYOUT (< md)                                     */}
-            {/* ======================================================== */}
-            <div className="md:hidden min-h-screen bg-[#F4F3EF] flex flex-col">
-                <div className="relative w-full">
-                    <div className="flex flex-col w-full">
 
-                        {/* A. Sticky Sermon Title */}
-                        {/* Header is fixed h-16 (4rem). Page has pt-20 (5rem). Gap is 1rem. */}
-                        {/* We use -mt-4 to pull it up 1rem so it sticks immediately at top-16 (4rem) */}
-                        <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 pt-4 pointer-events-none">
-                            <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
-                            {/* <span className="relative z-10 text-[#2A4458] font-sans font-bold text-xs tracking-widest uppercase mb-2 block pt-8 pointer-events-auto">
-                                THIS WEEK'S SERMON
-                            </span> */}
-                            <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto line-clamp-3">
-                                {sermon.title}
-                            </h1>
-                        </div>
+    // ------------------------------------------------------------------
+    // Layout Blocks
+    // ------------------------------------------------------------------
 
-                        {/* B. Top Navigation */}
-                        <div className="w-full flex justify-center py-12 relative z-10 px-8">
-                            <SwipeIndicator
-                                total={sermon.sections.length}
-                                current={currentMobileSection}
-                                idPrefix="top"
-                            />
-                        </div>
+    const MobileLayout = (
+        <div className="relative w-full">
+            <div className="flex flex-col w-full">
+                {/* A. Sticky Sermon Title */}
+                <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 pt-4 pointer-events-none">
+                    <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
+                    <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto line-clamp-3">
+                        {sermon.title}
+                    </h1>
+                </div>
 
-                        {/* C. Content Wrapper */}
-                        <div style={{ height: contentHeight }} className="overflow-hidden relative w-full">
-                            <div
-                                className="w-full overflow-x-auto snap-x snap-mandatory flex items-start no-scrollbar"
-                                onScroll={handleHorizontalScroll}
+                {/* B. Top Navigation */}
+                <div className="w-full flex justify-center py-12 relative z-10 px-8">
+                    <SwipeIndicator
+                        total={sermon.sections.length}
+                        current={currentMobileSection}
+                        idPrefix="top"
+                    />
+                </div>
+
+                {/* C. Content Wrapper */}
+                <div style={{ height: contentHeight }} className="overflow-hidden relative w-full">
+                    <div
+                        className="w-full overflow-x-auto snap-x snap-mandatory flex items-start no-scrollbar"
+                        onScroll={handleHorizontalScroll}
+                    >
+                        {sermon.sections.map((section, index) => (
+                            <article
+                                key={index}
+                                ref={el => mobileSectionRefs.current[index] = el}
+                                className="min-w-full w-full snap-start flex flex-col"
                             >
-                                {sermon.sections.map((section, index) => (
-                                    <article
-                                        key={index}
-                                        ref={el => mobileSectionRefs.current[index] = el}
-                                        className="min-w-full w-full snap-start flex flex-col"
-                                    >
-                                        <div className="px-8 py-6">
-                                            {/* Section Header */}
-                                            <div className="flex flex-row items-start pt-2 gap-4 mb-12">
-                                                <span className="text-7xl font-bold font-yisunshin text-[#2A4458] leading-none">
-                                                    {String(index + 1).padStart(2, '0')}
-                                                </span>
-                                                {section.heading && (
-                                                    <h2 className="text-2xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1">
-                                                        {section.heading}
-                                                    </h2>
-                                                )}
-                                            </div>
+                                <div className="px-8 py-6">
+                                    {/* Section Header */}
+                                    <div className="flex flex-row items-start pt-2 gap-4 mb-12">
+                                        <span className="text-7xl font-bold font-yisunshin text-[#2A4458] leading-none">
+                                            {String(index + 1).padStart(2, '0')}
+                                        </span>
+                                        {section.heading && (
+                                            <h2 className="text-2xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1">
+                                                {section.heading}
+                                            </h2>
+                                        )}
+                                    </div>
 
-                                            {/* Body Text */}
-                                            <div className={bodyTextClass}>
-                                                {section.content.map(block => (
-                                                    <div key={block.id}><NotionRenderer block={block} /></div>
-                                                ))}
-                                            </div>
+                                    {/* Body Text */}
+                                    <div className={bodyTextClass}>
+                                        {section.content.map(block => (
+                                            <div key={block.id}><NotionRenderer block={block} /></div>
+                                        ))}
+                                    </div>
 
-                                            {/* Symbol Divider */}
-                                            <div className="flex justify-center mb-12 opacity-80">
-                                                <div className="relative w-3 h-3">
-                                                    <Image
-                                                        src="/assets/symbol.png"
-                                                        alt="Gospel Church Symbol"
-                                                        fill
-                                                        sizes="32px"
-                                                        unoptimized
-                                                        className="object-contain opacity-100"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            {/* Bible Verses */}
-                                            <div className="space-y-8 pb-12">
-                                                {section.verses?.map((verse, idx) => (
-                                                    <div key={idx} className="bg-transparent">
-                                                        <p className={verseTextClass}>
-                                                            {renderVerseWithStyledFirstWord(verse.text)}
-                                                        </p>
-                                                        <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
-                                                            {verse.reference}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
+                                    {/* Symbol Divider */}
+                                    <div className="flex justify-center mb-12 opacity-80">
+                                        <div className="relative w-3 h-3">
+                                            <Image
+                                                src="/assets/symbol.png"
+                                                alt="Gospel Church Symbol"
+                                                fill
+                                                sizes="32px"
+                                                unoptimized
+                                                className="object-contain opacity-100"
+                                            />
                                         </div>
-                                    </article>
-                                ))}
-                            </div>
-                        </div>
+                                    </div>
 
-                        {/* D. Bottom Navigation */}
-                        <div className="w-full flex justify-center py-20 relative z-10 px-8 mb-8">
-                            <SwipeIndicator
-                                total={sermon.sections.length}
-                                current={currentMobileSection}
-                                idPrefix="bottom"
-                            />
-                        </div>
-
-                        {/* E. Footer */}
-                        <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50">
-                            <div ref={footerRef}>
-                                {children}
-                            </div>
-                        </footer>
+                                    {/* Bible Verses */}
+                                    <div className="space-y-8 pb-12">
+                                        {section.verses?.map((verse, idx) => (
+                                            <div key={idx} className="bg-transparent">
+                                                <p className={verseTextClass}>
+                                                    {renderVerseWithStyledFirstWord(verse.text)}
+                                                </p>
+                                                <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
+                                                    {verse.reference}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </article>
+                        ))}
                     </div>
                 </div>
-            </div>
 
-            {/* ======================================================== */}
-            {/* DESKTOP LAYOUT (>= md)                                   */}
-            {/* ======================================================== */}
-            <div
-                style={SCROLL_AREA_HEIGHT_STYLE}
-                ref={scrollRef}
-                className="hidden md:block relative overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar font-pretendard"
+                {/* D. Bottom Navigation */}
+                <div className="w-full flex justify-center py-20 relative z-10 px-8 mb-8">
+                    <SwipeIndicator
+                        total={sermon.sections.length}
+                        current={currentMobileSection}
+                        idPrefix="bottom"
+                    />
+                </div>
+
+                {/* E. Footer */}
+                <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50">
+                    <div ref={footerRef}>
+                        {children}
+                    </div>
+                </footer>
+            </div>
+        </div>
+    );
+
+    // Internal Component: Sermon Left Panel (Sticky Title)
+    const SermonLeftPanel = (
+        <div className="sticky top-0 w-full overflow-hidden pointer-events-none z-10">
+            {/* Note: In original logic, Right Panel was also here. Now it's separate rightPanel prop. 
+                 But Left Panel Title needs to stick. */}
+
+            {/* Left Panel: Title & Number */}
+            {/* Original was absolute left-0 top-0 w-1/2 h-full ... inside scroll area */}
+            {/* But since we removed 'h-full' wrapper? 
+                Use PresentationShell's structure. 
+                We are INSIDE scroll container. 
+                We need a sticky element that covers the viewport height? 
+                Original: <div className="sticky top-0 w-full ...">...<div absolute left-0 w-1/2 h-full></div></div>
+            */}
+            <div style={SCROLL_AREA_HEIGHT_STYLE} className="absolute left-0 top-0 w-1/2 border-r border-gray-200 flex flex-col items-center pt-[var(--layout-pt-title)] pointer-events-none">
+                {/* Title Fade */}
+                <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3">
+                        {sermon.title}
+                    </h1>
+                </div>
+
+                {/* Number Animation */}
+                <div className={`hidden min-[1450px]:flex absolute top-[384px] left-12 overflow-hidden h-[72px] w-[90px] items-start transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                    <AnimatePresence mode="popLayout" custom={direction}>
+                        <motion.span
+                            key={activeSection}
+                            custom={direction}
+                            variants={desktopVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 0.4, ease: "easeInOut" }}
+                            className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
+                        >
+                            {String(Math.min(activeSection + 1, sermon.sections.length)).padStart(2, '0')}
+                        </motion.span>
+                    </AnimatePresence>
+                </div>
+            </div>
+        </div>
+    );
+
+
+    return (
+        <>
+            <PresentationShell
+                scrollRef={scrollRef}
+                mobileContent={MobileLayout}
+                usePadding={false}
+                snapMode="snap-mandatory"
+                rightPanel={
+                    <RightPanelController
+                        isVisible={activeSection < sermon.sections.length}
+                        mode="scripture"
+                        data={desktopVerses} // Passes current section verses
+                        title={sermon.title} // Used for ghost alignment
+                        titleClassName="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3"
+                        paddingTopClass="pt-[var(--layout-pt-title)]"
+                    />
+                }
             >
                 <div className="relative w-full bg-[#F4F3EF]">
 
-                    {/* Left/Right Container */}
-                    {/* Left/Right Container */}
+                    {/* 1. Sticky Left Panel Container */}
                     <div
                         style={SCROLL_AREA_HEIGHT_STYLE}
                         className="sticky top-0 w-full overflow-hidden pointer-events-none z-10"
                     >
-                        {/* Right Panel: Verses */}
-                        <div className={`absolute right-0 top-0 w-1/2 h-full flex flex-col justify-start items-center pt-96 overflow-hidden z-0 transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                            <AnimatePresence mode="wait">
-                                {desktopVerses.length > 0 ? (
-                                    <motion.div
-                                        key={activeSection}
-                                        initial="hidden"
-                                        animate="visible"
-                                        exit="exit"
-                                        variants={{
-                                            hidden: { opacity: 0 },
-                                            visible: {
-                                                opacity: 1,
-                                                transition: { staggerChildren: 0.3 }
-                                            },
-                                            exit: { opacity: 0, transition: { duration: 0.2 } }
-                                        }}
-                                        className="w-full max-w-[60%] space-y-8 pointer-events-auto"
-                                        style={{ marginTop: verseAlignmentOffset }}
-                                    >
-                                        {desktopVerses.map((verse, idx) => (
-                                            <motion.div
-                                                key={idx}
-                                                variants={{
-                                                    hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
-                                                    visible: {
-                                                        opacity: 1,
-                                                        y: 0,
-                                                        filter: 'blur(0px)',
-                                                        transition: { duration: 0.5, ease: "easeOut" }
-                                                    }
-                                                }}
-                                                className="mb-12 last:mb-0"
-                                            >
-                                                <p className={desktopVerseClass} style={{ wordBreak: 'keep-all' }}>
-                                                    {renderVerseWithStyledFirstWord(verse.text)}
-                                                </p>
-                                                <div className="h-4" />
-                                                <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard">
-                                                    {verse.reference}
-                                                </p>
-                                            </motion.div>
-                                        ))}
-                                    </motion.div>
-                                ) : (
-                                    <motion.div
-                                        key="empty"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className="text-gray-300 text-center pointer-events-auto"
-                                    />
-                                )}
-                            </AnimatePresence>
-                        </div>
-
-                        {/* Left Panel: Title & Number */}
+                        {/* Note: SermonLeftPanel content extracted above usually, but here mapped inline for simplicity of context access */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[var(--layout-pt-title)]">
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                                {/* <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
-                                    THIS WEEK'S SERMON
-                                </span> */}
                                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3">
                                     {sermon.title}
                                 </h1>
@@ -288,7 +280,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         </div>
                     </div>
 
-                    {/* Scrollable Content */}
+                    {/* 2. Scrollable Content */}
                     <div className="relative z-20 w-full pointer-events-none">
                         <div
                             style={{ marginTop: `calc(-100vh + ${HEADER_HEIGHT_PX}px)` }}
@@ -322,33 +314,32 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                 </section>
                             ))}
 
-
-
                             <div className="h-[20vh] w-full shrink-0" />
                         </div>
                     </div>
 
-                    {/* Messages Summary (Desktop) - Inside Long BG Wrapper to keep Title Sticky */}
+                    {/* 3. Summary Section */}
                     {messagesSummary && (
-                        <div
-                            ref={el => registerSection(sermon.sections.length, el)}
-                            className="snap-start relative z-30"
-                            style={{ scrollSnapStop: 'always', scrollMarginTop: '0px' }}
-                        >
-                            <MessagesSummarySection
-                                seriesTitle={sermon.title}
-                                {...messagesSummary}
-                            />
-                        </div>
+                        <PresentationSummary
+                            data={{ ...messagesSummary, seriesTitle: sermon.title }}
+                            sectionRef={el => registerSection(sermon.sections.length, el)}
+                        />
                     )}
                 </div>
 
+                {/* 4. Footer */}
+                <PresentationFooter
+                    sectionRef={el => { /* No specific snap for footer in Sermon? It just flows */
+                        /* But wait, SermonPresentation line 337: <div ref={footerRef} ...> */
+                        /* Footer is children. Just standard render. */
+                    }}
+                >
+                    <div ref={footerRef} className="relative z-30 w-full">
+                        {children}
+                    </div>
+                </PresentationFooter>
+            </PresentationShell>
 
-
-                <div ref={footerRef} className="relative z-30 w-full">
-                    {children}
-                </div>
-            </div>
 
             {/* Floating Controls */}
             <FloatingMediaControls
