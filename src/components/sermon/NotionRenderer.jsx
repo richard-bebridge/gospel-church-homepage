@@ -1,5 +1,67 @@
-import React from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import Image from 'next/image';
+
+// Context to synchronize table column alignments across a section/panel
+const TableAlignmentContext = createContext(null);
+
+export const TableAlignmentProvider = ({ children, blocks }) => {
+    const gridConfig = useMemo(() => {
+        if (!blocks || blocks.length === 0) return { active: false };
+
+        const getDeepMaxTableWidth = (block) => {
+            let max = 0;
+            if (block.type === 'table') {
+                max = block.table?.table_width || 0;
+            }
+            if (block.children) {
+                block.children.forEach(child => {
+                    max = Math.max(max, getDeepMaxTableWidth(child));
+                });
+            }
+            return max;
+        };
+
+        let maxC1 = 0;
+        let maxC2 = 0;
+        blocks.forEach(block => {
+            if (block.type === 'column_list' && block.children?.length >= 2) {
+                maxC1 = Math.max(maxC1, 1);
+                // Standard 2-column layout: Col 1 is Label, Col 2 is Content
+                maxC2 = Math.max(maxC2, getDeepMaxTableWidth(block.children[1]));
+            } else if (block.type === 'table') {
+                maxC2 = Math.max(maxC2, getDeepMaxTableWidth(block));
+            }
+        });
+
+        if (maxC1 === 0 && maxC2 === 0) return { active: false };
+
+        // c1 is label track, c2 are content tracks
+        const c1 = maxC1 || 1;
+        const c2 = Math.max(maxC2, 1);
+        const total = c1 + c2;
+
+        const template = maxC1 >
+            0 ? `fit-content(480px) repeat(${c2}, 1fr)`
+            : `repeat(${total}, 1fr)`;
+
+        return { active: true, c1, c2, maxCols: total, template };
+    }, [blocks]);
+
+    return (
+        <TableAlignmentContext.Provider value={gridConfig}>
+            <div
+                className="grid w-full items-start"
+                style={{
+                    gridTemplateColumns: gridConfig.active ? gridConfig.template : 'none',
+                    columnGap: '2rem',
+                    rowGap: '0px'
+                }}
+            >
+                {children}
+            </div>
+        </TableAlignmentContext.Provider>
+    );
+};
 
 const LinkIcon = () => (
     <span
@@ -8,12 +70,12 @@ const LinkIcon = () => (
         aria-label="External link icon"
     >
         <svg
-            width="24"
-            height="24"
+            width="1.2em"
+            height="1.2em"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+            className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
         >
             <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
@@ -90,13 +152,13 @@ const GalleryBlock = ({ items, size, gap }) => {
                     );
 
                     return (
-                        <div key={idx} className="shrink-0">
+                        <div key={idx} className="shrink-0 p-1">
                             {item.link ? (
                                 <a
                                     href={item.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="block"
+                                    className="block cursor-pointer transition-transform hover:scale-105 active:scale-95 overflow-visible"
                                 >
                                     {LogoBox}
                                 </a>
@@ -111,14 +173,47 @@ const GalleryBlock = ({ items, size, gap }) => {
     );
 };
 
+// Helper to merge split text nodes if they contain reference tokens (**...**)
+// This fixes issues where Notion splits text prevents regex matching
+const mergeRichTextIfRefPresent = (richText) => {
+    if (!richText || richText.length === 0) return richText;
+
+    const fullText = richText.map(t => t.plain_text || t.text?.content || '').join('');
+
+    // Only intervene if we see the ** pattern and there are NO links (to avoid breaking links)
+    // and if there are multiple nodes (otherwise no need to merge)
+    if (fullText.includes('**') && richText.length > 1) {
+        const hasLinks = richText.some(t => t.text?.link || t.href);
+        if (!hasLinks) {
+            // Merge into single node to allow Regex to match the full token
+            return [{
+                type: 'text',
+                text: { content: fullText, link: null },
+                annotations: { // Reset annotations to allow cleaner parsing, or keep default
+                    bold: false, italic: false, strikethrough: false,
+                    underline: false, code: false, color: 'default'
+                },
+                plain_text: fullText,
+                href: null
+            }];
+        }
+    }
+    return richText;
+};
+
 // Sub-component for rendering enriched text
 const Text = ({ text }) => {
     if (!text) return null;
-    return text.map((value, i) => {
+
+    // Pre-process: Merge nodes if needed to fix ** formatting
+    const processedText = mergeRichTextIfRefPresent(text);
+
+    return processedText.map((value, i) => {
         const {
             annotations: { bold, code, color, italic, strikethrough, underline },
             text,
         } = value;
+
 
         // Token Parsing: $$filename.png [::size] [::scale(n)]
         // Example: $$logo.png::32px::scale(1.2)
@@ -144,7 +239,7 @@ const Text = ({ text }) => {
                     }
                 }
 
-                return (
+                const token = (
                     <InlineAssetToken
                         key={i}
                         filename={filename}
@@ -152,9 +247,61 @@ const Text = ({ text }) => {
                         scaleParam={scaleParam}
                     />
                 );
+
+                if (text.link) {
+                    return (
+                        <a
+                            key={i}
+                            href={text.link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center hover:opacity-80 transition-opacity"
+                        >
+                            {token}
+                        </a>
+                    );
+                }
+
+                return token;
             }
         }
 
+        // Custom Reference Parsing: **text** -> Small Bold Reference
+        // Relaxed regex to capture content including newlines
+        const refMatch = text.content.match(/\*\*([\s\S]*?)\*\*/);
+        if (refMatch) {
+            const parts = text.content.split(/(\*\*[\s\S]*?\*\*)/g);
+            const refContent = parts.map((part, pIdx) => {
+                if (part.startsWith('**') && part.endsWith('**')) {
+                    const content = part.slice(2, -2);
+                    return (
+                        <span key={`${i}-${pIdx}`} className="font-bold text-[0.85em] text-[#2A4458] align-top">
+                            * {content}
+                        </span>
+                    );
+                }
+                return <span key={`${i}-${pIdx}`}>{part}</span>;
+            });
+
+            if (text.link) {
+                return (
+                    <a
+                        key={i}
+                        href={text.link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`group font-bold hover:opacity-80 transition-opacity`}
+                        style={style}
+                    >
+                        {refContent}
+                        <LinkIcon />
+                    </a>
+                );
+            }
+            return refContent;
+        }
+
+        // Standard Annotation
         const className = [
             (bold || text.link) ? "font-bold" : "",
             code ? "bg-gray-100 p-1 rounded font-mono text-sm" : "",
@@ -165,24 +312,19 @@ const Text = ({ text }) => {
 
         const style = color !== "default" ? { color } : {};
 
-        const content = (
-            <>
-                {text.content}
-                {text.link && <LinkIcon />}
-            </>
-        );
-
-        if (text.link) {
+        if (text.link || value.href) {
+            const url = text.link?.url || value.href;
             return (
                 <a
                     key={i}
-                    href={text.link.url}
+                    href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`group ${className} hover:opacity-80 transition-opacity`}
+                    className={`group inline-flex items-center gap-1 ${className} text-[#5F94BD] hover:opacity-80 transition-opacity whitespace-nowrap`}
                     style={style}
                 >
-                    {content}
+                    <span className={className}>{text.content}</span>
+                    <LinkIcon />
                 </a>
             );
         }
@@ -193,16 +335,98 @@ const Text = ({ text }) => {
                 className={className}
                 style={style}
             >
-                {content}
+                {text.content}
             </span>
         );
     });
 };
 
-const NotionRenderer = ({ block, level = 0 }) => {
-    const { type } = block;
-    const value = block[type];
-    if (!value?.rich_text && type !== 'image') return null;
+const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, isFirst = false, isLast = false, inheritedBorderColor = null }) => {
+    const { type, [type]: value } = block;
+    const gridConfig = useContext(TableAlignmentContext);
+
+    // Helper to wrap blocks in grid span
+    const wrapGrid = (content, className = '') => {
+        if (!gridConfig?.active) return content;
+
+        // Standalone blocks (level 0) span the full width
+        if (level === 0) {
+            return (
+                <div className={`col-span-full ${className}`}>
+                    {content}
+                </div>
+            );
+        }
+
+        // Column blocks (level 1) occupy their allocated tracks
+        if (type === 'column' && level === 1) {
+            let start = 1;
+            let span = 1;
+
+            if (columnIndex === 0) {
+                start = 1;
+                span = gridConfig.c1;
+            } else if (columnIndex === 1) {
+                start = gridConfig.c1 + 1;
+                span = gridConfig.c2;
+            }
+
+            // [MAINTENANCE] BL01: Baseline Alignment Logic
+            // This pt-3 (12px) determines the starting Y-position of all content within columns.
+            // If you feel labels and content are misaligned, ensure this matches the padding on the first block.
+            const isLabel = columnIndex === 0;
+            const topPaddingClass = 'pt-3';
+
+            // Custom Border Color (e.g. "Parking" section in Visit Page)
+            // Default to gray-200. Inherit if provided by column_list
+            let borderColor = inheritedBorderColor || '#E5E7EB';
+            const firstChild = block.children?.[0];
+            const firstRichText = firstChild?.[firstChild.type]?.rich_text;
+            if (isLabel && firstRichText?.[0]?.annotations?.color) {
+                const colorToken = firstRichText[0].annotations.color;
+                if (colorToken.includes('red') || colorToken.includes('orange')) {
+                    borderColor = '#E86452'; // GC Accent Red/Orange
+                } else if (colorToken.includes('blue')) {
+                    borderColor = '#2A4458'; // GC Dark Blue
+                }
+            }
+
+            return (
+                <div
+                    className={`${className} border-t ${topPaddingClass} ${isLabel ? 'font-bold' : ''}`}
+                    style={{
+                        gridColumn: `${start} / span ${span}`,
+                        borderTopColor: borderColor
+                    }}
+                >
+                    {block.children?.map((child, idx) => (
+                        <NotionRenderer
+                            key={child.id}
+                            block={child}
+                            level={level + 1}
+                            bodyClass={bodyClass}
+                            columnIndex={columnIndex}
+                            isFirst={isFirst && idx === 0}
+                            isLast={idx === block.children.length - 1}
+                            inheritedBorderColor={inheritedBorderColor}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        return content;
+    };
+
+    // Allow table, table_row, columns, and text types for recursive rendering
+    if (!value?.rich_text &&
+        type !== 'image' &&
+        type !== 'table' &&
+        type !== 'table_row' &&
+        type !== 'text' &&
+        type !== 'column_list' &&
+        type !== 'column'
+    ) return null;
 
     // 1. Gally DSL Parsing (Both Multi-line and Single-line)
     if (type === 'paragraph' && value.rich_text.length > 0) {
@@ -237,7 +461,7 @@ const NotionRenderer = ({ block, level = 0 }) => {
                     })
                     .filter(Boolean);
 
-                return <GalleryBlock items={items} size={size ? parseInt(size) : 24} gap={gap ? parseInt(gap) : 12} />;
+                return wrapGrid(<GalleryBlock items={items} size={size ? parseInt(size) : 24} gap={gap ? parseInt(gap) : 12} />, 'my-8');
             }
         }
 
@@ -272,28 +496,172 @@ const NotionRenderer = ({ block, level = 0 }) => {
                     return { src: src.trim(), link, scale };
                 }).filter(i => i.src);
 
-                return <GalleryBlock items={items} size={size} gap={gap} />;
+                return wrapGrid(<GalleryBlock items={items} size={size} gap={gap} />, 'my-8');
             }
         }
     }
 
+    if (type === 'image') {
+        const url = value.type === 'external' ? value.external.url : value.file.url;
+        return wrapGrid(
+            <div className="relative w-full aspect-video my-8">
+                <Image src={url} alt="Notion Image" fill className="object-cover rounded-lg" />
+            </div>,
+            'my-8'
+        );
+    }
+
     switch (type) {
+        case 'table': {
+            const rowCount = block.children?.length || 0;
+            const firstRow = block.children?.[0];
+            const colCount = firstRow?.table_row?.cells?.length || 0;
+
+            // If we have a shared grid context, use it
+            if (gridConfig?.active) {
+                return (
+                    <div className="contents">
+                        {block.children?.map((child, idx) => (
+                            <NotionRenderer
+                                key={child.id}
+                                block={child}
+                                level={level + 1}
+                                bodyClass={bodyClass}
+                                columnIndex={columnIndex}
+                                isFirst={isFirst && idx === 0}
+                                isLast={isLast && idx === block.children.length - 1}
+                            />
+                        ))}
+                    </div>
+                );
+            }
+
+            // Fallback to legacy fixed column widths if no context
+            // Note: Added mb-8 for spacing at the end of tables
+            let colWidths = [];
+            if (colCount === 2) colWidths = ['w-[30%]', 'w-[70%]'];
+            else if (colCount === 3) colWidths = ['w-[20%]', 'w-[20%]', 'w-[60%]'];
+            else if (colCount === 4) colWidths = ['w-[15%]', 'w-[15%]', 'w-[15%]', 'w-[55%]'];
+
+            return (
+                <div className={`w-full overflow-x-auto ${gridConfig?.active ? 'mt-0' : 'mt-8'} mb-16`}>
+                    <table className="w-full border-collapse text-left border-t border-gray-200 table-fixed">
+                        {colWidths.length > 0 && (
+                            <colgroup>
+                                {colWidths.map((w, idx) => (
+                                    <col key={idx} className={w} />
+                                ))}
+                            </colgroup>
+                        )}
+                        <tbody>
+                            {block.children?.map((child) => (
+                                <NotionRenderer key={child.id} block={child} level={level + 1} bodyClass={bodyClass} />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+        case 'table_row': {
+            const cells = value.cells || [];
+            const cellCount = cells.length || 0;
+
+            if (gridConfig?.active) {
+                return (
+                    <div className="contents">
+                        {cells.map((cell, cIdx) => {
+                            const _isLastItem = cIdx === cellCount - 1;
+                            const isMeta = cIdx > 0 && !_isLastItem;
+
+                            // Adjust padding: pb-3 for first, py-3 for middle, pb-8 for last row if section ends
+                            const hasBorder = !isFirst;
+                            const paddingClass = isFirst ? 'pb-3' : (isLast ? 'pt-3 pb-8' : 'py-3');
+
+                            return (
+                                <div
+                                    key={cIdx}
+                                    className={`${hasBorder ? 'border-t' : ''} border-gray-200 ${paddingClass} px-1 text-sm font-korean
+                                        ${_isLastItem ? 'text-right opacity-80' : 'text-left'}
+                                        ${isMeta ? 'opacity-60 font-light' : ''}
+                                    `}
+                                    style={{
+                                        gridColumnStart: (columnIndex === 1 ? gridConfig.c1 : 0) + cIdx + 1,
+                                        gridColumnEnd: 'span 1'
+                                    }}
+                                >
+                                    {_isLastItem ? (
+                                        <div className="flex justify-end">
+                                            <Text text={cell} />
+                                        </div>
+                                    ) : (
+                                        <Text text={cell} />
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+            }
+
+            return (
+                <tr className="border-t border-gray-200">
+                    {cells.map((cell, cIdx) => {
+                        const _isLastItem = cIdx === cellCount - 1;
+                        const isMeta = cIdx > 0 && !_isLastItem;
+                        return (
+                            <td
+                                key={cIdx}
+                                className={`py-3 px-1 text-sm font-korean
+                                    ${_isLastItem ? 'text-right opacity-80' : 'text-left'}
+                                    ${isMeta ? 'opacity-60 font-light' : ''}
+                                    ${bodyClass}
+                                `}
+                            >
+                                <Text text={cell} />
+                            </td>
+                        );
+                    })}
+                </tr>
+            );
+        }
         case 'paragraph':
-            return <p><Text text={value.rich_text} /></p>;
+            // Check for Block-Level Reference (entire paragraph wrapped in **)
+            // This handles cases where Notion splits the text into multiple nodes preventing inline regex match
+            const pFullText = value.rich_text.map(t => t.plain_text).join('').trim();
+            const hasLinksInP = value.rich_text.some(t => t.text?.link || t.href);
+
+            if (pFullText.startsWith('**') && pFullText.endsWith('**') && !hasLinksInP) {
+                // [MAINTENANCE] BL03: Reference Text Styling (* 안내문구)
+                // This handles text wrapped in ** ** in Notion. 
+                // Currently set to bold Navy color with minimal margin.
+                const content = pFullText.slice(2, -2).trim();
+                return wrapGrid(
+                    <p className={`!font-bold !text-[0.85em] text-[#2A4458] mb-1 ${bodyClass}`}>
+                        * {content}
+                    </p>,
+                    'mt-0 mb-0'
+                );
+            }
+            return wrapGrid(
+                <p className={`mb-6 leading-relaxed break-keep ${bodyClass}`}>
+                    <Text text={value.rich_text} />
+                </p>,
+                'mb-8'
+            );
         case 'heading_1':
-            return <h1 className="text-3xl font-bold mt-4 mb-2"><Text text={value.rich_text} /></h1>;
+            return wrapGrid(<h1 className="text-3xl font-bold mt-4 mb-2"><Text text={value.rich_text} /></h1>, 'mb-8');
         case 'heading_2':
-            return <h2 className="text-2xl font-bold mt-3 mb-2"><Text text={value.rich_text} /></h2>;
+            return wrapGrid(<h2 className="text-2xl font-medium font-korean mt-3 mb-2"><Text text={value.rich_text} /></h2>, 'mb-8');
         case 'heading_3':
-            return <h3 className="text-xl font-bold mt-2 mb-1"><Text text={value.rich_text} /></h3>;
+            return wrapGrid(<h3 className="text-xl font-medium font-korean mt-2 mb-1"><Text text={value.rich_text} /></h3>, 'mb-8');
         case 'bulleted_list_item':
             // Logic for sub-bullet size (Half size if level > 0)
             const isSubBullet = level > 0;
             const bulletSizeClass = isSubBullet ? "w-1.5 h-1.5 mt-[0.6em]" : "w-3 h-3 mt-[0.45em]";
 
             // Layout Stability: inline-flex for text wrapper to align icon/text
-            return (
-                <div className="flex flex-col">
+            return wrapGrid(
+                <div className={`flex flex-col ${bodyClass}`}>
                     <div className="flex items-start gap-3 ml-1">
                         <div className={`relative ${bulletSizeClass} shrink-0 opacity-80`}>
                             <Image
@@ -314,21 +682,104 @@ const NotionRenderer = ({ block, level = 0 }) => {
                     {block.children && block.children.length > 0 && (
                         <div className="ml-6 mt-1 flex flex-col gap-1">
                             {block.children.map(child => (
-                                <NotionRenderer key={child.id} block={child} level={level + 1} />
+                                <NotionRenderer
+                                    key={child.id}
+                                    block={child}
+                                    level={level + 1}
+                                    columnIndex={columnIndex}
+                                />
                             ))}
                         </div>
                     )}
-                </div>
+                </div>,
+                'mb-8'
             );
         case 'numbered_list_item':
-            return <div className="list-decimal ml-4" style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>;
+            return wrapGrid(<div className={`list-decimal ml-4 ${bodyClass}`} style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>, 'mb-8');
         case 'quote':
-            return <blockquote className="border-l-4 border-gray-300 pl-4 italic"><Text text={value.rich_text} /></blockquote>;
+            return wrapGrid(<blockquote className={`border-l-4 border-gray-300 pl-4 italic ${bodyClass}`}><Text text={value.rich_text} /></blockquote>, 'mb-8');
         case 'callout':
-            return (
-                <div className="p-4 bg-gray-100 rounded flex gap-4">
+            return wrapGrid(
+                <div className={`p-4 bg-gray-100 rounded flex gap-4 ${bodyClass}`}>
                     {value.icon?.emoji && <span>{value.icon.emoji}</span>}
                     <div><Text text={value.rich_text} /></div>
+                </div>,
+                'mb-8'
+            );
+        case 'column_list': {
+            const childCount = block.children?.length || 0;
+
+            // Pre-scan labels for color overrides to synchronize borders
+            let syncColor = null;
+            block.children?.forEach(col => {
+                const labelBlock = col.children?.[0];
+                if (labelBlock) {
+                    const rt = labelBlock[labelBlock.type]?.rich_text;
+                    if (rt?.[0]?.annotations?.color) {
+                        const c = rt[0].annotations.color;
+                        if (c.includes('red') || c.includes('orange')) syncColor = '#E86452';
+                        else if (c.includes('blue')) syncColor = '#2A4458';
+                    }
+                }
+            });
+
+            if (gridConfig?.active) {
+                return (
+                    <div className="contents">
+                        {block.children?.map((child, idx) => (
+                            <NotionRenderer
+                                key={child.id}
+                                block={child}
+                                level={level + 1}
+                                bodyClass={bodyClass}
+                                columnIndex={idx}
+                                inheritedBorderColor={syncColor}
+                            />
+                        ))}
+                    </div>
+                );
+            }
+            return wrapGrid(
+                <div
+                    className="flex flex-col md:grid gap-8 w-full items-start"
+                    style={{
+                        gridTemplateColumns: childCount === 2 ? 'auto 1fr' : `repeat(${childCount}, 1fr)`
+                    }}
+                >
+                    {block.children?.map(child => (
+                        <NotionRenderer key={child.id} block={child} level={level + 1} bodyClass={bodyClass} />
+                    ))}
+                </div>,
+                'mb-8'
+            );
+        }
+        case 'column':
+            if (gridConfig?.active) {
+                return (
+                    <div className="contents [&>*:first-child]:mt-0">
+                        {block.children?.map(child => (
+                            <NotionRenderer
+                                key={child.id}
+                                block={child}
+                                level={level + 1}
+                                bodyClass={bodyClass}
+                                columnIndex={columnIndex}
+                            />
+                        ))}
+                    </div>
+                );
+            }
+            return (
+                <div className="w-full min-w-0 [&>*:first-child]:mt-0">
+                    {block.children?.map(child => (
+                        <NotionRenderer
+                            key={child.id}
+                            block={child}
+                            level={level + 1}
+                            bodyClass={bodyClass}
+                            columnIndex={columnIndex}
+                        />
+                    ))}
                 </div>
             );
         default:
