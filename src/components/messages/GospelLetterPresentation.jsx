@@ -16,6 +16,7 @@ import {
 } from '../../lib/layout-metrics';
 
 // Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
+import { useSnapScrollController } from '../../hooks/scroll/useSnapScrollController';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
 import {
@@ -29,14 +30,13 @@ import {
 const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     // Shared Resources
     const footerRef = useRef(null);
-    const letterRef = useRef(null);
-    const letterEndRef = useRef(null); // New Hold Anchor
-    const summaryRef = useRef(null);
     const sentinelRef = useRef(null);
-    const scrollRef = useRef(null);
-
-    // State Machine: 'reading' | 'letter_end' | 'summary' | 'footer'
     const [activeSection, setActiveSection] = useState('reading');
+
+    // Hook: Snap Controller
+    const { scrollRef, scrollToSection, registerSection } = useSnapScrollController();
+
+    // Gesture Gating & Locking Refs
 
     // Gesture Gating & Locking Refs
     const isAutoScrollingRef = useRef(false);
@@ -59,8 +59,8 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     const { title, content, scriptureTags } = letter;
 
     // Helper: Smooth Scroll & Lock
-    const performSnap = (targetRef, targetSection) => {
-        if (!scrollRef.current || !targetRef.current) return;
+    const performSnap = (targetKey, targetSectionState) => {
+        if (!scrollRef.current) return;
 
         // 1. Lock immediately
         isAutoScrollingRef.current = true;
@@ -68,29 +68,24 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
         wheelAccumRef.current = 0; // Reset accumulator
 
         // 2. Set State
-        setActiveSection(targetSection);
+        setActiveSection(targetSectionState);
 
-        // 3. Scroll Calculation
-        let top = 0;
-        if (targetSection === 'reading') {
-            top = 0;
-        } else if (targetSection === 'letter_end') {
+        // 3. Execute Scroll via Hook
+        if (targetSectionState === 'letter_end') {
             // SNAP TO CENTER: Align the "End of Text" to the center of the viewport
-            // effectively showing the last paragraph + 50% breathing space
             const containerHeight = scrollRef.current.clientHeight;
-            top = targetRef.current.offsetTop - (containerHeight / 1.2);
+            // Target is 'letter_end' (registered ref)
+            // Offset: We want the element to be at (containerHeight / 1.2) from top? 
+            // Original: top = target.offsetTop - (containerHeight / 1.2);
+            // Hook: top = target.offsetTop + offset
+            // So offset = -(containerHeight / 1.2)
+            scrollToSection('letter_end', 'smooth', -(containerHeight / 1.2));
         } else {
-            // Standard Snap to Top (Summary / Footer)
-            top = targetRef.current.offsetTop;
+            // Standard Snap to Top
+            scrollToSection(targetKey, 'smooth');
         }
 
-        // 4. Execute Scroll
-        scrollRef.current.scrollTo({
-            top,
-            behavior: 'smooth'
-        });
-
-        // 5. Unlock after cooldown
+        // 4. Unlock after cooldown
         setTimeout(() => {
             isAutoScrollingRef.current = false;
             wheelAccumRef.current = 0; // Ensure clean slate
@@ -153,7 +148,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             if (activeSection === 'reading' && isScrollingDown) {
                 if (isLetterEndVisible.current) {
                     e.preventDefault();
-                    performSnap(letterEndRef, 'letter_end');
+                    performSnap('letter_end', 'letter_end');
                 }
                 // Else allow native scroll
             }
@@ -161,25 +156,25 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             // 2. Letter End -> Summary
             else if (activeSection === 'letter_end' && isScrollingDown) {
                 e.preventDefault();
-                performSnap(summaryRef, 'summary');
+                performSnap('summary', 'summary');
             }
 
             // 3. Summary -> Footer
             else if (activeSection === 'summary' && isScrollingDown) {
                 e.preventDefault();
-                performSnap(footerRef, 'footer');
+                performSnap('footer', 'footer');
             }
 
             // 4. Footer -> Summary
             else if (activeSection === 'footer' && isScrollingUp) {
                 e.preventDefault();
-                performSnap(summaryRef, 'summary');
+                performSnap('summary', 'summary');
             }
 
             // 5. Summary -> Letter End
             else if (activeSection === 'summary' && isScrollingUp) {
                 e.preventDefault();
-                performSnap(letterEndRef, 'letter_end');
+                performSnap('letter_end', 'letter_end');
             }
 
             // 6. Letter End -> Reading (Unlock/Scroll Up)
@@ -293,7 +288,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 className="hidden md:block relative overflow-y-auto no-scrollbar scroll-smooth snap-y snap-proximity"
             >
                 {/* 1. Letter Section */}
-                <section id="letter-section" ref={letterRef} className="relative min-h-[calc(100vh-80px)]">
+                <section id="letter-section" ref={el => registerSection('reading', el)} className="relative min-h-[calc(100vh-80px)]">
 
                     {/* Sticky Header inside Letter */}
                     <div className="sticky top-0 z-30 flex flex-row w-full pointer-events-none">
@@ -323,7 +318,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                                     );
                                 })}
                                 {/* Letter End Snap Target (Invisible Anchor) */}
-                                <div ref={letterEndRef} className="h-px w-full" aria-hidden="true" />
+                                <div ref={el => registerSection('letter_end', el)} className="h-px w-full" aria-hidden="true" />
 
                                 {/* Breathing Space Buffer */}
                                 <div className="h-[50vh] w-full" aria-hidden="true" />
@@ -340,7 +335,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 />
 
                 {/* 3. Summary Section */}
-                <section id="summary-section" ref={summaryRef} className="bg-[#F4F3EF] min-h-[calc(100vh-80px)] relative z-20 w-full">
+                <section id="summary-section" ref={el => registerSection('summary', el)} className="bg-[#F4F3EF] min-h-[calc(100vh-80px)] relative z-20 w-full">
                     {messagesSummary && (
                         <MessagesSummarySection
                             {...messagesSummary}
@@ -350,7 +345,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 </section>
 
                 {/* 4. Footer Section */}
-                <section id="footer-section" ref={footerRef} className="w-full relative z-30">
+                <section id="footer-section" ref={el => { registerSection('footer', el); footerRef.current = el; }} className="w-full relative z-30">
                     {children}
                 </section>
 

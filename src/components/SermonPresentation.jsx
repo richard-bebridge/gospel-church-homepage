@@ -18,7 +18,7 @@ import {
 
 // Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
 import { useFontScale } from '../hooks/sermon/useFontScale';
-import { useDesktopObserver } from '../hooks/sermon/useDesktopObserver';
+import { useSnapScrollController } from '../hooks/scroll/useSnapScrollController';
 import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
 import { renderVerseWithStyledFirstWord } from '../lib/utils/textUtils';
@@ -43,9 +43,19 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
     } = useFontScale();
 
     // Desktop Logic
-    const { desktopState, desktopSectionsRef } = useDesktopObserver(sermon.sections.length);
-    const { section: activeSection, direction: desktopDirection } = desktopState;
-    const verseAlignmentOffset = useVerseAlignment(activeSection, desktopSectionsRef, fontScale);
+    // Contract: Active section determines right panel content and title number animation
+    const {
+        scrollRef,
+        activeSection,
+        direction,
+        registerSection,
+        getSectionMap
+    } = useSnapScrollController({
+        dependencies: [sermon.sections.length],
+        rootMargin: '-20% 0px -20% 0px' // Tuned for sermon reading flow
+    });
+
+    const verseAlignmentOffset = useVerseAlignment(activeSection, { current: Array.from(getSectionMap().values()) }, fontScale);
 
     // Mobile Logic
     const { currentMobileSection, handleHorizontalScroll } = useMobileScroll();
@@ -181,6 +191,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
             {/* ======================================================== */}
             <div
                 style={SCROLL_AREA_HEIGHT_STYLE}
+                ref={scrollRef}
                 className="hidden md:block relative overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar font-pretendard"
             >
                 <div className="relative w-full bg-[#F4F3EF]">
@@ -259,10 +270,10 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                             </div>
 
                             <div className={`hidden min-[1450px]:flex absolute top-[384px] left-12 overflow-hidden h-[72px] w-[90px] items-start transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                                <AnimatePresence mode="popLayout" custom={desktopDirection}>
+                                <AnimatePresence mode="popLayout" custom={direction}>
                                     <motion.span
                                         key={activeSection}
-                                        custom={desktopDirection}
+                                        custom={direction}
                                         variants={desktopVariants}
                                         initial="enter"
                                         animate="center"
@@ -286,7 +297,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                             {sermon.sections.map((section, index) => (
                                 <section
                                     key={index}
-                                    ref={el => desktopSectionsRef.current[index] = el}
+                                    ref={el => registerSection(index, el)}
                                     className="min-h-[70vh] snap-start mb-24 flex flex-col items-center pt-[var(--layout-pt-body)]"
                                 >
                                     <div className="w-full max-w-[60%]">
@@ -320,7 +331,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                     {/* Messages Summary (Desktop) - Inside Long BG Wrapper to keep Title Sticky */}
                     {messagesSummary && (
                         <div
-                            ref={el => desktopSectionsRef.current[sermon.sections.length] = el}
+                            ref={el => registerSection(sermon.sections.length, el)}
                             className="snap-start relative z-30"
                             style={{ scrollSnapStop: 'always', scrollMarginTop: '0px' }}
                         >
