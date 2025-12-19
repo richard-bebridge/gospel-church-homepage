@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const WORDS = ["Seek", "Stand", "Transform", "Radiate"];
@@ -8,25 +8,64 @@ const WORD_DURATION = 600; // ms per word
 
 const IntroOverlay = ({ onComplete }) => {
     const [index, setIndex] = useState(0);
+    const [isFontReady, setIsFontReady] = useState(false);
+    const instanceId = useRef(Math.random().toString(36).substr(2, 5));
+    const completionTriggered = useRef(false);
 
     useEffect(() => {
-        // Cycle through words
+        console.log(`[IntroOverlay:${instanceId.current}] MOUNT`, performance.now());
+        const checkFont = async () => {
+            await document.fonts.ready;
+            if (document.fonts.check('700 30px Montserrat')) {
+                setIsFontReady(true);
+            } else {
+                document.fonts.load('700 30px Montserrat').then(() => setIsFontReady(true));
+            }
+        };
+        checkFont();
+        return () => console.log(`[IntroOverlay:${instanceId.current}] UNMOUNT`, performance.now());
+    }, []);
+
+    // 1. Core Interval (Pure)
+    useEffect(() => {
+        if (!isFontReady) return;
+
+        // Log START_INTERVAL here, it will run once after isFontReady becomes true
+        console.log(`[IntroOverlay:${instanceId.current}] START_INTERVAL at index ${index}`, performance.now());
+
         const interval = setInterval(() => {
             setIndex(prev => {
-                if (prev >= WORDS.length - 1) {
-                    clearInterval(interval);
-                    // Delay slightly before calling complete to allow last word to be seen
-                    setTimeout(() => {
-                        onComplete && onComplete();
-                    }, WORD_DURATION);
-                    return prev;
-                }
+                if (prev >= WORDS.length) return prev;
                 return prev + 1;
             });
         }, WORD_DURATION);
 
-        return () => clearInterval(interval);
-    }, [onComplete]);
+        return () => {
+            console.log(`[IntroOverlay:${instanceId.current}] STOP_INTERVAL`, performance.now());
+            clearInterval(interval);
+        };
+    }, [isFontReady]); // Only re-run when isFontReady changes
+
+    // Log index changes in a dedicated effect to avoid doubled logs in Strict Mode updaters
+    useEffect(() => {
+        console.log(`[IntroOverlay:${instanceId.current}] INDEX: ${index}`, performance.now());
+    }, [index]);
+
+    // 2. Completion Monitor (Side Effect)
+    useEffect(() => {
+        if (index >= WORDS.length && !completionTriggered.current) {
+            completionTriggered.current = true;
+            console.log(`[IntroOverlay:${instanceId.current}] SEQUENCE_COMPLETE -> Triggering onComplete`, performance.now());
+
+            // Short delay to show the final state/word before unmounting
+            const timer = setTimeout(() => {
+                console.log(`[IntroOverlay:${instanceId.current}] EXECUTING onComplete callback`);
+                onComplete && onComplete();
+            }, WORD_DURATION);
+
+            return () => clearTimeout(timer);
+        }
+    }, [index, onComplete]);
 
     return (
         <motion.div
@@ -39,13 +78,13 @@ const IntroOverlay = ({ onComplete }) => {
                 <AnimatePresence mode="wait">
                     <motion.span
                         key={index}
-                        className="text-3xl md:text-4xl font-sans font-bold text-[#05121C] uppercase absolute tracking-widest"
+                        className={`text-3xl md:text-4xl font-sans font-bold text-[#05121C] uppercase absolute tracking-widest transition-opacity duration-300 ${isFontReady ? 'opacity-100' : 'opacity-0'}`}
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: isFontReady ? 1 : 0, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.4 }}
                     >
-                        {WORDS[index]}
+                        {WORDS[Math.min(index, WORDS.length - 1)]}
                     </motion.span>
                 </AnimatePresence>
             </div>
