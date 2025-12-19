@@ -66,6 +66,16 @@ export const getAboutContent = async () => {
             // Fetch Blocks (Content)
             let blocks = await getBlocks(id);
 
+            // Fetch related page blocks if rightPanelType is 'page'
+            let pageContent = null;
+            if (rightPanelType === 'page' && relatedPageId) {
+                try {
+                    pageContent = await getBlocks(relatedPageId);
+                } catch (e) {
+                    console.error(`[AboutNotion] Failed to fetch blocks for related page ${relatedPageId}`, e);
+                }
+            }
+
             // Extract First Heading 1 for Main Title (e.g., "우리가 존재하는 이유")
             // and remove it from the body content.
             let heading = '';
@@ -87,6 +97,7 @@ export const getAboutContent = async () => {
                 heading, // e.g. "우리가 존재하는 이유" (Big Title)
                 content: blocks,
                 relatedPageId,
+                pageContent, // Assembled on server
                 propertyKeys: Object.keys(props)
             };
         }));

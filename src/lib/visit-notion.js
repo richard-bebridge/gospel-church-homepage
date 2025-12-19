@@ -54,6 +54,16 @@ export const getVisitContent = async () => {
             // Fetch Blocks (Content)
             let blocks = await getBlocks(id);
 
+            // Fetch related page blocks if rightPanelType is 'page'
+            let pageContent = null;
+            if (rightPanelType === 'page' && relatedPageId) {
+                try {
+                    pageContent = await getBlocks(relatedPageId);
+                } catch (e) {
+                    console.error(`[VisitNotion] Failed to fetch blocks for related page ${relatedPageId}`, e);
+                }
+            }
+
             // Extract First Heading 1 for Main Title
             let heading = '';
             const headingIndex = blocks.findIndex(b => b.type === 'heading_1');
@@ -74,6 +84,7 @@ export const getVisitContent = async () => {
                 heading, // e.g. "우리가 존재하는 이유" (Big Title)
                 content: blocks,
                 relatedPageId, // Pass to frontend for fetching dynamic content
+                pageContent, // Assembled on server
                 propertyKeys: Object.keys(props)
             };
         }));
