@@ -3,22 +3,20 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NotionRenderer, { TableAlignmentProvider } from '../sermon/NotionRenderer';
-import Image from 'next/image';
 import AboutSideNav from '../about/AboutSideNav';
 import Header from '../Header';
 import Footer from '../Footer';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
+import { RightPanelController } from '../presentation/RightPanelController';
 
 import {
     SCROLL_COOLDOWN_MS,
     SCROLL_THRESHOLD_DELTA
 } from '../sermon/constants';
 import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
-import RightPanelMap from './RightPanelMap';
-import { extractMapToken, filterMapTokensFromBlocks } from '../../lib/utils/visitMapHelpers';
+import { extractMapToken } from '../../lib/utils/visitMapHelpers';
 import IntroOverlay from '../ui/IntroOverlay';
-import LoadingSequence from '../ui/LoadingSequence';
 import FloatingVisitButton from './FloatingVisitButton';
 
 const LOCATION = {
@@ -45,12 +43,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     const [showIntro, setShowIntro] = useState(true);
     const [introChecked, setIntroChecked] = useState(false);
     const [introAnimFinished, setIntroAnimFinished] = useState(false);
-    const [pageContentCache, setPageContentCache] = useState({});
-    const [pageLoading, setPageLoading] = useState(false);
-    const [pageError, setPageError] = useState(null);
-    const [initialFetchDone, setInitialFetchDone] = useState(false); // New: Track when the fetch attempt finishes
     const [fontsReady, setFontsReady] = useState(false);
-    const fetchingRef = useRef(new Set());
 
     // 0. Font Readiness Monitor
     useEffect(() => {
@@ -132,7 +125,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
         const checkReadiness = () => {
             if (!sections || sections.length === 0) return true;
-            if (!initialFetchDone) return false;
             if (!fontsReady) return false;
             if (!fontScaleSettled) return false;
             return true;
@@ -145,7 +137,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
             setShowIntro(false);
             sessionStorage.setItem('intro_seen_visit', 'true');
         }
-    }, [introAnimFinished, showIntro, sections, initialFetchDone, fontsReady, fontScaleSettled, introChecked]);
+    }, [introAnimFinished, showIntro, sections, fontsReady, fontScaleSettled, introChecked]);
 
     // 3. Safety Timeout (Fallback)
     useEffect(() => {
@@ -163,10 +155,9 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
             introAnimFinished,
             fontsReady,
             fontScaleSettled,
-            initialFetchDone,
             time: performance.now()
         });
-    }, [showIntro, introAnimFinished, fontsReady, fontScaleSettled, initialFetchDone]);
+    }, [showIntro, introAnimFinished, fontsReady, fontScaleSettled]);
 
     // ----------------------------------------------------------------      
     // 1. State & Refs
@@ -336,57 +327,8 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     }, [activeIndex, sections.length]);
 
     // ----------------------------------------------------------------      
-    // Data Fetching for 'page' type (Dynamic Content)
+    // Data Render
     // ---------------------------------------------------------------- 
-    useEffect(() => {
-        const controller = new AbortController();
-
-        const fetchAllContent = async () => {
-            if (!sections || sections.length === 0) return;
-
-            setPageLoading(true);
-            try {
-                const tasks = sections.map(async (section) => {
-                    if (section.rightPanelType === 'page' && section.relatedPageId) {
-                        const pageId = section.relatedPageId;
-
-                        if (pageContentCache[pageId]) return;
-                        if (fetchingRef.current.has(pageId)) return;
-
-                        fetchingRef.current.add(pageId);
-
-                        try {
-                            const res = await fetch(`/api/notion/page-blocks?pageId=${pageId}`, {
-                                signal: controller.signal
-                            });
-
-                            if (res.ok) {
-                                const data = await res.json();
-                                setPageContentCache(prev => ({
-                                    ...prev,
-                                    [pageId]: data.blocks
-                                }));
-                            }
-                        } catch (err) {
-                            if (err.name !== 'AbortError') {
-                                console.error('Fetch Error:', err);
-                            }
-                        } finally {
-                            fetchingRef.current.delete(pageId);
-                        }
-                    }
-                });
-
-                await Promise.all(tasks);
-            } finally {
-                setPageLoading(false);
-                setInitialFetchDone(true);
-            }
-        };
-
-        fetchAllContent();
-        return () => controller.abort();
-    }, [sections]);
 
     // ----------------------------------------------------------------
     // Render Right Panel
@@ -396,96 +338,20 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
         const safeIndex = Math.min(activeIndex, sections.length - 1);
         const section = sections[safeIndex];
-        const { rightPanelType, imgSrc, mapCoords, relatedPageId } = section;
+        const { rightPanelType, imgSrc, mapCoords, pageContent } = section;
+
+        let data = imgSrc;
+        if (rightPanelType === 'page') data = pageContent;
+        if (rightPanelType === 'map') data = mapCoords;
 
         return (
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={section.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full h-full"
-                >
-                    {rightPanelType === 'image' && imgSrc && (
-                        <div className="w-full h-full flex flex-col items-center justify-center px-8 lg:px-16">
-                            <div className="relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl">
-                                <Image
-                                    src={imgSrc}
-                                    alt={section.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        </div>
-                    )}
-                    {rightPanelType === 'animation' && (
-                        <div className="w-full h-full flex items-center justify-center">
-                            <div className="text-gray-400 italic">Animation Placeholder</div>
-                        </div>
-                    )}
-                    {rightPanelType === 'map' && mapCoords && (
-                        <div className="w-full h-full flex flex-col items-center justify-center">
-                            <RightPanelMap
-                                x={mapCoords.x}
-                                y={mapCoords.y}
-                                title={section.title}
-                            />
-                        </div>
-                    )}
-
-                    {rightPanelType === 'page' && (
-                        <div className="w-full h-full overflow-y-auto no-scrollbar">
-                            <div className="min-h-full p-8 lg:p-16 flex flex-col justify-center">
-                                {pageLoading && !pageContentCache[relatedPageId] && !showIntro && (
-                                    <LoadingSequence />
-                                )}
-
-                                {/* Error State */}
-                                {pageError && (
-                                    <div className="p-4 bg-red-50 text-red-600 rounded-md text-sm w-full">
-                                        <p className="font-bold mb-1">Failed to load content</p>
-                                        <p>{pageError}</p>
-                                    </div>
-                                )}
-
-                                {/* Missing Relation State */}
-                                {!relatedPageId && (
-                                    <div className="text-gray-400 italic text-center w-full">
-                                        연결된 페이지가 없습니다.<br />
-                                        Notion DB의 'etc' relation을 확인해 주세요.
-                                    </div>
-                                )}
-
-                                {/* Content Render */}
-                                {relatedPageId && pageContentCache[relatedPageId] && (
-                                    <div className="prose font-korean text-gray-800 w-full">
-                                        <TableAlignmentProvider blocks={pageContentCache[relatedPageId]}>
-                                            {pageContentCache[relatedPageId].map(block => (
-                                                <NotionRenderer
-                                                    key={block.id}
-                                                    block={block}
-                                                    bodyClass={desktopBodyClass}
-                                                />
-                                            ))}
-                                        </TableAlignmentProvider>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-
-                    {rightPanelType === 'verse' && (
-                        <div className="w-full h-full flex flex-col items-center justify-center">
-                            <div className="p-8 lg:p-16 text-center font-korean font-light text-2xl text-gray-800 break-keep leading-relaxed w-full max-w-md">
-                                <p className="mb-6">&quot;말씀이 육신이 되어 우리 가운데 거하시매...&quot;</p>
-                                <span className="block text-sm text-[#2A4458] font-bold">요한복음 1:14</span>
-                            </div>
-                        </div>
-                    )}
-                </motion.div>
-            </AnimatePresence>
+            <RightPanelController
+                isVisible={!isFooter}
+                mode={rightPanelType}
+                data={data}
+                title={section.title}
+                uniqueKey={section.id}
+            />
         );
     };
 
@@ -514,9 +380,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                     {/* Sticky Container */}
                     <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-10">
                         {/* Right Panel */}
-                        <div className="absolute right-0 top-0 w-1/2 h-full flex flex-col justify-center items-center overflow-hidden z-0">
-                            {renderRightPanel()}
-                        </div>
+                        {renderRightPanel()}
 
                         {/* Left Panel */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-[#2A4458]/10 flex flex-col items-center pt-0 pointer-events-none">
