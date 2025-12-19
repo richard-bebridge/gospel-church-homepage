@@ -29,41 +29,77 @@ const LOCATION = {
 
 const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     // ----------------------------------------------------------------
-    // Settings & SNS
+    // Intro & Loading State
     // ----------------------------------------------------------------
+    const instanceId = useRef(Math.random().toString(36).substr(2, 5));
+    console.log(`[VisitPresentation:${instanceId.current}] RENDER`, performance.now());
+
+    useEffect(() => {
+        console.log(`[VisitPresentation:${instanceId.current}] MOUNT`, performance.now());
+        return () => console.log(`[VisitPresentation:${instanceId.current}] UNMOUNT`, performance.now());
+    }, []);
+
     const settings = siteSettings || {};
     // Intro & Loading State
     // ----------------------------------------------------------------
     const [showIntro, setShowIntro] = useState(true);
+    const [introChecked, setIntroChecked] = useState(false);
     const [introAnimFinished, setIntroAnimFinished] = useState(false);
     const [pageContentCache, setPageContentCache] = useState({});
     const [pageLoading, setPageLoading] = useState(false);
     const [pageError, setPageError] = useState(null);
     const [initialFetchDone, setInitialFetchDone] = useState(false); // New: Track when the fetch attempt finishes
+    const [fontsReady, setFontsReady] = useState(false);
     const fetchingRef = useRef(new Set());
 
-    const handleIntroAnimComplete = () => {
-        setIntroAnimFinished(true);
-    };
+    // 0. Font Readiness Monitor
+    useEffect(() => {
+        const checkFonts = async () => {
+            if (typeof document === 'undefined') return;
+            try {
+                // Wait for core system fonts
+                await document.fonts.ready;
 
-    // 1. Session Storage check
+                // Specific weights we use
+                const specs = [
+                    '700 30px Montserrat',  // Loading/Intro
+                    '400 18px Pretendard',  // Body (Normal)
+                    '700 48px YiSunShin',   // Section Title
+                ];
+
+                const allLoaded = specs.every(s => document.fonts.check(s));
+
+                if (allLoaded) {
+                    setFontsReady(true);
+                } else {
+                    // Force load if not checked (some browsers/CDNs)
+                    await Promise.all(specs.map(s => document.fonts.load(s)));
+                    setFontsReady(true);
+                }
+            } catch (e) {
+                console.warn('[VisitPresentation] Font check failed, proceeding anyway', e);
+                setFontsReady(true); // Fallback to avoid getting stuck
+            }
+        };
+        checkFonts();
+    }, []);
+
+    const handleIntroAnimComplete = React.useCallback(() => {
+        console.log("[VisitPresentation] handleIntroAnimComplete CALLED", performance.now());
+        setIntroAnimFinished(true);
+    }, []);
+
+    const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
+
+    // 1. Session Storage Initial Check (Runs once on mount)
     useEffect(() => {
         const hasSeen = sessionStorage.getItem('intro_seen_visit');
         if (hasSeen) {
             setShowIntro(false);
             setIntroAnimFinished(true);
         }
+        setIntroChecked(true); // Flag when check complete
     }, []);
-
-    // 2. Safety Timeout: Don't stay stuck on intro for more than 3 seconds after anim finishes
-    useEffect(() => {
-        if (showIntro && introAnimFinished) {
-            const timer = setTimeout(() => {
-                setShowIntro(false);
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [showIntro, introAnimFinished]);
 
     // ----------------------------------------------------------------      
     // 0. Pre-process Sections
@@ -88,24 +124,49 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         });
     }, [rawSections]);
 
-    // ----------------------------------------------------------------      
-    // Coordination Effect
-    // ----------------------------------------------------------------      
+    // 2. Main Coordination Effect (Decides when to hide the intro)
     useEffect(() => {
+        if (!introChecked) return;
         if (!showIntro) return;
         if (!introAnimFinished) return;
 
         const checkReadiness = () => {
             if (!sections || sections.length === 0) return true;
             if (!initialFetchDone) return false;
+            if (!fontsReady) return false;
+            if (!fontScaleSettled) return false;
             return true;
         };
 
         if (checkReadiness()) {
+            if (process.env.NODE_ENV === 'development') {
+                console.log('[VisitPresentation] All Ready -> Hiding Intro');
+            }
             setShowIntro(false);
             sessionStorage.setItem('intro_seen_visit', 'true');
         }
-    }, [introAnimFinished, showIntro, sections, pageContentCache, initialFetchDone]);
+    }, [introAnimFinished, showIntro, sections, initialFetchDone, fontsReady, fontScaleSettled, introChecked]);
+
+    // 3. Safety Timeout (Fallback)
+    useEffect(() => {
+        if (showIntro && introAnimFinished && introChecked) {
+            const timer = setTimeout(() => {
+                setShowIntro(false);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [showIntro, introAnimFinished, introChecked]);
+
+    useEffect(() => {
+        console.log("[IntroState] Visit", {
+            showIntro,
+            introAnimFinished,
+            fontsReady,
+            fontScaleSettled,
+            initialFetchDone,
+            time: performance.now()
+        });
+    }, [showIntro, introAnimFinished, fontsReady, fontScaleSettled, initialFetchDone]);
 
     // ----------------------------------------------------------------      
     // 1. State & Refs
@@ -129,9 +190,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
     // Derived
     const isFooter = activeIndex === sections.length;
-
-    // Font Scale
-    const { desktopBodyClass } = useFontScale();
 
     // Guard
     if (!sections || sections.length === 0) {
@@ -380,7 +438,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                     {rightPanelType === 'page' && (
                         <div className="w-full h-full overflow-y-auto no-scrollbar">
                             <div className="min-h-full p-8 lg:p-16 flex flex-col justify-center">
-                                {pageLoading && !pageContentCache[relatedPageId] && (
+                                {pageLoading && !pageContentCache[relatedPageId] && !showIntro && (
                                     <LoadingSequence />
                                 )}
 
@@ -420,7 +478,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
                     {rightPanelType === 'verse' && (
                         <div className="w-full h-full flex flex-col items-center justify-center">
-                            <div className="p-8 lg:p-16 text-right font-korean font-light text-2xl text-gray-800 break-keep leading-relaxed w-full max-w-md">
+                            <div className="p-8 lg:p-16 text-center font-korean font-light text-2xl text-gray-800 break-keep leading-relaxed w-full max-w-md">
                                 <p className="mb-6">&quot;말씀이 육신이 되어 우리 가운데 거하시매...&quot;</p>
                                 <span className="block text-sm text-[#2A4458] font-bold">요한복음 1:14</span>
                             </div>
@@ -433,8 +491,8 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
-            <AnimatePresence>
-                {showIntro && (
+            <AnimatePresence mode="wait">
+                {introChecked && showIntro && (
                     <IntroOverlay onComplete={handleIntroAnimComplete} />
                 )}
             </AnimatePresence>
@@ -445,7 +503,10 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
             <div
                 ref={containerRef}
-                style={{ paddingTop: `${HEADER_HEIGHT_PX}px` }}
+                style={{
+                    paddingTop: `${HEADER_HEIGHT_PX}px`,
+                    visibility: introChecked ? 'visible' : 'hidden' // Hide body until we decide on intro
+                }}
                 className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-pretendard"
             >
                 <div className="relative w-full bg-[#F4F3EF]">
