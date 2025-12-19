@@ -19,7 +19,7 @@ export const PresentationSummary = ({ data, sectionRef }) => {
         <section
             id="summary-section"
             ref={sectionRef}
-            className="bg-[#F4F3EF] w-full relative z-20"
+            className="bg-[#F4F3EF] w-full relative z-20 snap-start"
             style={{ minHeight: `calc(100vh - ${HEADER_HEIGHT_PX}px)` }}
         >
             {data && (

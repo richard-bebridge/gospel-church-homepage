@@ -16,7 +16,7 @@ export const PresentationFooter = ({ children, sectionRef }) => {
         <section
             id="footer-section"
             ref={sectionRef}
-            className="w-full relative z-30"
+            className="w-full relative z-30 snap-start"
         >
             {children}
         </section>

@@ -33,23 +33,19 @@ export const PresentationShell = ({
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col font-pretendard">
 
             {/* Desktop Layout (>= md) */}
-            <div className="hidden md:block w-full">
-                {/* 1. Header Buffer to push content below fixed nav */}
-                <div style={{ height: `${HEADER_HEIGHT_PX}px` }} className="w-full shrink-0" />
-
-                {/* 2. Right Panel (Fixed Position sibling) */}
+            <div className="hidden md:block w-full h-screen overflow-hidden">
+                {/* 1. Right Panel (Fixed Position sibling) */}
                 {rightPanel}
 
-                {/* 3. Main Scroll Container */}
+                {/* 2. Main Scroll Container */}
                 <div
                     id="scroll-container"
                     ref={scrollRef}
                     style={{
-                        ...SCROLL_AREA_HEIGHT_STYLE,
-                        ...SCROLL_PADDING_TOP_STYLE,
+                        scrollPaddingTop: usePadding ? `${HEADER_HEIGHT_PX}px` : '0px',
                         paddingTop: usePadding ? `${HEADER_HEIGHT_PX}px` : '0px'
                     }}
-                    className={`relative overflow-y-auto no-scrollbar scroll-smooth snap-y ${snapMode}`}
+                    className={`relative w-full h-full overflow-y-auto no-scrollbar scroll-smooth snap-y ${snapMode}`}
                 >
                     {children}
                 </div>

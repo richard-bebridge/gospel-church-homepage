@@ -233,7 +233,6 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
             <PresentationShell
                 scrollRef={scrollRef}
                 mobileContent={MobileLayout}
-                usePadding={false}
                 snapMode="snap-mandatory"
                 rightPanel={
                     <RightPanelController
@@ -242,7 +241,9 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         data={desktopVerses} // Passes current section verses
                         title={sermon.title} // Used for ghost alignment
                         titleClassName="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3"
-                        paddingTopClass="pt-[var(--layout-pt-title)]"
+                        paddingTopClass="pt-[96px]"
+                        contentPaddingClass="pt-[384px]"
+                        uniqueKey={activeSection}
                     />
                 }
             >
@@ -254,14 +255,18 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         className="sticky top-0 w-full overflow-hidden pointer-events-none z-10"
                     >
                         {/* Note: SermonLeftPanel content extracted above usually, but here mapped inline for simplicity of context access */}
-                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[var(--layout-pt-title)]">
+                        {/* Title: Standard (96px) */}
+                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[96px]">
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3">
                                     {sermon.title}
                                 </h1>
                             </div>
 
-                            <div className={`hidden min-[1450px]:flex absolute top-[384px] left-12 overflow-hidden h-[72px] w-[90px] items-start transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                            <div
+                                className={`hidden min-[1450px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}
+                                style={{ top: '384px' }}
+                            >
                                 <AnimatePresence mode="popLayout" custom={direction}>
                                     <motion.span
                                         key={activeSection}
@@ -290,11 +295,11 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                 <section
                                     key={index}
                                     ref={el => registerSection(index, el)}
-                                    className="min-h-[70vh] snap-start mb-24 flex flex-col items-center pt-[var(--layout-pt-body)]"
+                                    className="min-h-[70vh] snap-start mb-24 flex flex-col items-center pt-[384px]"
                                 >
                                     <div className="w-full max-w-[60%]">
                                         {section.heading && (
-                                            <h2 className="text-2xl font-bold text-[#05121C] break-keep font-pretendard leading-tight mb-8 pt-2">
+                                            <h2 className="text-2xl font-bold text-[#05121C] break-keep font-pretendard leading-tight mb-8">
                                                 {section.heading}
                                             </h2>
                                         )}
