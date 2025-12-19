@@ -285,6 +285,8 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
             <PresentationShell
                 scrollRef={scrollRef}
                 mobileContent={MobileLayout}
+                usePadding={true}
+                snapMode="snap-mandatory"
                 rightPanel={
                     <RightPanelController
                         isVisible={activeSection === 'reading' || activeSection === 'letter_end'}
@@ -298,15 +300,44 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 <section
                     id="reading-section"
                     ref={el => registerSection('reading', el)}
-                    className="relative min-h-[calc(100vh-80px)]"
+                    className="relative min-h-[calc(100vh-80px)] snap-start"
                 >
-                    <PresentationHeader title={title} />
+                    {/* Sticky Container Wrapper (Matches AboutPresentation structure) */}
+                    <div className="sticky top-0 h-[calc(100vh-80px)] w-full pointer-events-none z-10">
+                        {/* Sticky Number (Reverted to 384px as requested) */}
+                        <div className={`hidden min-[1650px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 z-50 pointer-events-none ${activeSection !== 'reading' ? 'opacity-0' : 'opacity-100'}`}
+                            style={{ top: '384px' }}
+                        >
+                            <AnimatePresence mode="wait">
+                                <motion.span
+                                    key="01"
+                                    initial={{ y: '100%' }}
+                                    animate={{ y: 0 }}
+                                    exit={{ y: '-100%' }}
+                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                    className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none"
+                                >
+                                    01
+                                </motion.span>
+                            </AnimatePresence>
+                        </div>
+                    </div>
 
-                    <PresentationBody
-                        content={content}
-                        bodyClass={desktopBodyClass}
-                        endRef={el => registerSection('letter_end', el)}
-                    />
+                    {/* Content Body (Relative Sibling) */}
+                    {/* -mt-[calc(100vh-80px)] pulls the content up to overlap the sticky container, 
+                        replicating the AboutPresentation architecture. */}
+                    <div className="relative z-20 -mt-[calc(100vh-80px)]">
+                        {/* Title: Lowered by 80px (pt-24/96 -> pt-[176px]) */}
+                        <PresentationHeader title={title} paddingTop="pt-[176px]" />
+
+                        {/* Body: Lowered by 80px (pt-96/384 -> pt-[464px]) */}
+                        <PresentationBody
+                            content={content}
+                            bodyClass={desktopBodyClass}
+                            endRef={el => registerSection('letter_end', el)}
+                            paddingTop="pt-[464px]"
+                        />
+                    </div>
                 </section>
 
                 {/* Sentinel (Trigger for Summary) */}

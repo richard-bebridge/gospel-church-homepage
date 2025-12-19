@@ -19,12 +19,12 @@ import { useFontScale } from '../../hooks/sermon/useFontScale'; // Or pass as pr
  * - bodyClass: string (Tailwind class string for text styling)
  * - endRef: ref/callback for the "End of Content" snap target
  */
-export const PresentationBody = ({ content, bodyClass, endRef }) => {
+export const PresentationBody = ({ content, bodyClass, endRef, paddingTop = 'pt-96' }) => {
     return (
         <div className="flex flex-row w-full z-20">
             {/* Left Column (Content) */}
             <div className="w-1/2 flex flex-col items-center">
-                <div className="w-full max-w-[60%] pb-32 pt-32">
+                <div className={`w-full max-w-[60%] pb-32 ${paddingTop}`}>
                     {content && content.map(block => {
                         const isBullet = block.type === 'bulleted_list_item';
                         const spacingClass = isBullet ? 'mb-0' : 'mb-8';

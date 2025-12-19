@@ -11,39 +11,46 @@ const SummaryColumn = ({
     formatDate,
     bgColorClass
 }) => (
-    <div className={`w-full md:w-1/2 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] ${bgColorClass}`}>
-        <div className="w-full max-w-[60%] flex flex-col">
-            <span className="text-[#2A4458] font-sans font-bold text-xs tracking-widest uppercase mb-3 lg:mb-6 block pb-2">
-                {title}
-            </span>
+    <div className={`w-full md:w-1/2 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] ${bgColorClass} relative`}>
+        {/* Centered Content Block */}
+        <div className="w-full max-w-[60%] flex flex-col pt-0 pb-0">
+            {/* Title Label (Matches About Page 'Tag' Spacing) */}
+            <div className="w-full flex flex-col items-center">
+                <span className="text-[#2A4458] font-sans font-bold text-xs tracking-widest uppercase mb-6 block w-full text-left border-b border-[#2A4458]/10 pb-2">
+                    {title}
+                </span>
+            </div>
 
-            {latestItem ? (
-                <Link href={`${basePath}/${latestItem.id}`} className="group block mb-12 lg:mb-20">
-                    <h2 className="text-3xl md:text-3xl font-bold font-yisunshin text-[#05121C] mb-4 group-hover:text-[#2A4458] transition-colors line-clamp-3 leading-snug">
-                        {renderTitleWithBadge(latestItem.title, badgeComponent)}
-                    </h2>
-                    <p className="text-lg text-[#2A4458] font-yisunshin font-light line-clamp-2 leading-relaxed">
-                        {latestItem.snippet}
-                    </p>
-                </Link>
-            ) : (
-                <div className="mb-12 lg:mb-20 text-gray-400">No {title.toLowerCase().slice(0, -1)} available</div>
-            )}
+            {/* List Content */}
+            <div className="w-full flex flex-col">
+                {latestItem ? (
+                    <Link href={`${basePath}/${latestItem.id}`} className="group block mb-12">
+                        <h2 className="text-3xl md:text-3xl font-bold font-yisunshin text-[#05121C] mb-4 group-hover:text-[#2A4458] transition-colors line-clamp-3 leading-snug">
+                            {renderTitleWithBadge(latestItem.title, badgeComponent)}
+                        </h2>
+                        <p className="text-lg text-[#2A4458] font-yisunshin font-light line-clamp-2 leading-relaxed">
+                            {latestItem.snippet}
+                        </p>
+                    </Link>
+                ) : (
+                    <div className="mb-12 text-gray-400">No {title.toLowerCase().slice(0, -1)} available</div>
+                )}
 
-            <ul className="space-y-4">
-                {olderItems.map(item => (
-                    <li key={item.id} className="border-b border-[#2A4458]/10 pb-2 last:border-0">
-                        <Link href={`${basePath}/${item.id}`} className="flex justify-between items-baseline group">
-                            <span className="text-base text-[#05121C] font-yisunshin font-light group-hover:text-[#2A4458] truncate mr-4">
-                                {item.title}
-                            </span>
-                            <span className="text-sm text-[#2A4458]/60 font-yisunshin whitespace-nowrap">
-                                {formatDate(item.date)}
-                            </span>
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+                <ul className="space-y-4">
+                    {olderItems.map(item => (
+                        <li key={item.id} className="border-b border-[#2A4458]/10 pb-2 last:border-0">
+                            <Link href={`${basePath}/${item.id}`} className="flex justify-between items-baseline group">
+                                <span className="text-base text-[#05121C] font-yisunshin font-light group-hover:text-[#2A4458] truncate mr-4">
+                                    {item.title}
+                                </span>
+                                <span className="text-sm text-[#2A4458]/60 font-yisunshin whitespace-nowrap">
+                                    {formatDate(item.date)}
+                                </span>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     </div>
 );

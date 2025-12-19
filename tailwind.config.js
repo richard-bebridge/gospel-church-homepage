@@ -9,7 +9,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Montserrat', 'Inter', 'sans-serif'],
+                sans: ['var(--font-montserrat)', 'Inter', 'sans-serif'],
                 serif: ['Playfair Display', 'serif'],
                 mono: ['Pretendard', 'Roboto Mono', 'monospace'], // User asked for code/small text to be Pretendard too
                 korean: ['YiSunShin', 'sans-serif'],

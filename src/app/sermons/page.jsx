@@ -2,11 +2,13 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getDatabase } from '../../lib/notion';
 import { getSiteSettings } from '../../lib/site-settings';
+import Link from 'next/link';
 
 // Revalidate every hour
 export const revalidate = 3600;
 
 export default async function SermonPage() {
+    let error = null;
     const databaseId = process.env.NOTION_SERMON_DB_ID;
     const [sermons, siteSettings] = await Promise.all([
         (async () => {
