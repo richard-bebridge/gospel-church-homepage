@@ -58,14 +58,11 @@ export default async function SermonPage({ params }) {
     const siteSettings = await getSiteSettings();
 
     return (
-        <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
+        <div className="min-h-screen bg-[#F4F3EF]">
             <Header siteSettings={siteSettings} />
-            {/* Added pt-20 to match TestPage layout and prevent header overlap */}
-            <main className="flex-grow pt-20">
-                <SermonPresentation sermon={sermon} messagesSummary={messagesSummary} siteSettings={siteSettings}>
-                    <Footer siteSettings={siteSettings} />
-                </SermonPresentation>
-            </main>
+            <SermonPresentation sermon={sermon} messagesSummary={messagesSummary} siteSettings={siteSettings}>
+                <Footer siteSettings={siteSettings} />
+            </SermonPresentation>
         </div>
     );
 }

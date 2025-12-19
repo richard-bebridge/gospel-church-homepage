@@ -327,15 +327,15 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                     {/* -mt-[calc(100vh-80px)] pulls the content up to overlap the sticky container, 
                         replicating the AboutPresentation architecture. */}
                     <div className="relative z-20 -mt-[calc(100vh-80px)]">
-                        {/* Title: Lowered by 80px (pt-24/96 -> pt-[176px]) */}
-                        <PresentationHeader title={title} paddingTop="pt-[176px]" />
+                        {/* Title: Standard (96px) */}
+                        <PresentationHeader title={title} paddingTop="pt-[96px]" />
 
-                        {/* Body: Lowered by 80px (pt-96/384 -> pt-[464px]) */}
+                        {/* Body: Standard (384px) */}
                         <PresentationBody
                             content={content}
                             bodyClass={desktopBodyClass}
                             endRef={el => registerSection('letter_end', el)}
-                            paddingTop="pt-[464px]"
+                            paddingTop="pt-[384px]"
                         />
                     </div>
                 </section>

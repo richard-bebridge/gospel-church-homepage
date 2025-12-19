@@ -107,13 +107,11 @@ export default async function MessagesPage() {
     ]);
 
     return (
-        <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
+        <div className="min-h-screen bg-[#F4F3EF]">
             <Header siteSettings={siteSettings} />
-            <main className="flex-grow pt-20">
-                <SermonPresentation sermon={sermonData} messagesSummary={messagesSummary} siteSettings={siteSettings}>
-                    <Footer siteSettings={siteSettings} />
-                </SermonPresentation>
-            </main>
+            <SermonPresentation sermon={sermonData} messagesSummary={messagesSummary} siteSettings={siteSettings}>
+                <Footer siteSettings={siteSettings} />
+            </SermonPresentation>
         </div>
     );
 }
