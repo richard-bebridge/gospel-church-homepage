@@ -60,14 +60,16 @@ const Header = ({ siteSettings }) => {
                 {/* Logo - Lottie Animation */}
                 <Link href="/" className="flex items-center gap-3">
                     <div className="h-8 md:h-14 w-auto" style={{ filter: 'brightness(0) invert(1)' }}>
-                        <Lottie
-                            lottieRef={lottieRef}
-                            path="/assets/symbol_animation.json"
-                            loop={false}
-                            autoplay={true}
-                            onComplete={handleAnimationComplete}
-                            style={{ height: '100%', width: 'auto' }}
-                        />
+                        {mounted && (
+                            <Lottie
+                                lottieRef={lottieRef}
+                                path="/assets/symbol_animation.json"
+                                loop={false}
+                                autoplay={true}
+                                onComplete={handleAnimationComplete}
+                                style={{ height: '100%', width: 'auto' }}
+                            />
+                        )}
                     </div>
                     {/* <span className="hidden sm:block text-white font-sans font-bold text-sm md:text-base tracking-wider uppercase">Gospel Church</span> */}
                 </Link>
