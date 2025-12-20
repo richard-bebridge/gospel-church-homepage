@@ -1,11 +1,6 @@
-import { Client } from '@notionhq/client';
-import { getBlocks } from './notion';
-
-// Initialize Client (duplicated to avoid circular deps if notion.js changes, or imports)
-// Actually we can reuse the client if exported, but notion.js doesn't export the client instance by default.
-// Let's just import { getDatabase } and pass ID, or recreate client.
-// Reusing getDatabase from './notion' is cleaner.
-import { getDatabase } from './notion';
+import { getDatabase, getBlocks } from './notion';
+import { flattenBlocks, injectVerses } from './notion-utils';
+import { getScripture, extractBibleTags } from './bible';
 
 const NOTION_ABOUT_DB_ID = process.env.NOTION_ABOUT_DB_ID;
 
@@ -66,6 +61,30 @@ export const getAboutContent = async () => {
             // Fetch Blocks (Content)
             let blocks = await getBlocks(id);
 
+            // Extract Scripture Tags if type is 'verse' or always?
+            // Prompt says for 'verse' type. Let's extract them anyway and decide in component.
+            const seenTags = new Set();
+            const flatBlocks = flattenBlocks(blocks);
+            let contentBlocks = injectVerses(flatBlocks, seenTags);
+
+            // Also check Subtitle for tags
+            const subTitleTags = findProp('Subtitle')?.rich_text?.map(rt => rt.plain_text).join('') || '';
+            // We use a helper for simple tag extraction if needed, but injectVerses already handled blocks.
+            // Let's just manually check subtitle too.
+            extractBibleTags(subTitleTags).forEach(tag => seenTags.add(tag.full));
+
+            const scriptureTags = [];
+            Array.from(seenTags).forEach(tagStr => {
+                const cleanRef = tagStr.replace(/^[#\(]/, '').replace(/\)$/, '');
+                const lookup = getScripture(cleanRef);
+                if (lookup.text) {
+                    scriptureTags.push({
+                        reference: lookup.normalizedReference || cleanRef,
+                        text: lookup.text
+                    });
+                }
+            });
+
             // Fetch related page blocks if rightPanelType is 'page'
             let pageContent = null;
             if (rightPanelType === 'page' && relatedPageId) {
@@ -76,15 +95,13 @@ export const getAboutContent = async () => {
                 }
             }
 
-            // Extract First Heading 1 for Main Title (e.g., "우리가 존재하는 이유")
-            // and remove it from the body content.
+            // Extract First Heading 1 for Main Title
             let heading = '';
-            const headingIndex = blocks.findIndex(b => b.type === 'heading_1');
+            const headingIndex = contentBlocks.findIndex(b => b.type === 'heading_1');
             if (headingIndex !== -1) {
-                const headBlock = blocks[headingIndex];
+                const headBlock = contentBlocks[headingIndex];
                 heading = headBlock.heading_1?.rich_text?.[0]?.plain_text || '';
-                // Remove this block from content so it doesn't dup
-                blocks.splice(headingIndex, 1);
+                contentBlocks.splice(headingIndex, 1);
             }
 
             return {
@@ -94,10 +111,11 @@ export const getAboutContent = async () => {
                 rightPanelType,
                 imgSrc,
                 subSectionCount,
-                heading, // e.g. "우리가 존재하는 이유" (Big Title)
-                content: blocks,
+                heading,
+                content: contentBlocks,
                 relatedPageId,
-                pageContent, // Assembled on server
+                pageContent,
+                scriptureTags,
                 propertyKeys: Object.keys(props)
             };
         }));

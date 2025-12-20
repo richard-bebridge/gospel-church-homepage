@@ -1,6 +1,6 @@
-import { Client } from '@notionhq/client';
-import { getBlocks } from './notion';
-import { getDatabase } from './notion';
+import { getDatabase, getBlocks } from './notion';
+import { flattenBlocks, injectVerses } from './notion-utils';
+import { getScripture, extractBibleTags } from './bible';
 
 const NOTION_VISIT_DB_ID = process.env.NOTION_VISIT_DB_ID;
 
@@ -54,6 +54,27 @@ export const getVisitContent = async () => {
             // Fetch Blocks (Content)
             let blocks = await getBlocks(id);
 
+            // Extract Scripture Tags if type is 'verse' or always?
+            const seenTags = new Set();
+            const flatBlocks = flattenBlocks(blocks);
+            let contentBlocks = injectVerses(flatBlocks, seenTags);
+
+            // Also check Subtitle for tags
+            const subTitleTags = findProp('Subtitle')?.rich_text?.map(rt => rt.plain_text).join('') || '';
+            extractBibleTags(subTitleTags).forEach(tag => seenTags.add(tag.full));
+
+            const scriptureTags = [];
+            Array.from(seenTags).forEach(tagStr => {
+                const cleanRef = tagStr.replace(/^[#\(]/, '').replace(/\)$/, '');
+                const lookup = getScripture(cleanRef);
+                if (lookup.text) {
+                    scriptureTags.push({
+                        reference: lookup.normalizedReference || cleanRef,
+                        text: lookup.text
+                    });
+                }
+            });
+
             // Fetch related page blocks if rightPanelType is 'page'
             let pageContent = null;
             if (rightPanelType === 'page' && relatedPageId) {
@@ -66,12 +87,11 @@ export const getVisitContent = async () => {
 
             // Extract First Heading 1 for Main Title
             let heading = '';
-            const headingIndex = blocks.findIndex(b => b.type === 'heading_1');
+            const headingIndex = contentBlocks.findIndex(b => b.type === 'heading_1');
             if (headingIndex !== -1) {
-                const headBlock = blocks[headingIndex];
+                const headBlock = contentBlocks[headingIndex];
                 heading = headBlock.heading_1?.rich_text?.[0]?.plain_text || '';
-                // Remove this block from content so it doesn't dup
-                blocks.splice(headingIndex, 1);
+                contentBlocks.splice(headingIndex, 1);
             }
 
             return {
@@ -81,10 +101,11 @@ export const getVisitContent = async () => {
                 rightPanelType,
                 imgSrc,
                 subSectionCount,
-                heading, // e.g. "우리가 존재하는 이유" (Big Title)
-                content: blocks,
-                relatedPageId, // Pass to frontend for fetching dynamic content
-                pageContent, // Assembled on server
+                heading,
+                content: contentBlocks,
+                relatedPageId,
+                pageContent,
+                scriptureTags,
                 propertyKeys: Object.keys(props)
             };
         }));

@@ -41,25 +41,19 @@ const loadBibleData = () => {
 
 // New helper to support "Book Chapter:Verse" string lookup
 export const getScripture = (reference) => {
-    // Expected format: "Book Chapter:Verse" e.g. "신 8:3" or "신명기 8:3"
-    const parts = reference.trim().split(' ');
-    if (parts.length < 2) return { text: null };
+    // Expected format: "Book Chapter:Verse" or "BookChapter:Verse"
+    // e.g. "신 8:3", "신명기 8:3", "신명기8:3"
+    // We prepend '#' to reuse extractBibleTags logic which expects a tag marker or parentheses
+    const tags = extractBibleTags('#' + reference.trim());
+    if (tags.length === 0) return { text: null };
 
-    const book = parts[0];
-    const location = parts[1]; // "8:3"
-
-    const locParts = location.split(':');
-    if (locParts.length < 2) return { text: null };
-
-    const chapter = locParts[0];
-    const verse = locParts[1];
-
-    const text = getVerse(book, chapter, verse);
-    const fullBookName = BOOK_MAPPING[book] || book;
+    const tag = tags[0];
+    const text = getVerse(tag.book, tag.chapter, tag.verse);
+    const fullBookName = BOOK_MAPPING[tag.book] || tag.book;
 
     return {
         text: text || null,
-        normalizedReference: `${fullBookName} ${chapter}:${verse}`
+        normalizedReference: `${fullBookName} ${tag.chapter}:${tag.verse}`
     };
 };
 

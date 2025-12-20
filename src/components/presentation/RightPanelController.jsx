@@ -9,6 +9,7 @@ import NotionRenderer, { TableAlignmentProvider } from '../sermon/NotionRenderer
 import RightPanelMap from '../visit/RightPanelMap';
 import Image from 'next/image';
 
+// Internal Scripture Panel Component
 const ScripturePanel = ({ verses, title, uniqueKey, contentPaddingClass = "pt-96" }) => {
     const { desktopVerseClass } = useFontScale();
 
@@ -50,20 +51,6 @@ const ScripturePanel = ({ verses, title, uniqueKey, contentPaddingClass = "pt-96
 
 /**
  * RightPanelController
- * 
- * Manages the Fixed Right Panel.
- * Handles visibility transitions and content switching.
- * 
- * Props:
- * - isVisible: boolean (controls opacity/Y of the entire panel)
- * - mode: 'scripture' | 'map' | 'image' | 'verse' | 'page' | 'custom'
- * - data: content data for the mode (verses array, map coords {x,y}, image URL, or Notion blocks)
- * - section: full section object (optional, for title/fallback)
- * - title: optional title for ghost alignment
- * - titleClassName: optional class override for the ghost title
- * - paddingTopClass: optional padding class for the container's ghost title (default pt-24)
- * - contentPaddingClass: optional padding class for the content (default pt-96)
- * - uniqueKey: unique identifier for the content section (forces re-render animation)
  */
 export const RightPanelController = ({
     isVisible,
@@ -79,7 +66,7 @@ export const RightPanelController = ({
     const { desktopBodyClass } = useFontScale();
     return (
         <motion.div
-            className="hidden md:flex fixed right-0 top-0 w-1/2 h-full flex-col items-center z-10 pointer-events-none"
+            className="hidden md:flex fixed right-0 top-0 w-1/2 h-full flex-col items-center z-30 pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{
                 opacity: isVisible ? 1 : 0,
@@ -87,23 +74,29 @@ export const RightPanelController = ({
             }}
             transition={{ duration: 0.5 }}
         >
-            {/* Header Buffer (Fixed Site Header) */}
+            {/* Header Buffer */}
             <div style={{ height: `${HEADER_HEIGHT_PX}px` }} className="w-full shrink-0" />
 
             <div className="w-full relative flex-1">
-                {/* Content Layer (Exactly at Baseline) */}
-                <div className="w-full h-full">
-                    {mode === 'scripture' && (
-                        <ScripturePanel
-                            verses={data}
-                            title={title}
-                            uniqueKey={uniqueKey}
-                            contentPaddingClass={contentPaddingClass}
-                        />
-                    )}
+                {(mode === 'scripture' || mode === 'verse') && (
+                    <ScripturePanel
+                        verses={data}
+                        title={title}
+                        uniqueKey={uniqueKey}
+                        contentPaddingClass={contentPaddingClass}
+                    />
+                )}
 
+                <AnimatePresence mode="wait">
                     {mode === 'page' && data && (
-                        <div className="w-full h-full overflow-y-auto no-scrollbar border-l border-[#2A4458]/10 pt-0 pointer-events-auto">
+                        <motion.div
+                            key={`${uniqueKey}-page`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -30 }}
+                            transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
+                            className="w-full h-full overflow-y-auto no-scrollbar border-l border-[#2A4458]/10 pt-0 pointer-events-auto"
+                        >
                             <div className="min-h-full p-8 lg:p-16 flex flex-col justify-center">
                                 <div className="prose font-korean text-gray-800 w-full">
                                     <TableAlignmentProvider blocks={data}>
@@ -117,11 +110,18 @@ export const RightPanelController = ({
                                     </TableAlignmentProvider>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     )}
 
                     {mode === 'image' && data && (
-                        <div className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center px-8 lg:px-16 overflow-hidden pointer-events-auto">
+                        <motion.div
+                            key={`${uniqueKey}-image`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -30 }}
+                            transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
+                            className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center px-8 lg:px-16 overflow-hidden pointer-events-auto"
+                        >
                             <div className="relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl">
                                 <Image
                                     src={data}
@@ -130,28 +130,26 @@ export const RightPanelController = ({
                                     className="object-cover"
                                 />
                             </div>
-                        </div>
+                        </motion.div>
                     )}
 
                     {mode === 'map' && data && (
-                        <div className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center pointer-events-auto">
+                        <motion.div
+                            key={`${uniqueKey}-map`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -30 }}
+                            transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
+                            className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center pointer-events-auto"
+                        >
                             <RightPanelMap
                                 x={data.x}
                                 y={data.y}
                                 title={title}
                             />
-                        </div>
+                        </motion.div>
                     )}
-
-                    {mode === 'verse' && (
-                        <div className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center">
-                            <div className="p-8 lg:p-16 text-center font-korean font-light text-2xl text-gray-800 break-keep leading-relaxed w-full max-w-md">
-                                <p className="mb-6">&quot;말씀이 육신이 되어 우리 가운데 거하시매...&quot;</p>
-                                <span className="block text-sm text-[#2A4458] font-bold">요한복음 1:14</span>
-                            </div>
-                        </div>
-                    )}
-                </div>
+                </AnimatePresence>
             </div>
         </motion.div>
     );
