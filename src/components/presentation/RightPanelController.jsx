@@ -9,10 +9,6 @@ import NotionRenderer, { TableAlignmentProvider } from '../sermon/NotionRenderer
 import RightPanelMap from '../visit/RightPanelMap';
 import Image from 'next/image';
 
-// Internal Scripture Panel Component
-// Renders a list of verses.
-// Internal Scripture Panel Component
-// Renders a list of verses.
 const ScripturePanel = ({ verses, title, uniqueKey, contentPaddingClass = "pt-96" }) => {
     const { desktopVerseClass } = useFontScale();
 
@@ -20,17 +16,17 @@ const ScripturePanel = ({ verses, title, uniqueKey, contentPaddingClass = "pt-96
         <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center h-full ${contentPaddingClass} overflow-hidden`}>
             {verses && verses.length > 0 ? (
                 <div className="space-y-12 w-full max-w-[60%] pointer-events-auto">
-                    <AnimatePresence mode="popLayout">
+                    <AnimatePresence mode="wait">
                         {verses.map((tag, idx) => (
                             <motion.div
                                 key={`${uniqueKey}-${idx}`}
-                                initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                                exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -15 }}
                                 transition={{
-                                    duration: 0.5,
-                                    ease: "easeOut",
-                                    delay: idx * 0.1
+                                    duration: 0.8,
+                                    ease: [0.215, 0.61, 0.355, 1], // easeOutCubic
+                                    delay: idx * 0.15 // More relaxed stagger
                                 }}
                             >
                                 <p className={`${desktopVerseClass} mb-4 break-keep`}>
