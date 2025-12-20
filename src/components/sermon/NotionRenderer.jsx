@@ -206,8 +206,8 @@ const mergeRichTextIfRefPresent = (richText) => {
 };
 
 // Sub-component for rendering enriched text
-const Text = ({ text }) => {
-    if (!text) return null;
+const Text = ({ text, mounted = true }) => {
+    if (!text || !mounted) return null;
 
     // Pre-process: Merge nodes if needed to fix ** formatting
     const processedText = mergeRichTextIfRefPresent(text);
@@ -345,7 +345,7 @@ const Text = ({ text }) => {
     });
 };
 
-const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, isFirst = false, isLast = false, inheritedBorderColor = null }) => {
+const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, isFirst = false, isLast = false, inheritedBorderColor = null, mounted = true }) => {
     const { type, [type]: value } = block;
     const gridConfig = useContext(TableAlignmentContext);
 
@@ -413,6 +413,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                             isFirst={isFirst && idx === 0}
                             isLast={idx === block.children.length - 1}
                             inheritedBorderColor={inheritedBorderColor}
+                            mounted={mounted}
                         />
                     ))}
                 </div>
@@ -534,6 +535,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                 columnIndex={columnIndex}
                                 isFirst={isFirst && idx === 0}
                                 isLast={isLast && idx === block.children.length - 1}
+                                mounted={mounted}
                             />
                         ))}
                     </div>
@@ -559,7 +561,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                         )}
                         <tbody>
                             {block.children?.map((child) => (
-                                <NotionRenderer key={child.id} block={child} level={level + 1} bodyClass={bodyClass} />
+                                <NotionRenderer key={child.id} block={child} level={level + 1} bodyClass={bodyClass} mounted={mounted} />
                             ))}
                         </tbody>
                     </table>
@@ -596,10 +598,10 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                 >
                                     {_isLastItem ? (
                                         <div className="flex justify-start">
-                                            <Text text={cell} />
+                                            <Text text={cell} mounted={mounted} />
                                         </div>
                                     ) : (
-                                        <Text text={cell} />
+                                        <Text text={cell} mounted={mounted} />
                                     )}
                                 </div>
                             );
@@ -622,7 +624,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                     ${cIdx === 0 ? 'text-gray-900 font-medium' : 'text-gray-600'}
                                 `}
                             >
-                                <Text text={cell} />
+                                <Text text={cell} mounted={mounted} />
                             </td>
                         );
                     })}
@@ -649,16 +651,16 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
             }
             return wrapGrid(
                 <p className={`mb-6 leading-relaxed break-keep ${bodyClass}`}>
-                    <Text text={value.rich_text} />
+                    <Text text={value.rich_text} mounted={mounted} />
                 </p>,
                 'mb-8'
             );
         case 'heading_1':
-            return wrapGrid(<h1 className="text-3xl font-bold mt-4 mb-2"><Text text={value.rich_text} /></h1>, 'mb-8');
+            return wrapGrid(<h1 className="text-3xl font-bold mt-4 mb-2"><Text text={value.rich_text} mounted={mounted} /></h1>, 'mb-8');
         case 'heading_2':
-            return wrapGrid(<h2 className="text-2xl font-medium font-korean mt-3 mb-2"><Text text={value.rich_text} /></h2>, 'mb-8');
+            return wrapGrid(<h2 className="text-2xl font-medium font-korean mt-3 mb-2"><Text text={value.rich_text} mounted={mounted} /></h2>, 'mb-8');
         case 'heading_3':
-            return wrapGrid(<h3 className="text-xl font-medium font-korean mt-2 mb-1"><Text text={value.rich_text} /></h3>, 'mb-8');
+            return wrapGrid(<h3 className="text-xl font-medium font-korean mt-2 mb-1"><Text text={value.rich_text} mounted={mounted} /></h3>, 'mb-8');
         case 'bulleted_list_item':
             // Logic for sub-bullet size (Half size if level > 0)
             const isSubBullet = level > 0;
@@ -702,12 +704,12 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
         case 'numbered_list_item':
             return wrapGrid(<div className={`list-decimal ml-4 ${bodyClass}`} style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>, 'mb-8');
         case 'quote':
-            return wrapGrid(<blockquote className={`border-l-4 border-gray-300 pl-4 italic ${bodyClass}`}><Text text={value.rich_text} /></blockquote>, 'mb-8');
+            return wrapGrid(<blockquote className={`border-l-4 border-gray-300 pl-4 italic ${bodyClass}`}><Text text={value.rich_text} mounted={mounted} /></blockquote>, 'mb-8');
         case 'callout':
             return wrapGrid(
                 <div className={`p-4 bg-gray-100 rounded flex gap-4 ${bodyClass}`}>
                     {value.icon?.emoji && <span>{value.icon.emoji}</span>}
-                    <div><Text text={value.rich_text} /></div>
+                    <div><Text text={value.rich_text} mounted={mounted} /></div>
                 </div>,
                 'mb-8'
             );
@@ -739,6 +741,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                 bodyClass={bodyClass}
                                 columnIndex={idx}
                                 inheritedBorderColor={syncColor}
+                                mounted={mounted}
                             />
                         ))}
                     </div>
@@ -769,6 +772,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                 level={level + 1}
                                 bodyClass={bodyClass}
                                 columnIndex={columnIndex}
+                                mounted={mounted}
                             />
                         ))}
                     </div>
@@ -783,6 +787,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                             level={level + 1}
                             bodyClass={bodyClass}
                             columnIndex={columnIndex}
+                            mounted={mounted}
                         />
                     ))}
                 </div>

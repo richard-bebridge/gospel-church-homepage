@@ -8,6 +8,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const Header = ({ siteSettings }) => {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     // Use settings or fallback
     const sns = siteSettings?.sns || {};
@@ -74,8 +79,9 @@ const Header = ({ siteSettings }) => {
                             key={item.label}
                             href={item.href}
                             className="text-sm font-sans font-bold tracking-wide hover:text-[#5F94BD] transition-colors uppercase text-white"
+                            suppressHydrationWarning
                         >
-                            {item.label}
+                            {mounted ? item.label : ''}
                         </Link>
                     ))}
 
@@ -144,9 +150,10 @@ const Header = ({ siteSettings }) => {
                                         href={item.href}
                                         onClick={handleLinkClick}
                                         className="text-2xl font-bold font-sans uppercase text-[#05121C] hover:text-[#5F94BD] transition-colors py-3 flex items-center gap-3"
+                                        suppressHydrationWarning
                                     >
-                                        {item.label}
-                                        {(item.label === 'New Here?' || item.label === 'Ministries') && (
+                                        {mounted ? item.label : ''}
+                                        {mounted && (item.label === 'New Here?' || item.label === 'Ministries') && (
                                             <span className="text-xl">→</span>
                                         )}
                                     </Link>

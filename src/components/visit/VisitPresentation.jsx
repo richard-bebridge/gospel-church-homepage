@@ -328,8 +328,9 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                             exit={{ y: -100 }}
                                             transition={{ duration: 0.4 }}
                                             className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1"
+                                            suppressHydrationWarning
                                         >
-                                            {String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0')}
+                                            {mounted ? String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0') : ''}
                                         </motion.span>
                                     </AnimatePresence>
                                 </div>
@@ -359,11 +360,11 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                         <div className="w-full max-w-[60%] relative">
                                             {/* Title */}
                                             <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
-                                                <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-4 block">
-                                                    {section.title}
+                                                <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-4 block" suppressHydrationWarning>
+                                                    {mounted ? section.title : ''}
                                                 </span>
-                                                <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep mb-12">
-                                                    {section.heading || section.title}
+                                                <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep mb-12" suppressHydrationWarning>
+                                                    {mounted ? (section.heading || section.title) : ''}
                                                 </h1>
                                             </div>
 
@@ -394,6 +395,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                                                 key={block.id}
                                                                 block={block}
                                                                 bodyClass={desktopBodyClass}
+                                                                mounted={mounted}
                                                             />
                                                         );
                                                     })}
@@ -420,11 +422,11 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                         <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
                             <div className="text-6xl font-yisunshin font-bold text-[#2A4458]/20 mb-4">{String(idx + 1).padStart(2, '0')}</div>
                             <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{section.title}</span>
-                            <h2 className="text-3xl font-yisunshin font-bold text-[#05121C] mb-8 leading-tight">
-                                {section.heading || section.title}
+                            <h2 className="text-3xl font-yisunshin font-bold text-[#05121C] mb-8 leading-tight" suppressHydrationWarning>
+                                {mounted ? (section.heading || section.title) : ''}
                             </h2>
                             <div className="prose font-korean text-gray-600">
-                                {section.content.map(block => <NotionRenderer key={block.id} block={block} />)}
+                                {section.content.map(block => <NotionRenderer key={block.id} block={block} mounted={mounted} />)}
                             </div>
                         </div>
                     ))}
