@@ -1,10 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const RightPanelMap = ({ x, y, title = "Location", isInline = false }) => {
+    const [mounted, setMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Endpoint: /api/naver/static-map?x=...&y=...
     const mapSrc = `/api/naver/static-map?x=${x}&y=${y}&w=720&h=360&level=16`;
@@ -30,7 +35,9 @@ const RightPanelMap = ({ x, y, title = "Location", isInline = false }) => {
                 {/* Skeleton Loader */}
                 {isLoading && (
                     <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-                        <span className="text-gray-400 text-sm">Loading Map...</span>
+                        <span className="text-gray-400 text-sm" suppressHydrationWarning>
+                            {mounted ? 'Loading Map...' : ''}
+                        </span>
                     </div>
                 )}
 
@@ -49,14 +56,17 @@ const RightPanelMap = ({ x, y, title = "Location", isInline = false }) => {
                 ) : (
                     // Error State
                     <div className="absolute inset-0 bg-[#F4F3EF] flex flex-col items-center justify-center p-6 text-center">
-                        <p className="text-[#2A4458] mb-4 font-bold">지도를 불러오지 못했습니다.</p>
+                        <p className="text-[#2A4458] mb-4 font-bold" suppressHydrationWarning>
+                            {mounted ? '지도를 불러오지 못했습니다.' : ''}
+                        </p>
                         <a
                             href={naverMapLink}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm underline text-gray-500 hover:text-[#2A4458]"
+                            suppressHydrationWarning
                         >
-                            네이버 지도에서 보기
+                            {mounted ? '네이버 지도에서 보기' : ''}
                         </a>
                     </div>
                 )}
@@ -69,16 +79,18 @@ const RightPanelMap = ({ x, y, title = "Location", isInline = false }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-6 py-3 bg-[#2A4458] text-white text-sm font-bold rounded hover:bg-[#1a2c3a] transition-colors shadow-lg"
+                    suppressHydrationWarning
                 >
-                    네이버 지도에서 보기
+                    {mounted ? '네이버 지도에서 보기' : ''}
                 </a>
                 <a
                     href={directionLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-6 py-3 bg-white text-[#2A4458] border border-[#2A4458] text-sm font-bold rounded hover:bg-gray-50 transition-colors shadow-lg"
+                    suppressHydrationWarning
                 >
-                    길찾기
+                    {mounted ? '길찾기' : ''}
                 </a>
             </div>
         </div>
