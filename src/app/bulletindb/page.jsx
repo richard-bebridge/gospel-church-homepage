@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getDatabase } from '../../lib/notion';
@@ -8,6 +9,8 @@ export const revalidate = 3600;
 
 export default async function BulletinDBPage() {
     const databaseId = process.env.NOTION_SUNDAY_DB_ID;
+    let error = null;
+
     const [bulletins, siteSettings] = await Promise.all([
         (async () => {
             if (!databaseId) return [];
