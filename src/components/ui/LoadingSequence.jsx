@@ -12,6 +12,7 @@ const LoadingSequence = () => {
     const [index, setIndex] = useState(0);
     const [isClient, setIsClient] = useState(false);
     const [isFontReady, setIsFontReady] = useState(false);
+    const [showText, setShowText] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
@@ -23,23 +24,30 @@ const LoadingSequence = () => {
                 setIsFontReady(true);
             });
         }
+
+        // Buffer text rendering by 100ms to ensure hydration is settled
+        const textTimer = setTimeout(() => setShowText(true), 100);
+        return () => clearTimeout(textTimer);
     }, []);
 
     useEffect(() => {
-        if (!isFontReady) return;
+        if (!isFontReady || !showText) return;
 
         const timer = setInterval(() => {
             setIndex((prev) => (prev + 1) % WORDS.length);
         }, WORD_DURATION);
 
         return () => clearInterval(timer);
-    }, [isFontReady]);
+    }, [isFontReady, showText]);
 
-    // Always render the EXACT same container for server/client hydration
-    // to avoid block-level or style-level mismatches.
+    // suppressHydrationWarning is added to the container to handle 
+    // any unavoidable timing discrepancies in the first few frames.
     return (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]">
-            {isClient && isFontReady && (
+        <div
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]"
+            suppressHydrationWarning
+        >
+            {isClient && isFontReady && showText && (
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={index}
