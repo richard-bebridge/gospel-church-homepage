@@ -415,7 +415,13 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                 {fontsReady && fontScaleSettled ? (section.heading || section.title) : ''}
                             </h2>
                             <div className="prose font-korean text-gray-600">
-                                {section.content.map(block => <NotionRenderer key={block.id} block={block} />)}
+                                {section.content.map(block => (
+                                    <NotionRenderer
+                                        key={block.id}
+                                        block={block}
+                                        mounted={fontsReady && fontScaleSettled}
+                                    />
+                                ))}
                             </div>
                         </div>
                     ))}
