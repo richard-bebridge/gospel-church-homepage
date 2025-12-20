@@ -176,7 +176,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                     className="relative min-h-[calc(100vh-80px)] snap-start snap-always"
                 >
                     {/* Sticky Container Wrapper (Matches AboutPresentation structure) */}
-                    <div className="sticky top-0 h-[calc(100vh-80px)] w-full pointer-events-none z-10">
+                    <div className="sticky top-0 h-[calc(100vh-80px)] w-full pointer-events-none z-30">
                         {/* Sticky Number (Reverted to 384px as requested) */}
                         <div className={`hidden min-[1650px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 z-50 pointer-events-none ${activeSection !== 'reading' ? 'opacity-0' : 'opacity-100'}`}
                             style={{ top: '384px' }}
