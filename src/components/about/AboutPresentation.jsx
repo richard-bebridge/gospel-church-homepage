@@ -27,9 +27,11 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     }, []);
 
     const [fontsReady, setFontsReady] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
 
     useEffect(() => {
+        setMounted(true);
         const checkReady = async () => {
             await waitForFonts([
                 '400 18px Pretendard',
@@ -40,8 +42,6 @@ const AboutPresentation = ({ sections, siteSettings }) => {
         };
         checkReady();
     }, []);
-
-    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
     // ----------------------------------------------------------------      
     // 1. State & Refs
@@ -254,6 +254,16 @@ const AboutPresentation = ({ sections, siteSettings }) => {
             />
         );
     };
+
+    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
+
+    if (!mounted) {
+        return (
+            <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
+                <LoadingSequence />
+            </div>
+        );
+    }
 
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
