@@ -41,7 +41,17 @@ export const useSnapScrollController = (options = {}) => {
         const target = sectionRefs.current.get(key);
 
         if (container && target) {
-            const top = target.offsetTop + offset;
+            // Calculate actual absolute offsetTop relative to the scroll container
+            let actualTop = 0;
+            let current = target;
+            while (current && current !== container) {
+                actualTop += current.offsetTop;
+                current = current.offsetParent;
+                // If we hit a null or a parent that isn't the container, we might be in trouble, 
+                // but usually, the offsetParent chain will lead us toward the relatively positioned container.
+            }
+
+            const top = actualTop + offset;
             container.scrollTo({
                 top,
                 behavior

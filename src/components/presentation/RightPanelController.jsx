@@ -20,7 +20,7 @@ const ScripturePanel = ({ verses, title, uniqueKey, contentPaddingClass = "pt-96
         <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center h-full ${contentPaddingClass} overflow-hidden`}>
             {verses && verses.length > 0 ? (
                 <div className="space-y-12 w-full max-w-[60%] pointer-events-auto">
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence mode="popLayout">
                         {verses.map((tag, idx) => (
                             <motion.div
                                 key={`${uniqueKey}-${idx}`}

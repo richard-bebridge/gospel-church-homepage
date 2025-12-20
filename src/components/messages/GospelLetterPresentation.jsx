@@ -18,46 +18,36 @@ import { RightPanelController } from '../presentation/RightPanelController';
 import { useSnapScrollController } from '../../hooks/scroll/useSnapScrollController';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import NotionRenderer from '../sermon/NotionRenderer';
-import { renderVerseWithStyledFirstWord, renderVerseReference } from '../../lib/utils/textUtils';
+import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
 import Image from 'next/image';
 
 // Hooks & Utils
 import {
     HEADER_HEIGHT_PX,
-    SCROLL_AREA_HEIGHT_STYLE,
-    SCROLL_PADDING_TOP_STYLE
 } from '../../lib/layout-metrics';
 
-// Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
-// import { useSnapScrollController } from '../../hooks/scroll/useSnapScrollController';
-// import { useFontScale } from '../../hooks/sermon/useFontScale';
-// import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
-// import {
-//     SCROLL_COOLDOWN_MS,
-//     SCROLL_THRESHOLD_DELTA,
-//     SCROLL_TRIGGER_MARGIN
-// } from '../sermon/constants';
-
-
+// Snapping position for the "Finis" divider (portion of the viewport height)
+const LETTER_END_SNAP_Y_FACTOR = 0.2;
 
 const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     // Shared Resources
     const footerRef = useRef(null);
-    const sentinelRef = useRef(null);
-    const [activeSection, setActiveSection] = useState('reading');
+    const [letterEndSnapMargin, setLetterEndSnapMargin] = useState(0);
 
     // Hook: Snap Controller
-    const { scrollRef, scrollToSection, registerSection } = useSnapScrollController();
+    const {
+        scrollRef,
+        registerSection,
+        activeSection: observedSection = 'reading'
+    } = useSnapScrollController({
+        initialSection: 'reading',
+        // Decisive section detection (consistent with Sermon page logic)
+        rootMargin: '-20% 0px -20% 0px',
+        threshold: 0
+    });
 
-    // Gesture Gating & Locking Refs
-    const isAutoScrollingRef = useRef(false);
-    const lastSnapTsRef = useRef(0);
-    const wheelAccumRef = useRef(0);
-
-    // Constants
-    const SCROLL_COOLDOWN_MS = 1000;
-    const SCROLL_THRESHOLD_DELTA = 30; // Min wheel delta to trigger
-    const SCROLL_TRIGGER_MARGIN = '0px';
+    const activeSection = observedSection || 'reading';
+    const isReading = activeSection === 'reading';
 
     // Font Scale Logic
     const {
@@ -70,140 +60,22 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     } = useFontScale();
 
     // Data Extraction
-    const { title, content, scriptureTags } = letter;
+    const { title, content, scriptureTags, author } = letter;
 
-    // Helper: Smooth Scroll & Lock
-    const performSnap = (targetKey, targetSectionState) => {
-        if (!scrollRef.current) return;
-
-        // 1. Lock immediately
-        isAutoScrollingRef.current = true;
-        lastSnapTsRef.current = Date.now();
-        wheelAccumRef.current = 0; // Reset accumulator
-
-        // 2. Set State
-        setActiveSection(targetSectionState);
-
-        // 3. Execute Scroll via Hook
-        if (targetSectionState === 'letter_end') {
-            // SNAP TO CENTER: Align the "End of Text" to the center of the viewport
-            const containerHeight = scrollRef.current.clientHeight;
-            // Target is 'letter_end' (registered ref)
-            // Offset logic: -(containerHeight / 1.2)
-            scrollToSection('letter_end', 'smooth', -(containerHeight / 1.2));
-        } else {
-            // Standard Snap to Top
-            scrollToSection(targetKey, 'smooth');
-        }
-
-        // 4. Unlock after cooldown
-        setTimeout(() => {
-            isAutoScrollingRef.current = false;
-            wheelAccumRef.current = 0; // Ensure clean slate
-        }, SCROLL_COOLDOWN_MS);
-    };
-
-    // 1. Sentinel Logic (Letter End Detection)
-    const isLetterEndVisible = useRef(false);
-
+    // Compute snap offset for the letter-end divider so it floats slightly below the top edge.
     useEffect(() => {
-        const sentinel = sentinelRef.current;
-        if (!sentinel) return;
+        if (typeof window === 'undefined') return;
 
-        const observer = new IntersectionObserver(([entry]) => {
-            isLetterEndVisible.current = entry.isIntersecting;
-        }, { rootMargin: '0px', threshold: 0.1 });
+        const updateSnapMargin = () => {
+            const availableHeight = Math.max(0, window.innerHeight - HEADER_HEIGHT_PX);
+            setLetterEndSnapMargin(availableHeight * LETTER_END_SNAP_Y_FACTOR);
+        };
 
-        observer.observe(sentinel);
-        return () => observer.disconnect();
+        updateSnapMargin();
+        window.addEventListener('resize', updateSnapMargin);
+        return () => window.removeEventListener('resize', updateSnapMargin);
     }, []);
 
-    // 2. Wheel Controller (Robust One-Gesture-One-Action)
-    const handleWheel = (e) => {
-        // A. Filter invalid events
-        if (Math.abs(e.deltaY) < 5) return; // micro-scrolls
-        if (e.ctrlKey) return; // Zoom gestures
-
-        // B. Check Locks
-        const now = Date.now();
-        const timeSinceSnap = now - lastSnapTsRef.current;
-
-        // Cooldown Lock
-        if (isAutoScrollingRef.current || timeSinceSnap < SCROLL_COOLDOWN_MS) {
-            e.preventDefault();
-            e.stopPropagation();
-            return;
-        }
-
-        // C. Accumulate Delta (Debounce noise)
-        wheelAccumRef.current += e.deltaY;
-
-        // D. Trigger Threshold Check
-        if (Math.abs(wheelAccumRef.current) > SCROLL_THRESHOLD_DELTA) {
-
-            // Determine Direction
-            const isScrollingDown = wheelAccumRef.current > 0;
-            const isScrollingUp = wheelAccumRef.current < 0;
-
-            // Reset accum immediately so we don't trigger twice
-            wheelAccumRef.current = 0;
-
-            // E. State Machine Transitions
-
-            // 1. Reading -> Letter End (Hold)
-            if (activeSection === 'reading' && isScrollingDown) {
-                if (isLetterEndVisible.current) {
-                    e.preventDefault();
-                    performSnap('letter_end', 'letter_end');
-                }
-                // Else allow native scroll
-            }
-
-            // 2. Letter End -> Summary
-            else if (activeSection === 'letter_end' && isScrollingDown) {
-                e.preventDefault();
-                performSnap('summary', 'summary');
-            }
-
-            // 3. Summary -> Footer
-            else if (activeSection === 'summary' && isScrollingDown) {
-                e.preventDefault();
-                performSnap('footer', 'footer');
-            }
-
-            // 4. Footer -> Summary
-            else if (activeSection === 'footer' && isScrollingUp) {
-                e.preventDefault();
-                performSnap('summary', 'summary');
-            }
-
-            // 5. Summary -> Letter End
-            else if (activeSection === 'summary' && isScrollingUp) {
-                e.preventDefault();
-                performSnap('letter_end', 'letter_end');
-            }
-
-            // 6. Letter End -> Reading (Unlock/Scroll Up)
-            else if (activeSection === 'letter_end' && isScrollingUp) {
-                // Unlock and scroll up naturally
-                setActiveSection('reading');
-                // No snap needed, just let native scroll happen
-            }
-            // Footer -> Down (Block)
-            else if (activeSection === 'footer' && isScrollingDown) {
-                e.preventDefault();
-            }
-        }
-    };
-
-    // Attach Wheel Listener Non-Passively to prevent Default
-    useEffect(() => {
-        const container = scrollRef.current;
-        if (!container) return;
-
-        container.addEventListener('wheel', handleWheel, { passive: false });
-        return () => container.removeEventListener('wheel', handleWheel);
-    }, [activeSection]); // Re-bind when state changes (required for closure to see new activeSection)
 
 
     // ------------------------------------------------------------------
@@ -289,10 +161,11 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 snapMode="snap-mandatory"
                 rightPanel={
                     <RightPanelController
-                        isVisible={activeSection === 'reading' || activeSection === 'letter_end'}
+                        isVisible={isReading}
                         mode="scripture"
-                        data={scriptureTags}
+                        data={isReading ? scriptureTags : []}
                         title={title}
+                        uniqueKey={activeSection}
                     />
                 }
             >
@@ -300,7 +173,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 <section
                     id="reading-section"
                     ref={el => registerSection('reading', el)}
-                    className="relative min-h-[calc(100vh-80px)] snap-start"
+                    className="relative min-h-[calc(100vh-80px)] snap-start snap-always"
                 >
                     {/* Sticky Container Wrapper (Matches AboutPresentation structure) */}
                     <div className="sticky top-0 h-[calc(100vh-80px)] w-full pointer-events-none z-10">
@@ -334,17 +207,19 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                         <PresentationBody
                             content={content}
                             bodyClass={desktopBodyClass}
-                            endRef={el => registerSection('letter_end', el)}
                             paddingTop="pt-[384px]"
-                        />
+                        >
+                            {/* Author Signature */}
+                            {author && (
+                                <div className="w-full flex justify-end mt-16">
+                                    <p className="text-xl font-bold tracking-tight text-[#2A4458] font-yisunshin">
+                                        {author}
+                                    </p>
+                                </div>
+                            )}
+                        </PresentationBody>
                     </div>
                 </section>
-
-                {/* Sentinel (Trigger for Summary) */}
-                <div
-                    ref={sentinelRef}
-                    className="h-px w-full pointer-events-none opacity-0"
-                />
 
                 {/* 2. Summary Section */}
                 <PresentationSummary

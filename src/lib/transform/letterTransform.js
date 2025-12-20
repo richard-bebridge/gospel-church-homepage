@@ -5,7 +5,34 @@ export const buildGospelLetterPresentationData = (page, blocks) => {
     const title = page.properties?.Title?.title?.[0]?.plain_text || page.properties?.Name?.title?.[0]?.plain_text || "Untitled";
     const date = page.properties?.Date?.date?.start || "";
     // Author might be a property or assumed
-    const author = page.properties?.Author?.rich_text?.[0]?.plain_text || "Pastor";
+    // Author: Support multiple property names and types (rich_text, select, people, or title)
+    const getAuthor = (props) => {
+        const potentialProps = ['Author', 'Writer', '작성자', 'Name', 'Creator', 'Person'];
+        for (const p of potentialProps) {
+            const prop = props[p];
+            if (!prop) continue;
+
+            // Try rich_text
+            if (prop.rich_text && prop.rich_text.length > 0) {
+                return prop.rich_text[0].plain_text;
+            }
+            // Try select
+            if (prop.select && prop.select.name) {
+                return prop.select.name;
+            }
+            // Try people
+            if (prop.people && prop.people.length > 0) {
+                return prop.people[0].name;
+            }
+            // Try title
+            if (prop.title && prop.title.length > 0) {
+                return prop.title[0].plain_text;
+            }
+        }
+        return "가스펠교회"; // Default fallback in Korean
+    };
+
+    const author = getAuthor(page.properties);
 
     // Flatten and inject verses
     let flatBlocks = flattenBlocks(blocks);
