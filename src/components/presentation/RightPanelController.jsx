@@ -103,7 +103,7 @@ export const RightPanelController = ({
                     )}
 
                     {mode === 'page' && data && (
-                        <div className="w-full h-full overflow-y-auto no-scrollbar border-l border-[#2A4458]/10 pt-0">
+                        <div className="w-full h-full overflow-y-auto no-scrollbar border-l border-[#2A4458]/10 pt-0 pointer-events-auto">
                             <div className="min-h-full p-8 lg:p-16 flex flex-col justify-center">
                                 <div className="prose font-korean text-gray-800 w-full">
                                     <TableAlignmentProvider blocks={data}>
@@ -121,7 +121,7 @@ export const RightPanelController = ({
                     )}
 
                     {mode === 'image' && data && (
-                        <div className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center px-8 lg:px-16 overflow-hidden">
+                        <div className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center px-8 lg:px-16 overflow-hidden pointer-events-auto">
                             <div className="relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl">
                                 <Image
                                     src={data}
@@ -134,7 +134,7 @@ export const RightPanelController = ({
                     )}
 
                     {mode === 'map' && data && (
-                        <div className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center">
+                        <div className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center pointer-events-auto">
                             <RightPanelMap
                                 x={data.x}
                                 y={data.y}
