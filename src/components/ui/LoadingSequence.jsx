@@ -10,67 +10,47 @@ const FONT_SPECS = ['700 30px Montserrat'];
 
 const LoadingSequence = () => {
     const [index, setIndex] = useState(0);
-    const [isClient, setIsClient] = useState(false);
-    const [isFontReady, setIsFontReady] = useState(false);
-    const [showText, setShowText] = useState(false);
+    const [isFontReady, setIsFontReady] = useState(() => {
+        if (typeof window === 'undefined') return false;
+        return checkFontsReadySync(FONT_SPECS);
+    });
 
     useEffect(() => {
-        setIsClient(true);
-        // Run check on client mount
-        if (checkFontsReadySync(FONT_SPECS)) {
-            setIsFontReady(true);
-        } else {
-            waitForFonts(FONT_SPECS).then(() => {
+        let isMounted = true;
+        const initFonts = async () => {
+            await waitForFonts(FONT_SPECS);
+            if (isMounted) {
                 setIsFontReady(true);
-            });
-        }
-
-        // Buffer text rendering by 100ms to ensure hydration is settled
-        const textTimer = setTimeout(() => setShowText(true), 100);
-        return () => clearTimeout(textTimer);
+            }
+        };
+        initFonts();
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     useEffect(() => {
-        if (!isFontReady || !showText) return;
-
+        if (!isFontReady) return;
         const timer = setInterval(() => {
-            setIndex((prev) => (prev + 1) % WORDS.length);
+            setIndex(prev => (prev + 1) % WORDS.length);
         }, WORD_DURATION);
-
         return () => clearInterval(timer);
-    }, [isFontReady, showText]);
-
-    // suppressHydrationWarning is added to the container to handle 
-    // any unavoidable timing discrepancies in the first few frames.
-    // Strict Empty-on-SSR: ensure server and initial client render match perfectly (empty div)
-    if (!isClient) {
-        return (
-            <div
-                className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]"
-                suppressHydrationWarning
-            />
-        );
-    }
+    }, [isFontReady]);
 
     return (
-        <div
-            className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]"
-            suppressHydrationWarning
-        >
-            {isFontReady && showText && (
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -15 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="text-2xl md:text-3xl font-bold text-[#05121C] font-montserrat uppercase"
-                    >
-                        {WORDS[index]}
-                    </motion.div>
-                </AnimatePresence>
-            )}
+        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -15 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className={`text-2xl md:text-3xl font-bold text-[#05121C] font-montserrat uppercase transition-opacity duration-200 ${isFontReady ? 'opacity-100' : 'opacity-0'}`}
+                >
+                    {WORDS[index]}
+                </motion.div>
+            </AnimatePresence>
         </div>
     );
 };
