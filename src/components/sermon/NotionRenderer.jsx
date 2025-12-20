@@ -586,7 +586,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                 <div
                                     key={cIdx}
                                     className={`${hasBorder ? 'border-t' : ''} border-gray-200 ${paddingClass} px-1 text-sm font-korean align-top
-                                        ${_isLastItem ? 'text-right' : 'text-left'}
+                                        ${_isLastItem ? 'text-left' : 'text-left'}
                                         ${cIdx === 0 ? 'text-gray-900 font-medium' : 'text-gray-600'}
                                     `}
                                     style={{
@@ -595,7 +595,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                     }}
                                 >
                                     {_isLastItem ? (
-                                        <div className="flex justify-end">
+                                        <div className="flex justify-start">
                                             <Text text={cell} />
                                         </div>
                                     ) : (
@@ -618,7 +618,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                             <td
                                 key={cIdx}
                                 className={`py-4 px-1 text-sm font-korean align-top
-                                    ${_isLastItem ? 'text-right' : 'text-left'}
+                                    ${_isLastItem ? 'text-left' : 'text-left'}
                                     ${cIdx === 0 ? 'text-gray-900 font-medium' : 'text-gray-600'}
                                 `}
                             >
