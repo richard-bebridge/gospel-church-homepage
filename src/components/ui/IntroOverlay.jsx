@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { waitForFonts } from '../../lib/utils/fontLoader';
 
 const WORDS = ["Seek", "Stand", "Transform", "Radiate"];
 const WORD_DURATION = 600; // ms per word
+const FONT_SPECS = ['700 30px Montserrat'];
 
 const IntroOverlay = ({ onComplete }) => {
     const [index, setIndex] = useState(0);
@@ -14,15 +16,11 @@ const IntroOverlay = ({ onComplete }) => {
 
     useEffect(() => {
         console.log(`[IntroOverlay:${instanceId.current}] MOUNT`, performance.now());
-        const checkFont = async () => {
-            await document.fonts.ready;
-            if (document.fonts.check('700 30px Montserrat')) {
-                setIsFontReady(true);
-            } else {
-                document.fonts.load('700 30px Montserrat').then(() => setIsFontReady(true));
-            }
+        const init = async () => {
+            await waitForFonts(FONT_SPECS);
+            setIsFontReady(true);
         };
-        checkFont();
+        init();
         return () => console.log(`[IntroOverlay:${instanceId.current}] UNMOUNT`, performance.now());
     }, []);
 

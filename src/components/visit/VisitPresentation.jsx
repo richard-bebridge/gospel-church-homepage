@@ -18,6 +18,7 @@ import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
 import { extractMapToken } from '../../lib/utils/visitMapHelpers';
 import IntroOverlay from '../ui/IntroOverlay';
 import FloatingVisitButton from './FloatingVisitButton';
+import { waitForFonts } from '../../lib/utils/fontLoader';
 
 const LOCATION = {
     lat: 37.49168,
@@ -32,11 +33,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     const instanceId = useRef(Math.random().toString(36).substr(2, 5));
     console.log(`[VisitPresentation:${instanceId.current}] RENDER`, performance.now());
 
-    useEffect(() => {
-        console.log(`[VisitPresentation:${instanceId.current}] MOUNT`, performance.now());
-        return () => console.log(`[VisitPresentation:${instanceId.current}] UNMOUNT`, performance.now());
-    }, []);
-
     const settings = siteSettings || {};
     // Intro & Loading State
     // ----------------------------------------------------------------
@@ -47,34 +43,15 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
     // 0. Font Readiness Monitor
     useEffect(() => {
-        const checkFonts = async () => {
-            if (typeof document === 'undefined') return;
-            try {
-                // Wait for core system fonts
-                await document.fonts.ready;
-
-                // Specific weights we use
-                const specs = [
-                    '700 30px Montserrat',  // Loading/Intro
-                    '400 18px Pretendard',  // Body (Normal)
-                    '700 48px YiSunShin',   // Section Title
-                ];
-
-                const allLoaded = specs.every(s => document.fonts.check(s));
-
-                if (allLoaded) {
-                    setFontsReady(true);
-                } else {
-                    // Force load if not checked (some browsers/CDNs)
-                    await Promise.all(specs.map(s => document.fonts.load(s)));
-                    setFontsReady(true);
-                }
-            } catch (e) {
-                console.warn('[VisitPresentation] Font check failed, proceeding anyway', e);
-                setFontsReady(true); // Fallback to avoid getting stuck
-            }
+        const checkReady = async () => {
+            await waitForFonts([
+                '700 30px Montserrat',  // Loading/Intro
+                '400 18px Pretendard',  // Body (Normal)
+                '700 48px YiSunShin',   // Section Title
+            ]);
+            setFontsReady(true);
         };
-        checkFonts();
+        checkReady();
     }, []);
 
     const handleIntroAnimComplete = React.useCallback(() => {

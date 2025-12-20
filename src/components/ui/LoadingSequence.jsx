@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { waitForFonts } from '../../lib/utils/fontLoader';
 
 const WORDS = ["Seek", "Stand", "Transform", "Radiate"];
 const WORD_DURATION = 600; // Unified duration
+const FONT_SPECS = ['700 30px Montserrat'];
 
 const LoadingSequence = () => {
     const [wordIndex, setWordIndex] = useState(0);
@@ -13,16 +15,11 @@ const LoadingSequence = () => {
 
     useEffect(() => {
         console.log(`[LoadingSequence:${instanceId.current}] MOUNT`, performance.now());
-        const checkFontUsage = async () => {
-            await document.fonts.ready;
-            const spec = '700 30px Montserrat';
-            if (document.fonts.check(spec)) {
-                setIsFontReady(true);
-            } else {
-                document.fonts.load(spec).then(() => setIsFontReady(true));
-            }
+        const init = async () => {
+            await waitForFonts(FONT_SPECS);
+            setIsFontReady(true);
         };
-        checkFontUsage();
+        init();
         return () => console.log(`[LoadingSequence:${instanceId.current}] UNMOUNT`, performance.now());
     }, []);
 

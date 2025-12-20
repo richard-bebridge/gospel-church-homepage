@@ -9,13 +9,13 @@ import Footer from '../Footer';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
 import { RightPanelController } from '../presentation/RightPanelController';
-
 import {
     SCROLL_COOLDOWN_MS,
     SCROLL_THRESHOLD_DELTA
 } from '../sermon/constants';
 import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
 import IntroOverlay from '../ui/IntroOverlay';
+import { waitForFonts } from '../../lib/utils/fontLoader';
 
 const AboutPresentation = ({ sections, siteSettings }) => {
     // ----------------------------------------------------------------
@@ -24,11 +24,6 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     const instanceId = useRef(Math.random().toString(36).substr(2, 5));
     console.log(`[AboutPresentation:${instanceId.current}] RENDER`, performance.now());
 
-    useEffect(() => {
-        console.log(`[AboutPresentation:${instanceId.current}] MOUNT`, performance.now());
-        return () => console.log(`[AboutPresentation:${instanceId.current}] UNMOUNT`, performance.now());
-    }, []);
-
     const [showIntro, setShowIntro] = useState(true);
     const [introChecked, setIntroChecked] = useState(false);
     const [introAnimFinished, setIntroAnimFinished] = useState(false);
@@ -36,34 +31,15 @@ const AboutPresentation = ({ sections, siteSettings }) => {
 
     // 0. Font Readiness Monitor
     useEffect(() => {
-        const checkFonts = async () => {
-            if (typeof document === 'undefined') return;
-            try {
-                // Wait for core system fonts
-                await document.fonts.ready;
-
-                // Specific weights we use
-                const specs = [
-                    '700 30px Montserrat',  // Loading/Intro
-                    '400 18px Pretendard',  // Body (Normal)
-                    '700 48px YiSunShin',   // Section Title
-                ];
-
-                const allLoaded = specs.every(s => document.fonts.check(s));
-
-                if (allLoaded) {
-                    setFontsReady(true);
-                } else {
-                    // Force load if not checked (some browsers/CDNs)
-                    await Promise.all(specs.map(s => document.fonts.load(s)));
-                    setFontsReady(true);
-                }
-            } catch (e) {
-                console.warn('[AboutPresentation] Font check failed, proceeding anyway', e);
-                setFontsReady(true); // Fallback to avoid getting stuck
-            }
+        const checkReady = async () => {
+            await waitForFonts([
+                '700 30px Montserrat',  // Loading/Intro
+                '400 18px Pretendard',  // Body (Normal)
+                '700 48px YiSunShin',   // Section Title
+            ]);
+            setFontsReady(true);
         };
-        checkFonts();
+        checkReady();
     }, []);
 
     const handleIntroAnimComplete = React.useCallback(() => {
