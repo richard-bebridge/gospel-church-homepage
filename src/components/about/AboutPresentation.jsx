@@ -21,8 +21,10 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     // ----------------------------------------------------------------
     // Intro & Loading State
     // ----------------------------------------------------------------
-    const instanceId = useRef(Math.random().toString(36).substr(2, 5));
-    console.log(`[AboutPresentation:${instanceId.current}] RENDER`, performance.now());
+    useEffect(() => {
+        const instanceId = Math.random().toString(36).substr(2, 5);
+        console.log(`[AboutPresentation:${instanceId}] MOUNTED`, performance.now());
+    }, []);
 
     const [fontsReady, setFontsReady] = useState(false);
     const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();

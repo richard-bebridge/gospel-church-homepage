@@ -30,8 +30,10 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     // ----------------------------------------------------------------
     // Intro & Loading State
     // ----------------------------------------------------------------
-    const instanceId = useRef(Math.random().toString(36).substr(2, 5));
-    console.log(`[VisitPresentation:${instanceId.current}] RENDER`, performance.now());
+    useEffect(() => {
+        const instanceId = Math.random().toString(36).substr(2, 5);
+        console.log(`[VisitPresentation:${instanceId}] MOUNTED`, performance.now());
+    }, []);
 
     const settings = siteSettings || {};
     // Intro & Loading State

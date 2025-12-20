@@ -10,16 +10,19 @@ const FONT_SPECS = ['700 30px Montserrat'];
 
 const LoadingSequence = () => {
     const [index, setIndex] = useState(0);
-    const [isFontReady, setIsFontReady] = useState(() => checkFontsReadySync(FONT_SPECS));
-    const instanceId = useRef(Math.random().toString(36).substr(2, 5));
+    // Initialize to false to match server render and avoid hydration mismatch
+    const [isFontReady, setIsFontReady] = useState(false);
 
     useEffect(() => {
-        if (!isFontReady) {
+        // Run check on client mount
+        if (checkFontsReadySync(FONT_SPECS)) {
+            setIsFontReady(true);
+        } else {
             waitForFonts(FONT_SPECS).then(() => {
                 setIsFontReady(true);
             });
         }
-    }, [isFontReady]);
+    }, []);
 
     useEffect(() => {
         if (!isFontReady) return;
