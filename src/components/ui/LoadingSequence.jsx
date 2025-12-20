@@ -42,12 +42,22 @@ const LoadingSequence = () => {
 
     // suppressHydrationWarning is added to the container to handle 
     // any unavoidable timing discrepancies in the first few frames.
+    // Strict Empty-on-SSR: ensure server and initial client render match perfectly (empty div)
+    if (!isClient) {
+        return (
+            <div
+                className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]"
+                suppressHydrationWarning
+            />
+        );
+    }
+
     return (
         <div
             className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]"
             suppressHydrationWarning
         >
-            {isClient && isFontReady && showText && (
+            {isFontReady && showText && (
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={index}
