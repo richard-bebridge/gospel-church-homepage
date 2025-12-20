@@ -39,11 +39,9 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     // Intro & Loading State
     // ----------------------------------------------------------------
     const [fontsReady, setFontsReady] = useState(false);
-    const [mounted, setMounted] = useState(false);
     const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
 
     useEffect(() => {
-        setMounted(true);
         const checkReady = async () => {
             await waitForFonts([
                 '400 18px Pretendard',
@@ -274,14 +272,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
     const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
-    if (!mounted) {
-        return (
-            <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
-                <LoadingSequence />
-            </div>
-        );
-    }
-
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
             <AnimatePresence mode="wait">
@@ -330,7 +320,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                             className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1"
                                             suppressHydrationWarning
                                         >
-                                            {mounted ? String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0') : ''}
+                                            {fontsReady && fontScaleSettled ? String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0') : ''}
                                         </motion.span>
                                     </AnimatePresence>
                                 </div>
@@ -361,10 +351,10 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                             {/* Title */}
                                             <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
                                                 <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-4 block" suppressHydrationWarning>
-                                                    {mounted ? section.title : ''}
+                                                    {fontsReady && fontScaleSettled ? section.title : ''}
                                                 </span>
                                                 <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep mb-12" suppressHydrationWarning>
-                                                    {mounted ? (section.heading || section.title) : ''}
+                                                    {fontsReady && fontScaleSettled ? (section.heading || section.title) : ''}
                                                 </h1>
                                             </div>
 
@@ -395,7 +385,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                                                 key={block.id}
                                                                 block={block}
                                                                 bodyClass={desktopBodyClass}
-                                                                mounted={mounted}
                                                             />
                                                         );
                                                     })}
@@ -423,10 +412,10 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                             <div className="text-6xl font-yisunshin font-bold text-[#2A4458]/20 mb-4">{String(idx + 1).padStart(2, '0')}</div>
                             <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{section.title}</span>
                             <h2 className="text-3xl font-yisunshin font-bold text-[#05121C] mb-8 leading-tight" suppressHydrationWarning>
-                                {mounted ? (section.heading || section.title) : ''}
+                                {fontsReady && fontScaleSettled ? (section.heading || section.title) : ''}
                             </h2>
                             <div className="prose font-korean text-gray-600">
-                                {section.content.map(block => <NotionRenderer key={block.id} block={block} mounted={mounted} />)}
+                                {section.content.map(block => <NotionRenderer key={block.id} block={block} />)}
                             </div>
                         </div>
                     ))}
