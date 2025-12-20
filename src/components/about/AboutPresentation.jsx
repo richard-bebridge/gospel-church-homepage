@@ -14,7 +14,7 @@ import {
     SCROLL_THRESHOLD_DELTA
 } from '../sermon/constants';
 import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
-import IntroOverlay from '../ui/IntroOverlay';
+import LoadingSequence from '../ui/LoadingSequence';
 import { waitForFonts } from '../../lib/utils/fontLoader';
 
 const AboutPresentation = ({ sections, siteSettings }) => {
@@ -24,82 +24,22 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     const instanceId = useRef(Math.random().toString(36).substr(2, 5));
     console.log(`[AboutPresentation:${instanceId.current}] RENDER`, performance.now());
 
-    const [showIntro, setShowIntro] = useState(true);
-    const [introChecked, setIntroChecked] = useState(false);
-    const [introAnimFinished, setIntroAnimFinished] = useState(false);
     const [fontsReady, setFontsReady] = useState(false);
+    const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
 
-    // 0. Font Readiness Monitor
     useEffect(() => {
         const checkReady = async () => {
             await waitForFonts([
-                '700 30px Montserrat',  // Loading/Intro
-                '400 18px Pretendard',  // Body (Normal)
-                '700 48px YiSunShin',   // Section Title
+                '400 18px Pretendard',
+                '700 48px YiSunShin',
+                '700 30px Montserrat',
             ]);
             setFontsReady(true);
         };
         checkReady();
     }, []);
 
-    const handleIntroAnimComplete = React.useCallback(() => {
-        console.log("[AboutPresentation] handleIntroAnimComplete CALLED", performance.now());
-        setIntroAnimFinished(true);
-    }, []);
-
-    const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
-
-    // 1. Session Storage Initial Check (Runs once on mount)
-    useEffect(() => {
-        const hasSeen = sessionStorage.getItem('intro_seen_about');
-        if (hasSeen) {
-            setShowIntro(false);
-            setIntroAnimFinished(true);
-        }
-        setIntroChecked(true); // Flag when check complete
-    }, []);
-
-    // 2. Main Coordination Effect (Decides when to hide the intro)
-    useEffect(() => {
-        if (!introChecked) return;
-        if (!showIntro) return;
-        if (!introAnimFinished) return;
-
-        const checkReadiness = () => {
-            if (!sections || sections.length === 0) return true;
-            if (!fontsReady) return false;
-            if (!fontScaleSettled) return false;
-            return true;
-        };
-
-        if (checkReadiness()) {
-            if (process.env.NODE_ENV === 'development') {
-                console.log('[AboutPresentation] All Ready -> Hiding Intro');
-            }
-            setShowIntro(false);
-            sessionStorage.setItem('intro_seen_about', 'true');
-        }
-    }, [introAnimFinished, showIntro, sections, fontsReady, fontScaleSettled, introChecked]);
-
-    // 3. Safety Timeout (Fallback)
-    useEffect(() => {
-        if (showIntro && introAnimFinished && introChecked) {
-            const timer = setTimeout(() => {
-                setShowIntro(false);
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [showIntro, introAnimFinished, introChecked]);
-
-    useEffect(() => {
-        console.log("[IntroState] About", {
-            showIntro,
-            introAnimFinished,
-            fontsReady,
-            fontScaleSettled,
-            time: performance.now()
-        });
-    }, [showIntro, introAnimFinished, fontsReady, fontScaleSettled]);
+    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
     // ----------------------------------------------------------------      
     // 1. State & Refs
@@ -302,7 +242,11 @@ const AboutPresentation = ({ sections, siteSettings }) => {
             <RightPanelController
                 isVisible={!isFooter}
                 mode={rightPanelType}
-                data={rightPanelType === 'page' ? pageContent : imgSrc}
+                data={
+                    rightPanelType === 'page' ? pageContent :
+                        rightPanelType === 'verse' ? section.scriptureTags :
+                            imgSrc
+                }
                 title={section.title}
                 uniqueKey={section.id}
             />
@@ -312,9 +256,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
             <AnimatePresence mode="wait">
-                {introChecked && showIntro && (
-                    <IntroOverlay onComplete={handleIntroAnimComplete} />
-                )}
+                {!isReady && <LoadingSequence />}
             </AnimatePresence>
             <div className="fixed top-0 left-0 w-full z-[120]">
                 <Header siteSettings={siteSettings} />
@@ -324,14 +266,14 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 ref={containerRef}
                 style={{
                     paddingTop: `${HEADER_HEIGHT_PX}px`,
-                    visibility: introChecked ? 'visible' : 'hidden' // Hide content until intro decision is made
+                    visibility: isReady ? 'visible' : 'hidden'
                 }}
                 className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-pretendard"
             >
                 <div className="relative w-full bg-[#F4F3EF]">
 
                     {/* Sticky Container */}
-                    <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-10">
+                    <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-30">
                         {/* Right Panel */}
                         {renderRightPanel()}
 

@@ -10,6 +10,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['var(--font-montserrat)', 'Inter', 'sans-serif'],
+                montserrat: ['var(--font-montserrat)', 'sans-serif'],
                 serif: ['Playfair Display', 'serif'],
                 mono: ['Pretendard', 'Roboto Mono', 'monospace'], // User asked for code/small text to be Pretendard too
                 korean: ['YiSunShin', 'sans-serif'],
