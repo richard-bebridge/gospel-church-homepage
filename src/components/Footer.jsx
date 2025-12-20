@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { Instagram, Youtube, Facebook } from 'lucide-react';
 import { toTelHref } from '../lib/site-settings';
