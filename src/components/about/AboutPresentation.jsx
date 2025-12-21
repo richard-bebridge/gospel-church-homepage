@@ -19,23 +19,18 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     // ----------------------------------------------------------------
     // Intro & Loading State
     // ----------------------------------------------------------------
-    useEffect(() => {
-        const instanceId = Math.random().toString(36).substr(2, 5);
-        console.log(`[AboutPresentation:${instanceId}] MOUNTED`, performance.now());
-    }, []);
+
 
     const [fontsReady, setFontsReady] = useState(false);
     const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
 
     useEffect(() => {
         const checkReady = async () => {
-            console.log("[AboutPresentation] Waiting for fonts...");
             await waitForFonts([
                 '400 18px Pretendard',
                 '700 48px YiSunShin',
                 '700 30px Montserrat',
             ]);
-            console.log("[AboutPresentation] Fonts ready!");
             setFontsReady(true);
         };
         checkReady();
@@ -43,20 +38,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
 
     const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
-    // DEBUG OVERLAY
-    if (typeof window !== 'undefined' && !isReady) {
-        // console.log("Waiting...", { sections: sections?.length, fontsReady, fontScaleSettled });
-    }
 
-    useEffect(() => {
-        console.log("[AboutPresentation] Readiness Audit:", {
-            hasSections: !!sections,
-            sectionsLength: sections?.length,
-            fontsReady,
-            fontScaleSettled,
-            isReady
-        });
-    }, [sections, fontsReady, fontScaleSettled, isReady]);
 
     // ----------------------------------------------------------------      
     // 1. State & Refs
@@ -75,6 +57,32 @@ const AboutPresentation = ({ sections, siteSettings }) => {
         sectionRefs,
         footerRef
     });
+
+    useEffect(() => {
+        if (isReady && sections) {
+            // Hash Navigation Handler
+            const hash = window.location.hash;
+            if (!hash) return;
+
+            const targetSlug = hash.replace('#', '');
+            const toSlug = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+            const targetIndex = sections.findIndex(sec => {
+                const titleSlug = toSlug(sec.title || "");
+                const subtitleSlug = toSlug(sec.subtitle || ""); // Fallback if needed
+                return titleSlug === targetSlug || subtitleSlug === targetSlug;
+            });
+
+            if (targetIndex !== -1) {
+                // Small delay to ensure layout is stable
+                setTimeout(() => {
+                    performSnap(targetIndex);
+                }, 100);
+            }
+        }
+    }, [isReady, sections, performSnap]);
+
+
 
     // ----------------------------------------------------------------      
     // Data Render

@@ -121,8 +121,8 @@ async function fetchGlobalSiteSettingsFromNotion() {
         const props = globalPage.properties;
 
         if (process.env.NODE_ENV === 'development') {
-            console.log('[SiteSettings] Raw Property Keys:', Object.keys(props));
-            console.log('[SiteSettings] extracted youtube:', extractPropValue(props, PROPERTY_CANDIDATES.youtube));
+            // console.log('[SiteSettings] Raw Property Keys:', Object.keys(props));
+            // console.log('[SiteSettings] extracted youtube:', extractPropValue(props, PROPERTY_CANDIDATES.youtube));
         }
 
         const settings = {

@@ -28,7 +28,7 @@ export const waitForFonts = async (specs) => {
     // 3. Wait for fonts with a timeout to prevent infinite loading (e.g., if network fails or spec is invalid)
     try {
         const timeoutPromise = new Promise((resolve) => setTimeout(() => {
-            console.warn("[fontLoader] Font loading timed out after 3s, proceeding...");
+            // console.warn("[fontLoader] Font loading timed out after 3s, proceeding...");
             resolve(true); // Return true on timeout to prevent blocking
         }, 3000));
 

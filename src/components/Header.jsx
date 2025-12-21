@@ -47,7 +47,7 @@ const Header = ({ siteSettings }) => {
         { label: 'Messages', href: '/messages' },
         { label: 'Visit', href: '/visit' },
         { label: 'Print', href: '/print' },
-        { label: 'Test', href: '/test/typography' },
+        { label: 'Typo', href: '/typo-lab' },
     ];
 
     const handleLinkClick = () => {

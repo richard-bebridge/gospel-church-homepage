@@ -33,11 +33,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     // ----------------------------------------------------------------
     // Intro & Loading State
     // ----------------------------------------------------------------
-    useEffect(() => {
-        const instanceId = Math.random().toString(36).substr(2, 5);
-        console.log(`[VisitPresentation:${instanceId}] MOUNTED`, performance.now());
-    }, []);
-
     const settings = siteSettings || {};
     // Intro & Loading State
     // ----------------------------------------------------------------
@@ -46,13 +41,11 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
     useEffect(() => {
         const checkReady = async () => {
-            console.log("[VisitPresentation] Waiting for fonts...");
             await waitForFonts([
                 '400 18px Pretendard',
                 '700 48px YiSunShin',
                 '700 30px Montserrat',
             ]);
-            console.log("[VisitPresentation] Fonts ready!");
             setFontsReady(true);
         };
         checkReady();
@@ -81,18 +74,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         });
     }, [rawSections]);
 
-    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
-
-    useEffect(() => {
-        console.log("[VisitPresentation] Readiness Audit:", {
-            hasSections: !!sections,
-            sectionsLength: sections?.length,
-            fontsReady,
-            fontScaleSettled,
-            isReady
-        });
-    }, [sections, fontsReady, fontScaleSettled, isReady]);
-
     // ----------------------------------------------------------------      
     // 1. State & Refs
     // ----------------------------------------------------------------      
@@ -110,6 +91,32 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         sectionRefs,
         footerRef
     });
+
+    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
+
+    useEffect(() => {
+        if (isReady && sections) {
+            // Hash Navigation Handler
+            const hash = window.location.hash;
+            if (!hash) return;
+
+            const targetSlug = hash.replace('#', '');
+            const toSlug = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+            const targetIndex = sections.findIndex(sec => {
+                const titleSlug = toSlug(sec.title || "");
+                return titleSlug === targetSlug;
+            });
+
+            if (targetIndex !== -1) {
+                setTimeout(() => {
+                    performSnap(targetIndex);
+                }, 100);
+            }
+        }
+    }, [isReady, sections, performSnap]);
+
+
 
     // ----------------------------------------------------------------      
     // Data Render

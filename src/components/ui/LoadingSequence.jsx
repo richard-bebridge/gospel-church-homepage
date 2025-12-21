@@ -6,7 +6,8 @@ import { waitForFonts, checkFontsReadySync } from '../../lib/utils/fontLoader';
 
 const WORDS = ["seek.", "stand.", "rise.", "radiate."];
 const WORD_DURATION = 800;
-const FONT_SPECS = ['700 30px Montserrat'];
+// We rely on document.fonts.ready for Next.js fonts as they have hashed names
+const FONT_SPECS = [];
 
 const LoadingSequence = ({ isReady = false }) => {
     const [index, setIndex] = useState(0);
@@ -51,7 +52,7 @@ const LoadingSequence = ({ isReady = false }) => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -15 }}
                                 transition={{ duration: 0.25, ease: "easeOut" }}
-                                className={`text-2xl md:text-3xl font-bold text-[#05121C] font-montserrat uppercase transition-opacity duration-200 ${isFontReady ? 'opacity-100' : 'opacity-0'}`}
+                                className={`text-2xl md:text-3xl font-bold text-[#05121C] font-english uppercase transition-opacity duration-200 ${isFontReady ? 'opacity-100' : 'opacity-0'}`}
                             >
                                 {WORDS[index]}
                             </motion.div>

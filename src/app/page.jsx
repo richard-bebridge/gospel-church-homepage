@@ -1,4 +1,5 @@
 import { getSiteSettings } from '../lib/site-settings';
+import { getHomeContent } from '../lib/home-notion';
 import HomePresentation from '../components/home/HomePresentation';
 
 export const metadata = {
@@ -8,8 +9,9 @@ export const metadata = {
 
 export default async function HomePage() {
     const siteSettings = await getSiteSettings();
+    const sections = await getHomeContent();
 
     return (
-        <HomePresentation siteSettings={siteSettings} />
+        <HomePresentation siteSettings={siteSettings} sections={sections} />
     );
 }

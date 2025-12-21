@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { CURRENT_TEXT, NEXT_TEXT } from '../../../lib/typography-tokens';
-import { saveTypographyConfig } from '../../actions/saveTypography';
+import { CURRENT_TEXT, NEXT_TEXT } from '../../lib/typography-tokens';
+import { saveTypographyConfig } from '../actions/saveTypography';
 
 const SAMPLES = {
     hero_en: "Seek. Stand. Transform.",

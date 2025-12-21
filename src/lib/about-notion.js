@@ -123,7 +123,7 @@ export const getAboutContent = async () => {
         }));
 
         const validSections = sections.filter(s => s !== null);
-        console.log(`[getAboutContent] Successfully processed ${validSections.length} sections.`);
+        // console.log(`[getAboutContent] Successfully processed ${validSections.length} sections.`);
         return validSections;
     } catch (error) {
         console.error('Error fetching About content:', error);
