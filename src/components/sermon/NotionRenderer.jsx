@@ -280,11 +280,11 @@ const Text = ({ text, mounted = true }) => {
                     const content = part.slice(2, -2);
                     return (
                         <span key={`${i}-${pIdx}`} className="font-bold text-[0.85em] text-[#2A4458] align-top">
-                            * {content}
+                            * {content.normalize('NFC')}
                         </span>
                     );
                 }
-                return <span key={`${i}-${pIdx}`}>{part}</span>;
+                return <span key={`${i}-${pIdx}`}>{part.normalize('NFC')}</span>;
             });
 
             if (text.link) {
@@ -295,17 +295,15 @@ const Text = ({ text, mounted = true }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`group font-bold hover:opacity-80 transition-opacity`}
-                        style={style}
                     >
                         {refContent}
-                        <LinkIcon />
                     </a>
                 );
             }
-            return refContent;
+            return <span key={i}>{refContent}</span>;
         }
 
-        // Standard Annotation
+        // Default Rich Text Rendering
         const className = [
             (bold || text.link) ? "font-bold" : "",
             code ? "bg-gray-100 p-1 rounded font-mono text-sm" : "",
@@ -327,7 +325,7 @@ const Text = ({ text, mounted = true }) => {
                     className={`group inline-flex items-center gap-1 ${className} text-[#5F94BD] hover:opacity-80 transition-opacity whitespace-nowrap`}
                     style={style}
                 >
-                    <span className={className}>{text.content}</span>
+                    <span className={className}>{text.content.normalize('NFC')}</span>
                     <LinkIcon />
                 </a>
             );
@@ -339,7 +337,7 @@ const Text = ({ text, mounted = true }) => {
                 className={className}
                 style={style}
             >
-                {text.content}
+                {text.content.normalize('NFC')}
             </span>
         );
     });
@@ -661,6 +659,15 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
             return wrapGrid(<h2 className="text-2xl font-medium font-korean mt-3 mb-2"><Text text={value.rich_text} mounted={mounted} /></h2>, 'mb-8');
         case 'heading_3':
             return wrapGrid(<h3 className="text-xl font-medium font-korean mt-2 mb-1"><Text text={value.rich_text} mounted={mounted} /></h3>, 'mb-8');
+        case 'gallery':
+            return wrapGrid(
+                <GalleryBlock
+                    items={value.items}
+                    size={value.size}
+                    gap={value.gap}
+                />,
+                'my-8'
+            );
         case 'bulleted_list_item':
             // Logic for sub-bullet size (Half size if level > 0)
             const isSubBullet = level > 0;
