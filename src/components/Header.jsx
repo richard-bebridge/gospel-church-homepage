@@ -56,7 +56,7 @@ const Header = ({ siteSettings }) => {
 
     return (
         <>
-            <header className="fixed top-0 left-0 w-full h-16 md:h-20 px-6 sm:px-8 md:px-[10%] flex justify-between items-center bg-[#05121C] z-[110]">
+            <header className="fixed top-0 left-0 w-full h-16 md:h-20 px-6 sm:px-8 md:px-[10%] flex justify-between items-center bg-[#05121C] z-[320]">
                 {/* Logo - Lottie Animation */}
                 <Link href="/" className="flex items-center gap-3">
                     <div className="h-8 md:h-14 w-auto" style={{ filter: 'brightness(0) invert(1)' }}>

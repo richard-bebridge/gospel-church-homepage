@@ -118,6 +118,9 @@ const AboutPresentation = ({ sections, siteSettings }) => {
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
             <LoadingSequence isReady={isReady} />
 
+            {/* Header moved out to escape stacking context of the blurred wrapper */}
+            <Header siteSettings={siteSettings} />
+
             {/* Structural stability: keep DOM identical during hydration */}
             <div
                 className="transition-all duration-1000"
@@ -127,9 +130,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                     pointerEvents: isReady ? 'auto' : 'none'
                 }}
             >
-                <div className="fixed top-0 left-0 w-full z-[120]">
-                    <Header siteSettings={siteSettings} />
-                </div>
+                {/* Header was here */}
 
                 <div
                     ref={containerRef}

@@ -6,8 +6,8 @@
 export const CURRENT_TEXT = {
     "hero_en": "text-[clamp(30px,4vw,42px)] font-english font-bold uppercase tracking-widest text-[#05121C]",
     "nav_en": "text-[clamp(13px,0.8vw+10px,15px)] font-english font-bold tracking-wide uppercase",
-    "badge": "text-[12px] font-english font-bold leading-normal tracking-wide mb-0 text-[#2A4458] font-english font-english font-english font-english uppercase",
-    "badge_pill": "text-[12px] font-english font-bold leading-none tracking-wide mb-0 text-[#2A4458] font-english font-english uppercase inline-flex items-center rounded-full border-[2px] border-[#2A4458] px-2 py-0.5",
+    "badge": "text-[clamp(10px,0.68vw+7.82px,16px)] font-english font-bold leading-normal tracking-wide mt-0 mb-0 text-left text-[#2A4458] font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english uppercase",
+    "badge_pill": "text-[clamp(8px,0.45vw+6.55px,12px)] font-english font-bold leading-none tracking-tighter mt-0 mb-0 text-left text-[#2A4458] font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english uppercase inline-flex items-center rounded-full border-[2px] border-[#2A4458] px-2 py-0.5",
     "page_title_ko": "text-[clamp(36px,5vw+16px,64px)] font-bold font-korean leading-[1.15] break-keep",
     "section_title_ko_display": "text-[clamp(56px,4.55vw+41.45px,96px)] font-korean font-bold leading-none tracking-normal text-[#05121C]",
     "section_heading_ko": "text-[clamp(18px,1.14vw+14.36px,28px)] font-mono font-bold leading-normal tracking-wide mb-3 text-[#05121C] break-keep",
@@ -27,14 +27,15 @@ export const CURRENT_TEXT = {
     "table_cell": "text-[clamp(14px,0.23vw+13.27px,16px)] font-korean font-normal leading-tight tracking-normal mt-0 mb-0 text-left text-[#2a4458] align-top py-4 px-1 whitespace-pre-wrap",
     "link_text": "text-[16px] font-korean font-medium leading-normal tracking-normal mt-0 mb-0 text-left text-[#2a4458] hover:opacity-80 transition-opacity cursor-pointer",
     "footer_contact_label": "font-mono font-bold text-[15px]",
-    "footer_contact_value": "font-mono font-light text-[15px]"
+    "footer_contact_value": "font-mono font-light text-[15px]",
+    "summary_title": "text-[clamp(20px,1.36vw+15.64px,32px)] font-korean font-bold leading-snug tracking-normal mt-0 mb-0 text-left text-[#05121C] md:"
 };
 
 export const NEXT_TEXT = {
     "hero_en": "text-[clamp(30px,4vw,42px)] font-english font-bold uppercase tracking-widest text-[#05121C]",
     "nav_en": "text-[clamp(13px,0.8vw+10px,15px)] font-english font-bold tracking-wide uppercase",
-    "badge": "text-[12px] font-english font-bold leading-normal tracking-wide mb-0 text-[#2A4458] font-english font-english font-english font-english uppercase",
-    "badge_pill": "text-[12px] font-english font-bold leading-none tracking-wide mb-0 text-[#2A4458] font-english font-english uppercase inline-flex items-center rounded-full border-[2px] border-[#2A4458] px-2 py-0.5",
+    "badge": "text-[clamp(10px,0.68vw+7.82px,16px)] font-english font-bold leading-normal tracking-wide mt-0 mb-0 text-left text-[#2A4458] font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english uppercase",
+    "badge_pill": "text-[clamp(8px,0.45vw+6.55px,12px)] font-english font-bold leading-none tracking-tighter mt-0 mb-0 text-left text-[#2A4458] font-english font-english font-english font-english font-english font-english font-english font-english font-english font-english uppercase inline-flex items-center rounded-full border-[2px] border-[#2A4458] px-2 py-0.5",
     "page_title_ko": "text-[clamp(36px,5vw+16px,64px)] font-bold font-korean leading-[1.15] break-keep",
     "section_title_ko_display": "text-[clamp(56px,4.55vw+41.45px,96px)] font-korean font-bold leading-none tracking-normal text-[#05121C]",
     "section_heading_ko": "text-[clamp(18px,1.14vw+14.36px,28px)] font-mono font-bold leading-normal tracking-wide mb-3 text-[#05121C] break-keep",
@@ -54,7 +55,8 @@ export const NEXT_TEXT = {
     "table_cell": "text-[clamp(14px,0.23vw+13.27px,16px)] font-korean font-normal leading-tight tracking-normal mt-0 mb-0 text-left text-[#2a4458] align-top py-4 px-1 whitespace-pre-wrap",
     "link_text": "text-[16px] font-korean font-medium leading-normal tracking-normal mt-0 mb-0 text-left text-[#2a4458] hover:opacity-80 transition-opacity cursor-pointer",
     "footer_contact_label": "font-mono font-bold text-[15px]",
-    "footer_contact_value": "font-mono font-light text-[15px]"
+    "footer_contact_value": "font-mono font-light text-[15px]",
+    "summary_title": "text-[clamp(20px,1.36vw+15.64px,32px)] font-korean font-bold leading-snug tracking-normal mt-0 mb-0 text-left text-[#05121C] md:"
 };
 
 export const cx = (...classes) => classes.filter(Boolean).join(' ');

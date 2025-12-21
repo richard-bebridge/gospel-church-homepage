@@ -10,11 +10,14 @@ const SummaryColumn = ({
     basePath,
     renderTitleWithBadge,
     formatDate,
-    bgColorClass
+    bgColorClass,
+    hideOlderItems = false,
+    widthControlClass = "w-full max-w-[60%]",
+    minHeightClass = "min-h-[calc(100vh-80px)]"
 }) => (
-    <div className={`w-full md:w-1/2 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] ${bgColorClass} relative`}>
+    <div className={`w-full md:w-1/2 flex flex-col items-center justify-center ${minHeightClass} ${bgColorClass} relative`}>
         {/* Centered Content Block */}
-        <div className="w-full max-w-[60%] flex flex-col pt-0 pb-0">
+        <div className={`${widthControlClass} flex flex-col pt-0 pb-0`}>
             {/* Title Label (Matches About Page 'Tag' Spacing) */}
             <div className="w-full flex flex-col items-center">
                 <span className={CURRENT_TEXT.badge + " mb-6 block w-full text-left border-b border-[#2A4458]/10 pb-2"}>
@@ -25,32 +28,36 @@ const SummaryColumn = ({
             {/* List Content */}
             <div className="w-full flex flex-col">
                 {latestItem ? (
-                    <Link href={`${basePath}/${latestItem.id}`} className="group block mb-12">
-                        <h2 className="text-3xl md:text-3xl font-bold font-korean text-[#05121C] mb-4 group-hover:text-[#2A4458] transition-colors line-clamp-3 leading-snug">
+                    <Link href={`${basePath}/${latestItem.id}`} className={`group block ${hideOlderItems ? 'mb-0' : 'mb-12'}`}>
+                        <h2 className={`${CURRENT_TEXT.summary_title} mb-4 group-hover:text-[#2A4458] transition-colors line-clamp-3`}>
                             {renderTitleWithBadge(latestItem.title, badgeComponent)}
                         </h2>
-                        <p className="text-lg text-[#2A4458] font-korean font-light line-clamp-2 leading-relaxed">
-                            {latestItem.snippet}
-                        </p>
+                        {!hideOlderItems && (
+                            <p className="text-lg text-[#2A4458] font-korean font-light line-clamp-2 leading-relaxed">
+                                {latestItem.snippet}
+                            </p>
+                        )}
                     </Link>
                 ) : (
                     <div className="mb-12 text-gray-400">No {title.toLowerCase().slice(0, -1)} available</div>
                 )}
 
-                <ul className="space-y-4">
-                    {olderItems.map(item => (
-                        <li key={item.id} className="border-b border-[#2A4458]/10 pb-2 last:border-0">
-                            <Link href={`${basePath}/${item.id}`} className="flex justify-between items-baseline group">
-                                <span className="text-base text-[#05121C] font-korean font-light group-hover:text-[#2A4458] truncate mr-4">
-                                    {item.title}
-                                </span>
-                                <span className="text-sm text-[#2A4458]/60 font-korean whitespace-nowrap">
-                                    {formatDate(item.date)}
-                                </span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                {!hideOlderItems && (
+                    <ul className="space-y-4">
+                        {olderItems.map(item => (
+                            <li key={item.id} className="border-b border-[#2A4458]/10 pb-2 last:border-0">
+                                <Link href={`${basePath}/${item.id}`} className="flex justify-between items-baseline group">
+                                    <span className="text-base text-[#05121C] font-korean font-light group-hover:text-[#2A4458] truncate mr-4">
+                                        {item.title}
+                                    </span>
+                                    <span className="text-sm text-[#2A4458]/60 font-korean whitespace-nowrap">
+                                        {formatDate(item.date)}
+                                    </span>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </div>
     </div>
@@ -61,7 +68,10 @@ const MessagesSummarySection = ({
     olderLetters = [],
     previousSermon,
     olderSermons = [],
-    reversed = false
+    reversed = false,
+    hideOlderItems = false,
+    widthControlClass, // optional override
+    minHeightClass = "min-h-[calc(100vh-80px)]"
 }) => {
     // Helper to format date "YYYY.MM.DD"
     const formatDate = (dateString) => {
@@ -99,7 +109,7 @@ const MessagesSummarySection = ({
     );
 
     return (
-        <section className="min-h-[calc(100vh-80px)] w-full flex flex-col md:flex-row relative z-30">
+        <section className={`${minHeightClass} w-full flex flex-col md:flex-row relative z-30`}>
             {reversed ? (
                 <>
                     {/* Sermons Column (Left in Reversed) */}
@@ -112,6 +122,9 @@ const MessagesSummarySection = ({
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
                         bgColorClass={!reversed ? 'bg-[#F4F3EF]' : ''}
+                        hideOlderItems={hideOlderItems}
+                        widthControlClass={widthControlClass}
+                        minHeightClass={minHeightClass}
                     />
                     {/* Letters Column (Right in Reversed) */}
                     <SummaryColumn
@@ -123,6 +136,9 @@ const MessagesSummarySection = ({
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
                         bgColorClass={reversed ? 'bg-[#F4F3EF]' : ''}
+                        hideOlderItems={hideOlderItems}
+                        widthControlClass={widthControlClass}
+                        minHeightClass={minHeightClass}
                     />
                 </>
             ) : (
@@ -137,6 +153,9 @@ const MessagesSummarySection = ({
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
                         bgColorClass={reversed ? 'bg-[#F4F3EF]' : ''}
+                        hideOlderItems={hideOlderItems}
+                        widthControlClass={widthControlClass}
+                        minHeightClass={minHeightClass}
                     />
                     {/* Sermons Column (Right in Normal) */}
                     <SummaryColumn
@@ -148,6 +167,9 @@ const MessagesSummarySection = ({
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
                         bgColorClass={!reversed ? 'bg-[#F4F3EF]' : ''}
+                        hideOlderItems={hideOlderItems}
+                        widthControlClass={widthControlClass}
+                        minHeightClass={minHeightClass}
                     />
                 </>
             )}

@@ -14,13 +14,16 @@ import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
  * - data: summary data object
  * - sectionRef: ref for scroll snap
  */
-export const PresentationSummary = ({ data, sectionRef }) => {
+export const PresentationSummary = ({ data, sectionRef, style = {} }) => {
     return (
         <section
             id="summary-section"
             ref={sectionRef}
             className="bg-[#F4F3EF] w-full relative z-20 snap-start"
-            style={{ minHeight: `calc(100vh - ${HEADER_HEIGHT_PX}px)` }}
+            style={{
+                minHeight: `calc(100vh - ${HEADER_HEIGHT_PX}px)`,
+                ...style
+            }}
         >
             {data && (
                 <MessagesSummarySection

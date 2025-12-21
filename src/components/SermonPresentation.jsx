@@ -175,7 +175,23 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                     />
                 </div>
 
-                {/* E. Footer */}
+                {/* E. Summary Section */}
+                {messagesSummary && (
+                    <div className="w-full relative z-20">
+                        <PresentationSummary
+                            data={{
+                                ...messagesSummary,
+                                seriesTitle: sermon.title,
+                                hideOlderItems: true,
+                                widthControlClass: "w-full px-8",
+                                minHeightClass: "min-h-0 py-12"
+                            }}
+                            style={{ minHeight: 'auto' }}
+                        />
+                    </div>
+                )}
+
+                {/* F. Footer */}
                 <footer className="shrink-0 bg-[#F4F3EF] border-t border-[#2A4458]/10 relative z-50">
                     <div ref={footerRef}>
                         {children}

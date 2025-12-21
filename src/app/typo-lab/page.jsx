@@ -17,8 +17,8 @@ const SAMPLES = {
     body_ko_long: "그러므로 형제들아 내가 하나님의 모든 자비하심으로 너희를 권하노니 너희 몸을 하나님이 기뻐하시는 거룩한 산 제물로 드리라 이는 너희가 드릴 영적 예배니라.",
     verse_text: "태초에 하나님이 천지를 창조하시니라 (창세기 1:1)",
     footer_contact_label: "T.",
-    footer_contact_label: "T.",
     footer_contact_value: "02-583-2014",
+    summary_title: "소망의 하나님, 평안의 주님 (Summary Title Example)",
     // New Roles
     notion_h1: "Notion H1 Title",
     notion_h3: "Notion H3 Heading",
@@ -47,8 +47,8 @@ const ROLE_TAGS = {
     body_ko_long: "Body (L)",
     verse_text: "Verse",
     footer_contact_label: "Label",
-    footer_contact_label: "Label",
     footer_contact_value: "Value",
+    summary_title: "Sum.H2",
     notion_h1: "H1",
     notion_h3: "H3",
     bullet_list: "Bullet",
@@ -70,7 +70,7 @@ const MARGINS = ['mb-0', 'mb-1', 'mb-2', 'mb-3', 'mb-4', 'mb-5', 'mb-6', 'mb-8',
 const ALIGNMENTS = ['text-left', 'text-center', 'text-right', 'text-justify'];
 
 const GROUPS = {
-    "Highlights": ["hero_en", "page_title_ko", "section_title_ko_display", "section_heading_ko"],
+    "Highlights": ["hero_en", "page_title_ko", "section_title_ko_display", "section_heading_ko", "summary_title"],
     "Body & Content": ["notion_h1", "notion_h3", "body_ko_default", "body_ko_long", "bullet_list", "numbered_list", "quote", "callout", "table_head", "table_cell", "link_text", "verse_text", "verse_reference", "reference_text"],
     "UI Components": ["nav_en", "badge", "badge_pill", "caption", "footer_contact_label", "footer_contact_value"]
 };
@@ -198,17 +198,19 @@ const TypographyPlayground = () => {
         const oldCls = tokens[selectedRole] || "";
         // Strip properties we manage
         let remainder = oldCls
-            .replace(/text-\[clamp.*?\]/, '')
-            .replace(/text-\[\d+px\]/, '')
-            .replace(/font-(sans|serif|mono|yisunshin|pretendard|korean)/, '')
-            .replace(/font-(thin|light|normal|medium|bold|black)/, '')
-            .replace(/leading-[\w-\[\]\.]+/, '')
-            .replace(/tracking-[\w-\[\]\.]+/, '')
-            .replace(/mb-[\d]+/, '')
-            .replace(/mt-[\d]+/, '')
-            .replace(/text-(left|center|right|justify)/, '') // remove alignment
-            .replace(/text-\[#[0-9A-Fa-f]{6}\]/, '') // remove hex color
-            .replace(/text-(gray|blue|red|white|black)-[\d]+/, '') // remove tailwind color
+            .replace(/text-\[clamp.*?\]/g, '')
+            .replace(/text-\[\d+px\]/g, '')
+            .replace(/text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)/g, '') // remove standard sizes
+            .replace(/md:text-[\w-\[\]]+/g, '') // remove desktop overrides
+            .replace(/font-(sans|serif|mono|yisunshin|pretendard|korean)/g, '')
+            .replace(/font-(thin|light|normal|medium|bold|black)/g, '')
+            .replace(/leading-[\w-\[\]\.]+/g, '')
+            .replace(/tracking-[\w-\[\]\.]+/g, '')
+            .replace(/mb-[\d]+/g, '')
+            .replace(/mt-[\d]+/g, '')
+            .replace(/text-(left|center|right|justify)/g, '') // remove alignment
+            .replace(/text-\[#[0-9A-Fa-f]{6}\]/g, '') // remove hex color
+            .replace(/text-(gray|blue|red|white|black)-[\d]+/g, '') // remove tailwind color
             .replace(/\s+/g, ' ').trim();
 
         const newCls = `${fontSizeCls} ${newSettings.font} ${newSettings.weight} ${newSettings.leading} ${newSettings.tracking} ${newSettings.marginTop} ${newSettings.marginBottom} ${newSettings.textAlign} ${colorCls} ${remainder}`.trim();
@@ -327,7 +329,7 @@ const TypographyPlayground = () => {
                             <label className="text-[10px] font-bold uppercase text-gray-500">Min Size (Mobile)</label>
                             <span className="text-[10px] font-mono text-blue-400">{currentSettings.min}px / {(currentSettings.min / 16).toFixed(2)}rem</span>
                         </div>
-                        <input type="range" min="10" max="100" step="1"
+                        <input type="range" min="6" max="100" step="1"
                             value={currentSettings.min}
                             onChange={e => {
                                 const val = parseFloat(e.target.value);
@@ -341,7 +343,7 @@ const TypographyPlayground = () => {
                             <label className="text-[10px] font-bold uppercase text-gray-500">Max Size (Desktop)</label>
                             <span className="text-[10px] font-mono text-blue-400">{currentSettings.max}px / {(currentSettings.max / 16).toFixed(2)}rem</span>
                         </div>
-                        <input type="range" min="10" max="120" step="1"
+                        <input type="range" min="6" max="120" step="1"
                             value={currentSettings.max}
                             onChange={e => {
                                 const val = parseFloat(e.target.value);
