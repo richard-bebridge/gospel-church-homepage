@@ -10,13 +10,18 @@ const FONT_SPECS = ['700 30px Montserrat'];
 
 const LoadingSequence = () => {
     const [index, setIndex] = useState(0);
-    const [isFontReady, setIsFontReady] = useState(() => {
-        if (typeof window === 'undefined') return false;
-        return checkFontsReadySync(FONT_SPECS);
-    });
+    const [isFontReady, setIsFontReady] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
+        setIsClient(true);
         let isMounted = true;
+
+        // Initial sync check
+        if (checkFontsReadySync(FONT_SPECS)) {
+            setIsFontReady(true);
+        }
+
         const initFonts = async () => {
             await waitForFonts(FONT_SPECS);
             if (isMounted) {
@@ -38,19 +43,24 @@ const LoadingSequence = () => {
     }, [isFontReady]);
 
     return (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]">
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -15 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className={`text-2xl md:text-3xl font-bold text-[#05121C] font-montserrat uppercase transition-opacity duration-200 ${isFontReady ? 'opacity-100' : 'opacity-0'}`}
-                >
-                    {WORDS[index]}
-                </motion.div>
-            </AnimatePresence>
+        <div
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-[#F4F3EF]"
+            suppressHydrationWarning
+        >
+            {isClient && (
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -15 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className={`text-2xl md:text-3xl font-bold text-[#05121C] font-montserrat uppercase transition-opacity duration-200 ${isFontReady ? 'opacity-100' : 'opacity-0'}`}
+                    >
+                        {WORDS[index]}
+                    </motion.div>
+                </AnimatePresence>
+            )}
         </div>
     );
 };
