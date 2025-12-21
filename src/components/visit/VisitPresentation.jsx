@@ -43,17 +43,17 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
     useEffect(() => {
         const checkReady = async () => {
+            console.log("[VisitPresentation] Waiting for fonts...");
             await waitForFonts([
                 '400 18px Pretendard',
                 '700 48px YiSunShin',
                 '700 30px Montserrat',
             ]);
+            console.log("[VisitPresentation] Fonts ready!");
             setFontsReady(true);
         };
         checkReady();
     }, []);
-
-    // 1. Initial Readiness Check State
 
     // ----------------------------------------------------------------      
     // 0. Pre-process Sections
@@ -77,6 +77,18 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
             return { ...section, mapCoords };
         });
     }, [rawSections]);
+
+    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
+
+    useEffect(() => {
+        console.log("[VisitPresentation] Readiness Audit:", {
+            hasSections: !!sections,
+            sectionsLength: sections?.length,
+            fontsReady,
+            fontScaleSettled,
+            isReady
+        });
+    }, [sections, fontsReady, fontScaleSettled, isReady]);
 
     // ----------------------------------------------------------------      
     // 1. State & Refs
@@ -269,8 +281,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
             />
         );
     };
-
-    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
