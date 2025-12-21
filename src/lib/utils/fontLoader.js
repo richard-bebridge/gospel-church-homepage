@@ -29,7 +29,7 @@ export const waitForFonts = async (specs) => {
     try {
         const timeoutPromise = new Promise((resolve) => setTimeout(() => {
             console.warn("[fontLoader] Font loading timed out after 3s, proceeding...");
-            resolve(false); // Return false on timeout
+            resolve(true); // Return true on timeout to prevent blocking
         }, 3000));
 
         const fontsPromise = (async () => {
