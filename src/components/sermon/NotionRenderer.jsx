@@ -280,11 +280,11 @@ const Text = ({ text, mounted = true }) => {
                     const content = part.slice(2, -2);
                     return (
                         <span key={`${i}-${pIdx}`} className="font-bold text-[0.85em] text-[#2A4458] align-top">
-                            * {content.normalize('NFC')}
+                            * {(content || "").normalize('NFC')}
                         </span>
                     );
                 }
-                return <span key={`${i}-${pIdx}`}>{part.normalize('NFC')}</span>;
+                return <span key={`${i}-${pIdx}`}>{(part || "").normalize('NFC')}</span>;
             });
 
             if (text.link) {
@@ -325,7 +325,7 @@ const Text = ({ text, mounted = true }) => {
                     className={`group inline-flex items-center gap-1 ${className} text-[#5F94BD] hover:opacity-80 transition-opacity whitespace-nowrap`}
                     style={style}
                 >
-                    <span className={className}>{text.content.normalize('NFC')}</span>
+                    <span className={className}>{(text.content || "").normalize('NFC')}</span>
                     <LinkIcon />
                 </a>
             );
@@ -337,7 +337,7 @@ const Text = ({ text, mounted = true }) => {
                 className={className}
                 style={style}
             >
-                {text.content.normalize('NFC')}
+                {(text.content || "").normalize('NFC')}
             </span>
         );
     });

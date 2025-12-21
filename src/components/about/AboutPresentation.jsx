@@ -334,10 +334,10 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                                             {/* Title: Absolute at Title Baseline (Hardcoded 96px) */}
                                             <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
                                                 <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-4 block">
-                                                    {section.title.normalize('NFC')}
+                                                    {(section.title || "").normalize('NFC')}
                                                 </span>
                                                 <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep mb-12">
-                                                    {(section.heading || section.title).normalize('NFC')}
+                                                    {(section.heading || section.title || "").normalize('NFC')}
                                                 </h1>
                                             </div>
 
@@ -372,10 +372,10 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 <div className="md:hidden w-full bg-[#F4F3EF] pt-20">
                     {sections.map((section, idx) => (
                         <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
-                            <div className="text-6xl font-yisunshin font-bold text-[#2A4458]/20 mb-4">{String(idx + 1).padStart(2, '0').normalize('NFC')}</div>
-                            <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{section.title.normalize('NFC')}</span>
+                            <div className="text-6xl font-yisunshin font-bold text-[#2A4458]/20 mb-4">{(String(idx + 1).padStart(2, '0') || "").normalize('NFC')}</div>
+                            <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{(section.title || "").normalize('NFC')}</span>
                             <h2 className="text-3xl font-yisunshin font-bold text-[#05121C] mb-8 leading-tight">
-                                {(section.heading || section.title).normalize('NFC')}
+                                {(section.heading || section.title || "").normalize('NFC')}
                             </h2>
                             <div className="prose font-korean text-gray-600">
                                 <TableAlignmentProvider blocks={section.content}>

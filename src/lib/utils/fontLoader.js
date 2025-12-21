@@ -25,16 +25,24 @@ export const waitForFonts = async (specs) => {
     const pendingSpecs = specs.filter(s => !fontCache.has(s));
     if (pendingSpecs.length === 0) return true;
 
+    // 3. Wait for fonts with a timeout to prevent infinite loading (e.g., if network fails or spec is invalid)
     try {
-        // 1. Wait for document fonts to be ready (general)
-        await document.fonts.ready;
+        const timeoutPromise = new Promise((resolve) => setTimeout(() => {
+            console.warn("[fontLoader] Font loading timed out after 3s, proceeding...");
+            resolve(true); // Proceed anyway to unmask content
+        }, 3000));
 
-        // 2. Load and check specific fonts (explicit)
-        await Promise.all(pendingSpecs.map(spec => document.fonts.load(spec)));
+        const fontsPromise = (async () => {
+            // 1. Wait for document fonts to be ready (general)
+            await document.fonts.ready;
+            // 2. Load and check specific fonts (explicit)
+            await Promise.all(pendingSpecs.map(spec => document.fonts.load(spec)));
+            // 3. Update cache
+            pendingSpecs.forEach(spec => fontCache.add(spec));
+            return true;
+        })();
 
-        // 3. Update cache
-        pendingSpecs.forEach(spec => fontCache.add(spec));
-        return true;
+        return await Promise.race([fontsPromise, timeoutPromise]);
     } catch (error) {
         console.error("[fontLoader] Error loading fonts:", error);
         return false;
