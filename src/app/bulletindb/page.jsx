@@ -9,21 +9,24 @@ export const revalidate = 3600;
 
 export default async function BulletinDBPage() {
     const databaseId = process.env.NOTION_SUNDAY_DB_ID;
-    let error = null;
+    let fetchError = null;
+    let bulletins = [];
+    let siteSettings = null;
 
-    const [bulletins, siteSettings] = await Promise.all([
-        (async () => {
-            if (!databaseId) return [];
-            try {
+    try {
+        const [bulletinsResult, settingsResult] = await Promise.all([
+            (async () => {
+                if (!databaseId) return [];
                 return await getDatabase(databaseId);
-            } catch (e) {
-                error = "Failed to fetch bulletins. Please check your Notion API Key and Database ID.";
-                console.error(e);
-                return [];
-            }
-        })(),
-        getSiteSettings()
-    ]);
+            })(),
+            getSiteSettings()
+        ]);
+        bulletins = bulletinsResult;
+        siteSettings = settingsResult;
+    } catch (e) {
+        console.error(e);
+        fetchError = "Failed to fetch data. Please check your Notion configuration.";
+    }
 
     return (
         <div className="min-h-screen bg-[#F4F3EF]">
@@ -35,10 +38,10 @@ export default async function BulletinDBPage() {
                         Bulletin Archive
                     </h1>
 
-                    {error ? (
+                    {fetchError ? (
                         <div className="p-8 bg-red-50 border border-red-200 rounded-lg text-center text-red-600">
                             <p className="font-bold mb-2">Connection Error</p>
-                            <p>{error}</p>
+                            <p>{fetchError}</p>
                         </div>
                     ) : (
                         <div className="grid gap-6">

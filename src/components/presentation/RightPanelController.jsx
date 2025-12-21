@@ -3,51 +3,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
-import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
 import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
 import NotionRenderer, { TableAlignmentProvider } from '../sermon/NotionRenderer';
 import RightPanelMap from '../visit/RightPanelMap';
 import Image from 'next/image';
-
-// Internal Scripture Panel Component
-const ScripturePanel = ({ verses, title, uniqueKey, contentPaddingClass = "pt-96" }) => {
-    const { desktopVerseClass } = useFontScale();
-
-    return (
-        <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center h-full ${contentPaddingClass} overflow-hidden`}>
-            {verses && verses.length > 0 ? (
-                <div className="space-y-12 w-full max-w-[60%] pointer-events-auto">
-                    <AnimatePresence mode="wait">
-                        {verses.map((tag, idx) => (
-                            <motion.div
-                                key={`${uniqueKey}-${idx}`}
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -15 }}
-                                transition={{
-                                    duration: 0.8,
-                                    ease: [0.215, 0.61, 0.355, 1], // easeOutCubic
-                                    delay: idx * 0.15 // More relaxed stagger
-                                }}
-                            >
-                                <p className={`${desktopVerseClass} mb-4 break-keep`}>
-                                    {renderVerseWithStyledFirstWord(tag.text || "(Verse not found: " + tag.reference + ")")}
-                                </p>
-                                <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
-                                    {tag.reference}
-                                </p>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </div>
-            ) : (
-                <div className="h-full flex items-center justify-center opacity-30 -mt-32">
-                    <p className="text-[#2A4458] font-yisunshin text-2xl">SOLA SCRIPTURA</p>
-                </div>
-            )}
-        </div>
-    );
-};
+import VerseList from './VerseList';
 
 /**
  * RightPanelController
@@ -63,7 +23,7 @@ export const RightPanelController = ({
     contentPaddingClass = "pt-96",
     uniqueKey = "default"
 }) => {
-    const { desktopBodyClass } = useFontScale();
+    const { desktopBodyClass, desktopVerseClass } = useFontScale();
     return (
         <motion.div
             className="hidden md:flex fixed right-0 top-0 w-1/2 h-full flex-col items-center z-30 pointer-events-none"
@@ -79,12 +39,22 @@ export const RightPanelController = ({
 
             <div className="w-full relative flex-1">
                 {(mode === 'scripture' || mode === 'verse') && (
-                    <ScripturePanel
-                        verses={data}
-                        title={title}
-                        uniqueKey={uniqueKey}
-                        contentPaddingClass={contentPaddingClass}
-                    />
+                    <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center h-full ${contentPaddingClass} overflow-hidden`}>
+                        {data && data.length > 0 ? (
+                            <VerseList
+                                verses={data}
+                                uniqueKey={`${uniqueKey}-scripture`}
+                                containerClassName="space-y-12 w-full max-w-[520px] px-8 pointer-events-auto"
+                                verseClassName={`${desktopVerseClass} mb-4 break-keep`}
+                                referenceClassName="text-base text-[#2A4458] font-bold text-right font-pretendard"
+                                transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
+                            />
+                        ) : (
+                            <div className="h-full flex items-center justify-center opacity-30 -mt-32">
+                                <p className="text-[#2A4458] font-yisunshin text-2xl">SOLA SCRIPTURA</p>
+                            </div>
+                        )}
+                    </div>
                 )}
 
                 <AnimatePresence mode="wait">

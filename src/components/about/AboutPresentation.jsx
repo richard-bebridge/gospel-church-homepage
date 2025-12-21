@@ -31,15 +31,29 @@ const AboutPresentation = ({ sections, siteSettings }) => {
 
     useEffect(() => {
         const checkReady = async () => {
+            console.log("[AboutPresentation] Waiting for fonts...");
             await waitForFonts([
                 '400 18px Pretendard',
                 '700 48px YiSunShin',
                 '700 30px Montserrat',
             ]);
+            console.log("[AboutPresentation] Fonts ready!");
             setFontsReady(true);
         };
         checkReady();
     }, []);
+
+    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
+
+    useEffect(() => {
+        console.log("[AboutPresentation] Readiness Audit:", {
+            hasSections: !!sections,
+            sectionsLength: sections?.length,
+            fontsReady,
+            fontScaleSettled,
+            isReady
+        });
+    }, [sections, fontsReady, fontScaleSettled, isReady]);
 
     // ----------------------------------------------------------------      
     // 1. State & Refs
@@ -252,8 +266,6 @@ const AboutPresentation = ({ sections, siteSettings }) => {
             />
         );
     };
-
-    const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">

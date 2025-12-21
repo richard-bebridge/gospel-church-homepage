@@ -8,7 +8,7 @@ import Link from 'next/link';
 export const revalidate = 3600;
 
 export default async function SermonPage() {
-    let error = null;
+    let fetchError = null;
     const databaseId = process.env.NOTION_SERMON_DB_ID;
     const [sermons, siteSettings] = await Promise.all([
         (async () => {
@@ -16,7 +16,7 @@ export default async function SermonPage() {
             try {
                 return await getDatabase(databaseId);
             } catch (e) {
-                error = "Failed to fetch sermons. Please check your Notion API Key and Database ID.";
+                fetchError = "Failed to fetch sermons. Please check your Notion API Key and Database ID.";
                 console.error(e);
                 return [];
             }
@@ -40,10 +40,10 @@ export default async function SermonPage() {
                         or put it below. Let's put it below the list for now.
                     */}
 
-                    {error ? (
+                    {fetchError ? (
                         <div className="p-8 bg-red-50 border border-red-200 rounded-lg text-center text-red-600 mb-12">
                             <p className="font-bold mb-2">Connection Error</p>
-                            <p>{error}</p>
+                            <p>{fetchError}</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">

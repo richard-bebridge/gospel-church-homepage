@@ -16,10 +16,10 @@ export default async function TestPage() {
     let page = null;
     let blocks = [];
     let mediaLinks = { youtube: "", audio: "" };
-    let error = null;
+    let fetchError = null;
 
     if (!databaseId) {
-        error = "NOTION_SERMON_DB_ID is not set in .env file.";
+        fetchError = "NOTION_SERMON_DB_ID is not set in .env file.";
     } else {
         try {
             // 1. Fetch the latest sermon from Hub DB (NOTION_SERMON_DB_ID)
@@ -62,7 +62,7 @@ export default async function TestPage() {
                 mediaLinks.audio = getMediaUrl(page.properties?.Sound) || getMediaUrl(page.properties?.Audio);
             }
         } catch (e) {
-            error = "Failed to fetch data. Please check Notion API Keys and DB IDs.";
+            fetchError = "Failed to fetch data. Please check Notion API Keys and DB IDs.";
             console.error(e);
         }
     }
@@ -74,12 +74,12 @@ export default async function TestPage() {
         blocks = injectVerses(blocks, new Set());
     }
 
-    if (error || !page) {
+    if (fetchError || !page) {
         return (
             <div className="min-h-screen bg-[#F4F3EF] flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold mb-4">Sermon Not Found</h1>
-                    <p className="text-red-500">{error || "No sermon data available."}</p>
+                    <p className="text-red-500">{fetchError || "No sermon data available."}</p>
                 </div>
             </div>
         );

@@ -13,12 +13,12 @@ import { PresentationBody } from '../presentation/PresentationBody';
 import { PresentationSummary } from '../presentation/PresentationSummary';
 import { PresentationFooter } from '../presentation/PresentationFooter';
 import { RightPanelController } from '../presentation/RightPanelController';
+import VerseList from '../presentation/VerseList';
 
 // Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
 import { useSnapScrollController } from '../../hooks/scroll/useSnapScrollController';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import NotionRenderer from '../sermon/NotionRenderer';
-import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
 import Image from 'next/image';
 
 // Hooks & Utils
@@ -127,17 +127,15 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
 
                 {/* Mobile Scripture Panel (Static list at bottom of letter) */}
                 {scriptureTags && scriptureTags.length > 0 && (
-                    <div className="border-t border-[#2A4458]/10 pt-12 mt-12 space-y-8">
-                        {scriptureTags.map((tag, idx) => (
-                            <div key={idx} className="bg-[#F4F3EF]">
-                                <p className={verseTextClass}>
-                                    {renderVerseWithStyledFirstWord(tag.text)}
-                                </p>
-                                <p className="text-sm text-[#2A4458] font-bold text-right font-pretendard mt-4">
-                                    {tag.reference}
-                                </p>
-                            </div>
-                        ))}
+                    <div className="border-t border-[#2A4458]/10 pt-12 mt-12">
+                        <VerseList
+                            verses={scriptureTags}
+                            uniqueKey={`mobile-letter-${letter.id}`}
+                            containerClassName="space-y-8"
+                            verseClassName={verseTextClass}
+                            referenceClassName="text-sm text-[#2A4458] font-bold text-right font-pretendard mt-4"
+                            animate={false}
+                        />
                     </div>
                 )}
             </div>

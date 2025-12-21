@@ -10,15 +10,15 @@ export const revalidate = 3600;
 export default async function LettersPage() {
     const databaseId = process.env.NOTION_GOSPEL_DB_ID;
     let letters = [];
-    let error = null;
+    let fetchError = null;
 
     if (!databaseId) {
-        error = "NOTION_GOSPEL_DB_ID is not set in .env file.";
+        fetchError = "NOTION_GOSPEL_DB_ID is not set in .env file.";
     } else {
         try {
             letters = await getDatabase(databaseId);
         } catch (e) {
-            error = "Failed to fetch data. Please check your Notion API Key and Database ID.";
+            fetchError = "Failed to fetch data. Please check your Notion API Key and Database ID.";
             console.error(e);
         }
     }
@@ -33,10 +33,10 @@ export default async function LettersPage() {
                         Gospel Letters
                     </h1>
 
-                    {error ? (
+                    {fetchError ? (
                         <div className="p-8 bg-red-50 border border-red-200 rounded-lg text-center text-red-600">
                             <p className="font-bold mb-2">Connection Error</p>
-                            <p>{error}</p>
+                            <p>{fetchError}</p>
                             <p className="text-sm mt-4 text-gray-500">
                                 Please make sure you have created a <code>.env</code> file with <code>NOTION_API_KEY</code> and <code>NOTION_GOSPEL_DB_ID</code>.
                             </p>

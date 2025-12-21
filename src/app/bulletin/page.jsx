@@ -125,7 +125,7 @@ const renderBlock = (block) => {
 
 export default async function BulletinPage() {
     const databaseId = process.env.NOTION_SUNDAY_DB_ID;
-    let error = null;
+    let finalError = null;
     const [siteSettings, bulletinData] = await Promise.all([
         getSiteSettings(),
         (async () => {
@@ -146,18 +146,18 @@ export default async function BulletinPage() {
         })()
     ]);
 
-    const { page, blocks, error: fetchError } = bulletinData;
-    if (fetchError) error = fetchError;
+    const { page, blocks, error: apiError } = bulletinData;
+    if (apiError) finalError = apiError;
 
     return (
         <div className="min-h-screen bg-[#F4F3EF]">
             <Header siteSettings={siteSettings} />
 
             <div className="pt-40 pb-32 relative max-w-3xl mx-auto px-8 lg:px-0">
-                {error ? (
+                {finalError ? (
                     <div className="p-8 bg-red-50 border border-red-200 rounded-lg text-center text-red-600">
                         <p className="font-bold mb-2">Connection Error</p>
-                        <p>{error}</p>
+                        <p>{finalError}</p>
                     </div>
                 ) : !page ? (
                     <div className="text-center py-20">
