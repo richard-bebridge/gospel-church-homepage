@@ -11,6 +11,8 @@ import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
 import { RightPanelController } from '../presentation/RightPanelController';
 import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
 import LoadingSequence from '../ui/LoadingSequence';
+import Image from 'next/image';
+import VerseList from '../presentation/VerseList';
 import { waitForFonts } from '../../lib/utils/fontLoader';
 import { fastNormalize } from '../../lib/utils/textPipeline';
 import { useSnapScrollState } from '../../hooks/useSnapScroll';
@@ -242,6 +244,50 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                                     ))}
                                 </TableAlignmentProvider>
                             </div>
+
+                            {/* Mobile Right Panel Content (Conditional) */}
+                            {section.showRightPanelMobile && (
+                                <div className="mt-8 pt-8">
+
+                                    {/* 1. Page Content */}
+                                    {section.rightPanelType === 'page' && section.pageContent && (
+                                        <div className="prose font-korean text-gray-600">
+                                            <TableAlignmentProvider blocks={section.pageContent}>
+                                                {groupGalleryBlocks(section.pageContent).map(block => (
+                                                    <NotionRenderer
+                                                        key={block.id}
+                                                        block={block}
+                                                        bodyClass={desktopBodyClass}
+                                                    />
+                                                ))}
+                                            </TableAlignmentProvider>
+                                        </div>
+                                    )}
+
+                                    {/* 2. Verse Content */}
+                                    {(section.rightPanelType === 'verse' || section.rightPanelType === 'scripture') && section.scriptureTags && (
+                                        <VerseList
+                                            verses={section.scriptureTags}
+                                            verseClassName={`${CURRENT_TEXT.verse_text} mb-4`}
+                                            referenceClassName={CURRENT_TEXT.verse_reference}
+                                            animate={false}
+                                            containerClassName="space-y-8"
+                                        />
+                                    )}
+
+                                    {/* 3. Image Content */}
+                                    {(section.rightPanelType === 'image' || (!section.rightPanelType && section.imgSrc)) && section.imgSrc && (
+                                        <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg mt-4">
+                                            <Image
+                                                src={section.imgSrc}
+                                                alt={section.title || "Section Image"}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     ))}
                     <Footer siteSettings={siteSettings} />

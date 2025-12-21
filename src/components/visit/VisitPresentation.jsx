@@ -22,6 +22,8 @@ import { waitForFonts } from '../../lib/utils/fontLoader';
 import { fastNormalize } from '../../lib/utils/textPipeline';
 import { useSnapScrollState } from '../../hooks/useSnapScroll';
 import RightPanelMap from './RightPanelMap';
+import Image from 'next/image';
+import VerseList from '../presentation/VerseList';
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 const LOCATION = {
@@ -318,6 +320,61 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                     })}
                                 </TableAlignmentProvider>
                             </div>
+
+                            {/* Mobile Right Panel Content (Conditional) */}
+                            {section.showRightPanelMobile && (
+                                <div className="mt-8 pt-8">
+
+                                    {/* 1. Page Content */}
+                                    {section.rightPanelType === 'page' && section.pageContent && (
+                                        <div className="prose font-korean text-gray-600">
+                                            <TableAlignmentProvider blocks={section.pageContent}>
+                                                {groupGalleryBlocks(section.pageContent).map(block => (
+                                                    <NotionRenderer
+                                                        key={block.id}
+                                                        block={block}
+                                                        bodyClass={desktopBodyClass}
+                                                    />
+                                                ))}
+                                            </TableAlignmentProvider>
+                                        </div>
+                                    )}
+
+                                    {/* 2. Verse Content */}
+                                    {(section.rightPanelType === 'verse' || section.rightPanelType === 'scripture') && section.scriptureTags && (
+                                        <VerseList
+                                            verses={section.scriptureTags}
+                                            verseClassName={`${CURRENT_TEXT.verse_text} mb-4`}
+                                            referenceClassName={CURRENT_TEXT.verse_reference}
+                                            animate={false}
+                                            containerClassName="space-y-8"
+                                        />
+                                    )}
+
+                                    {/* 3. Image Content */}
+                                    {(section.rightPanelType === 'image' || (!section.rightPanelType && section.imgSrc)) && section.imgSrc && (
+                                        <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg mt-4">
+                                            <Image
+                                                src={section.imgSrc}
+                                                alt={section.title || "Section Image"}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* 4. Map Content */}
+                                    {section.rightPanelType === 'map' && section.mapCoords && (
+                                        <div className="w-full h-[300px] mt-4 rounded-lg overflow-hidden shadow-lg relative z-0">
+                                            <RightPanelMap
+                                                x={section.mapCoords.x}
+                                                y={section.mapCoords.y}
+                                                title={section.title}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     ))}
                     <Footer siteSettings={siteSettings} />

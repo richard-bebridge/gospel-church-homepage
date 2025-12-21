@@ -52,6 +52,10 @@ export const getVisitContent = async () => {
                     }
                 }
 
+                // Extract Mobile Visibility Checkbox
+                const mobileProp = findProp('Mobile') || findProp('Mobile View') || findProp('mobile');
+                const showRightPanelMobile = mobileProp?.checkbox || false;
+
                 const subSectionCount = props.sub_section?.number || 0;
                 const subTitle = props.Subtitle?.rich_text?.[0]?.plain_text || ''; // Optional English/Subtitle
 
@@ -110,6 +114,7 @@ export const getVisitContent = async () => {
                     relatedPageId,
                     pageContent,
                     scriptureTags,
+                    showRightPanelMobile,
                     propertyKeys: Object.keys(props)
                 };
             } catch (sectionError) {

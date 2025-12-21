@@ -59,6 +59,10 @@ export const getAboutContent = async () => {
                     }
                 }
 
+                // Extract Mobile Visibility Checkbox
+                const mobileProp = findProp('Mobile') || findProp('Mobile View') || findProp('mobile');
+                const showRightPanelMobile = mobileProp?.checkbox || false;
+
                 // Fetch Blocks (Content)
                 let blocks = await getBlocks(id);
 
@@ -114,6 +118,7 @@ export const getAboutContent = async () => {
                     relatedPageId,
                     pageContent,
                     scriptureTags,
+                    showRightPanelMobile,
                     propertyKeys: Object.keys(props)
                 };
             } catch (error) {
