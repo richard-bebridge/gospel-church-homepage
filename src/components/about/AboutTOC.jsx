@@ -66,10 +66,10 @@ const AboutTOC = ({ sections, activeIndex, onSectionClick }) => {
                                             className={`text-left group flex items-baseline gap-4 py-2 transition-all ${isActive ? 'opacity-100' : 'opacity-40 hover:opacity-70'
                                                 }`}
                                         >
-                                            <span className={`font-yisunshin font-bold text-lg ${isActive ? 'text-[#2A4458]' : 'text-gray-500'}`}>
+                                            <span className={`font-korean font-bold text-lg ${isActive ? 'text-[#2A4458]' : 'text-gray-500'}`}>
                                                 {number}
                                             </span>
-                                            <span className={`font-yisunshin font-bold text-2xl ${isActive ? 'text-[#1A1A1A]' : 'text-gray-800'}`}>
+                                            <span className={`font-korean font-bold text-2xl ${isActive ? 'text-[#1A1A1A]' : 'text-gray-800'}`}>
                                                 {section.title}
                                             </span>
                                         </button>

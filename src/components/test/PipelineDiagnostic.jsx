@@ -8,7 +8,7 @@ const PipelineDiagnostic = ({ sampleText = "태초에 하나님이 천지를 창
     const result = normalizeAndTokenize(input);
 
     return (
-        <div className="p-8 bg-white rounded-xl shadow-lg border border-gray-200 my-10 max-w-4xl mx-auto font-pretendard">
+        <div className="p-8 bg-white rounded-xl shadow-lg border border-gray-200 my-10 max-w-4xl mx-auto font-mono">
             <h2 className="text-2xl font-bold mb-6 text-[#05121C]">Text Pipeline Diagnostic</h2>
 
             <div className="mb-8">

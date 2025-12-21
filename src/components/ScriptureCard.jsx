@@ -17,7 +17,7 @@ const ScriptureCard = ({ headlineEn, bodyKo, reference, animate = true }) => {
     const cardContent = (
         <div className="w-full max-w-[320px] min-h-[260px] md:min-h-[300px] flex flex-col items-center justify-center text-center space-y-4 sm:space-y-6 md:space-y-8 px-4">
             {/* English Headline */}
-            <div className="text-balance break-keep font-sans font-light text-xl md:text-2xl tracking-wide leading-snug text-[#05121C] whitespace-pre-line">
+            <div className="text-balance break-keep font-english font-light text-xl md:text-2xl tracking-wide leading-snug text-[#05121C] whitespace-pre-line">
                 {preventWidow(headlineEn)}
             </div>
 
@@ -33,7 +33,7 @@ const ScriptureCard = ({ headlineEn, bodyKo, reference, animate = true }) => {
             {/* Reference */}
             <div className="flex items-center gap-3 cursor-pointer group">
                 {/* <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 text-[#2A4458] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /> */}
-                <span className="font-sans font-bold text-xs sm:text-sm tracking-wide text-[#2A4458] uppercase">{reference}</span>
+                <span className="font-english font-bold text-xs sm:text-sm tracking-wide text-[#2A4458] uppercase">{reference}</span>
             </div>
         </div>
     );

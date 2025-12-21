@@ -125,7 +125,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                     style={{
                         paddingTop: `${HEADER_HEIGHT_PX}px`
                     }}
-                    className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-pretendard"
+                    className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-mono"
                 >
                     <div className="relative w-full bg-[#F4F3EF]">
 
@@ -147,7 +147,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                                             animate={{ y: 0 }}
                                             exit={{ y: -100 }}
                                             transition={{ duration: 0.4 }}
-                                            className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1"
+                                            className="text-7xl font-bold font-korean text-[#2A4458] block leading-none pt-1"
                                         >
                                             {fastNormalize(String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0'))}
                                         </motion.span>
@@ -179,10 +179,10 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                                         <div className="w-full max-w-[60%] relative">
                                             {/* Title: Absolute at Title Baseline (Hardcoded 96px) */}
                                             <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
-                                                <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-4 block">
+                                                <span className="text-[#2A4458] font-english font-bold text-sm tracking-widest uppercase mb-4 block">
                                                     {fastNormalize(section.title)}
                                                 </span>
-                                                <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep mb-12">
+                                                <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-korean text-[#05121C] leading-tight break-keep mb-12">
                                                     {fastNormalize(section.heading || section.title)}
                                                 </h1>
                                             </div>
@@ -218,9 +218,9 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 <div className="md:hidden w-full bg-[#F4F3EF] pt-20">
                     {sections.map((section, idx) => (
                         <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
-                            <div className="text-6xl font-yisunshin font-bold text-[#2A4458]/20 mb-4">{fastNormalize(String(idx + 1).padStart(2, '0'))}</div>
+                            <div className="text-6xl font-korean font-bold text-[#2A4458]/20 mb-4">{fastNormalize(String(idx + 1).padStart(2, '0'))}</div>
                             <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{fastNormalize(section.title)}</span>
-                            <h2 className="text-3xl font-yisunshin font-bold text-[#05121C] mb-8 leading-tight">
+                            <h2 className="text-3xl font-korean font-bold text-[#05121C] mb-8 leading-tight">
                                 {fastNormalize(section.heading || section.title)}
                             </h2>
                             <div className="prose font-korean text-gray-600">

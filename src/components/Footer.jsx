@@ -47,7 +47,7 @@ const Footer = ({ siteSettings }) => {
 
                 {/* Right Column: Slogan & Social */}
                 <div className="flex flex-col items-start lg:items-end gap-6">
-                    <h2 className="font-sans font-bold text-3xl md:text-4xl lg:text-5xl leading-[1.1] text-white uppercase tracking-tight text-left lg:text-right">
+                    <h2 className="font-english font-bold text-3xl md:text-4xl lg:text-5xl leading-[1.1] text-white uppercase tracking-tight text-left lg:text-right">
                         Seek.<br />
                         Stand.<br />
                         Transform.<br />

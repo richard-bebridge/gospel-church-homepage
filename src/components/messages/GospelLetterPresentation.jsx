@@ -87,7 +87,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
         <div className="relative w-full">
             {/* Sticky Header */}
             <div className="sticky top-0 z-40 bg-[#F4F3EF]/95 backdrop-blur-sm border-b border-[#2A4458]/10 px-6 py-4 flex justify-between items-center">
-                <span className="text-[#2A4458] font-yisunshin font-bold text-xl truncate pr-4">
+                <span className="text-[#2A4458] font-korean font-bold text-xl truncate pr-4">
                     {title}
                 </span>
 
@@ -133,7 +133,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                             uniqueKey={`mobile-letter-${letter.id}`}
                             containerClassName="space-y-8"
                             verseClassName={verseTextClass}
-                            referenceClassName="text-sm text-[#2A4458] font-bold text-right font-pretendard mt-4"
+                            referenceClassName="text-sm text-[#2A4458] font-bold text-right font-mono mt-4"
                             animate={false}
                         />
                     </div>
@@ -186,7 +186,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                                     animate={{ y: 0 }}
                                     exit={{ y: '-100%' }}
                                     transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                    className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none"
+                                    className="text-7xl font-bold font-korean text-[#2A4458] block leading-none"
                                 >
                                     01
                                 </motion.span>
@@ -210,7 +210,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                             {/* Author Signature */}
                             {author && (
                                 <div className="w-full flex justify-end mt-16">
-                                    <p className="text-xl font-bold tracking-tight text-[#2A4458] font-yisunshin">
+                                    <p className="text-xl font-bold tracking-tight text-[#2A4458] font-korean">
                                         {author}
                                     </p>
                                 </div>

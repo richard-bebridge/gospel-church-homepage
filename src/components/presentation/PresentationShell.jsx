@@ -30,7 +30,7 @@ export const PresentationShell = ({
     snapMode = 'snap-proximity'
 }) => {
     return (
-        <div className="min-h-screen bg-[#F4F3EF] flex flex-col font-pretendard">
+        <div className="min-h-screen bg-[#F4F3EF] flex flex-col font-mono">
 
             {/* Desktop Layout (>= md) */}
             <div className="hidden md:block w-full h-screen overflow-hidden">

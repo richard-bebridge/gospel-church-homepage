@@ -13,7 +13,7 @@ const GospelLetterPage = async () => {
 
     if (!letter) {
         return (
-            <div className="min-h-screen bg-[#F4F3EF] flex flex-col items-center justify-center font-pretendard">
+            <div className="min-h-screen bg-[#F4F3EF] flex flex-col items-center justify-center font-mono">
                 <Header />
                 <div className="text-center p-8">
                     <h1 className="text-2xl font-bold text-[#05121C] mb-4">No Letter Found</h1>

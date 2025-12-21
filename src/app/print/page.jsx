@@ -72,19 +72,19 @@ const PrintBlockRenderer = ({ block, blockMap, ratio = { left: 'w-[67%]', right:
 
     switch (type) {
         case 'header':
-            return <h1 className="text-2xl font-bold mb-4 mt-6 font-yisunshin text-[#05121C]">{getText(block.value)}</h1>;
+            return <h1 className="text-2xl font-bold mb-4 mt-6 font-korean text-[#05121C]">{getText(block.value)}</h1>;
         case 'sub_header':
-            return <h2 className="text-xl font-bold mb-3 mt-4 font-yisunshin text-[#05121C]">{getText(block.value)}</h2>;
+            return <h2 className="text-xl font-bold mb-3 mt-4 font-korean text-[#05121C]">{getText(block.value)}</h2>;
         case 'sub_sub_header':
-            return <h3 className="text-lg font-bold mb-2 mt-3 font-yisunshin text-gray-700">{getText(block.value)}</h3>;
+            return <h3 className="text-lg font-bold mb-2 mt-3 font-korean text-gray-700">{getText(block.value)}</h3>;
         case 'text':
             const text = getText(block.value);
             if (!text) return <div className="h-4" />;
-            return <p className="text-sm leading-relaxed mb-2 font-pretendard text-[#05121C] text-justify">{text}</p>;
+            return <p className="text-sm leading-relaxed mb-2 font-mono text-[#05121C] text-justify">{text}</p>;
         case 'bulleted_list':
-            return <li className="text-sm leading-relaxed mb-1 font-pretendard ml-4 list-disc text-[#05121C]">{getText(block.value)}{children && <ul className="mt-1">{children}</ul>}</li>;
+            return <li className="text-sm leading-relaxed mb-1 font-mono ml-4 list-disc text-[#05121C]">{getText(block.value)}{children && <ul className="mt-1">{children}</ul>}</li>;
         case 'numbered_list':
-            return <li className="text-sm leading-relaxed mb-1 font-pretendard ml-4 list-decimal text-[#05121C]">{getText(block.value)}{children && <ol className="mt-1">{children}</ol>}</li>;
+            return <li className="text-sm leading-relaxed mb-1 font-mono ml-4 list-decimal text-[#05121C]">{getText(block.value)}{children && <ol className="mt-1">{children}</ol>}</li>;
         case 'image':
             const source = block.value?.properties?.source?.[0]?.[0];
             const imageUrl = `https://www.notion.so/image/${encodeURIComponent(source)}?table=block&id=${block.value.id}&cache=v2`;
@@ -111,9 +111,9 @@ const PrintBlockRenderer = ({ block, blockMap, ratio = { left: 'w-[67%]', right:
         case 'divider':
             return <hr className="border-gray-300 my-4" />;
         case 'quote':
-            return <blockquote className="pl-4 py-2 my-4 text-[10px] font-pretendard bg-[#F4F3EF] leading-relaxed break-words">{getText(block.value)}</blockquote>;
+            return <blockquote className="pl-4 py-2 my-4 text-[10px] font-mono bg-[#F4F3EF] leading-relaxed break-words">{getText(block.value)}</blockquote>;
         case 'callout':
-            return <div className="p-3 my-3 bg-[#F4F3EF] rounded border border-gray-200 text-[10px] flex gap-2 font-pretendard"><div className="shrink-0">{block.value.format?.page_icon}</div> <div>{getText(block.value)}</div></div>;
+            return <div className="p-3 my-3 bg-[#F4F3EF] rounded border border-gray-200 text-[10px] flex gap-2 font-mono"><div className="shrink-0">{block.value.format?.page_icon}</div> <div>{getText(block.value)}</div></div>;
         default:
             return null;
     }
@@ -131,7 +131,7 @@ const Page = ({ pageNumber, children, className = "" }) => {
             </AutoFitContent>
 
             {/* Page Number */}
-            <div className="absolute bottom-6 left-0 right-0 text-center text-xs font-pretendard text-gray-400">
+            <div className="absolute bottom-6 left-0 right-0 text-center text-xs font-mono text-gray-400">
                 - {pageNumber} -
             </div>
         </div>
@@ -202,7 +202,7 @@ const PrintPage = () => {
             {/* Sheet 2 Back: Page 4 | Page 5 */}
             <Sheet
                 leftPage={<Page pageNumber={4} className="border-r border-dashed border-gray-200">
-                    {title2 && <h1 className="text-2xl font-bold mb-6 font-yisunshin text-[#05121C] text-center break-keep">{title2}</h1>}
+                    {title2 && <h1 className="text-2xl font-bold mb-6 font-korean text-[#05121C] text-center break-keep">{title2}</h1>}
                     {renderBlocks(content2.slice(0, 4), map2, ratio21)}
                 </Page>}
                 rightPage={<Page pageNumber={5}>{renderBlocks(content2.slice(4), map2, ratio21)}</Page>}

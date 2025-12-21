@@ -25,11 +25,11 @@ export const PresentationHeader = ({ title, subtitle, paddingTop = 'pt-24' }) =>
                 {/* Offset: Custom padding or default pt-24 (96px) */}
                 <div className={`relative z-10 w-full max-w-[60%] ${paddingTop}`}>
                     {subtitle && (
-                        <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-6 block">
+                        <span className="text-[#2A4458] font-english font-bold text-sm tracking-widest uppercase mb-6 block">
                             {subtitle}
                         </span>
                     )}
-                    <h1 className="text-5xl md:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep">
+                    <h1 className="text-5xl md:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep">
                         {title}
                     </h1>
                 </div>

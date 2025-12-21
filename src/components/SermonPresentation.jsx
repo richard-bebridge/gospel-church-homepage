@@ -86,7 +86,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                 {/* A. Sticky Sermon Title */}
                 <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 pt-4 pointer-events-none">
                     <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
-                    <h1 className="text-4xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto line-clamp-3">
+                    <h1 className="text-4xl font-bold font-korean text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto line-clamp-3">
                         {sermon.title}
                     </h1>
                 </div>
@@ -115,11 +115,11 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                 <div className="px-8 py-6">
                                     {/* Section Header */}
                                     <div className="flex flex-row items-start pt-2 gap-4 mb-12">
-                                        <span className="text-7xl font-bold font-yisunshin text-[#2A4458] leading-none">
+                                        <span className="text-7xl font-bold font-korean text-[#2A4458] leading-none">
                                             {String(index + 1).padStart(2, '0')}
                                         </span>
                                         {section.heading && (
-                                            <h2 className="text-2xl font-bold text-[#05121C] font-pretendard leading-tight break-keep flex-1 mt-1">
+                                            <h2 className="text-2xl font-bold text-[#05121C] font-mono leading-tight break-keep flex-1 mt-1">
                                                 {section.heading}
                                             </h2>
                                         )}
@@ -153,7 +153,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                                 <p className={verseTextClass}>
                                                     {renderVerseWithStyledFirstWord(verse.text)}
                                                 </p>
-                                                <p className="text-base text-[#2A4458] font-bold text-right font-pretendard">
+                                                <p className="text-base text-[#2A4458] font-bold text-right font-mono">
                                                     {verse.reference}
                                                 </p>
                                             </div>
@@ -201,7 +201,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
             <div style={SCROLL_AREA_HEIGHT_STYLE} className="absolute left-0 top-0 w-1/2 border-r border-gray-200 flex flex-col items-center pt-[var(--layout-pt-title)] pointer-events-none">
                 {/* Title Fade */}
                 <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep line-clamp-3">
                         {sermon.title}
                     </h1>
                 </div>
@@ -217,7 +217,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                             animate="center"
                             exit="exit"
                             transition={{ duration: 0.4, ease: "easeInOut" }}
-                            className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
+                            className="text-7xl font-bold font-korean text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
                         >
                             {String(Math.min(activeSection + 1, sermon.sections.length)).padStart(2, '0')}
                         </motion.span>
@@ -240,7 +240,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         mode="scripture"
                         data={desktopVerses} // Passes current section verses
                         title={sermon.title} // Used for ghost alignment
-                        titleClassName="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3"
+                        titleClassName="text-4xl md:text-5xl lg:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep line-clamp-3"
                         paddingTopClass="pt-[96px]"
                         contentPaddingClass="pt-[384px]"
                         uniqueKey={activeSection}
@@ -258,7 +258,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         {/* Title: Standard (96px) */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[96px]">
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep line-clamp-3">
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep line-clamp-3">
                                     {sermon.title}
                                 </h1>
                             </div>
@@ -276,7 +276,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                         animate="center"
                                         exit="exit"
                                         transition={{ duration: 0.4, ease: "easeInOut" }}
-                                        className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
+                                        className="text-7xl font-bold font-korean text-[#2A4458] block leading-none pt-1 absolute top-0 left-0 bg-[#F4F3EF] w-full"
                                     >
                                         {String(Math.min(activeSection + 1, sermon.sections.length)).padStart(2, '0')}
                                     </motion.span>
@@ -299,7 +299,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                 >
                                     <div className="w-full max-w-[60%]">
                                         {section.heading && (
-                                            <h2 className="text-2xl font-bold text-[#05121C] break-keep font-pretendard leading-tight mb-8">
+                                            <h2 className="text-2xl font-bold text-[#05121C] break-keep font-mono leading-tight mb-8">
                                                 {section.heading}
                                             </h2>
                                         )}

@@ -18,7 +18,7 @@ export const RightPanelController = ({
     data,
     section,
     title,
-    titleClassName = "text-5xl md:text-6xl font-bold font-yisunshin leading-tight break-keep",
+    titleClassName = "text-5xl md:text-6xl font-bold font-korean leading-tight break-keep",
     paddingTopClass = "pt-24",
     contentPaddingClass = "pt-96",
     uniqueKey = "default"
@@ -46,12 +46,12 @@ export const RightPanelController = ({
                                 uniqueKey={`${uniqueKey}-scripture`}
                                 containerClassName="space-y-12 w-full max-w-[520px] px-8 pointer-events-auto"
                                 verseClassName={`${desktopVerseClass} mb-4 break-keep`}
-                                referenceClassName="text-base text-[#2A4458] font-bold text-right font-pretendard"
+                                referenceClassName="text-base text-[#2A4458] font-bold text-right font-mono"
                                 transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
                             />
                         ) : (
                             <div className="h-full flex items-center justify-center opacity-30 -mt-32">
-                                <p className="text-[#2A4458] font-yisunshin text-2xl">SOLA SCRIPTURA</p>
+                                <p className="text-[#2A4458] font-korean text-2xl">SOLA SCRIPTURA</p>
                             </div>
                         )}
                     </div>

@@ -30,7 +30,7 @@ export default async function SermonPage() {
 
             <main className="pt-32 pb-20 px-6 sm:px-8 lg:px-24 min-h-screen">
                 <div className="max-w-6xl mx-auto">
-                    <h1 className="font-sans font-bold text-4xl sm:text-5xl md:text-6xl mb-12 text-[#05121C] uppercase tracking-tight">
+                    <h1 className="font-english font-bold text-4xl sm:text-5xl md:text-6xl mb-12 text-[#05121C] uppercase tracking-tight">
                         Sermons
                     </h1>
 
@@ -71,7 +71,7 @@ export default async function SermonPage() {
 
                                                 <div className="p-6 flex-1 flex flex-col">
                                                     <p className="text-sm text-[#5F94BD] font-bold mb-2 uppercase tracking-wide">{date}</p>
-                                                    <h2 className="text-xl font-bold text-[#05121C] font-yisunshin mb-3 group-hover:text-[#5F94BD] transition-colors line-clamp-2">
+                                                    <h2 className="text-xl font-bold text-[#05121C] font-korean mb-3 group-hover:text-[#5F94BD] transition-colors line-clamp-2">
                                                         {title}
                                                     </h2>
                                                     {scripture && <p className="text-sm text-gray-500 font-serif mb-1">{scripture}</p>}

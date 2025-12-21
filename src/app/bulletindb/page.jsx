@@ -34,7 +34,7 @@ export default async function BulletinDBPage() {
 
             <main className="pt-32 pb-20 px-6 sm:px-8 lg:px-24 min-h-screen">
                 <div className="max-w-4xl mx-auto">
-                    <h1 className="font-sans font-bold text-4xl sm:text-5xl md:text-6xl mb-12 text-[#05121C] uppercase tracking-tight text-center">
+                    <h1 className="font-english font-bold text-4xl sm:text-5xl md:text-6xl mb-12 text-[#05121C] uppercase tracking-tight text-center">
                         Bulletin Archive
                     </h1>
 
@@ -63,7 +63,7 @@ export default async function BulletinDBPage() {
                                         <Link href={`/bulletin/${bulletin.id}`} key={bulletin.id} className="block group">
                                             <div className="bg-white p-6 sm:p-8 rounded-lg shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group-hover:-translate-y-1 duration-300">
                                                 <div>
-                                                    <h2 className="text-xl sm:text-2xl font-bold text-[#05121C] font-yisunshin group-hover:text-[#5F94BD] transition-colors">
+                                                    <h2 className="text-xl sm:text-2xl font-bold text-[#05121C] font-korean group-hover:text-[#5F94BD] transition-colors">
                                                         {title}
                                                     </h2>
                                                 </div>

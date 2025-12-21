@@ -9,13 +9,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['var(--font-montserrat)', 'Inter', 'sans-serif'],
-                montserrat: ['var(--font-montserrat)', 'sans-serif'],
-                serif: ['Playfair Display', 'serif'],
-                mono: ['Pretendard', 'Roboto Mono', 'monospace'], // User asked for code/small text to be Pretendard too
-                korean: ['YiSunShin', 'sans-serif'],
-                pretendard: ['Pretendard', 'sans-serif'],
-                yisunshin: ['YiSunShin', 'sans-serif'],
+                korean: ['YiSunShin', 'sans-serif'], // Titles / Display
+                english: ['var(--font-montserrat)', 'sans-serif'], // Nav / Hero
+                mono: ['Pretendard', 'sans-serif'], // Body / Content (User requested 'mono' for this slot)
             },
             animation: {
                 'spin-slow': 'spin 20s linear infinite',

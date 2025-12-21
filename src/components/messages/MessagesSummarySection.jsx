@@ -16,7 +16,7 @@ const SummaryColumn = ({
         <div className="w-full max-w-[60%] flex flex-col pt-0 pb-0">
             {/* Title Label (Matches About Page 'Tag' Spacing) */}
             <div className="w-full flex flex-col items-center">
-                <span className="text-[#2A4458] font-sans font-bold text-xs tracking-widest uppercase mb-6 block w-full text-left border-b border-[#2A4458]/10 pb-2">
+                <span className="text-[#2A4458] font-english font-bold text-xs tracking-widest uppercase mb-6 block w-full text-left border-b border-[#2A4458]/10 pb-2">
                     {title}
                 </span>
             </div>
@@ -25,10 +25,10 @@ const SummaryColumn = ({
             <div className="w-full flex flex-col">
                 {latestItem ? (
                     <Link href={`${basePath}/${latestItem.id}`} className="group block mb-12">
-                        <h2 className="text-3xl md:text-3xl font-bold font-yisunshin text-[#05121C] mb-4 group-hover:text-[#2A4458] transition-colors line-clamp-3 leading-snug">
+                        <h2 className="text-3xl md:text-3xl font-bold font-korean text-[#05121C] mb-4 group-hover:text-[#2A4458] transition-colors line-clamp-3 leading-snug">
                             {renderTitleWithBadge(latestItem.title, badgeComponent)}
                         </h2>
-                        <p className="text-lg text-[#2A4458] font-yisunshin font-light line-clamp-2 leading-relaxed">
+                        <p className="text-lg text-[#2A4458] font-korean font-light line-clamp-2 leading-relaxed">
                             {latestItem.snippet}
                         </p>
                     </Link>
@@ -40,10 +40,10 @@ const SummaryColumn = ({
                     {olderItems.map(item => (
                         <li key={item.id} className="border-b border-[#2A4458]/10 pb-2 last:border-0">
                             <Link href={`${basePath}/${item.id}`} className="flex justify-between items-baseline group">
-                                <span className="text-base text-[#05121C] font-yisunshin font-light group-hover:text-[#2A4458] truncate mr-4">
+                                <span className="text-base text-[#05121C] font-korean font-light group-hover:text-[#2A4458] truncate mr-4">
                                     {item.title}
                                 </span>
-                                <span className="text-sm text-[#2A4458]/60 font-yisunshin whitespace-nowrap">
+                                <span className="text-sm text-[#2A4458]/60 font-korean whitespace-nowrap">
                                     {formatDate(item.date)}
                                 </span>
                             </Link>
@@ -92,7 +92,7 @@ const MessagesSummarySection = ({
     };
 
     const badge = (
-        <span className="inline-flex items-center rounded-full border-[2px] border-[#2A4458] bg-transparent px-1 py-0 pt-[3px] pb-[3px] text-[7px] font-bold font-sans text-[#2A4458] uppercase leading-none whitespace-nowrap shrink-0 ml-2 align-middle -mt-1">
+        <span className="inline-flex items-center rounded-full border-[2px] border-[#2A4458] bg-transparent px-1 py-0 pt-[3px] pb-[3px] text-[7px] font-bold font-english text-[#2A4458] uppercase leading-none whitespace-nowrap shrink-0 ml-2 align-middle -mt-1">
             This Week
         </span>
     );

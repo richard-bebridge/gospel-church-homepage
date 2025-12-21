@@ -45,43 +45,43 @@ const renderBlock = (block) => {
     switch (type) {
         case "paragraph":
             return (
-                <p className="mb-8 text-xl md:text-2xl leading-loose text-[#05121C] font-pretendard font-light">
+                <p className="mb-8 text-xl md:text-2xl leading-loose text-[#05121C] font-mono font-light">
                     <Text text={value.rich_text} />
                 </p>
             );
         case "heading_1":
             return (
-                <h1 className="text-5xl md:text-6xl font-bold mt-20 mb-20 font-yisunshin text-[#05121C] uppercase tracking-tight">
+                <h1 className="text-5xl md:text-6xl font-bold mt-20 mb-20 font-korean text-[#05121C] uppercase tracking-tight">
                     <Text text={value.rich_text} />
                 </h1>
             );
         case "heading_2":
             return (
-                <h2 className="text-4xl font-bold mt-12 mb-12 font-yisunshin text-[#05121C] uppercase tracking-wide">
+                <h2 className="text-4xl font-bold mt-12 mb-12 font-korean text-[#05121C] uppercase tracking-wide">
                     <Text text={value.rich_text} />
                 </h2>
             );
         case "heading_3":
             return (
-                <h3 className="text-3xl font-bold mt-6 mb-6 font-yisunshin text-gray-700">
+                <h3 className="text-3xl font-bold mt-6 mb-6 font-korean text-gray-700">
                     <Text text={value.rich_text} />
                 </h3>
             );
         case "bulleted_list_item":
             return (
-                <li className="mb-4 ml-6 text-xl md:text-2xl leading-loose text-[#05121C] font-pretendard font-light list-disc">
+                <li className="mb-4 ml-6 text-xl md:text-2xl leading-loose text-[#05121C] font-mono font-light list-disc">
                     <Text text={value.rich_text} />
                 </li>
             );
         case "numbered_list_item":
             return (
-                <li className="mb-4 ml-6 text-xl md:text-2xl leading-loose text-[#05121C] font-pretendard font-light list-decimal">
+                <li className="mb-4 ml-6 text-xl md:text-2xl leading-loose text-[#05121C] font-mono font-light list-decimal">
                     <Text text={value.rich_text} />
                 </li>
             );
         case "to_do":
             return (
-                <div className="flex gap-3 mb-4 items-start text-xl md:text-2xl leading-loose font-pretendard font-light">
+                <div className="flex gap-3 mb-4 items-start text-xl md:text-2xl leading-loose font-mono font-light">
                     <input type="checkbox" defaultChecked={value.checked} disabled className="mt-2 w-5 h-5" />
                     <span className={value.checked ? "line-through text-gray-400" : "text-[#05121C]"}>
                         <Text text={value.rich_text} />
@@ -91,7 +91,7 @@ const renderBlock = (block) => {
         case "toggle":
             return (
                 <details className="mb-4">
-                    <summary className="cursor-pointer font-bold text-xl md:text-2xl leading-loose text-[#05121C] font-pretendard">
+                    <summary className="cursor-pointer font-bold text-xl md:text-2xl leading-loose text-[#05121C] font-mono">
                         <Text text={value.rich_text} />
                     </summary>
                     <div className="pl-4 mt-2 text-gray-500 italic">
@@ -112,13 +112,13 @@ const renderBlock = (block) => {
             return <hr className="my-16 border-gray-300" />;
         case "quote":
             return (
-                <blockquote className="border-l-4 border-[#05121C] pl-6 py-4 my-12 text-gray-600 italic bg-[#F4F3EF] font-pretendard text-lg">
+                <blockquote className="border-l-4 border-[#05121C] pl-6 py-4 my-12 text-gray-600 italic bg-[#F4F3EF] font-mono text-lg">
                     <Text text={value.rich_text} />
                 </blockquote>
             );
         case "callout":
             return (
-                <div className="p-4 my-4 bg-[#F4F3EF] rounded-lg border border-gray-200 flex gap-3 shadow-sm font-pretendard">
+                <div className="p-4 my-4 bg-[#F4F3EF] rounded-lg border border-gray-200 flex gap-3 shadow-sm font-mono">
                     <div className="text-xl">{value.icon?.emoji}</div>
                     <div className="text-[#05121C] text-lg"><Text text={value.rich_text} /></div>
                 </div>
@@ -171,7 +171,7 @@ export default async function BulletinPage() {
                 ) : (
                     <div className="w-full">
                         {/* Page Title */}
-                        <h1 className="font-sans font-bold text-5xl md:text-6xl leading-[0.9] tracking-tighter text-[#05121C] uppercase mb-24 text-center">
+                        <h1 className="font-english font-bold text-5xl md:text-6xl leading-[0.9] tracking-tighter text-[#05121C] uppercase mb-24 text-center">
                             {fastNormalize(page.properties?.Name?.title?.[0]?.plain_text || "Untitled Bulletin")}
                         </h1>
 

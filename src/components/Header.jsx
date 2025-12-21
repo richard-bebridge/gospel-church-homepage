@@ -71,7 +71,7 @@ const Header = ({ siteSettings }) => {
                             />
                         )}
                     </div>
-                    {/* <span className="hidden sm:block text-white font-sans font-bold text-sm md:text-base tracking-wider uppercase">Gospel Church</span> */}
+                    {/* <span className="hidden sm:block text-white font-english font-bold text-sm md:text-base tracking-wider uppercase">Gospel Church</span> */}
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -80,7 +80,7 @@ const Header = ({ siteSettings }) => {
                         <Link
                             key={item.label}
                             href={item.href}
-                            className="text-sm font-sans font-bold tracking-wide hover:text-[#5F94BD] transition-colors uppercase text-white"
+                            className="text-sm font-english font-bold tracking-wide hover:text-[#5F94BD] transition-colors uppercase text-white"
                             suppressHydrationWarning
                         >
                             {mounted ? item.label : ''}
@@ -151,7 +151,7 @@ const Header = ({ siteSettings }) => {
                                     <Link
                                         href={item.href}
                                         onClick={handleLinkClick}
-                                        className="text-2xl font-bold font-sans uppercase text-[#05121C] hover:text-[#5F94BD] transition-colors py-3 flex items-center gap-3"
+                                        className="text-2xl font-bold font-english uppercase text-[#05121C] hover:text-[#5F94BD] transition-colors py-3 flex items-center gap-3"
                                         suppressHydrationWarning
                                     >
                                         {mounted ? item.label : ''}

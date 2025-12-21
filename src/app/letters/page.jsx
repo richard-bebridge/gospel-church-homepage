@@ -29,7 +29,7 @@ export default async function LettersPage() {
 
             <main className="pt-32 pb-20 px-6 sm:px-8 lg:px-24 min-h-screen">
                 <div className="max-w-4xl mx-auto">
-                    <h1 className="font-sans font-bold text-4xl sm:text-5xl md:text-6xl mb-12 text-[#05121C] uppercase tracking-tight text-center">
+                    <h1 className="font-english font-bold text-4xl sm:text-5xl md:text-6xl mb-12 text-[#05121C] uppercase tracking-tight text-center">
                         Gospel Letters
                     </h1>
 
@@ -55,7 +55,7 @@ export default async function LettersPage() {
                                         <Link href={`/letters/${letter.id}`} key={letter.id} className="block group">
                                             <div className="bg-white p-8 rounded-lg shadow-sm group-hover:shadow-md transition-all border border-gray-100 group-hover:-translate-y-1 duration-300">
                                                 <p className="text-sm text-gray-400 font-mono mb-2">{date}</p>
-                                                <h2 className="text-2xl font-bold text-[#05121C] font-yisunshin group-hover:text-[#5F94BD] transition-colors">{title}</h2>
+                                                <h2 className="text-2xl font-bold text-[#05121C] font-korean group-hover:text-[#5F94BD] transition-colors">{title}</h2>
                                             </div>
                                         </Link>
                                     );
