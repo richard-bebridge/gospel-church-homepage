@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import Image from 'next/image';
 import { fastNormalize } from '../../lib/utils/textPipeline';
+import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 const RECURSION_LIMIT = 15;
 
@@ -317,6 +318,26 @@ const Text = ({ text, mounted = true }) => {
 
         const style = color !== "default" ? { color } : {};
 
+        // Helper to Highlight Keywords (Seek, Stand, Transform, Radiate)
+        // Enforces Montserrat Bold (font-english font-bold)
+        const renderContent = (content) => {
+            const regex = /\b(seek|stand|transform|radiate)\b/gi;
+            const parts = content.split(regex);
+
+            if (parts.length === 1) return fastNormalize(content);
+
+            return parts.map((part, idx) => {
+                if (part.match(regex)) {
+                    return (
+                        <span key={idx} className="font-english font-bold">
+                            {part}
+                        </span>
+                    );
+                }
+                return fastNormalize(part);
+            });
+        };
+
         if (text.link || value.href) {
             const url = text.link?.url || value.href;
             return (
@@ -325,10 +346,10 @@ const Text = ({ text, mounted = true }) => {
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`group inline-flex items-center gap-1 ${className} text-[#5F94BD] hover:opacity-80 transition-opacity whitespace-nowrap`}
+                    className={`group inline-flex items-center gap-1 ${CURRENT_TEXT.link_text} ${className} whitespace-nowrap`}
                     style={style}
                 >
-                    <span className={className}>{fastNormalize(text.content)}</span>
+                    <span className={className}>{renderContent(text.content)}</span>
                     <LinkIcon />
                 </a>
             );
@@ -340,7 +361,7 @@ const Text = ({ text, mounted = true }) => {
                 className={className}
                 style={style}
             >
-                {fastNormalize(text.content)}
+                {renderContent(text.content)}
             </span>
         );
     });
@@ -587,15 +608,12 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                             // Adjust padding: pb-3 for first, py-3 for middle, pb-8 for last row if section ends
                             const hasBorder = !isFirst;
                             const paddingClass = isFirst ? 'pb-3' : (isLast ? 'pt-3 pb-8' : 'py-3');
+                            const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
 
-                            // Match Fallback Style: Darker text for Label, normal for content. No opacity.
                             return (
                                 <div
                                     key={cIdx}
-                                    className={`${hasBorder ? 'border-t' : ''} border-gray-200 ${paddingClass} px-1 text-sm font-korean align-top
-                                        ${_isLastItem ? 'text-left' : 'text-left'}
-                                        ${cIdx === 0 ? 'text-gray-900 font-medium' : 'text-gray-600'}
-                                    `}
+                                    className={`${hasBorder ? 'border-t' : ''} border-gray-200 ${paddingClass} ${tokenClass}`}
                                     style={{
                                         gridColumnStart: (columnIndex === 1 ? gridConfig.c1 : 0) + cIdx + 1,
                                         gridColumnEnd: 'span 1'
@@ -618,16 +636,11 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
             return (
                 <tr className="border-t border-gray-200">
                     {cells.map((cell, cIdx) => {
-                        const _isLastItem = cIdx === cellCount - 1;
-                        // Use darker text for the first column (Label), slightly lighter for others
-                        // Match Section 3 style: Remove opacity/font-light affecting readability
+                        const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
                         return (
                             <td
                                 key={cIdx}
-                                className={`py-4 px-1 text-sm font-korean align-top
-                                    ${_isLastItem ? 'text-left' : 'text-left'}
-                                    ${cIdx === 0 ? 'text-gray-900 font-medium' : 'text-gray-600'}
-                                `}
+                                className={tokenClass}
                             >
                                 <Text text={cell} mounted={mounted} />
                             </td>
@@ -648,7 +661,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                 // Currently set to bold Navy color with minimal margin.
                 const content = pFullText.slice(2, -2).trim();
                 return wrapGrid(
-                    <p className={`!font-bold !text-[0.85em] text-[#2A4458] mb-1 ${bodyClass}`}>
+                    <p className={`!font-bold !text-[0.85em] text-[#2A4458] mb-1 ${CURRENT_TEXT.reference_text} ${bodyClass}`}>
                         * {content}
                     </p>,
                     'mt-0 mb-0'
@@ -661,11 +674,12 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                 'mb-8'
             );
         case 'heading_1':
-            return wrapGrid(<h1 className="text-3xl font-bold mt-4 mb-2"><Text text={value.rich_text} mounted={mounted} /></h1>, 'mb-8');
+            return wrapGrid(<h1 className={CURRENT_TEXT.notion_h1}><Text text={value.rich_text} mounted={mounted} /></h1>, 'mb-8');
         case 'heading_2':
-            return wrapGrid(<h2 className="text-2xl font-medium font-korean mt-3 mb-2"><Text text={value.rich_text} mounted={mounted} /></h2>, 'mb-8');
+            // Removed hardcoded mt/mb to allow Token Control (via Typo Lab)
+            return wrapGrid(<h2 className={CURRENT_TEXT.section_heading_ko}><Text text={value.rich_text} mounted={mounted} /></h2>, 'mb-8');
         case 'heading_3':
-            return wrapGrid(<h3 className="text-xl font-medium font-korean mt-2 mb-1"><Text text={value.rich_text} mounted={mounted} /></h3>, 'mb-8');
+            return wrapGrid(<h3 className={CURRENT_TEXT.notion_h3}><Text text={value.rich_text} mounted={mounted} /></h3>, 'mb-8');
         case 'gallery':
             return wrapGrid(
                 <GalleryBlock
@@ -676,52 +690,43 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                 'my-8'
             );
         case 'bulleted_list_item':
-            // Logic for sub-bullet size (Half size if level > 0)
-            const isSubBullet = level > 0;
-            const bulletSizeClass = isSubBullet ? "w-1.5 h-1.5 mt-[0.6em]" : "w-3 h-3 mt-[0.45em]";
-
-            // Layout Stability: inline-flex for text wrapper to align icon/text
             return wrapGrid(
-                <div className={`flex flex-col ${bodyClass}`}>
-                    <div className="flex items-start gap-3 ml-1">
-                        <div className={`relative ${bulletSizeClass} shrink-0 opacity-80`}>
-                            <Image
-                                src="/assets/symbol.png"
-                                alt="bullet"
-                                fill
-                                sizes="12px"
-                                unoptimized
-                                className="object-contain"
-                            />
-                        </div>
-                        {/* Changed to inline-flex to stabilize inline images */}
-                        <div className="flex-1 leading-relaxed inline-flex flex-wrap items-center gap-x-1">
-                            <Text text={value.rich_text} />
-                        </div>
+                <div className={`${CURRENT_TEXT.bullet_list} ${bodyClass} flex items-start gap-3 relative`}>
+                    <div className="relative w-3 h-3 mt-2.5 shrink-0 select-none">
+                        <Image
+                            src="/assets/symbol.png"
+                            alt="bullet"
+                            fill // Using fill to match container
+                            sizes="12px"
+                            className="object-contain opacity-80"
+                        />
                     </div>
-                    {/* Recursively render children if present */}
-                    {block.children && block.children.length > 0 && (
-                        <div className="ml-6 mt-1 flex flex-col gap-1">
-                            {block.children.map(child => (
-                                <NotionRenderer
-                                    key={child.id}
-                                    block={child}
-                                    level={level + 1}
-                                    columnIndex={columnIndex}
-                                />
-                            ))}
-                        </div>
-                    )}
+                    <div className="flex-1 min-w-0">
+                        <Text text={value.rich_text} />
+                        {/* Recursive Children (Nested Lists) */}
+                        {block.children && block.children.length > 0 && (
+                            <div className="mt-2 flex flex-col gap-1">
+                                {block.children.map(child => (
+                                    <NotionRenderer
+                                        key={child.id}
+                                        block={child}
+                                        level={level + 1}
+                                        columnIndex={columnIndex}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>,
-                'mb-8'
+                'mb-2' // Reduced margin for list continuity
             );
         case 'numbered_list_item':
-            return wrapGrid(<div className={`list-decimal ml-4 ${bodyClass}`} style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>, 'mb-8');
+            return wrapGrid(<div className={`${CURRENT_TEXT.numbered_list} ${bodyClass}`} style={{ display: 'list-item' }}><Text text={value.rich_text} /></div>, 'mb-8');
         case 'quote':
-            return wrapGrid(<blockquote className={`border-l-4 border-gray-300 pl-4 italic ${bodyClass}`}><Text text={value.rich_text} mounted={mounted} /></blockquote>, 'mb-8');
+            return wrapGrid(<blockquote className={`${CURRENT_TEXT.quote} ${bodyClass}`}><Text text={value.rich_text} mounted={mounted} /></blockquote>, 'mb-8');
         case 'callout':
             return wrapGrid(
-                <div className={`p-4 bg-gray-100 rounded flex gap-4 ${bodyClass}`}>
+                <div className={`${CURRENT_TEXT.callout} flex gap-4 ${bodyClass}`}>
                     {value.icon?.emoji && <span>{value.icon.emoji}</span>}
                     <div><Text text={value.rich_text} mounted={mounted} /></div>
                 </div>,
