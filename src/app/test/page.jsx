@@ -5,6 +5,7 @@ import { getDatabase, getBlocks } from '../../lib/notion';
 import { getMessagesSummary } from '../../lib/data/getMessagesSummary'; // Uses the new utility
 import SermonPresentation from '../../components/SermonPresentation';
 import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-utils';
+import PipelineDiagnostic from '../../components/test/PipelineDiagnostic';
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -107,6 +108,9 @@ export default async function TestPage() {
         <div className="min-h-screen bg-[#F4F3EF] flex flex-col">
             <Header />
             <main className="flex-grow pt-20">
+                <section className="bg-gray-50 py-10 border-b border-gray-200">
+                    <PipelineDiagnostic />
+                </section>
                 <SermonPresentation sermon={sermonData} messagesSummary={messagesSummary}>
                     <Footer />
                 </SermonPresentation>

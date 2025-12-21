@@ -41,8 +41,9 @@ export const groupGalleryBlocks = (blocks) => {
             const galleryItems = [];
             let j = i + 1;
             let foundEnd = false;
+            const MAX_GALLERY_BLOCKS = 50; // Safety limit
 
-            while (j < blocks.length) {
+            while (j < blocks.length && (j - i) < MAX_GALLERY_BLOCKS) {
                 const innerBlock = blocks[j];
                 const innerText = innerBlock[innerBlock.type]?.rich_text?.map(t => t.plain_text).join('') || '';
 

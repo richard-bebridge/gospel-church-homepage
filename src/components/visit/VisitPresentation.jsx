@@ -19,6 +19,9 @@ import { extractMapToken } from '../../lib/utils/visitMapHelpers';
 import LoadingSequence from '../ui/LoadingSequence';
 import FloatingVisitButton from './FloatingVisitButton';
 import { waitForFonts } from '../../lib/utils/fontLoader';
+import { fastNormalize } from '../../lib/utils/textPipeline';
+import { useSnapScrollState } from '../../hooks/useSnapScroll';
+import RightPanelMap from './RightPanelMap';
 
 const LOCATION = {
     lat: 37.49168,
@@ -93,164 +96,20 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     // ----------------------------------------------------------------      
     // 1. State & Refs
     // ----------------------------------------------------------------      
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    // ----------------------------------------------------------------      
-    // 5. Data Fetching for 'page' type (Moved up for initialization)
-    // ----------------------------------------------------------------
     const containerRef = useRef(null);
     const sectionRefs = useRef([]);
     const footerRef = useRef(null);
 
-    // Sentinels for End detection
-    const sectionEndSentinels = useRef([]);
-    const isSectionEndVisible = useRef(false);
-
-    // Gating
-    const isAutoScrollingRef = useRef(false);
-    const wheelAccumRef = useRef(0);
-
-    // Derived
-    const isFooter = activeIndex === sections.length;
-
-    // ----------------------------------------------------------------      
-    // 2. Snap Logic
-    // ----------------------------------------------------------------      
-    const performSnap = (targetIndex) => {
-        if (!containerRef.current) return;
-
-        // Lock
-        isAutoScrollingRef.current = true;
-        wheelAccumRef.current = 0;
-
-        // State Update
-        setActiveIndex(targetIndex);
-
-        // Calculate Target Position
-        let top = 0;
-        if (targetIndex < sections.length) {
-            // Section Snap -> Top of Section
-            const el = sectionRefs.current[targetIndex];
-            if (el) top = el.offsetTop;
-        } else {
-            // Footer Snap -> Top of Footer
-            if (footerRef.current) top = footerRef.current.offsetTop;
-        }
-
-        // Scroll
-        containerRef.current.scrollTo({
-            top,
-            behavior: 'smooth'
-        });
-
-        // Unlock
-        setTimeout(() => {
-            isAutoScrollingRef.current = false;
-            wheelAccumRef.current = 0;
-        }, SCROLL_COOLDOWN_MS);
-    };
-
-    // ----------------------------------------------------------------      
-    // 3. Sentinel Observer (End Detection)
-    // ----------------------------------------------------------------      
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                isSectionEndVisible.current = entry.isIntersecting;
-            },
-            { root: containerRef.current, threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
-        );
-
-        if (activeIndex < sections.length) {
-            const sentinel = sectionEndSentinels.current[activeIndex];
-            if (sentinel) observer.observe(sentinel);
-        }
-
-        return () => observer.disconnect();
-    }, [activeIndex, sections.length]);
-
-    // ----------------------------------------------------------------      
-    // 4. Wheel Handler (Free Scroll + Snap)
-    // ----------------------------------------------------------------      
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const handleWheel = (e) => {
-            if (isAutoScrollingRef.current) {
-                e.preventDefault();
-                return;
-            }
-
-            wheelAccumRef.current += e.deltaY;
-
-            if (Math.abs(wheelAccumRef.current) < SCROLL_THRESHOLD_DELTA) {
-                const isDown = e.deltaY > 0;
-                const isUp = e.deltaY < 0;
-
-                if (isDown && !isSectionEndVisible.current) return;
-
-                if (activeIndex < sections.length) {
-                    const el = sectionRefs.current[activeIndex];
-                    if (el && isUp) {
-                        const distFromTop = Math.abs(container.scrollTop - el.offsetTop);
-                        if (distFromTop > 10) return;
-                    }
-                } else {
-                    if (isUp) return;
-                }
-
-                e.preventDefault();
-                return;
-            }
-
-            const isDown = wheelAccumRef.current > 0;
-            const isUp = wheelAccumRef.current < 0;
-
-            if (isDown) {
-                if (activeIndex < sections.length) {
-                    if (isSectionEndVisible.current) {
-                        e.preventDefault();
-                        performSnap(activeIndex + 1);
-                    } else {
-                        wheelAccumRef.current = 0;
-                    }
-                } else {
-                    e.preventDefault();
-                }
-            } else if (isUp) {
-                if (activeIndex > 0) {
-                    if (activeIndex === sections.length) {
-                        e.preventDefault();
-                        performSnap(activeIndex - 1);
-                    } else {
-                        const el = sectionRefs.current[activeIndex];
-                        if (el) {
-                            const distFromTop = Math.abs(container.scrollTop - el.offsetTop);
-                            if (distFromTop < 50) {
-                                e.preventDefault();
-                                performSnap(activeIndex - 1);
-                            } else {
-                                wheelAccumRef.current = 0;
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        container.addEventListener('wheel', handleWheel, { passive: false });
-
-        const resetAccum = () => { wheelAccumRef.current = 0; };
-        container.addEventListener('pointerup', resetAccum);
-        container.addEventListener('mouseleave', resetAccum);
-
-        return () => {
-            container.removeEventListener('wheel', handleWheel);
-            container.removeEventListener('pointerup', resetAccum);
-            container.removeEventListener('mouseleave', resetAccum);
-        };
-    }, [activeIndex, sections.length]);
+    const {
+        activeIndex,
+        isFooter,
+        sectionEndSentinels,
+        performSnap
+    } = useSnapScrollState(sections, {
+        containerRef,
+        sectionRefs,
+        footerRef
+    });
 
     // ----------------------------------------------------------------      
     // Data Render
@@ -284,16 +143,14 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
 
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
-            <AnimatePresence mode="wait">
-                {!isReady && <LoadingSequence />}
-            </AnimatePresence>
+            <LoadingSequence isReady={isReady} />
 
             <div
-                className="transition-opacity duration-500"
+                className="transition-all duration-1000"
                 style={{
-                    visibility: isReady ? 'visible' : 'hidden',
-                    pointerEvents: isReady ? 'auto' : 'none',
-                    opacity: isReady ? 1 : 0
+                    opacity: isReady ? 1 : 0.5,
+                    filter: isReady ? 'none' : 'blur(5px)',
+                    pointerEvents: isReady ? 'auto' : 'none'
                 }}
             >
                 <div className="fixed top-0 left-0 w-full z-[120]">
@@ -329,7 +186,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                             transition={{ duration: 0.4 }}
                                             className="text-7xl font-bold font-yisunshin text-[#2A4458] block leading-none pt-1"
                                         >
-                                            {String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0').normalize('NFC')}
+                                            {fastNormalize(String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0'))}
                                         </motion.span>
                                     </AnimatePresence>
                                 </div>
@@ -360,10 +217,10 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                             {/* Title */}
                                             <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
                                                 <span className="text-[#2A4458] font-sans font-bold text-sm tracking-widest uppercase mb-4 block">
-                                                    {(section.title || "").normalize('NFC')}
+                                                    {fastNormalize(section.title)}
                                                 </span>
                                                 <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-yisunshin text-[#05121C] leading-tight break-keep mb-12">
-                                                    {(section.heading || section.title || "").normalize('NFC')}
+                                                    {fastNormalize(section.heading || section.title)}
                                                 </h1>
                                             </div>
 
@@ -418,10 +275,10 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 <div className="md:hidden w-full bg-[#F4F3EF] pt-20">
                     {sections.map((section, idx) => (
                         <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
-                            <div className="text-6xl font-yisunshin font-bold text-[#2A4458]/20 mb-4">{(String(idx + 1).padStart(2, '0') || "").normalize('NFC')}</div>
-                            <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{(section.title || "").normalize('NFC')}</span>
+                            <div className="text-6xl font-yisunshin font-bold text-[#2A4458]/20 mb-4">{fastNormalize(String(idx + 1).padStart(2, '0'))}</div>
+                            <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{fastNormalize(section.title)}</span>
                             <h2 className="text-3xl font-yisunshin font-bold text-[#05121C] mb-8 leading-tight">
-                                {(section.heading || section.title || "").normalize('NFC')}
+                                {fastNormalize(section.heading || section.title)}
                             </h2>
                             <div className="prose font-korean text-gray-600">
                                 <TableAlignmentProvider blocks={section.content}>
@@ -458,7 +315,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                     <Footer siteSettings={siteSettings} />
                 </div>
 
-                {/* Floating Button */}
                 <FloatingVisitButton footerRef={footerRef} />
             </div>
         </div>

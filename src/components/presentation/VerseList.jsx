@@ -3,6 +3,7 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { renderVerseWithStyledFirstWord } from '../../lib/utils/textUtils';
+import { fastNormalize } from '../../lib/utils/textPipeline';
 
 /**
  * VerseList
@@ -38,7 +39,7 @@ const VerseList = ({
                     <p className={verseClassName}>
                         {renderVerseWithStyledFirstWord(verse.text || `(Verse not found: ${verse.reference})`)}
                     </p>
-                    <p className={referenceClassName}>{verse.reference}</p>
+                    <p className={referenceClassName}>{fastNormalize(verse.reference)}</p>
                 </motion.div>
             ))}
         </div>

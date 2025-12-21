@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { getPage, getBlocks } from '../../../lib/notion';
+import { fastNormalize } from '../../../lib/utils/textPipeline';
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -28,7 +29,11 @@ const Text = ({ text }) => {
                 ].join(" ")}
                 style={color !== "default" ? { color } : {}}
             >
-                {text.link ? <a href={text.link.url} className="underline text-blue-600">{text.content}</a> : text.content}
+                {text.link ? (
+                    <a href={text.link.url} className="underline text-blue-600">
+                        {fastNormalize(text.content)}
+                    </a>
+                ) : fastNormalize(text.content)}
             </span>
         );
     });
@@ -144,7 +149,7 @@ export default async function BulletinDetailPage({ params }) {
         return <div />;
     }
 
-    const title = page.properties?.Name?.title?.[0]?.plain_text || "Untitled Bulletin";
+    const title = fastNormalize(page.properties?.Name?.title?.[0]?.plain_text || "Untitled Bulletin");
 
     return (
         <div className="min-h-screen bg-[#F4F3EF]">

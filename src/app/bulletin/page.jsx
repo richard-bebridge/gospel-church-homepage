@@ -2,6 +2,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getDatabase, getBlocks } from '../../lib/notion';
 import { getSiteSettings } from '../../lib/site-settings';
+import { fastNormalize } from '../../lib/utils/textPipeline';
 
 // Revalidate every hour
 export const revalidate = 3600;
@@ -27,7 +28,11 @@ const Text = ({ text }) => {
                 ].join(" ")}
                 style={color !== "default" ? { color } : {}}
             >
-                {text.link ? <a href={text.link.url} className="underline text-blue-600">{text.content}</a> : text.content}
+                {text.link ? (
+                    <a href={text.link.url} className="underline text-blue-600">
+                        {fastNormalize(text.content)}
+                    </a>
+                ) : fastNormalize(text.content)}
             </span>
         );
     });
@@ -167,7 +172,7 @@ export default async function BulletinPage() {
                     <div className="w-full">
                         {/* Page Title */}
                         <h1 className="font-sans font-bold text-5xl md:text-6xl leading-[0.9] tracking-tighter text-[#05121C] uppercase mb-24 text-center">
-                            {page.properties?.Name?.title?.[0]?.plain_text || "Untitled Bulletin"}
+                            {fastNormalize(page.properties?.Name?.title?.[0]?.plain_text || "Untitled Bulletin")}
                         </h1>
 
                         {/* Blocks */}
