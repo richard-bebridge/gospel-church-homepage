@@ -43,6 +43,11 @@ const AboutPresentation = ({ sections, siteSettings }) => {
 
     const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
+    // DEBUG OVERLAY
+    if (typeof window !== 'undefined' && !isReady) {
+        // console.log("Waiting...", { sections: sections?.length, fontsReady, fontScaleSettled });
+    }
+
     useEffect(() => {
         console.log("[AboutPresentation] Readiness Audit:", {
             hasSections: !!sections,
