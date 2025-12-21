@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 const SummaryColumn = ({
     title,
@@ -16,7 +17,7 @@ const SummaryColumn = ({
         <div className="w-full max-w-[60%] flex flex-col pt-0 pb-0">
             {/* Title Label (Matches About Page 'Tag' Spacing) */}
             <div className="w-full flex flex-col items-center">
-                <span className="text-[#2A4458] font-english font-bold text-xs tracking-widest uppercase mb-6 block w-full text-left border-b border-[#2A4458]/10 pb-2">
+                <span className={CURRENT_TEXT.badge + " mb-6 block w-full text-left border-b border-[#2A4458]/10 pb-2"}>
                     {title}
                 </span>
             </div>
@@ -92,7 +93,7 @@ const MessagesSummarySection = ({
     };
 
     const badge = (
-        <span className="inline-flex items-center rounded-full border-[2px] border-[#2A4458] bg-transparent px-1 py-0 pt-[3px] pb-[3px] text-[7px] font-bold font-english text-[#2A4458] uppercase leading-none whitespace-nowrap shrink-0 ml-2 align-middle -mt-1">
+        <span className={CURRENT_TEXT.badge_pill + " ml-2 align-middle -mt-1"}>
             This Week
         </span>
     );

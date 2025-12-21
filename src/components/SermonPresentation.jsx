@@ -27,6 +27,7 @@ import { useFontScale } from '../hooks/sermon/useFontScale';
 import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
 import { renderVerseWithStyledFirstWord } from '../lib/utils/textUtils';
+import { CURRENT_TEXT } from '../lib/typography-tokens';
 
 
 const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings }) => {
@@ -153,7 +154,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                                 <p className={verseTextClass}>
                                                     {renderVerseWithStyledFirstWord(verse.text)}
                                                 </p>
-                                                <p className="text-base text-[#2A4458] font-bold text-right font-mono">
+                                                <p className={CURRENT_TEXT.verse_reference}>
                                                     {verse.reference}
                                                 </p>
                                             </div>
@@ -201,7 +202,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
             <div style={SCROLL_AREA_HEIGHT_STYLE} className="absolute left-0 top-0 w-1/2 border-r border-gray-200 flex flex-col items-center pt-[var(--layout-pt-title)] pointer-events-none">
                 {/* Title Fade */}
                 <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep line-clamp-3">
+                    <h1 className={CURRENT_TEXT.page_title_ko}>
                         {sermon.title}
                     </h1>
                 </div>
@@ -240,7 +241,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         mode="scripture"
                         data={desktopVerses} // Passes current section verses
                         title={sermon.title} // Used for ghost alignment
-                        titleClassName="text-4xl md:text-5xl lg:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep line-clamp-3"
+                        titleClassName={CURRENT_TEXT.page_title_ko}
                         paddingTopClass="pt-[96px]"
                         contentPaddingClass="pt-[384px]"
                         uniqueKey={activeSection}
@@ -258,7 +259,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         {/* Title: Standard (96px) */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[96px]">
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep line-clamp-3">
+                                <h1 className={CURRENT_TEXT.page_title_ko}>
                                     {sermon.title}
                                 </h1>
                             </div>
@@ -299,7 +300,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                 >
                                     <div className="w-full max-w-[60%]">
                                         {section.heading && (
-                                            <h2 className="text-2xl font-bold text-[#05121C] break-keep font-mono leading-tight mb-8">
+                                            <h2 className={CURRENT_TEXT.section_heading_ko}>
                                                 {section.heading}
                                             </h2>
                                         )}

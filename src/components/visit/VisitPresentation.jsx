@@ -22,6 +22,7 @@ import { waitForFonts } from '../../lib/utils/fontLoader';
 import { fastNormalize } from '../../lib/utils/textPipeline';
 import { useSnapScrollState } from '../../hooks/useSnapScroll';
 import RightPanelMap from './RightPanelMap';
+import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 const LOCATION = {
     lat: 37.49168,
@@ -223,10 +224,10 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                         <div className="w-full max-w-[60%] relative">
                                             {/* Title */}
                                             <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
-                                                <span className="text-[#2A4458] font-english font-bold text-sm tracking-widest uppercase mb-4 block">
+                                                <span className={CURRENT_TEXT.badge + " block mb-4"}>
                                                     {fastNormalize(section.title)}
                                                 </span>
-                                                <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold font-korean text-[#05121C] leading-tight break-keep mb-12">
+                                                <h1 className={CURRENT_TEXT.page_title_ko + " mb-12"}>
                                                     {fastNormalize(section.heading || section.title)}
                                                 </h1>
                                             </div>

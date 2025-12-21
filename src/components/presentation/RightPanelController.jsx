@@ -8,6 +8,7 @@ import NotionRenderer, { TableAlignmentProvider } from '../sermon/NotionRenderer
 import RightPanelMap from '../visit/RightPanelMap';
 import Image from 'next/image';
 import VerseList from './VerseList';
+import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 /**
  * RightPanelController
@@ -46,7 +47,7 @@ export const RightPanelController = ({
                                 uniqueKey={`${uniqueKey}-scripture`}
                                 containerClassName="space-y-12 w-full max-w-[520px] px-8 pointer-events-auto"
                                 verseClassName={`${desktopVerseClass} mb-4 break-keep`}
-                                referenceClassName="text-base text-[#2A4458] font-bold text-right font-mono"
+                                referenceClassName={CURRENT_TEXT.verse_reference}
                                 transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
                             />
                         ) : (
