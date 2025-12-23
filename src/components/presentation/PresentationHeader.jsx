@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import AutoScaleTitle from '../ui/AutoScaleTitle';
 
 /**
  * PresentationHeader
@@ -29,9 +30,11 @@ export const PresentationHeader = ({ title, subtitle, paddingTop = 'pt-24' }) =>
                             {subtitle}
                         </span>
                     )}
-                    <h1 className="text-5xl md:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep">
-                        {title}
-                    </h1>
+                    <AutoScaleTitle
+                        text={title}
+                        className="text-5xl md:text-6xl font-bold font-korean text-[#05121C] leading-tight break-keep"
+                        scales={['', 'text-5xl', 'text-4xl', 'text-3xl']}
+                    />
                 </div>
             </div>
 

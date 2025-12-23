@@ -44,8 +44,7 @@ export const PresentationBody = ({ content, bodyClass, endRef, paddingTop = 'pt-
                     {/* Additional Content (e.g. Signature) */}
                     {children}
 
-                    {/* Breathing Space (10vh) */}
-                    <div className="h-[10vh] w-full" aria-hidden="true" />
+
                 </div>
             </div>
 

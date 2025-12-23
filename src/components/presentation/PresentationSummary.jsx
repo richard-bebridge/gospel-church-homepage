@@ -15,6 +15,8 @@ import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
  * - sectionRef: ref for scroll snap
  */
 export const PresentationSummary = ({ data, sectionRef, style = {} }) => {
+    if (!data) return null;
+
     return (
         <section
             id="summary-section"
@@ -25,12 +27,10 @@ export const PresentationSummary = ({ data, sectionRef, style = {} }) => {
                 ...style
             }}
         >
-            {data && (
-                <MessagesSummarySection
-                    {...data}
-                    reversed={true}
-                />
-            )}
+            <MessagesSummarySection
+                {...data}
+                reversed={true}
+            />
         </section>
     );
 };

@@ -28,6 +28,7 @@ import { useMobileScroll } from '../hooks/sermon/useMobileScroll';
 import { useDynamicHeight, useVerseAlignment } from '../hooks/sermon/useDynamicHeight';
 import { renderVerseWithStyledFirstWord } from '../lib/utils/textUtils';
 import { CURRENT_TEXT } from '../lib/typography-tokens';
+import AutoScaleTitle from './ui/AutoScaleTitle';
 
 
 const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings }) => {
@@ -52,7 +53,8 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
         activeSection,
         direction,
         registerSection,
-        getSectionMap
+        getSectionMap,
+        handleWheel // Destructure
     } = useSnapScrollController({
         dependencies: [sermon.sections.length],
         rootMargin: '-20% 0px -20% 0px'
@@ -261,6 +263,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         paddingTopClass="pt-[96px]"
                         contentPaddingClass="pt-[384px]"
                         uniqueKey={activeSection}
+                        onWheel={handleWheel}
                     />
                 }
             >
@@ -275,9 +278,11 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         {/* Title: Standard (96px) */}
                         <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[96px]">
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                                <h1 className={CURRENT_TEXT.page_title_ko}>
-                                    {sermon.title}
-                                </h1>
+                                <AutoScaleTitle
+                                    text={sermon.title}
+                                    className={CURRENT_TEXT.page_title_ko}
+                                    scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                />
                             </div>
 
                             <div
@@ -336,7 +341,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                 </section>
                             ))}
 
-                            <div className="h-[20vh] w-full shrink-0" />
+
                         </div>
                     </div>
 

@@ -110,12 +110,28 @@ export const useSnapScrollController = (options = {}) => {
         return () => observer.disconnect();
     }, [rootMargin, threshold, onChange, ...dependencies]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // Manual Wheel Handler for forwarded events (to bypass overflow traps)
+    const handleWheel = useCallback((e) => {
+        const container = scrollRef.current;
+        if (container) {
+            // Use 'auto' behavior for direct 1:1 mapping of delta to scroll
+            // This sacrifices native inertia if the event source lacks it, but ensures movement.
+            // However, most touchpad 'wheel' events come in streams with inertia.
+            // We just forward the delta.
+            container.scrollBy({ top: e.deltaY, behavior: 'auto' });
+
+            // Prevent default in the source element so it doesn't try to scroll itself
+            // e.preventDefault(); // This might be needed if attached to the trapped element.
+        }
+    }, []);
+
     return {
         scrollRef,
         activeSection,
         direction,
         registerSection,
         scrollToSection,
+        handleWheel, // Expose
         // Helper to get raw map if needed
         getSectionMap: () => sectionRefs.current
     };

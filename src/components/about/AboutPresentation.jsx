@@ -17,6 +17,7 @@ import { waitForFonts } from '../../lib/utils/fontLoader';
 import { fastNormalize } from '../../lib/utils/textPipeline';
 import { useSnapScrollState } from '../../hooks/useSnapScroll';
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
+import AutoScaleTitle from '../ui/AutoScaleTitle';
 
 const AboutPresentation = ({ sections, siteSettings }) => {
     // ----------------------------------------------------------------
@@ -54,7 +55,8 @@ const AboutPresentation = ({ sections, siteSettings }) => {
         activeIndex,
         isFooter,
         sectionEndSentinels,
-        performSnap
+        performSnap,
+        handleWheel // Destructure
     } = useSnapScrollState(sections, {
         containerRef,
         sectionRefs,
@@ -110,6 +112,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 }
                 title={section.title}
                 uniqueKey={section.id}
+                onWheel={handleWheel}
             />
         );
     };
@@ -194,9 +197,11 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                                                 <span className={CURRENT_TEXT.badge + " block mb-4"}>
                                                     {fastNormalize(section.title)}
                                                 </span>
-                                                <h1 className={CURRENT_TEXT.page_title_ko + " mb-12"}>
-                                                    {fastNormalize(section.heading || section.title)}
-                                                </h1>
+                                                <AutoScaleTitle
+                                                    text={fastNormalize(section.heading || section.title)}
+                                                    className={CURRENT_TEXT.page_title_ko + " mb-12"}
+                                                    scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                                />
                                             </div>
 
                                             {/* Body: Starts at Body Baseline (Hardcoded 384px) */}

@@ -25,6 +25,7 @@ import RightPanelMap from './RightPanelMap';
 import Image from 'next/image';
 import VerseList from '../presentation/VerseList';
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
+import AutoScaleTitle from '../ui/AutoScaleTitle';
 
 const LOCATION = {
     lat: 37.49168,
@@ -83,19 +84,71 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     const containerRef = useRef(null);
     const sectionRefs = useRef([]);
     const footerRef = useRef(null);
+    const contentRefs = useRef([]);
+    const internalSnapRefs = useRef([]); // Renamed from symbolRefs
+    const [longSections, setLongSections] = useState({});
 
     const {
         activeIndex,
         isFooter,
         sectionEndSentinels,
-        performSnap
+        performSnap,
+        handleWheel // Destructure
     } = useSnapScrollState(sections, {
         containerRef,
         sectionRefs,
-        footerRef
+        footerRef,
+        internalRefs: internalSnapRefs
     });
 
     const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
+
+    useEffect(() => {
+        if (!isReady || !sections) return;
+
+        const observers = [];
+        const updateLongSections = () => {
+            // Use functional update to avoid stale closure if needed, 
+            // but here we calculate all at once.
+            setLongSections(prev => {
+                const next = { ...prev };
+                let changed = false;
+                const viewportHeight = window.innerHeight;
+
+                contentRefs.current.forEach((el, idx) => {
+                    if (el) {
+                        const height = el.offsetHeight;
+                        // Strict check: if content is taller than viewport, we need a snapper.
+                        // Relaxed to 0.5 to ensure symbol shows even for semi-long sections (as requested by user).
+                        const isLong = height > (viewportHeight * 0.5);
+
+                        if (next[idx] !== isLong) {
+                            next[idx] = isLong;
+                            changed = true;
+                        }
+                    }
+                });
+                return changed ? next : prev;
+            });
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+            updateLongSections();
+        });
+
+        contentRefs.current.forEach(el => {
+            if (el) resizeObserver.observe(el);
+        });
+
+        // Initial check
+        updateLongSections();
+        window.addEventListener('resize', updateLongSections);
+
+        return () => {
+            resizeObserver.disconnect();
+            window.removeEventListener('resize', updateLongSections);
+        };
+    }, [isReady, sections]);
 
     useEffect(() => {
         if (isReady && sections) {
@@ -140,6 +193,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         if (rightPanelType === 'map') data = mapCoords;
         if (rightPanelType === 'verse') data = section.scriptureTags;
 
+
         return (
             <RightPanelController
                 isVisible={!isFooter}
@@ -147,6 +201,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 data={data}
                 title={section.title}
                 uniqueKey={section.id}
+                onWheel={handleWheel}
             />
         );
     };
@@ -222,7 +277,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                     <section
                                         key={section.id}
                                         ref={el => sectionRefs.current[index] = el}
-                                        className="min-h-[120vh] mb-0 flex flex-col items-center pt-0 pb-[40vh]"
+                                        className="min-h-[120vh] mb-0 flex flex-col items-center pt-0 pb-32"
                                     >
                                         <div className="w-full max-w-[60%] relative">
                                             {/* Title */}
@@ -230,13 +285,19 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                                 <span className={CURRENT_TEXT.badge + " block mb-4"}>
                                                     {fastNormalize(section.title)}
                                                 </span>
-                                                <h1 className={CURRENT_TEXT.page_title_ko + " mb-12"}>
-                                                    {fastNormalize(section.heading || section.title)}
-                                                </h1>
+                                                <AutoScaleTitle
+                                                    text={fastNormalize(section.heading || section.title)}
+                                                    className={CURRENT_TEXT.page_title_ko + " mb-12"}
+                                                    scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                                />
                                             </div>
 
                                             {/* Body */}
-                                            <div className="w-full pointer-events-auto" style={{ paddingTop: '384px' }}>
+                                            <div
+                                                ref={el => contentRefs.current[index] = el}
+                                                className="w-full pointer-events-auto"
+                                                style={{ paddingTop: '384px' }}
+                                            >
                                                 <TableAlignmentProvider blocks={section.content}>
                                                     {groupGalleryBlocks(section.content).map((block) => {
                                                         // Inline Map Handling
@@ -266,6 +327,30 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                                         );
                                                     })}
                                                 </TableAlignmentProvider>
+
+                                                {/* Section End Symbol (Only for long sections) */}
+                                                {/* Section End Symbol (Only for long sections) */}
+                                                {/* Section End Symbol (Only for long sections) */}
+                                                {longSections[index] && (
+                                                    <div
+                                                        ref={el => internalSnapRefs.current[index] = el}
+                                                        className="w-full flex items-center justify-center gap-4 py-20 transition-opacity duration-500"
+                                                    >
+                                                        <div className="w-12 h-px bg-[#5F94BD]"></div>
+                                                        <div className="relative w-4 h-4" style={{ filter: 'brightness(0) saturate(100%) invert(58%) sepia(7%) saturate(2256%) hue-rotate(172deg) brightness(93%) contrast(87%)' }}>
+                                                            {/* Filter approximates #5F94BD */}
+                                                            <Image
+                                                                src="/assets/symbol.png"
+                                                                alt="End of section"
+                                                                fill
+                                                                sizes="16px"
+                                                                className="object-contain"
+                                                            />
+                                                        </div>
+                                                        <div className="w-12 h-px bg-[#5F94BD]"></div>
+                                                    </div>
+                                                )}
+
                                                 {/* Sentinel for End Detection */}
                                                 <div ref={el => sectionEndSentinels.current[index] = el} className="h-px w-full bg-transparent" />
                                             </div>
@@ -274,7 +359,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                 ))}
 
                                 {/* Footer Section */}
-                                <div ref={footerRef} className="w-[200%] -ml-0 pointer-events-auto min-h-[50vh] flex items-end">
+                                <div ref={footerRef} className="w-[200%] -ml-0 pointer-events-auto flex items-end">
                                     <Footer siteSettings={siteSettings} />
                                 </div>
                             </div>

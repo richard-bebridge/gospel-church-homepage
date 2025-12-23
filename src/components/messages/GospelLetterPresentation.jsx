@@ -38,7 +38,8 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
     const {
         scrollRef,
         registerSection,
-        activeSection: observedSection = 'reading'
+        activeSection: observedSection = 'reading',
+        handleWheel // Destructure
     } = useSnapScrollController({
         initialSection: 'reading',
         // Decisive section detection (consistent with Sermon page logic)
@@ -164,6 +165,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                         data={isReading ? scriptureTags : []}
                         title={title}
                         uniqueKey={activeSection}
+                        onWheel={handleWheel}
                     />
                 }
             >
