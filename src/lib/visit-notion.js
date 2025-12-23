@@ -1,6 +1,6 @@
 import { getDatabase, getBlocks } from './notion';
 import { flattenBlocks, injectVerses } from './notion-utils';
-import { getScripture, extractBibleTags } from './bible';
+import { getScripture, extractBibleTags, extractPlainBibleReferences } from './bible';
 
 const NOTION_VISIT_DB_ID = process.env.NOTION_VISIT_DB_ID;
 
@@ -11,6 +11,7 @@ export const getVisitContent = async () => {
     }
 
     // console.log(`[getVisitContent] Starting fetch with DB ID: ${NOTION_VISIT_DB_ID}`);
+    // console.log(`[getVisitContent] Starting fetch with DB ID: ${NOTION_VISIT_DB_ID}`);
 
 
     try {
@@ -18,7 +19,7 @@ export const getVisitContent = async () => {
         const results = await getDatabase(NOTION_VISIT_DB_ID, {
             sorts: [
                 {
-                    timestamp: 'created_time',
+                    property: 'index',
                     direction: 'ascending',
                 },
             ],
@@ -59,29 +60,66 @@ export const getVisitContent = async () => {
                 const subSectionCount = props.sub_section?.number || 0;
                 const subTitle = props.Subtitle?.rich_text?.[0]?.plain_text || ''; // Optional English/Subtitle
 
+                // Extract Verse Property - Loose Search
+                const verseEntry = Object.entries(props).find(([k]) => k.toLowerCase().includes('verse'));
+
+                // If found, try to extract text safely
+                const verseProp = verseEntry
+                    ? (verseEntry[1]?.rich_text?.map(t => t.plain_text).join('') || '')
+                    : '';
+
                 // Fetch Blocks (Content)
                 let blocks = await getBlocks(id);
 
-                // Extract Scripture Tags if type is 'verse' or always?
+                // Extract Scripture Tags logic
                 const seenTags = new Set();
-                const flatBlocks = flattenBlocks(blocks);
-                let contentBlocks = injectVerses(flatBlocks, seenTags);
+                // const flatBlocks = flattenBlocks(blocks); // Removed to preserve column_list layout
+                let processedBlocks = injectVerses(blocks, seenTags);
 
-                // Also check Subtitle for tags
-                const subTitleTags = findProp('Subtitle')?.rich_text?.map(rt => rt.plain_text).join('') || '';
-                extractBibleTags(subTitleTags).forEach(tag => seenTags.add(tag.full));
+                // Populate Scripture Tags Data
+                let scriptureTags = [];
 
-                const scriptureTags = [];
-                Array.from(seenTags).forEach(tagStr => {
-                    const cleanRef = tagStr.replace(/^[#\(]/, '').replace(/\)$/, '');
-                    const lookup = getScripture(cleanRef);
-                    if (lookup.text) {
-                        scriptureTags.push({
-                            reference: lookup.normalizedReference || cleanRef,
-                            text: lookup.text
-                        });
-                    }
-                });
+                if (rightPanelType === 'verse' && verseProp) {
+                    const refs = extractPlainBibleReferences(verseProp);
+                    // Take up to 2 items
+                    refs.slice(0, 2).forEach(ref => {
+                        const start = parseInt(ref.verse, 10);
+                        const end = ref.endVerse ? parseInt(ref.endVerse, 10) : start;
+
+                        let combinedTextArray = [];
+                        const safeEnd = (end >= start && (end - start) < 20) ? end : start;
+
+                        for (let v = start; v <= safeEnd; v++) {
+                            const t = getScripture(`${ref.book} ${ref.chapter}:${v}`).text;
+                            if (t) combinedTextArray.push(t);
+                        }
+
+                        if (combinedTextArray.length > 0) {
+                            let displayRef = `${ref.book} ${ref.chapter}:${start}`;
+                            if (safeEnd > start) displayRef += `-${safeEnd}`;
+
+                            scriptureTags.push({
+                                reference: displayRef,
+                                text: combinedTextArray.join(' ')
+                            });
+                        }
+                    });
+                } else {
+                    // Fallback: Scan text content for tags
+                    const subTitleTags = findProp('Subtitle')?.rich_text?.map(rt => rt.plain_text).join('') || '';
+                    extractBibleTags(subTitleTags).forEach(tag => seenTags.add(tag.full));
+
+                    Array.from(seenTags).forEach(tagStr => {
+                        const cleanRef = tagStr.replace(/^[#\(]/, '').replace(/\)$/, '');
+                        const lookup = getScripture(cleanRef);
+                        if (lookup.text) {
+                            scriptureTags.push({
+                                reference: lookup.normalizedReference || cleanRef,
+                                text: lookup.text
+                            });
+                        }
+                    });
+                }
 
                 // Fetch related page blocks if rightPanelType is 'page'
                 let pageContent = null;
@@ -95,11 +133,11 @@ export const getVisitContent = async () => {
 
                 // Extract First Heading 1 for Main Title
                 let heading = '';
-                const headingIndex = contentBlocks.findIndex(b => b.type === 'heading_1');
+                const headingIndex = processedBlocks.findIndex(b => b.type === 'heading_1');
                 if (headingIndex !== -1) {
-                    const headBlock = contentBlocks[headingIndex];
+                    const headBlock = processedBlocks[headingIndex];
                     heading = headBlock.heading_1?.rich_text?.[0]?.plain_text || '';
-                    contentBlocks.splice(headingIndex, 1);
+                    processedBlocks.splice(headingIndex, 1);
                 }
 
                 return {
@@ -110,7 +148,7 @@ export const getVisitContent = async () => {
                     imgSrc,
                     subSectionCount,
                     heading,
-                    content: contentBlocks,
+                    content: processedBlocks,
                     relatedPageId,
                     pageContent,
                     scriptureTags,

@@ -1,6 +1,6 @@
 import { getDatabase, getBlocks } from './notion';
 import { flattenBlocks, injectVerses } from './notion-utils';
-import { getScripture, extractBibleTags } from './bible';
+import { getScripture, extractBibleTags, extractPlainBibleReferences } from './bible';
 
 const NOTION_ABOUT_DB_ID = process.env.NOTION_ABOUT_DB_ID;
 
@@ -43,7 +43,7 @@ export const getAboutContent = async () => {
 
                 const title = findProp('Name')?.title?.[0]?.plain_text || 'Untitled';
                 const rightPanelProp = findProp('right_panel_type');
-                const rightPanelType = rightPanelProp?.select?.name || rightPanelProp?.multi_select?.[0]?.name || 'none';
+
                 const imgSrc = findProp('img_src')?.url || null;
                 const subSectionCount = findProp('sub_section')?.number || 0;
                 const subTitle = findProp('Subtitle')?.rich_text?.[0]?.plain_text || '';
@@ -63,29 +63,122 @@ export const getAboutContent = async () => {
                 const mobileProp = findProp('Mobile') || findProp('Mobile View') || findProp('mobile');
                 const showRightPanelMobile = mobileProp?.checkbox || false;
 
+                // Normalize Right Panel Type
+                const rawRightPanelType = rightPanelProp?.select?.name || rightPanelProp?.multi_select?.[0]?.name || 'none';
+                const rightPanelType = rawRightPanelType.toLowerCase().trim();
+
                 // Fetch Blocks (Content)
                 let blocks = await getBlocks(id);
 
-                // Extract Scripture Tags if type is 'verse' or always?
+                // Extract Verse Property (New) - Loose Search
+                const verseEntry = Object.entries(props).find(([k]) => k.toLowerCase().includes('verse'));
+                const verseProp = verseEntry
+                    ? (verseEntry[1]?.rich_text?.map(t => t.plain_text).join('') || '')
+                    : '';
+
+                // Extract Scripture Tags logic
+                // 1. If rightPanelType is 'verse' AND verseProp exists, use that.
+                // 2. Otherwise fall back to scan tags in Subtitle or Content.
                 const seenTags = new Set();
+
+                if (rightPanelType === 'verse' && verseProp) {
+                    const refs = extractPlainBibleReferences(verseProp);
+                    // Take up to 2 distinct references (but if ranges expand, we show all verses in range)
+                    refs.slice(0, 2).forEach(ref => {
+                        const start = parseInt(ref.verse, 10);
+                        const end = ref.endVerse ? parseInt(ref.endVerse, 10) : start;
+
+                        // Safety check: don't loop too much if typo (e.g. 1-100)
+                        if (end >= start && (end - start) < 20) {
+                            for (let v = start; v <= end; v++) {
+                                // Add to seenTags for consistency, but we really care about tagsForPanel below
+                                const cleanKey = `${ref.book} ${ref.chapter}:${v}`;
+                                seenTags.add(cleanKey);
+                            }
+                        } else {
+                            const cleanKey = `${ref.book} ${ref.chapter}:${ref.verse}`;
+                            seenTags.add(cleanKey);
+                        }
+                    });
+                } else {
+                    // Fallback to original scanning behavior
+                    const flatBlocks = flattenBlocks(blocks);
+                    // We modify contentBlocks here if we injected verses? 
+                    // Original code: let contentBlocks = injectVerses(flatBlocks, seenTags);
+                    // If we are NOT in 'verse' mode or empty verse prop, we scan content.
+                    const subTitleTags = findProp('Subtitle')?.rich_text?.map(rt => rt.plain_text).join('') || '';
+                    extractBibleTags(subTitleTags).forEach(tag => seenTags.add(tag.full.replace(/^[#\(]/, '').replace(/\)$/, '')));
+
+                    // Also scan content blocks for tags (original functional)
+                    // Note: injectVerses populates seenTags by side effect or return?
+                    // flattenBlocks returns blocks. injectVerses returns blocks and modifies seenTags set?
+                    // Let's check original code. 
+                    // Original: let contentBlocks = injectVerses(flatBlocks, seenTags);
+                    // injectVerses scans content for #Tag and adds to seenTags.
+                }
+
+                // Process Content Blocks always (legacy behavior kept for layout)
                 const flatBlocks = flattenBlocks(blocks);
-                let contentBlocks = injectVerses(flatBlocks, seenTags);
+                // Passing a new Set if we don't want to mix content tags into Right Panel when explicit 'verse' property is used?
+                // The user request says: "verse로 된 right panel은 해당 verse를 보이게 해줘"
+                // This implies ONLY the `verse` property should populate the panel?
+                // Let's separate the sets.
 
-                // Also check Subtitle for tags
-                const subTitleTags = findProp('Subtitle')?.rich_text?.map(rt => rt.plain_text).join('') || '';
-                extractBibleTags(subTitleTags).forEach(tag => seenTags.add(tag.full));
+                let scriptureTags = [];
 
-                const scriptureTags = [];
-                Array.from(seenTags).forEach(tagStr => {
-                    const cleanRef = tagStr.replace(/^[#\(]/, '').replace(/\)$/, '');
-                    const lookup = getScripture(cleanRef);
-                    if (lookup.text) {
-                        scriptureTags.push({
-                            reference: lookup.normalizedReference || cleanRef,
-                            text: lookup.text
-                        });
-                    }
-                });
+                if (rightPanelType === 'verse' && verseProp) {
+                    const refs = extractPlainBibleReferences(verseProp);
+                    // Take up to 2 items (ranges or singles)
+                    refs.slice(0, 2).forEach(ref => {
+                        const start = parseInt(ref.verse, 10);
+                        const end = ref.endVerse ? parseInt(ref.endVerse, 10) : start;
+
+                        let combinedTextArray = [];
+                        // Safety check: don't loop too much if typo (e.g. 1-100)
+                        const safeEnd = (end >= start && (end - start) < 20) ? end : start;
+
+                        for (let v = start; v <= safeEnd; v++) {
+                            // fetch each verse
+                            const t = getScripture(`${ref.book} ${ref.chapter}:${v}`).text;
+                            if (t) combinedTextArray.push(t);
+                        }
+
+                        if (combinedTextArray.length > 0) {
+                            let displayRef = `${ref.book} ${ref.chapter}:${start}`;
+                            if (safeEnd > start) {
+                                displayRef += `-${safeEnd}`;
+                            }
+
+                            scriptureTags.push({
+                                reference: displayRef,
+                                text: combinedTextArray.join(' ')
+                            });
+                        }
+                    });
+                } else {
+                    // Fallback to original scanning behavior using tagsForPanel
+                    let tagsForPanel = new Set();
+
+                    const subTitleTags = findProp('Subtitle')?.rich_text?.map(rt => rt.plain_text).join('') || '';
+                    extractBibleTags(subTitleTags).forEach(tag => tagsForPanel.add(tag.full.replace(/^[#\(]/, '').replace(/\)$/, '')));
+
+                    // Process Content Blocks always (legacy behavior kept for layout)
+                    const flatBlocksOriginal = flattenBlocks(blocks);
+                    const tempSet = new Set();
+                    injectVerses(flatBlocksOriginal, tempSet);
+                    tempSet.forEach(t => tagsForPanel.add(t));
+
+                    Array.from(tagsForPanel).forEach(tagStr => {
+                        const cleanRef = tagStr.replace(/^[#\(]/, '').replace(/\)$/, '');
+                        const lookup = getScripture(cleanRef);
+                        if (lookup.text) {
+                            scriptureTags.push({
+                                reference: lookup.normalizedReference || cleanRef,
+                                text: lookup.text
+                            });
+                        }
+                    });
+                }
 
                 // Fetch related page blocks if rightPanelType is 'page'
                 let pageContent = null;
@@ -97,13 +190,18 @@ export const getAboutContent = async () => {
                     }
                 }
 
+                // Process Content Blocks always (legacy behavior kept for layout)
+                // We always want to strip tags from content if they exist
+                const flatBlocksForDisplay = flattenBlocks(blocks);
+                let processedBlocks = injectVerses(flatBlocksForDisplay, new Set()); // Pass dummy set just to strip
+
                 // Extract First Heading 1 for Main Title
                 let heading = '';
-                const headingIndex = contentBlocks.findIndex(b => b.type === 'heading_1');
+                const headingIndex = processedBlocks.findIndex(b => b.type === 'heading_1');
                 if (headingIndex !== -1) {
-                    const headBlock = contentBlocks[headingIndex];
+                    const headBlock = processedBlocks[headingIndex];
                     heading = headBlock.heading_1?.rich_text?.[0]?.plain_text || '';
-                    contentBlocks.splice(headingIndex, 1);
+                    processedBlocks.splice(headingIndex, 1);
                 }
 
                 return {
@@ -114,12 +212,18 @@ export const getAboutContent = async () => {
                     imgSrc,
                     subSectionCount,
                     heading,
-                    content: contentBlocks,
+                    content: processedBlocks,
                     relatedPageId,
                     pageContent,
                     scriptureTags,
                     showRightPanelMobile,
-                    propertyKeys: Object.keys(props)
+                    showRightPanelMobile,
+                    propertyKeys: Object.keys(props),
+                    debug: {
+                        versePropRaw: verseProp,
+                        rightPanelTypeRaw: rawRightPanelType,
+                        verseEntryKey: verseEntry ? verseEntry[0] : 'not found'
+                    }
                 };
             } catch (error) {
                 console.error(`[getAboutContent] Error processing section ${page.id}:`, error);

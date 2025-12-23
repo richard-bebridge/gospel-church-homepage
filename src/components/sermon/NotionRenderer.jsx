@@ -40,17 +40,26 @@ export const TableAlignmentProvider = ({ children, blocks }) => {
         });
 
         // Only activate grid alignment if we have column lists (c1) to align with.
-        // Otherwise, rely on the standard <table> renderer for standalone tables.
-        if (maxC1 === 0) return { active: false };
+        // OR if we have standalone tables > 2 cols, we treat them as grid to match the look (Visual Consistency)
+        if (maxC1 === 0) {
+            if (maxC2 >= 2) {
+                // Standalone Table Mode: Treat Col 1 as Label
+                const c1 = 1;
+                const c2 = maxC2 - 1;
+                const total = c1 + c2;
+                // Use the same template as Column List layout
+                const template = `fit-content(480px) repeat(${c2}, 1fr)`;
+                return { active: true, c1, c2, maxCols: total, template };
+            }
+            return { active: false };
+        }
 
         // c1 is label track, c2 are content tracks
         const c1 = maxC1 || 1;
         const c2 = Math.max(maxC2, 1);
         const total = c1 + c2;
 
-        const template = maxC1 >
-            0 ? `fit-content(480px) repeat(${c2}, 1fr)`
-            : `repeat(${total}, 1fr)`;
+        const template = `fit-content(480px) repeat(${c2}, 1fr)`;
 
         return { active: true, c1, c2, maxCols: total, template };
     }, [blocks]);

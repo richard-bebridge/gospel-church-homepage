@@ -38,6 +38,8 @@ export const BOOK_MAPPING = {
     '딛': '디도서', '몬': '빌레몬서', '히': '히브리서', '약': '야고보서',
     '벧전': '베드로전서', '벧후': '베드로후서', '요일': '요한1서', '요이': '요한2서',
     '요삼': '요한3서', '유': '유다서', '계': '요한계시록',
+    // Aliases for user input
+    '요한일서': '요한1서', '요한이서': '요한2서', '요한삼서': '요한3서',
 };
 
 const loadBibleDataKo = () => {
@@ -81,7 +83,8 @@ const loadBibleDataEn = () => {
 
 export const getVerse = (book, chapter, verse) => {
     const bible = loadBibleDataKo();
-    const fullBookName = BOOK_MAPPING[book] || book;
+    let fullBookName = BOOK_MAPPING[book] || book;
+
     // Try Full Name Key
     let text = bible.get(`${fullBookName}:${chapter}:${verse}`);
 
@@ -89,15 +92,61 @@ export const getVerse = (book, chapter, verse) => {
     if (!text && book !== fullBookName) {
         text = bible.get(`${book}:${chapter}:${verse}`);
     }
+
+    // Fallback 2: Try stripping spaces from book name
+    if (!text) {
+        const cleanBook = book.replace(/\s+/g, '');
+        fullBookName = BOOK_MAPPING[cleanBook] || cleanBook;
+        text = bible.get(`${fullBookName}:${chapter}:${verse}`);
+    }
+
     return text;
 };
 
-export const getVerseEn = (bookAbbrev, chapter, verse) => {
-    // 1. Resolve Abbrev to Number
-    let bNum = BOOK_TO_NUMBER[bookAbbrev];
+// Invert mapping for Name -> Number lookup
+const NAME_TO_NUMBER = {};
+// 1. Add Abbreviations
+Object.entries(BOOK_TO_NUMBER).forEach(([abbrev, num]) => {
+    NAME_TO_NUMBER[abbrev] = num;
+});
+// 2. Add Full Names
+Object.entries(BOOK_MAPPING).forEach(([abbrev, fullName]) => {
+    const num = BOOK_TO_NUMBER[abbrev];
+    if (num) {
+        NAME_TO_NUMBER[fullName] = num;
+    }
+});
 
-    // Handle aliases like '눅' -> '누' (Luke)
-    if (!bNum && bookAbbrev === '눅') bNum = BOOK_TO_NUMBER['누'];
+const getBookNumber = (name) => {
+    if (!name) return null;
+    // Check direct match (Abbrev or Full or Alias present in NAME_TO_NUMBER from BOOK_MAPPING)
+    if (NAME_TO_NUMBER[name]) return NAME_TO_NUMBER[name];
+
+    // Check aliases manually added in BOOK_MAPPING
+    let mappedName = BOOK_MAPPING[name];
+    if (mappedName && NAME_TO_NUMBER[mappedName]) {
+        return NAME_TO_NUMBER[mappedName];
+    }
+
+    // Try stripping spaces (e.g. "요한 1서" -> "요한1서")
+    const cleanName = name.replace(/\s+/g, '');
+    if (NAME_TO_NUMBER[cleanName]) return NAME_TO_NUMBER[cleanName];
+
+    mappedName = BOOK_MAPPING[cleanName];
+    if (mappedName && NAME_TO_NUMBER[mappedName]) {
+        return NAME_TO_NUMBER[mappedName];
+    }
+
+    return null;
+};
+
+export const getVerseEn = (bookIdentity, chapter, verse) => {
+    // 1. Resolve Name/Abbrev to Number
+    // bookIdentity could be '요한1서' (from regex) or '요일' (from tag) or '요한일서' (alias)
+    let bNum = getBookNumber(bookIdentity);
+
+    // Legacy handle for '눅' if not covered (it is covered if BOOK_MAPPING has it or if we add it)
+    if (!bNum && bookIdentity === '눅') bNum = BOOK_TO_NUMBER['누'];
 
     if (!bNum) return null;
 
@@ -134,6 +183,33 @@ export const extractBibleTags = (text) => {
             book: match[1],
             chapter: match[2],
             verse: match[3]
+        });
+    }
+    return matches;
+};
+
+export const extractPlainBibleReferences = (text) => {
+    if (!text) return [];
+    // Modified regex to allow:
+    // 1. Alphanumeric + Korean
+    // 2. Spaces within book name (e.g. "1 John", "요한 1서")
+    // Captures: "Book Name" (Group 1), Chapter (Group 2), Verse (Group 3), EndVerse (Group 4)
+    // Modified regex to allow spaces but prevent the Chapter number from being consumed as part of the Book Name.
+    // We ensure that the subsequent parts of the Book Name are NOT pure digits followed by space/colon/end.
+    const regex = /([가-힣a-zA-Z0-9]+(?:(?:\s+)(?![0-9]+(?:\s|:|$))[가-힣a-zA-Z0-9]+)*)\s*(\d+)\s*:\s*(\d+)(?:\s*[-–—~]\s*(\d+))?/g;
+
+    const matches = [];
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+        // Filter out if book is ONLY digits
+        if (!isNaN(match[1])) continue;
+
+        matches.push({
+            full: match[0],
+            book: match[1], // e.g. "요한 1서", "1 John"
+            chapter: match[2],
+            verse: match[3],
+            endVerse: match[4] || null
         });
     }
     return matches;
