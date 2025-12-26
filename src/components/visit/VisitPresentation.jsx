@@ -10,10 +10,6 @@ import { useFontScale } from '../../hooks/sermon/useFontScale';
 import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
 import { RightPanelController } from '../presentation/RightPanelController';
 
-import {
-    SCROLL_COOLDOWN_MS,
-    SCROLL_THRESHOLD_DELTA
-} from '../sermon/constants';
 import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
 import { extractMapToken } from '../../lib/utils/visitMapHelpers';
 import LoadingSequence from '../ui/LoadingSequence';
@@ -25,21 +21,21 @@ import RightPanelMap from './RightPanelMap';
 import Image from 'next/image';
 import VerseList from '../presentation/VerseList';
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
+
 import AutoScaleTitle from '../ui/AutoScaleTitle';
 
-const LOCATION = {
-    lat: 37.49168,
-    lng: 127.01340,
-    label: 'Gospel Church'
+const hasWideContent = (blocks) => {
+    if (!blocks || !Array.isArray(blocks)) return false;
+    return blocks.some(b =>
+        b.type === 'table' ||
+        b.type === 'column_list' ||
+        (b.type === 'toggle' && hasWideContent(b.children))
+    );
 };
 
 const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
-    // ----------------------------------------------------------------
-    // Intro & Loading State
-    // ----------------------------------------------------------------
     const settings = siteSettings || {};
     // Intro & Loading State
-    // ----------------------------------------------------------------
     const [fontsReady, setFontsReady] = useState(false);
     const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
 
@@ -55,9 +51,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         checkReady();
     }, []);
 
-    // ----------------------------------------------------------------      
     // 0. Pre-process Sections
-    // ---------------------------------------------------------------- 
     const sections = React.useMemo(() => {
         if (!rawSections) return [];
         return rawSections.map(section => {
@@ -78,87 +72,34 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         });
     }, [rawSections]);
 
-    // ----------------------------------------------------------------      
     // 1. State & Refs
-    // ----------------------------------------------------------------      
     const containerRef = useRef(null);
     const sectionRefs = useRef([]);
     const footerRef = useRef(null);
-    const contentRefs = useRef([]);
-    const internalSnapRefs = useRef([]); // Renamed from symbolRefs
-    const [longSections, setLongSections] = useState({});
 
+
+    // Use simplified hook
     const {
         activeIndex,
         isFooter,
-        sectionEndSentinels,
-        performSnap,
-        handleWheel // Destructure
+        performSnap
     } = useSnapScrollState(sections, {
         containerRef,
         sectionRefs,
-        footerRef,
-        internalRefs: internalSnapRefs
+        footerRef
     });
 
     const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
-    useEffect(() => {
-        if (!isReady || !sections) return;
 
-        const observers = [];
-        const updateLongSections = () => {
-            // Use functional update to avoid stale closure if needed, 
-            // but here we calculate all at once.
-            setLongSections(prev => {
-                const next = { ...prev };
-                let changed = false;
-                const viewportHeight = window.innerHeight;
 
-                contentRefs.current.forEach((el, idx) => {
-                    if (el) {
-                        const height = el.offsetHeight;
-                        // Strict check: if content is taller than viewport, we need a snapper.
-                        // Relaxed to 0.5 to ensure symbol shows even for semi-long sections (as requested by user).
-                        const isLong = height > (viewportHeight * 0.5);
-
-                        if (next[idx] !== isLong) {
-                            next[idx] = isLong;
-                            changed = true;
-                        }
-                    }
-                });
-                return changed ? next : prev;
-            });
-        };
-
-        const resizeObserver = new ResizeObserver(() => {
-            updateLongSections();
-        });
-
-        contentRefs.current.forEach(el => {
-            if (el) resizeObserver.observe(el);
-        });
-
-        // Initial check
-        updateLongSections();
-        window.addEventListener('resize', updateLongSections);
-
-        return () => {
-            resizeObserver.disconnect();
-            window.removeEventListener('resize', updateLongSections);
-        };
-    }, [isReady, sections]);
-
+    // Hash Navigation
     useEffect(() => {
         if (isReady && sections) {
-            // Hash Navigation Handler
             const hash = window.location.hash;
             if (!hash) return;
-
             const targetSlug = hash.replace('#', '');
             const toSlug = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-
             const targetIndex = sections.findIndex(sec => {
                 const titleSlug = toSlug(sec.title || "");
                 return titleSlug === targetSlug;
@@ -172,19 +113,13 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         }
     }, [isReady, sections, performSnap]);
 
-
-
-    // ----------------------------------------------------------------      
     // Data Render
-    // ---------------------------------------------------------------- 
-
-    // ----------------------------------------------------------------
-    // Render Right Panel
-    // ----------------------------------------------------------------
     const renderRightPanel = () => {
         if (!sections[activeIndex] || isFooter) return null;
 
-        const safeIndex = Math.min(activeIndex, sections.length - 1);
+        // Default to 0 if activeIndex is undefined or invalid to ensure initial render
+        const currentIdx = (typeof activeIndex === 'number' && activeIndex >= 0) ? activeIndex : 0;
+        const safeIndex = Math.min(currentIdx, sections.length - 1);
         const section = sections[safeIndex];
         const { rightPanelType, imgSrc, mapCoords, pageContent } = section;
 
@@ -193,7 +128,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
         if (rightPanelType === 'map') data = mapCoords;
         if (rightPanelType === 'verse') data = section.scriptureTags;
 
-
         return (
             <RightPanelController
                 isVisible={!isFooter}
@@ -201,7 +135,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 data={data}
                 title={section.title}
                 uniqueKey={section.id}
-                onWheel={handleWheel}
+                contentPaddingClass="pt-32"
             />
         );
     };
@@ -209,8 +143,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
             <LoadingSequence isReady={isReady} />
-
-            {/* Header moved out to escape stacking context */}
             <Header siteSettings={siteSettings} />
 
             <div
@@ -221,44 +153,39 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                     pointerEvents: isReady ? 'auto' : 'none'
                 }}
             >
-                {/* Header was here */}
-
+                {/* Main Scroll Container */}
                 <div
                     ref={containerRef}
-                    style={{
-                        paddingTop: `${HEADER_HEIGHT_PX}px`
-                    }}
-                    className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-mono"
+                    className="hidden md:block absolute top-0 left-0 w-full h-screen overflow-y-auto snap-y snap-mandatory overscroll-y-none no-scrollbar font-mono"
                 >
                     <div className="relative w-full bg-[#F4F3EF]">
 
-                        {/* Sticky Container */}
+                        {/* Sticky Foreground Layer (Right Panel / Side Nav / Numbers) */}
                         <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-30">
-                            {/* Right Panel */}
                             {renderRightPanel()}
 
-                            {/* Left Panel */}
-                            <div className="absolute left-0 top-0 w-1/2 h-full border-r border-[#2A4458]/10 flex flex-col items-center pt-0 pointer-events-none">
-                                {/* Sticky Number */}
-                                <div className={`hidden min-[1450px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 ${isFooter ? 'opacity-0' : 'opacity-100'}`}
-                                    style={{ top: '384px' }}
-                                >
-                                    <AnimatePresence mode="wait">
-                                        <motion.span
-                                            key={activeIndex}
-                                            initial={{ y: 100 }}
-                                            animate={{ y: 0 }}
-                                            exit={{ y: -100 }}
-                                            transition={{ duration: 0.4 }}
-                                            className="text-7xl font-bold font-korean text-[#2A4458] block leading-none pt-1"
-                                        >
-                                            {fastNormalize(String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0'))}
-                                        </motion.span>
-                                    </AnimatePresence>
+                            {/* Left Panel Decorative - Centered Sticky Elements */}
+                            <div className="absolute left-0 top-0 w-1/2 h-full border-r border-[#2A4458]/10 pointer-events-none">
+                                <div className="w-full h-full flex flex-col justify-center relative">
+                                    <div className={`hidden min-[1600px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 ${isFooter ? 'opacity-0' : 'opacity-100'}`}
+                                        style={{ top: '50%', transform: 'translateY(-50%)' }}
+                                    >
+                                        <AnimatePresence mode="wait">
+                                            <motion.span
+                                                key={activeIndex}
+                                                initial={{ y: 100 }}
+                                                animate={{ y: 0 }}
+                                                exit={{ y: -100 }}
+                                                transition={{ duration: 0.4 }}
+                                                className="text-7xl font-bold font-korean text-[#2A4458] block leading-none pt-1"
+                                            >
+                                                {fastNormalize(String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0'))}
+                                            </motion.span>
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Side Nav */}
                             <div className="absolute right-0 z-50 pointer-events-auto"
                                 style={{ top: '384px', transform: 'translateY(-50%)' }}
                             >
@@ -270,204 +197,172 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                             </div>
                         </div>
 
-                        {/* Scrollable Content */}
-                        <div className="relative z-20 w-full pointer-events-none">
-                            <div className="w-1/2 relative pointer-events-auto -mt-[100vh]">
-                                {sections.map((section, index) => (
+                        {/* Sections (Behind Sticky Layer) */}
+                        {/* We offset content to account for the fixed elements if needed */}
+                        <div className="relative w-full">
+                            {sections.map((section, index) => {
+                                return (
                                     <section
                                         key={section.id}
                                         ref={el => sectionRefs.current[index] = el}
-                                        className="min-h-[120vh] mb-0 flex flex-col items-center pt-0 pb-32"
+                                        className="w-full h-screen snap-start relative overflow-y-auto no-scrollbar"
                                     >
-                                        <div className="w-full max-w-[60%] relative">
-                                            {/* Title */}
-                                            <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
-                                                <span className={CURRENT_TEXT.badge + " block mb-4"}>
-                                                    {fastNormalize(section.title)}
-                                                </span>
-                                                <AutoScaleTitle
-                                                    text={fastNormalize(section.heading || section.title)}
-                                                    className={CURRENT_TEXT.page_title_ko + " mb-12"}
-                                                    scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
-                                                />
-                                            </div>
+                                        <div className={`w-full max-w-[50%] ml-0 h-full relative border-r border-transparent`}>
+                                            <div className="w-full min-h-full flex flex-col items-center justify-center pt-32">
+                                                {/* Adjusted Width inside Left Panel */}
+                                                <div className={`w-full relative ${hasWideContent(section.content) ? 'max-w-[80%] xl:max-w-[70%]' : 'max-w-lg'}`}>
 
-                                            {/* Body */}
-                                            <div
-                                                ref={el => contentRefs.current[index] = el}
-                                                className="w-full pointer-events-auto"
-                                                style={{ paddingTop: '384px' }}
-                                            >
-                                                <TableAlignmentProvider blocks={section.content}>
-                                                    {groupGalleryBlocks(section.content).map((block) => {
-                                                        // Inline Map Handling
-                                                        if (block.type === 'paragraph' && block.paragraph?.rich_text) {
-                                                            const plainText = block.paragraph.rich_text.map(t => t.plain_text).join('');
-                                                            const token = extractMapToken(plainText);
-                                                            if (token) {
-                                                                return (
-                                                                    <div key={block.id} className="col-span-full w-full my-12">
-                                                                        <RightPanelMap
-                                                                            x={token.x}
-                                                                            y={token.y}
-                                                                            title={section.title}
-                                                                            isInline={true}
-                                                                        />
-                                                                    </div>
-                                                                );
-                                                            }
-                                                        }
-
-                                                        return (
-                                                            <NotionRenderer
-                                                                key={block.id}
-                                                                block={block}
-                                                                bodyClass={desktopBodyClass}
-                                                            />
-                                                        );
-                                                    })}
-                                                </TableAlignmentProvider>
-
-                                                {/* Section End Symbol (Only for long sections) */}
-                                                {/* Section End Symbol (Only for long sections) */}
-                                                {/* Section End Symbol (Only for long sections) */}
-                                                {longSections[index] && (
-                                                    <div
-                                                        ref={el => internalSnapRefs.current[index] = el}
-                                                        className="w-full flex items-center justify-center gap-4 py-20 transition-opacity duration-500"
-                                                    >
-                                                        <div className="w-12 h-px bg-[#5F94BD]"></div>
-                                                        <div className="relative w-4 h-4" style={{ filter: 'brightness(0) saturate(100%) invert(58%) sepia(7%) saturate(2256%) hue-rotate(172deg) brightness(93%) contrast(87%)' }}>
-                                                            {/* Filter approximates #5F94BD */}
-                                                            <Image
-                                                                src="/assets/symbol.png"
-                                                                alt="End of section"
-                                                                fill
-                                                                sizes="16px"
-                                                                className="object-contain"
-                                                            />
-                                                        </div>
-                                                        <div className="w-12 h-px bg-[#5F94BD]"></div>
+                                                    {/* Title Block - Sticky-ish in long sections if desired, or just top padded */}
+                                                    <div className="w-full mb-12">
+                                                        <span className={CURRENT_TEXT.badge + " block mb-4"}>
+                                                            {fastNormalize(section.title)}
+                                                        </span>
+                                                        <AutoScaleTitle
+                                                            text={fastNormalize(section.heading || section.title)}
+                                                            className={CURRENT_TEXT.page_title_ko + " mb-12"}
+                                                            scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                                        />
                                                     </div>
-                                                )}
 
-                                                {/* Sentinel for End Detection */}
-                                                <div ref={el => sectionEndSentinels.current[index] = el} className="h-px w-full bg-transparent" />
+                                                    {/* Content Body */}
+                                                    <div className="w-full">
+                                                        <TableAlignmentProvider blocks={section.content}>
+                                                            {groupGalleryBlocks(section.content).map((block) => {
+                                                                if (block.type === 'paragraph' && block.paragraph?.rich_text) {
+                                                                    const plainText = block.paragraph.rich_text.map(t => t.plain_text).join('');
+                                                                    const token = extractMapToken(plainText);
+                                                                    if (token) {
+                                                                        return (
+                                                                            <div key={block.id} className="col-span-full w-full my-12">
+                                                                                <RightPanelMap
+                                                                                    x={token.x}
+                                                                                    y={token.y}
+                                                                                    title={section.title}
+                                                                                    isInline={true}
+                                                                                />
+                                                                            </div>
+                                                                        );
+                                                                    }
+                                                                }
+                                                                return (
+                                                                    <NotionRenderer
+                                                                        key={block.id}
+                                                                        block={block}
+                                                                        bodyClass={desktopBodyClass}
+                                                                    />
+                                                                );
+                                                            })}
+                                                        </TableAlignmentProvider>
+
+
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </section>
-                                ))}
+                                );
+                            })}
 
-                                {/* Footer Section */}
-                                <div ref={footerRef} className="w-[200%] -ml-0 pointer-events-auto flex items-end">
-                                    <Footer siteSettings={siteSettings} />
-                                </div>
-                            </div>
+                            {/* Footer Section */}
+                            <section
+                                ref={footerRef}
+                                className="w-full h-screen snap-start overflow-hidden relative flex flex-col justify-end"
+                            >
+                                <Footer siteSettings={siteSettings} />
+                            </section>
                         </div>
                     </div>
+                    <FloatingVisitButton footerRef={footerRef} />
                 </div>
-
-                {/* Mobile Layout */}
-                <div className="md:hidden w-full bg-[#F4F3EF] pt-20">
-                    {sections.map((section, idx) => (
-                        <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
-                            <div className="text-6xl font-korean font-bold text-[#2A4458]/20 mb-4">{fastNormalize(String(idx + 1).padStart(2, '0'))}</div>
-                            <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{fastNormalize(section.title)}</span>
-                            <h2 className="text-3xl font-korean font-bold text-[#05121C] mb-8 leading-tight">
-                                {fastNormalize(section.heading || section.title)}
-                            </h2>
-                            <div className="prose font-korean text-gray-600">
-                                <TableAlignmentProvider blocks={section.content}>
-                                    {groupGalleryBlocks(section.content).map(block => {
-                                        // Inline Map Handling for Mobile
-                                        if (block.type === 'paragraph' && block.paragraph?.rich_text) {
-                                            const plainText = block.paragraph.rich_text.map(t => t.plain_text).join('');
-                                            const token = extractMapToken(plainText);
-                                            if (token) {
-                                                return (
-                                                    <div key={block.id} className="w-full my-8">
-                                                        <RightPanelMap
-                                                            x={token.x}
-                                                            y={token.y}
-                                                            title={section.title}
-                                                            isInline={true}
-                                                        />
-                                                    </div>
-                                                );
-                                            }
-                                        }
-
-                                        return (
-                                            <NotionRenderer
-                                                key={block.id}
-                                                block={block}
-                                            />
-                                        );
-                                    })}
-                                </TableAlignmentProvider>
-                            </div>
-
-                            {/* Mobile Right Panel Content (Conditional) */}
-                            {section.showRightPanelMobile && (
-                                <div className="mt-8 pt-8">
-
-                                    {/* 1. Page Content */}
-                                    {section.rightPanelType === 'page' && section.pageContent && (
-                                        <div className="prose font-korean text-gray-600">
-                                            <TableAlignmentProvider blocks={section.pageContent}>
-                                                {groupGalleryBlocks(section.pageContent).map(block => (
-                                                    <NotionRenderer
-                                                        key={block.id}
-                                                        block={block}
-                                                        bodyClass={desktopBodyClass}
-                                                    />
-                                                ))}
-                                            </TableAlignmentProvider>
-                                        </div>
-                                    )}
-
-                                    {/* 2. Verse Content */}
-                                    {(section.rightPanelType === 'verse' || section.rightPanelType === 'scripture') && section.scriptureTags && (
-                                        <VerseList
-                                            verses={section.scriptureTags}
-                                            verseClassName={`${CURRENT_TEXT.verse_text} mb-4`}
-                                            referenceClassName={CURRENT_TEXT.verse_reference}
-                                            animate={false}
-                                            containerClassName="space-y-8"
-                                        />
-                                    )}
-
-                                    {/* 3. Image Content */}
-                                    {(section.rightPanelType === 'image' || (!section.rightPanelType && section.imgSrc)) && section.imgSrc && (
-                                        <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg mt-4">
-                                            <Image
-                                                src={section.imgSrc}
-                                                alt={section.title || "Section Image"}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        </div>
-                                    )}
-
-                                    {/* 4. Map Content */}
-                                    {section.rightPanelType === 'map' && section.mapCoords && (
-                                        <div className="w-full h-[300px] mt-4 rounded-lg overflow-hidden shadow-lg relative z-0">
-                                            <RightPanelMap
-                                                x={section.mapCoords.x}
-                                                y={section.mapCoords.y}
-                                                title={section.title}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                    <Footer siteSettings={siteSettings} />
-                </div>
-
-                <FloatingVisitButton footerRef={footerRef} />
             </div>
+
+            {/* Mobile Layout (unchanged logic, just ensuring props passed correctly) */}
+            <div className="md:hidden w-full bg-[#F4F3EF] pt-20">
+                {sections.map((section, idx) => (
+                    <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
+                        <div className="text-6xl font-korean font-bold text-[#2A4458]/20 mb-4">{fastNormalize(String(idx + 1).padStart(2, '0'))}</div>
+                        <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{fastNormalize(section.title)}</span>
+                        <h2 className="text-3xl font-korean font-bold text-[#05121C] mb-8 leading-tight">
+                            {fastNormalize(section.heading || section.title)}
+                        </h2>
+                        <div className="prose font-korean text-gray-600">
+                            <TableAlignmentProvider blocks={section.content}>
+                                {groupGalleryBlocks(section.content).map(block => {
+                                    if (block.type === 'paragraph' && block.paragraph?.rich_text) {
+                                        const plainText = block.paragraph.rich_text.map(t => t.plain_text).join('');
+                                        const token = extractMapToken(plainText);
+                                        if (token) {
+                                            return (
+                                                <div key={block.id} className="w-full my-8">
+                                                    <RightPanelMap
+                                                        x={token.x}
+                                                        y={token.y}
+                                                        title={section.title}
+                                                        isInline={true}
+                                                    />
+                                                </div>
+                                            );
+                                        }
+                                    }
+                                    return (
+                                        <NotionRenderer
+                                            key={block.id}
+                                            block={block}
+                                        />
+                                    );
+                                })}
+                            </TableAlignmentProvider>
+                        </div>
+                        {section.showRightPanelMobile && (
+                            <div className="mt-8 pt-8">
+                                {section.rightPanelType === 'page' && section.pageContent && (
+                                    <div className="prose font-korean text-gray-600">
+                                        <TableAlignmentProvider blocks={section.pageContent}>
+                                            {groupGalleryBlocks(section.pageContent).map(block => (
+                                                <NotionRenderer
+                                                    key={block.id}
+                                                    block={block}
+                                                    bodyClass={desktopBodyClass}
+                                                />
+                                            ))}
+                                        </TableAlignmentProvider>
+                                    </div>
+                                )}
+                                {(section.rightPanelType === 'verse' || section.rightPanelType === 'scripture') && section.scriptureTags && (
+                                    <VerseList
+                                        verses={section.scriptureTags}
+                                        verseClassName={`${CURRENT_TEXT.verse_text} mb-4`}
+                                        referenceClassName={CURRENT_TEXT.verse_reference}
+                                        animate={false}
+                                        containerClassName="space-y-8"
+                                    />
+                                )}
+                                {(section.rightPanelType === 'image' || (!section.rightPanelType && section.imgSrc)) && section.imgSrc && (
+                                    <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg mt-4">
+                                        <Image
+                                            src={section.imgSrc}
+                                            alt={section.title || "Section Image"}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </div>
+                                )}
+                                {section.rightPanelType === 'map' && section.mapCoords && (
+                                    <div className="w-full h-[300px] mt-4 rounded-lg overflow-hidden shadow-lg relative z-0">
+                                        <RightPanelMap
+                                            x={section.mapCoords.x}
+                                            y={section.mapCoords.y}
+                                            title={section.title}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                ))}
+                <Footer siteSettings={siteSettings} />
+            </div>
+            <FloatingVisitButton footerRef={footerRef} />
         </div>
     );
 };

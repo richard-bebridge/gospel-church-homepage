@@ -7,137 +7,43 @@ import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 const RECURSION_LIMIT = 15;
 
-// Context to synchronize table column alignments across a section/panel
+// Context used to align column_list labels across a section
 const TableAlignmentContext = createContext(null);
-/**
- * Generate <colgroup> element based on table type
- * @param {number} columnCount - Number of columns in the table
- * @param {number} tableType - 1 (Equal), 2 (First Auto + Rest Equal), 3 (All Auto)
- * @returns {JSX.Element|null} - <colgroup> element or null
- */
-const buildTableColGroup = (columnCount, tableType) => {
-    if (!columnCount) return null;
 
-    const columns = Array.from({ length: columnCount });
+export const TableAlignmentProvider = ({ children, blocks }) => {
+    const gridConfig = useMemo(() => {
+        if (!blocks || blocks.length === 0) return { active: false };
 
-    // Type 1: Equal Distribution
-    if (tableType === 1) {
-        const widthPercent = 100 / columnCount;
-        return (
-            <colgroup>
-                {columns.map((_, idx) => (
-                    <col key={idx} style={{ width: `${widthPercent}%` }} />
-                ))}
-            </colgroup>
-        );
-    }
+        const hasColumnList = blocks.some(block => block.type === 'column_list' && block.children?.length >= 2);
+        if (!hasColumnList) return { active: false };
 
-    // Type 2: First Auto + Rest Equal
-    if (tableType === 2) {
-        const restCount = columnCount - 1;
-        const restWidthPercent = restCount > 0 ? 100 / restCount : 100;
-        return (
-            <colgroup>
-                {columns.map((_, idx) => (
-                    <col
-                        key={idx}
-                        style={{ width: idx === 0 ? 'auto' : `${restWidthPercent}%` }}
-                    />
-                ))}
-            </colgroup>
-        );
-    }
-
-    // Type 3: All Auto (Content-Based)
-    if (tableType === 3) {
-        return (
-            <colgroup>
-                {columns.map((_, idx) => (
-                    <col key={idx} style={{ width: 'auto', minWidth: '120px' }} />
-                ))}
-            </colgroup>
-        );
-    }
-
-    // Default: Type 1 behavior
-    return buildTableColGroup(columnCount, 1);
-};
-
-export const TableAlignmentProvider = ({ children, blocks, sectionType }) => {
-    // Scan all column_lists to find longest label AND table first column for alignment
-    const contextValue = useMemo(() => {
-        let maxLabelLength = 0;
-        let maxTableFirstColLength = 0;
-
-        // Helper to extract FULL text from rich_text (for labels)
-        const extractFullText = (richText) => {
-            if (!richText || !Array.isArray(richText)) return '';
-            return richText.map(rt => rt.plain_text || rt.text?.content || '').join('');
-        };
-
-        // Helper to extract LONGEST LINE from rich_text (for table cells with line breaks)
-        const extractLongestLine = (richText) => {
-            const fullText = extractFullText(richText);
-            const lines = fullText.split(/[\n\r]/);
-            return lines.reduce((a, b) => a.length > b.length ? a : b, '');
-        };
-
-        // Helper to scan table for first column lengths
-        const scanTableFirstCol = (tableBlock) => {
-            if (tableBlock.type !== 'table') return;
-            tableBlock.children?.forEach(row => {
-                const firstCell = row.table_row?.cells?.[0];
-                if (firstCell) {
-                    // Use longest line for table cells (they may have line breaks)
-                    const cellText = extractLongestLine(firstCell);
-                    maxTableFirstColLength = Math.max(maxTableFirstColLength, cellText.length);
-                }
-            });
-        };
-
-        // Scan blocks for column_lists and tables
-        blocks?.forEach(block => {
-            if (block.type === 'column_list' && block.children?.length >= 2) {
-                // First column contains the label - use FULL text
-                const firstColumn = block.children[0];
-                if (firstColumn?.children?.[0]) {
-                    const labelBlock = firstColumn.children[0];
-                    const richText = labelBlock[labelBlock.type]?.rich_text;
-                    const labelText = extractFullText(richText);
-                    maxLabelLength = Math.max(maxLabelLength, labelText.length);
-                }
-
-                // Second column may contain tables
-                const secondColumn = block.children[1];
-                secondColumn?.children?.forEach(child => {
-                    scanTableFirstCol(child);
-                });
-            } else if (block.type === 'table') {
-                scanTableFirstCol(block);
-            }
-        });
-
-        // Calculate widths
-        const labelWidth = maxLabelLength > 0
-            ? Math.max(100, maxLabelLength * 20 + 16)
-            : null;
-
-
-        // Table first column: ~11px per character + 24px buffer for link icons
-        const tableFirstColWidth = maxTableFirstColLength > 0
-            ? Math.max(80, maxTableFirstColLength * 11 + 24)
-            : null;
-
+        // Two-column grid: label + content
         return {
-            sectionType: sectionType || 1,
-            labelWidth,           // Shared label width for all column_lists
-            tableFirstColWidth    // Shared first column width for all tables
+            active: true,
+            template: 'minmax(160px, max-content) minmax(0, 1fr)'
         };
-    }, [blocks, sectionType]);
+    }, [blocks]);
+
+    if (!gridConfig.active) {
+        return (
+            <TableAlignmentContext.Provider value={gridConfig}>
+                <div className="w-full">
+                    {children}
+                </div>
+            </TableAlignmentContext.Provider>
+        );
+    }
 
     return (
-        <TableAlignmentContext.Provider value={contextValue}>
-            <div className="w-full">
+        <TableAlignmentContext.Provider value={gridConfig}>
+            <div
+                className="grid w-full items-start"
+                style={{
+                    gridTemplateColumns: gridConfig.template,
+                    columnGap: '2rem',
+                    rowGap: '0px'
+                }}
+            >
                 {children}
             </div>
         </TableAlignmentContext.Provider>
@@ -420,8 +326,43 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
     const { type, [type]: value } = block;
     const gridConfig = useContext(TableAlignmentContext);
 
-    // Helper - just returns content as-is (grid is now handled per-block in column_list)
-    const wrapGrid = (content, className = '') => content;
+    // Helper to wrap blocks within grid layout for column_list sections
+    const wrapGrid = (content, className = '') => {
+        if (!gridConfig?.active) return content;
+
+        // Level 0 blocks span the full width
+        if (level === 0) {
+            return (
+                <div className={`col-span-full ${className}`}>
+                    {content}
+                </div>
+            );
+        }
+
+        // Column blocks (level 1) occupy their allocated tracks
+        if (type === 'column' && level === 1) {
+            const isLabel = columnIndex === 0;
+
+            return (
+                <div className={`${className} border-t pt-3 ${isLabel ? 'font-bold' : ''}`}>
+                    {block.children?.map((child, idx) => (
+                        <NotionRenderer
+                            key={child.id}
+                            block={child}
+                            level={level + 1}
+                            bodyClass={bodyClass}
+                            columnIndex={columnIndex}
+                            isFirst={isFirst && idx === 0}
+                            isLast={idx === block.children.length - 1}
+                            mounted={mounted}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        return content;
+    };
 
     // Allow table, table_row, columns, and text types for recursive rendering
     if (!value?.rich_text &&
@@ -518,80 +459,26 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
 
     switch (type) {
         case 'table': {
-            const firstRow = block.children?.[0];
-            const columnCount = firstRow?.table_row?.cells?.length || 0;
+            const rows = block.children || [];
 
-            // sectionType from context determines table style
-            const effectiveTableType = gridConfig?.sectionType || 1;
-
-
-            // TYPE 3: Flexbox horizontal layout for cells
-            if (effectiveTableType === 3) {
-                return (
-                    <div className="mt-2 mb-4 w-full overflow-hidden">
-                        {block.children?.map((row, rIdx) => {
-                            const cells = row.table_row?.cells || [];
-
-                            return (
-                                <div
-                                    key={row.id}
-                                    className="flex flex-wrap gap-x-6 gap-y-1"
-                                >
-                                    {cells.map((cell, cIdx) => {
-                                        const normalized = normalizeCellRichText(cell);
-                                        const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
-                                        const borderClass = rIdx === 0 ? 'border-t border-gray-200' : '';
-
-                                        return (
-                                            <div
-                                                key={cIdx}
-                                                className={`py-3 ${tokenClass} ${borderClass}`}
-                                                style={{
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                <Text text={normalized} mounted={mounted} />
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            );
-                        })}
-                    </div>
-                );
-            }
-
-            // TYPE 1 & 2: Simple HTML table
-            // Use shared first column width for alignment if available
-            const firstColWidth = gridConfig?.tableFirstColWidth;
-
-            return (
-                <div className="overflow-x-auto mt-4 mb-8 w-full">
-                    <table className="table-auto w-full border-separate text-left" style={{ borderSpacing: '16px 0' }}>
+            return wrapGrid(
+                <div className="w-full max-w-[720px] mx-auto mt-6 mb-10">
+                    <table className="table-auto w-full border-collapse text-left">
                         <tbody>
-                            {block.children?.map((row, rIdx) => {
+                            {rows.map((row, rIdx) => {
                                 const cells = row.table_row?.cells || [];
 
                                 return (
-                                    <tr key={row.id}>
+                                    <tr key={row.id} className="border-t border-gray-200">
                                         {cells.map((cell, cIdx) => {
                                             const normalized = normalizeCellRichText(cell);
-                                            // First column: nowrap + shared width for alignment
-                                            const isFirstCol = cIdx === 0;
-                                            const whitespaceStyle = isFirstCol ? 'nowrap' : 'pre-wrap';
-                                            const tokenClass = isFirstCol ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
-                                            const borderClass = rIdx === 0 ? 'border-t border-gray-200' : '';
-
-                                            // Apply shared width to first column for alignment
-                                            const cellStyle = isFirstCol && firstColWidth
-                                                ? { whiteSpace: whitespaceStyle, width: `${firstColWidth}px`, minWidth: `${firstColWidth}px` }
-                                                : { whiteSpace: whitespaceStyle };
+                                            const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
 
                                             return (
                                                 <td
                                                     key={cIdx}
-                                                    className={`py-3 align-top ${tokenClass} ${borderClass}`}
-                                                    style={cellStyle}
+                                                    className={`py-3 px-3 align-top break-words ${tokenClass}`}
+                                                    style={{ whiteSpace: 'pre-wrap' }}
                                                 >
                                                     <Text text={normalized} mounted={mounted} />
                                                 </td>
@@ -602,7 +489,8 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                             })}
                         </tbody>
                     </table>
-                </div>
+                </div>,
+                'mb-8'
             );
         }
         case 'table_row': {
@@ -715,37 +603,53 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
         case 'column_list': {
             const childCount = block.children?.length || 0;
 
-            // Use shared labelWidth from context for consistent alignment
-            // If labelWidth is set, use it; otherwise fall back to max-content
-            const labelColWidth = gridConfig?.labelWidth
-                ? `${gridConfig.labelWidth}px`
-                : 'max-content';
-
-            return (
+            if (gridConfig?.active) {
+                return (
+                    <div className="contents">
+                        {block.children?.map((child, idx) => (
+                            <NotionRenderer
+                                key={child.id}
+                                block={child}
+                                level={level + 1}
+                                bodyClass={bodyClass}
+                                columnIndex={idx}
+                                mounted={mounted}
+                            />
+                        ))}
+                    </div>
+                );
+            }
+            return wrapGrid(
                 <div
-                    className="grid gap-6 w-full items-start mb-6"
+                    className="flex flex-col md:grid gap-8 w-full items-start"
                     style={{
-                        gridTemplateColumns: childCount === 2
-                            ? `${labelColWidth} 1fr`
-                            : `repeat(${childCount}, 1fr)`
+                        gridTemplateColumns: childCount === 2 ? 'auto 1fr' : `repeat(${childCount}, 1fr)`
                     }}
                 >
-                    {block.children?.map((child, idx) => (
-                        <NotionRenderer
-                            key={child.id}
-                            block={child}
-                            level={level + 1}
-                            bodyClass={bodyClass}
-                            columnIndex={idx}
-                            mounted={mounted}
-                        />
+                    {block.children?.map(child => (
+                        <NotionRenderer key={child.id} block={child} level={level + 1} bodyClass={bodyClass} />
                     ))}
-                </div>
+                </div>,
+                'mb-8'
             );
         }
         case 'column':
-            // Column renders its children within grid cell
-            // min-w-0 prevents content from overflowing grid column
+            if (gridConfig?.active) {
+                return (
+                    <div className="contents [&>*:first-child]:mt-0">
+                        {block.children?.map(child => (
+                            <NotionRenderer
+                                key={child.id}
+                                block={child}
+                                level={level + 1}
+                                bodyClass={bodyClass}
+                                columnIndex={columnIndex}
+                                mounted={mounted}
+                            />
+                        ))}
+                    </div>
+                );
+            }
             return (
                 <div className="w-full min-w-0 [&>*:first-child]:mt-0">
                     {block.children?.map(child => (

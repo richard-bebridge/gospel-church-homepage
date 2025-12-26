@@ -27,6 +27,24 @@ export const RightPanelController = ({
 }) => {
     const { desktopBodyClass, desktopVerseClass } = useFontScale();
 
+    // Dynamic container width - Standardized to avoid layout shifts
+    const getContainerClass = (baseClasses, isWide = false) => {
+        // Use max-w-lg for text-only content, max-w-[720px] for tables/grids
+        const widthClass = isWide ? 'max-w-[720px]' : 'max-w-lg';
+        return `${baseClasses} w-full ${widthClass} px-8 mx-auto`;
+    };
+
+    // Helper to detect if blocks contain elements requiring wide layout
+    const hasWideContent = (blocks) => {
+        if (!blocks || !Array.isArray(blocks)) return false;
+        return blocks.some(b =>
+            b.type === 'table' ||
+            b.type === 'column_list' ||
+            // Also check for nested tables in column lists if needed, but top-level check usually suffices
+            (b.type === 'toggle' && hasWideContent(b.children))
+        );
+    };
+
     return (
         <motion.div
             className="hidden md:flex absolute right-0 top-0 w-1/2 h-full flex-col items-center z-30 pointer-events-none"
@@ -42,17 +60,16 @@ export const RightPanelController = ({
 
             <div className="w-full relative flex-1 min-h-0">
                 {(mode === 'scripture' || mode === 'verse') && (
-                    <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center h-full pointer-events-none`}>
+                    <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center h-full pointer-events-none`}>
                         <div
                             className={`w-full max-h-full ${contentPaddingClass} overflow-hidden pointer-events-auto`}
-                            onWheel={onWheel}
                         >
                             {data && data.length > 0 ? (
                                 <VerseList
                                     verses={data}
                                     uniqueKey={`${uniqueKey}-scripture`}
-                                    containerClassName="space-y-12 w-full max-w-[520px] px-8 mx-auto"
-                                    verseClassName={`${desktopVerseClass} mb-4 break-keep`}
+                                    containerClassName={getContainerClass('space-y-12', false)}
+                                    verseClassName={`${desktopVerseClass} mb-4 break-keep whitespace-pre-wrap`}
                                     referenceClassName={CURRENT_TEXT.verse_reference}
                                     transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
                                 />
@@ -76,11 +93,10 @@ export const RightPanelController = ({
                             className="w-full h-full border-l border-[#2A4458]/10 pt-0 pointer-events-none flex flex-col"
                         >
                             <div
-                                className="w-full max-h-full overflow-hidden pointer-events-auto"
-                                onWheel={onWheel}
+                                className="w-full h-full overflow-y-auto no-scrollbar pointer-events-auto"
                             >
-                                <div className="min-h-full p-8 lg:p-16 flex flex-col justify-center pointer-events-auto">
-                                    <div className="prose font-korean text-gray-800 w-full">
+                                <div className={getContainerClass(`min-h-full flex flex-col justify-center pointer-events-auto ${hasWideContent(data) ? 'p-8 lg:p-16' : 'px-6'}`, hasWideContent(data))}>
+                                    <div className={`prose prose-lg max-w-none font-korean text-gray-800 w-full ${!hasWideContent(data) ? 'text-center' : ''}`}>
                                         <TableAlignmentProvider blocks={data}>
                                             {data.map(block => (
                                                 <NotionRenderer
@@ -107,7 +123,6 @@ export const RightPanelController = ({
                         >
                             <div
                                 className="relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl pointer-events-auto"
-                                onWheel={onWheel}
                             >
                                 <Image
                                     src={data}
@@ -127,7 +142,6 @@ export const RightPanelController = ({
                             exit={{ opacity: 0, y: -30 }}
                             transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
                             className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center pointer-events-auto"
-                            onWheel={onWheel}
                         >
                             <RightPanelMap
                                 x={data.x}
@@ -138,6 +152,6 @@ export const RightPanelController = ({
                     )}
                 </AnimatePresence>
             </div>
-        </motion.div>
+        </motion.div >
     );
 };

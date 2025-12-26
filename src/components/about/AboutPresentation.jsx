@@ -19,12 +19,19 @@ import { useSnapScrollState } from '../../hooks/useSnapScroll';
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
 import AutoScaleTitle from '../ui/AutoScaleTitle';
 
+const hasWideContent = (blocks) => {
+    if (!blocks || !Array.isArray(blocks)) return false;
+    return blocks.some(b =>
+        b.type === 'table' ||
+        b.type === 'column_list' ||
+        (b.type === 'toggle' && hasWideContent(b.children))
+    );
+};
+
 const AboutPresentation = ({ sections, siteSettings }) => {
     // ----------------------------------------------------------------
     // Intro & Loading State
     // ----------------------------------------------------------------
-
-
     const [fontsReady, setFontsReady] = useState(false);
     const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
 
@@ -42,8 +49,6 @@ const AboutPresentation = ({ sections, siteSettings }) => {
 
     const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
-
-
     // ----------------------------------------------------------------      
     // 1. State & Refs
     // ---------------------------------------------------------------- 
@@ -54,9 +59,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     const {
         activeIndex,
         isFooter,
-        sectionEndSentinels,
-        performSnap,
-        handleWheel // Destructure
+        performSnap
     } = useSnapScrollState(sections, {
         containerRef,
         sectionRefs,
@@ -87,8 +90,6 @@ const AboutPresentation = ({ sections, siteSettings }) => {
         }
     }, [isReady, sections, performSnap]);
 
-
-
     // ----------------------------------------------------------------      
     // Data Render
     // ---------------------------------------------------------------- 
@@ -97,7 +98,9 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     const renderRightPanel = () => {
         if (!sections[activeIndex] || isFooter) return null;
 
-        const safeIndex = Math.min(activeIndex, sections.length - 1);
+        // Default to 0 if activeIndex is undefined or invalid to ensure initial render
+        const currentIdx = (typeof activeIndex === 'number' && activeIndex >= 0) ? activeIndex : 0;
+        const safeIndex = Math.min(currentIdx, sections.length - 1);
         const section = sections[safeIndex];
         const { rightPanelType, imgSrc, pageContent } = section;
 
@@ -112,7 +115,8 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 }
                 title={section.title}
                 uniqueKey={section.id}
-                onWheel={handleWheel}
+                section={section}
+                contentPaddingClass="pt-32"
             />
         );
     };
@@ -133,81 +137,138 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                     pointerEvents: isReady ? 'auto' : 'none'
                 }}
             >
-                {/* Header was here */}
-
+                {/* Main Scroll Container */}
                 <div
                     ref={containerRef}
-                    style={{
-                        paddingTop: `${HEADER_HEIGHT_PX}px`
-                    }}
-                    className="hidden md:block relative h-screen overflow-y-auto no-scrollbar font-mono"
+                    className="hidden md:block absolute top-0 left-0 w-full h-screen overflow-y-auto snap-y snap-mandatory overscroll-y-none no-scrollbar font-mono"
                 >
                     <div className="relative w-full bg-[#F4F3EF]">
 
-                        {/* Sticky Container */}
+                        {/* Sticky Foreground Layer */}
                         <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-30">
-                            {/* Right Panel */}
                             {renderRightPanel()}
 
-                            {/* Left Panel */}
-                            <div className="absolute left-0 top-0 w-1/2 h-full border-r border-[#2A4458]/10 flex flex-col items-center pt-0 pointer-events-none">
-                                {/* Sticky Number (Aligned with Body Start Baseline: 384px) */}
-                                <div className={`hidden min-[1450px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 ${isFooter ? 'opacity-0' : 'opacity-100'}`}
-                                    style={{ top: '384px' }}
-                                >
-                                    <AnimatePresence mode="wait">
-                                        <motion.span
-                                            key={activeIndex}
-                                            initial={{ y: 100 }}
-                                            animate={{ y: 0 }}
-                                            exit={{ y: -100 }}
-                                            transition={{ duration: 0.4 }}
-                                            className="text-7xl font-bold font-korean text-[#2A4458] block leading-none pt-1"
-                                        >
-                                            {fastNormalize(String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0'))}
-                                        </motion.span>
-                                    </AnimatePresence>
+                            {/* Left Panel Decorative - Centered Sticky Elements */}
+                            <div className="absolute left-0 top-0 w-1/2 h-full border-r border-[#2A4458]/10 pointer-events-none">
+                                <div className="w-full h-full flex flex-col justify-center relative">
+                                    {/* Sticky Number (Aligned with Center) */}
+                                    <div className={`hidden min-[1600px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 ${isFooter ? 'opacity-0' : 'opacity-100'}`}
+                                        style={{ top: '50%', transform: 'translateY(-50%)' }}
+                                    >
+                                        <AnimatePresence mode="wait">
+                                            <motion.span
+                                                key={activeIndex}
+                                                initial={{ y: 100 }}
+                                                animate={{ y: 0 }}
+                                                exit={{ y: -100 }}
+                                                transition={{ duration: 0.4 }}
+                                                className="text-7xl font-bold font-korean text-[#2A4458] block leading-none pt-1"
+                                            >
+                                                {fastNormalize(String(Math.min(activeIndex + 1, sections.length)).padStart(2, '0'))}
+                                            </motion.span>
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Side Nav (Center Aligned to Number Top) */}
-                            <div className="absolute right-0 z-50 pointer-events-auto"
-                                style={{ top: '384px', transform: 'translateY(-50%)' }}
-                            >
+                            {/* Side Nav (Center Aligned) */}
+                            <div className="absolute right-0 top-1/2 -translate-y-1/2 z-50 pointer-events-auto">
                                 <AboutSideNav
                                     sections={sections}
                                     activeIndex={isFooter ? sections.length : activeIndex}
-                                    onSectionClick={performSnap} // Reuse snap logic
+                                    onSectionClick={performSnap}
                                 />
                             </div>
                         </div>
 
-                        {/* Scrollable Content */}
-                        <div className="relative z-20 w-full pointer-events-none">
-                            <div className="w-1/2 relative pointer-events-auto -mt-[100vh]">
-                                {sections.map((section, index) => (
+                        {/* Sections (Behind Sticky Layer) */}
+                        <div className="relative w-full">
+                            {sections.map((section, index) => {
+
+                                return (
                                     <section
                                         key={section.id}
                                         ref={el => sectionRefs.current[index] = el}
-                                        className="min-h-[120vh] mb-0 flex flex-col items-center pt-0 pb-[40vh]"
+                                        className="w-full h-screen snap-start relative overflow-y-auto no-scrollbar"
                                     >
-                                        <div className="w-full max-w-[60%] relative">
-                                            {/* Title: Absolute at Title Baseline (Hardcoded 96px) */}
-                                            <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ paddingTop: '96px' }}>
-                                                <span className={CURRENT_TEXT.badge + " block mb-4"}>
-                                                    {fastNormalize(section.title)}
-                                                </span>
-                                                <AutoScaleTitle
-                                                    text={fastNormalize(section.heading || section.title)}
-                                                    className={CURRENT_TEXT.page_title_ko + " mb-12"}
-                                                    scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
-                                                />
-                                            </div>
+                                        <div className="w-full max-w-[50%] ml-0 h-full relative border-r border-transparent">
 
-                                            {/* Body: Starts at Body Baseline (Hardcoded 384px) */}
-                                            <div className="w-full pointer-events-auto" style={{ paddingTop: '384px' }}>
-                                                <TableAlignmentProvider blocks={section.content}>
-                                                    {groupGalleryBlocks(section.content).map((block) => (
+                                            <div className="w-full min-h-full flex flex-col items-center justify-center pt-32">
+                                                {/* Adjusted Width inside Left Panel */}
+                                                <div className={`w-full relative ${hasWideContent(section.content) ? 'max-w-[80%] xl:max-w-[70%]' : 'max-w-lg'}`}>
+
+                                                    {/* Title Block - Always flow layout */}
+                                                    <div className="w-full mb-12">
+                                                        <span className={CURRENT_TEXT.badge + " block mb-4"}>
+                                                            {fastNormalize(section.title)}
+                                                        </span>
+                                                        <AutoScaleTitle
+                                                            text={fastNormalize(section.heading || section.title)}
+                                                            className={CURRENT_TEXT.page_title_ko + " mb-12"}
+                                                            scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                                        />
+                                                    </div>
+
+                                                    <div
+                                                        className="w-full"
+                                                    >
+                                                        <TableAlignmentProvider blocks={section.content}>
+                                                            {groupGalleryBlocks(section.content).map((block) => (
+                                                                <NotionRenderer
+                                                                    key={block.id}
+                                                                    block={block}
+                                                                    bodyClass={desktopBodyClass}
+                                                                />
+                                                            ))}
+                                                        </TableAlignmentProvider>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                );
+                            })}
+
+                            {/* Footer Section */}
+                            <section
+                                ref={footerRef}
+                                className="w-full h-screen snap-start overflow-hidden relative flex flex-col justify-end"
+                            >
+                                <Footer siteSettings={siteSettings} />
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Mobile Layout */}
+                <div className="md:hidden w-full bg-[#F4F3EF] pt-20">
+                    {
+                        sections.map((section, idx) => (
+                            <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
+                                <div className="text-6xl font-korean font-bold text-[#2A4458]/20 mb-4">{fastNormalize(String(idx + 1).padStart(2, '0'))}</div>
+                                <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{fastNormalize(section.title)}</span>
+                                <h2 className="text-3xl font-korean font-bold text-[#05121C] mb-8 leading-tight">
+                                    {fastNormalize(section.heading || section.title)}
+                                </h2>
+                                <div className="prose font-korean text-gray-600">
+                                    <TableAlignmentProvider blocks={section.content}>
+                                        {groupGalleryBlocks(section.content).map(block => (
+                                            <NotionRenderer
+                                                key={block.id}
+                                                block={block}
+                                            />
+                                        ))}
+                                    </TableAlignmentProvider>
+                                </div>
+
+                                {/* Mobile Right Panel Content (Conditional) */}
+                                {section.showRightPanelMobile && (
+                                    <div className="mt-8 pt-8">
+                                        {/* 1. Page Content */}
+                                        {section.rightPanelType === 'page' && section.pageContent && (
+                                            <div className="prose font-korean text-gray-600">
+                                                <TableAlignmentProvider blocks={section.pageContent}>
+                                                    {groupGalleryBlocks(section.pageContent).map(block => (
                                                         <NotionRenderer
                                                             key={block.id}
                                                             block={block}
@@ -215,87 +276,36 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                                                         />
                                                     ))}
                                                 </TableAlignmentProvider>
-                                                {/* Sentinel for End Detection */}
-                                                <div ref={el => sectionEndSentinels.current[index] = el} className="h-px w-full bg-transparent" />
                                             </div>
-                                        </div>
-                                    </section>
-                                ))}
+                                        )}
 
-                                {/* Footer Section */}
-                                <div ref={footerRef} className="w-[200%] -ml-0 pointer-events-auto min-h-[50vh] flex items-end">
-                                    <Footer siteSettings={siteSettings} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Mobile Layout */}
-                <div className="md:hidden w-full bg-[#F4F3EF] pt-20">
-                    {sections.map((section, idx) => (
-                        <div key={section.id} className="px-6 py-12 border-b border-gray-200 last:border-0">
-                            <div className="text-6xl font-korean font-bold text-[#2A4458]/20 mb-4">{fastNormalize(String(idx + 1).padStart(2, '0'))}</div>
-                            <span className="text-sm font-bold text-[#2A4458] tracking-widest uppercase mb-2 block">{fastNormalize(section.title)}</span>
-                            <h2 className="text-3xl font-korean font-bold text-[#05121C] mb-8 leading-tight">
-                                {fastNormalize(section.heading || section.title)}
-                            </h2>
-                            <div className="prose font-korean text-gray-600">
-                                <TableAlignmentProvider blocks={section.content}>
-                                    {groupGalleryBlocks(section.content).map(block => (
-                                        <NotionRenderer
-                                            key={block.id}
-                                            block={block}
-                                        />
-                                    ))}
-                                </TableAlignmentProvider>
-                            </div>
-
-                            {/* Mobile Right Panel Content (Conditional) */}
-                            {section.showRightPanelMobile && (
-                                <div className="mt-8 pt-8">
-
-                                    {/* 1. Page Content */}
-                                    {section.rightPanelType === 'page' && section.pageContent && (
-                                        <div className="prose font-korean text-gray-600">
-                                            <TableAlignmentProvider blocks={section.pageContent}>
-                                                {groupGalleryBlocks(section.pageContent).map(block => (
-                                                    <NotionRenderer
-                                                        key={block.id}
-                                                        block={block}
-                                                        bodyClass={desktopBodyClass}
-                                                    />
-                                                ))}
-                                            </TableAlignmentProvider>
-                                        </div>
-                                    )}
-
-                                    {/* 2. Verse Content */}
-                                    {(section.rightPanelType === 'verse' || section.rightPanelType === 'scripture') && section.scriptureTags && (
-                                        <VerseList
-                                            verses={section.scriptureTags}
-                                            verseClassName={`${CURRENT_TEXT.verse_text} mb-4`}
-                                            referenceClassName={CURRENT_TEXT.verse_reference}
-                                            animate={false}
-                                            containerClassName="space-y-8"
-                                        />
-                                    )}
-
-                                    {/* 3. Image Content */}
-                                    {(section.rightPanelType === 'image' || (!section.rightPanelType && section.imgSrc)) && section.imgSrc && (
-                                        <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg mt-4">
-                                            <Image
-                                                src={section.imgSrc}
-                                                alt={section.title || "Section Image"}
-                                                fill
-                                                className="object-cover"
+                                        {/* 2. Verse Content */}
+                                        {(section.rightPanelType === 'verse' || section.rightPanelType === 'scripture') && section.scriptureTags && (
+                                            <VerseList
+                                                verses={section.scriptureTags}
+                                                verseClassName={`${CURRENT_TEXT.verse_text} mb-4`}
+                                                referenceClassName={CURRENT_TEXT.verse_reference}
+                                                animate={false}
+                                                containerClassName="space-y-8"
                                             />
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                                        )}
+
+                                        {/* 3. Image Content */}
+                                        {(section.rightPanelType === 'image' || (!section.rightPanelType && section.imgSrc)) && section.imgSrc && (
+                                            <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg mt-4">
+                                                <Image
+                                                    src={section.imgSrc}
+                                                    alt={section.title || "Section Image"}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    }
                     <Footer siteSettings={siteSettings} />
                 </div>
             </div>

@@ -72,14 +72,8 @@ const AutoScaleTitle = ({
     // We should ensure the new class is applied.
 
     // Combining:
-    const activeScale = scales[scaleIndex];
-    // We filter out the original size declaration if we are applying a new one?
-    // No, easy way is to use inline style for font-size if index > 0.
-
-    // Actually, inline style is most robust against Tailwind conflicts.
-    // scales can be pixel numbers?
-
-    const appliedClass = `${className} ${activeScale}`;
+    const activeScale = scales[scaleIndex] || '';
+    const appliedClass = `${className || ''} ${activeScale}`.trim();
 
     return (
         <h1
