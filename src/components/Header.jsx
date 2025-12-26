@@ -44,10 +44,8 @@ const Header = ({ siteSettings }) => {
 
     const menuItems = [
         { label: 'About', href: '/about' },
-        { label: 'Messages', href: '/messages' },
         { label: 'Visit', href: '/visit' },
-        { label: 'Print', href: '/print' },
-        { label: 'Typo', href: '/typo-lab' },
+        { label: 'Messages', href: '/messages' },
     ];
 
     const handleLinkClick = () => {

@@ -20,7 +20,7 @@ export const TableAlignmentProvider = ({ children, blocks }) => {
         // Two-column grid: label + content
         return {
             active: true,
-            template: 'minmax(160px, max-content) minmax(0, 1fr)'
+            template: 'minmax(110px, max-content) minmax(0, 1fr)'
         };
     }, [blocks]);
 
@@ -40,7 +40,7 @@ export const TableAlignmentProvider = ({ children, blocks }) => {
                 className="grid w-full items-start"
                 style={{
                     gridTemplateColumns: gridConfig.template,
-                    columnGap: '2rem',
+                    columnGap: '1rem',
                     rowGap: '0px'
                 }}
             >
@@ -460,10 +460,47 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
     switch (type) {
         case 'table': {
             const rows = block.children || [];
+            // Detect if this is a 2-column table for consistent alignment
+            const columnCount = rows[0]?.table_row?.cells?.length || 0;
+            const isTwoColumn = columnCount === 2;
+
+            // Check if table contains "-" placeholder markers
+            const hasPlaceholder = rows.some(row =>
+                row.table_row?.cells?.some(cell =>
+                    cell.some(richText =>
+                        (richText.plain_text || richText.text?.content || '').trim() === '-'
+                    )
+                )
+            );
+            // Check if first column is completely empty across all rows
+            const isFirstColumnEmpty = rows.every(row => {
+                const firstCell = row.table_row?.cells?.[0];
+                if (!firstCell || firstCell.length === 0) return true;
+                return firstCell.every(richText =>
+                    !(richText.plain_text || richText.text?.content || '').trim()
+                );
+            });
+
+            // Use table-fixed if placeholders are present for uniform column widths
+            const tableLayoutClass = hasPlaceholder ? 'table-fixed' : 'table-auto';
 
             return wrapGrid(
-                <div className="w-full max-w-[720px] mx-auto mt-6 mb-10">
-                    <table className="table-auto w-full border-collapse text-left">
+                <div className="w-full max-w-[840px] mx-auto mt-6 mb-10">
+                    <table className={`${tableLayoutClass} w-full border-collapse text-left`}>
+                        {/* Force uniform column widths when placeholders are present */}
+                        {hasPlaceholder && columnCount > 0 && (
+                            <colgroup>
+                                {Array.from({ length: columnCount }).map((_, idx) => {
+                                    // If first column is empty, give it 0% width
+                                    // Distribute 100% evenly across remaining columns
+                                    if (idx === 0 && isFirstColumnEmpty) {
+                                        return <col key={idx} style={{ width: '0' }} />;
+                                    }
+                                    const effectiveColumnCount = isFirstColumnEmpty ? columnCount - 1 : columnCount;
+                                    return <col key={idx} style={{ width: `${100 / effectiveColumnCount}%` }} />;
+                                })}
+                            </colgroup>
+                        )}
                         <tbody>
                             {rows.map((row, rIdx) => {
                                 const cells = row.table_row?.cells || [];
@@ -474,13 +511,54 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                             const normalized = normalizeCellRichText(cell);
                                             const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
 
+                                            // For 2-column tables WITHOUT placeholders, fix first column width for consistent alignment
+                                            // When table-fixed is active (hasPlaceholder), don't apply fixed width as it conflicts
+                                            const columnStyle = isTwoColumn && cIdx === 0 && !hasPlaceholder
+                                                ? { whiteSpace: 'pre-wrap', width: '180px' }
+                                                : { whiteSpace: 'pre-wrap' };
+
+                                            // Filter out "-" placeholder from rendering
+                                            const filteredContent = normalized.map(richText => {
+                                                const text = (richText.plain_text || richText.text?.content || '').trim();
+                                                if (text === '-') {
+                                                    // Return empty content but keep structure
+                                                    return {
+                                                        ...richText,
+                                                        text: { ...richText.text, content: '' },
+                                                        plain_text: ''
+                                                    };
+                                                }
+                                                return richText;
+                                            });
+
+                                            // Check if cell is completely empty after filtering
+                                            const isCellEmpty = filteredContent.every(rt =>
+                                                !rt.plain_text?.trim() && !rt.text?.content?.trim()
+                                            );
+
+                                            // First column (cIdx 0) when empty should collapse to 0 width
+                                            // Other empty cells need &nbsp; to preserve colgroup width
+                                            const isFirstCellEmpty = cIdx === 0 && isCellEmpty;
+                                            const shouldAddNbsp = isCellEmpty && !isFirstCellEmpty;
+
+                                            // Override column style for empty first column
+                                            const finalColumnStyle = isFirstCellEmpty
+                                                ? { ...columnStyle, width: '0', padding: '0' }
+                                                : columnStyle;
+
                                             return (
                                                 <td
                                                     key={cIdx}
                                                     className={`py-3 px-3 align-top break-words ${tokenClass}`}
-                                                    style={{ whiteSpace: 'pre-wrap' }}
+                                                    style={finalColumnStyle}
                                                 >
-                                                    <Text text={normalized} mounted={mounted} />
+                                                    {shouldAddNbsp ? (
+                                                        <>&nbsp;</>
+                                                    ) : isFirstCellEmpty ? (
+                                                        <></>
+                                                    ) : (
+                                                        <Text text={filteredContent} mounted={mounted} />
+                                                    )}
                                                 </td>
                                             );
                                         })}
@@ -621,7 +699,7 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
             }
             return wrapGrid(
                 <div
-                    className="flex flex-col md:grid gap-8 w-full items-start"
+                    className="flex flex-col md:grid gap-4 w-full items-start"
                     style={{
                         gridTemplateColumns: childCount === 2 ? 'auto 1fr' : `repeat(${childCount}, 1fr)`
                     }}

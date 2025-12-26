@@ -166,6 +166,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                         title={title}
                         uniqueKey={activeSection}
                         onWheel={handleWheel}
+                        contentPaddingClass="pt-0"
                     />
                 }
             >
@@ -178,22 +179,7 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                     {/* Sticky Container Wrapper (Matches AboutPresentation structure) */}
                     <div className="sticky top-0 h-[calc(100vh-80px)] w-full pointer-events-none z-30">
                         {/* Sticky Number (Reverted to 384px as requested) */}
-                        <div className={`hidden min-[1650px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 z-50 pointer-events-none ${activeSection !== 'reading' ? 'opacity-0' : 'opacity-100'}`}
-                            style={{ top: '384px' }}
-                        >
-                            <AnimatePresence mode="wait">
-                                <motion.span
-                                    key="01"
-                                    initial={{ y: '100%' }}
-                                    animate={{ y: 0 }}
-                                    exit={{ y: '-100%' }}
-                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                    className="text-7xl font-bold font-korean text-[#2A4458] block leading-none"
-                                >
-                                    01
-                                </motion.span>
-                            </AnimatePresence>
-                        </div>
+
                     </div>
 
                     {/* Content Body (Relative Sibling) */}

@@ -201,7 +201,9 @@ export const getAboutContent = async () => {
                 if (headingIndex !== -1) {
                     const headBlock = processedBlocks[headingIndex];
                     heading = headBlock.heading_1?.rich_text?.[0]?.plain_text || '';
-                    processedBlocks.splice(headingIndex, 1);
+                    if (processedBlocks.length > 1) {
+                        processedBlocks.splice(headingIndex, 1);
+                    }
                 }
 
                 // Extract table_type for layout customization
@@ -223,13 +225,6 @@ export const getAboutContent = async () => {
                     showRightPanelMobile,
                     showRightPanelMobile,
                     tableType, // Type 1, 2, or 3 for table layout
-                    propertyKeys: Object.keys(props),
-                    debug: {
-                        versePropRaw: verseProp,
-                        rightPanelTypeRaw: rawRightPanelType,
-                        verseEntryKey: verseEntry ? verseEntry[0] : 'not found',
-                        tableTypeRaw: tableTypeProp
-                    }
                 };
             } catch (error) {
                 console.error(`[getAboutContent] Error processing section ${page.id}:`, error);
@@ -253,15 +248,11 @@ export const getAboutContent = async () => {
             // Also check for page content if it's a page type
             const hasPageContent = s.rightPanelType === 'page' && s.pageContent && s.pageContent.length > 0;
 
-            // Check for map coordinates if it's a map type (using content to find token)
-            // But usually map sections have content too. If map token is in content, hasGridContent might be true?
-            // Actually map token is text, so rich_text > 0.
+            // Check for heading - sections with heading should be kept even if content is empty
+            const hasHeading = s.heading && s.heading.trim().length > 0;
 
-            // Keep section if it has meaningful grid content OR page content
-            // We ignore 'verse' type without body content? 
-            // If the user says "Left body is empty", then we need left content.
-
-            return hasGridContent || hasPageContent;
+            // Keep section if it has meaningful grid content OR page content OR heading
+            return hasGridContent || hasPageContent || hasHeading;
         });
 
         // console.log(`[getAboutContent] Filtered ${sections.length} -> ${validSections.length} sections.`);

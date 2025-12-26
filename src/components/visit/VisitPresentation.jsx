@@ -136,6 +136,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 title={section.title}
                 uniqueKey={section.id}
                 contentPaddingClass="pt-32"
+                sectionIndex={activeIndex}
             />
         );
     };
@@ -201,14 +202,22 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                         {/* We offset content to account for the fixed elements if needed */}
                         <div className="relative w-full">
                             {sections.map((section, index) => {
+                                const processedBlocks = groupGalleryBlocks(section.content);
+                                const isLong = (section.content?.length || 0) > 6;
+
+
                                 return (
                                     <section
                                         key={section.id}
                                         ref={el => sectionRefs.current[index] = el}
-                                        className="w-full h-screen snap-start relative overflow-y-auto no-scrollbar"
+                                        className={
+                                            isLong
+                                                ? "w-full h-screen snap-start relative overflow-y-auto no-scrollbar"
+                                                : "w-full h-screen snap-start relative overflow-hidden flex flex-col"
+                                        }
                                     >
                                         <div className={`w-full max-w-[50%] ml-0 h-full relative border-r border-transparent`}>
-                                            <div className="w-full min-h-full flex flex-col items-center justify-center pt-32">
+                                            <div className={`w-full min-h-full flex flex-col items-center ${index === 0 ? 'justify-start pt-64' : 'justify-center pt-32'}`}>
                                                 {/* Adjusted Width inside Left Panel */}
                                                 <div className={`w-full relative ${hasWideContent(section.content) ? 'max-w-[80%] xl:max-w-[70%]' : 'max-w-lg'}`}>
 
@@ -227,7 +236,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                                     {/* Content Body */}
                                                     <div className="w-full">
                                                         <TableAlignmentProvider blocks={section.content}>
-                                                            {groupGalleryBlocks(section.content).map((block) => {
+                                                            {processedBlocks.map((block) => {
                                                                 if (block.type === 'paragraph' && block.paragraph?.rich_text) {
                                                                     const plainText = block.paragraph.rich_text.map(t => t.plain_text).join('');
                                                                     const token = extractMapToken(plainText);

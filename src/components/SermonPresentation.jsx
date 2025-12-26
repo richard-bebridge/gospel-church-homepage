@@ -261,7 +261,7 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         title={sermon.title} // Used for ghost alignment
                         titleClassName={CURRENT_TEXT.page_title_ko}
                         paddingTopClass="pt-[96px]"
-                        contentPaddingClass="pt-[384px]"
+                        contentPaddingClass="pt-0"
                         uniqueKey={activeSection}
                         onWheel={handleWheel}
                     />

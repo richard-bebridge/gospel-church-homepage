@@ -23,14 +23,16 @@ export const RightPanelController = ({
     paddingTopClass = "pt-24",
     contentPaddingClass = "pt-96",
     uniqueKey = "default",
+    sectionIndex = 0, // New prop for section index
     onWheel // New prop
 }) => {
     const { desktopBodyClass, desktopVerseClass } = useFontScale();
+    const interactionClass = isVisible ? 'pointer-events-auto' : 'pointer-events-none';
 
     // Dynamic container width - Standardized to avoid layout shifts
     const getContainerClass = (baseClasses, isWide = false) => {
-        // Use max-w-lg for text-only content, max-w-[720px] for tables/grids
-        const widthClass = isWide ? 'max-w-[720px]' : 'max-w-lg';
+        // Use max-w-lg for text-only content, max-w-[840px] for tables/grids
+        const widthClass = isWide ? 'max-w-[840px]' : 'max-w-lg';
         return `${baseClasses} w-full ${widthClass} px-8 mx-auto`;
     };
 
@@ -62,7 +64,7 @@ export const RightPanelController = ({
                 {(mode === 'scripture' || mode === 'verse') && (
                     <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center h-full pointer-events-none`}>
                         <div
-                            className={`w-full max-h-full ${contentPaddingClass} overflow-hidden pointer-events-auto`}
+                            className={`w-full max-h-full ${contentPaddingClass} overflow-hidden ${interactionClass}`}
                         >
                             {data && data.length > 0 ? (
                                 <VerseList
@@ -93,9 +95,9 @@ export const RightPanelController = ({
                             className="w-full h-full border-l border-[#2A4458]/10 pt-0 pointer-events-none flex flex-col"
                         >
                             <div
-                                className="w-full h-full overflow-y-auto no-scrollbar pointer-events-auto"
+                                className={`w-full h-full overflow-y-auto no-scrollbar ${interactionClass} flex flex-col`}
                             >
-                                <div className={getContainerClass(`min-h-full flex flex-col justify-center pointer-events-auto ${hasWideContent(data) ? 'p-8 lg:p-16' : 'px-6'}`, hasWideContent(data))}>
+                                <div className={getContainerClass(`flex flex-col my-auto ${interactionClass} ${hasWideContent(data) ? 'p-8 lg:p-16' : 'px-6'}`, hasWideContent(data))}>
                                     <div className={`prose prose-lg max-w-none font-korean text-gray-800 w-full ${!hasWideContent(data) ? 'text-center' : ''}`}>
                                         <TableAlignmentProvider blocks={data}>
                                             {data.map(block => (
@@ -122,7 +124,7 @@ export const RightPanelController = ({
                             className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center px-8 lg:px-16 overflow-hidden pointer-events-none"
                         >
                             <div
-                                className="relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl pointer-events-auto"
+                                className={`relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl ${interactionClass}`}
                             >
                                 <Image
                                     src={data}
@@ -141,7 +143,7 @@ export const RightPanelController = ({
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -30 }}
                             transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-                            className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center pointer-events-auto"
+                            className={`w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center ${interactionClass}`}
                         >
                             <RightPanelMap
                                 x={data.x}

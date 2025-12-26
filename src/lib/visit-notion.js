@@ -137,7 +137,9 @@ export const getVisitContent = async () => {
                 if (headingIndex !== -1) {
                     const headBlock = processedBlocks[headingIndex];
                     heading = headBlock.heading_1?.rich_text?.[0]?.plain_text || '';
-                    processedBlocks.splice(headingIndex, 1);
+                    if (processedBlocks.length > 1) {
+                        processedBlocks.splice(headingIndex, 1);
+                    }
                 }
 
                 return {
@@ -152,8 +154,7 @@ export const getVisitContent = async () => {
                     relatedPageId,
                     pageContent,
                     scriptureTags,
-                    showRightPanelMobile,
-                    propertyKeys: Object.keys(props)
+                    showRightPanelMobile
                 };
             } catch (sectionError) {
                 console.error(`[getVisitContent] Error processing section ${page.id}:`, sectionError);
