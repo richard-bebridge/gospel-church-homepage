@@ -63,6 +63,9 @@ export const getAboutContent = async () => {
                 const mobileProp = findProp('Mobile') || findProp('Mobile View') || findProp('mobile');
                 const showRightPanelMobile = mobileProp?.checkbox || false;
 
+                // Extract sort index
+                const sortIndex = findProp('index')?.number || 999;
+
                 // Normalize Right Panel Type
                 const rawRightPanelType = rightPanelProp?.select?.name || rightPanelProp?.multi_select?.[0]?.name || 'none';
                 const rightPanelType = rawRightPanelType.toLowerCase().trim();
@@ -225,6 +228,7 @@ export const getAboutContent = async () => {
                     showRightPanelMobile,
                     showRightPanelMobile,
                     tableType, // Type 1, 2, or 3 for table layout
+                    sortIndex,
                 };
             } catch (error) {
                 console.error(`[getAboutContent] Error processing section ${page.id}:`, error);
@@ -254,6 +258,9 @@ export const getAboutContent = async () => {
             // Keep section if it has meaningful grid content OR page content OR heading
             return hasGridContent || hasPageContent || hasHeading;
         });
+
+        // Sort by index
+        validSections.sort((a, b) => a.sortIndex - b.sortIndex);
 
         // console.log(`[getAboutContent] Filtered ${sections.length} -> ${validSections.length} sections.`);
         return validSections;
