@@ -204,6 +204,10 @@ export const getAboutContent = async () => {
                     processedBlocks.splice(headingIndex, 1);
                 }
 
+                // Extract table_type for layout customization
+                const tableTypeProp = findProp('table_type') || findProp('table_t');
+                const tableType = tableTypeProp?.number || null;
+
                 return {
                     id,
                     title, // e.g. "Identity" (Small Label)
@@ -218,11 +222,13 @@ export const getAboutContent = async () => {
                     scriptureTags,
                     showRightPanelMobile,
                     showRightPanelMobile,
+                    tableType, // Type 1, 2, or 3 for table layout
                     propertyKeys: Object.keys(props),
                     debug: {
                         versePropRaw: verseProp,
                         rightPanelTypeRaw: rawRightPanelType,
-                        verseEntryKey: verseEntry ? verseEntry[0] : 'not found'
+                        verseEntryKey: verseEntry ? verseEntry[0] : 'not found',
+                        tableTypeRaw: tableTypeProp
                     }
                 };
             } catch (error) {
@@ -231,8 +237,34 @@ export const getAboutContent = async () => {
             }
         }));
 
-        const validSections = sections.filter(s => s !== null);
-        // console.log(`[getAboutContent] Successfully processed ${validSections.length} sections.`);
+        const validSections = sections.filter(s => {
+            if (!s) return false;
+
+            // Check if content has at least one non-empty block
+            const hasGridContent = s.content && s.content.some(block => {
+                // If it's a paragraph, ensure it has text
+                if (block.type === 'paragraph') {
+                    return block.paragraph?.rich_text?.length > 0;
+                }
+                // Other blocks (headings, images, etc.) count as content
+                return true;
+            });
+
+            // Also check for page content if it's a page type
+            const hasPageContent = s.rightPanelType === 'page' && s.pageContent && s.pageContent.length > 0;
+
+            // Check for map coordinates if it's a map type (using content to find token)
+            // But usually map sections have content too. If map token is in content, hasGridContent might be true?
+            // Actually map token is text, so rich_text > 0.
+
+            // Keep section if it has meaningful grid content OR page content
+            // We ignore 'verse' type without body content? 
+            // If the user says "Left body is empty", then we need left content.
+
+            return hasGridContent || hasPageContent;
+        });
+
+        // console.log(`[getAboutContent] Filtered ${sections.length} -> ${validSections.length} sections.`);
         return validSections;
     } catch (error) {
         console.error('Error fetching About content:', error);

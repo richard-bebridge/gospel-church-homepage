@@ -161,7 +161,24 @@ export const getVisitContent = async () => {
             }
         }));
 
-        const validSections = sections.filter(s => s !== null);
+        const validSections = sections.filter(s => {
+            if (!s) return false;
+
+            // Check if content has at least one non-empty block
+            const hasGridContent = s.content && s.content.some(block => {
+                // If it's a paragraph, ensure it has text
+                if (block.type === 'paragraph') {
+                    return block.paragraph?.rich_text?.length > 0;
+                }
+                // Other blocks (headings, images, etc.) count as content
+                return true;
+            });
+
+            // Also check for page content if it's a page type
+            const hasPageContent = s.rightPanelType === 'page' && s.pageContent && s.pageContent.length > 0;
+
+            return hasGridContent || hasPageContent;
+        });
         // console.log(`[getVisitContent] Successfully processed ${validSections.length} sections (filtered from ${results.length}).`);
         return validSections;
     } catch (error) {

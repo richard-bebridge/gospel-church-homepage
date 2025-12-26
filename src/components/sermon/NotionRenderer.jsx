@@ -9,71 +9,135 @@ const RECURSION_LIMIT = 15;
 
 // Context to synchronize table column alignments across a section/panel
 const TableAlignmentContext = createContext(null);
+/**
+ * Generate <colgroup> element based on table type
+ * @param {number} columnCount - Number of columns in the table
+ * @param {number} tableType - 1 (Equal), 2 (First Auto + Rest Equal), 3 (All Auto)
+ * @returns {JSX.Element|null} - <colgroup> element or null
+ */
+const buildTableColGroup = (columnCount, tableType) => {
+    if (!columnCount) return null;
 
-export const TableAlignmentProvider = ({ children, blocks }) => {
-    const gridConfig = useMemo(() => {
-        if (!blocks || blocks.length === 0) return { active: false };
+    const columns = Array.from({ length: columnCount });
 
-        const getDeepMaxTableWidth = (block) => {
-            let max = 0;
-            if (block.type === 'table') {
-                max = block.table?.table_width || 0;
-            }
-            if (block.children) {
-                block.children.forEach(child => {
-                    max = Math.max(max, getDeepMaxTableWidth(child));
-                });
-            }
-            return max;
+    // Type 1: Equal Distribution
+    if (tableType === 1) {
+        const widthPercent = 100 / columnCount;
+        return (
+            <colgroup>
+                {columns.map((_, idx) => (
+                    <col key={idx} style={{ width: `${widthPercent}%` }} />
+                ))}
+            </colgroup>
+        );
+    }
+
+    // Type 2: First Auto + Rest Equal
+    if (tableType === 2) {
+        const restCount = columnCount - 1;
+        const restWidthPercent = restCount > 0 ? 100 / restCount : 100;
+        return (
+            <colgroup>
+                {columns.map((_, idx) => (
+                    <col
+                        key={idx}
+                        style={{ width: idx === 0 ? 'auto' : `${restWidthPercent}%` }}
+                    />
+                ))}
+            </colgroup>
+        );
+    }
+
+    // Type 3: All Auto (Content-Based)
+    if (tableType === 3) {
+        return (
+            <colgroup>
+                {columns.map((_, idx) => (
+                    <col key={idx} style={{ width: 'auto', minWidth: '120px' }} />
+                ))}
+            </colgroup>
+        );
+    }
+
+    // Default: Type 1 behavior
+    return buildTableColGroup(columnCount, 1);
+};
+
+export const TableAlignmentProvider = ({ children, blocks, sectionType }) => {
+    // Scan all column_lists to find longest label AND table first column for alignment
+    const contextValue = useMemo(() => {
+        let maxLabelLength = 0;
+        let maxTableFirstColLength = 0;
+
+        // Helper to extract FULL text from rich_text (for labels)
+        const extractFullText = (richText) => {
+            if (!richText || !Array.isArray(richText)) return '';
+            return richText.map(rt => rt.plain_text || rt.text?.content || '').join('');
         };
 
-        let maxC1 = 0;
-        let maxC2 = 0;
-        blocks.forEach(block => {
+        // Helper to extract LONGEST LINE from rich_text (for table cells with line breaks)
+        const extractLongestLine = (richText) => {
+            const fullText = extractFullText(richText);
+            const lines = fullText.split(/[\n\r]/);
+            return lines.reduce((a, b) => a.length > b.length ? a : b, '');
+        };
+
+        // Helper to scan table for first column lengths
+        const scanTableFirstCol = (tableBlock) => {
+            if (tableBlock.type !== 'table') return;
+            tableBlock.children?.forEach(row => {
+                const firstCell = row.table_row?.cells?.[0];
+                if (firstCell) {
+                    // Use longest line for table cells (they may have line breaks)
+                    const cellText = extractLongestLine(firstCell);
+                    maxTableFirstColLength = Math.max(maxTableFirstColLength, cellText.length);
+                }
+            });
+        };
+
+        // Scan blocks for column_lists and tables
+        blocks?.forEach(block => {
             if (block.type === 'column_list' && block.children?.length >= 2) {
-                maxC1 = Math.max(maxC1, 1);
-                // Standard 2-column layout: Col 1 is Label, Col 2 is Content
-                maxC2 = Math.max(maxC2, getDeepMaxTableWidth(block.children[1]));
+                // First column contains the label - use FULL text
+                const firstColumn = block.children[0];
+                if (firstColumn?.children?.[0]) {
+                    const labelBlock = firstColumn.children[0];
+                    const richText = labelBlock[labelBlock.type]?.rich_text;
+                    const labelText = extractFullText(richText);
+                    maxLabelLength = Math.max(maxLabelLength, labelText.length);
+                }
+
+                // Second column may contain tables
+                const secondColumn = block.children[1];
+                secondColumn?.children?.forEach(child => {
+                    scanTableFirstCol(child);
+                });
             } else if (block.type === 'table') {
-                maxC2 = Math.max(maxC2, getDeepMaxTableWidth(block));
+                scanTableFirstCol(block);
             }
         });
 
-        // Only activate grid alignment if we have column lists (c1) to align with.
-        // OR if we have standalone tables > 2 cols, we treat them as grid to match the look (Visual Consistency)
-        if (maxC1 === 0) {
-            if (maxC2 >= 2) {
-                // Standalone Table Mode: Treat Col 1 as Label
-                const c1 = 1;
-                const c2 = maxC2 - 1;
-                const total = c1 + c2;
-                // Use the same template as Column List layout
-                const template = `fit-content(480px) repeat(${c2}, 1fr)`;
-                return { active: true, c1, c2, maxCols: total, template };
-            }
-            return { active: false };
-        }
+        // Calculate widths
+        const labelWidth = maxLabelLength > 0
+            ? Math.max(100, maxLabelLength * 20 + 16)
+            : null;
 
-        // c1 is label track, c2 are content tracks
-        const c1 = maxC1 || 1;
-        const c2 = Math.max(maxC2, 1);
-        const total = c1 + c2;
 
-        const template = `fit-content(480px) repeat(${c2}, 1fr)`;
+        // Table first column: ~11px per character + 24px buffer for link icons
+        const tableFirstColWidth = maxTableFirstColLength > 0
+            ? Math.max(80, maxTableFirstColLength * 11 + 24)
+            : null;
 
-        return { active: true, c1, c2, maxCols: total, template };
-    }, [blocks]);
+        return {
+            sectionType: sectionType || 1,
+            labelWidth,           // Shared label width for all column_lists
+            tableFirstColWidth    // Shared first column width for all tables
+        };
+    }, [blocks, sectionType]);
 
     return (
-        <TableAlignmentContext.Provider value={gridConfig}>
-            <div
-                className="grid w-full items-start"
-                style={{
-                    gridTemplateColumns: gridConfig.active ? gridConfig.template : 'none',
-                    columnGap: '2rem',
-                    rowGap: '0px'
-                }}
-            >
+        <TableAlignmentContext.Provider value={contextValue}>
+            <div className="w-full">
                 {children}
             </div>
         </TableAlignmentContext.Provider>
@@ -218,105 +282,55 @@ const mergeRichTextIfRefPresent = (richText) => {
     return richText;
 };
 
+// Normalize Notion table cell rich_text so manual line breaks stay vertical instead of flowing into next grid column.
+const normalizeCellRichText = (cellRichText = []) => {
+    if (!Array.isArray(cellRichText) || cellRichText.length === 0) return cellRichText || [];
+
+    return cellRichText.map((node, idx) => {
+        if (!node?.text) return node;
+
+        const originalContent = node.text.content ?? node.plain_text ?? '';
+        const alreadyHasBreak = /\n\s*$/.test(originalContent);
+        const shouldAppendBreak = idx < cellRichText.length - 1 && !alreadyHasBreak;
+
+        if (!shouldAppendBreak) {
+            return node;
+        }
+
+        const nextContent = `${originalContent}\n`;
+        return {
+            ...node,
+            text: { ...node.text, content: nextContent },
+            plain_text: (node.plain_text ?? originalContent) + '\n'
+        };
+    });
+};
+
 // Sub-component for rendering enriched text
 const Text = ({ text, mounted = true }) => {
     if (!text || !mounted) return null;
 
-    // Pre-process: Merge nodes if needed to fix ** formatting
-    const processedText = mergeRichTextIfRefPresent(text);
+    // 1. Merge all rich_text nodes into a single string to handle "split" newlines
+    // This allows us to detect \n that might be at the end of one node or start of another
+    // We must PRESERVE metadata (bold, link, color) so we map them to a structure first.
+    // However, simply merging loses the styling boundaries.
 
-    return processedText.map((value, i) => {
+    // BETTER STRATEGY: 
+    // Notion usually provides \n inside the text content. 
+    // If the user says "nodes are split", it implies [ {text:"Line1"}, {text:"Line2"} ].
+    // If so, we can simply render them adjacently. <br> is only needed if \n is present.
+    // BUT if the user wants implicit breaks between nodes, that's dangerous.
+
+    // Let's assume the user is right that \n is present as a character or we need to respect whitespace.
+    // The previous implementation processed each node individually.
+
+    return text.map((value, i) => {
         const {
             annotations: { bold, code, color, italic, strikethrough, underline },
             text,
         } = value;
 
-
-        // Token Parsing: $$filename.png [::size] [::scale(n)]
-        // Example: $$logo.png::32px::scale(1.2)
-        // We split by "::" to handle flexible ordering/absence
-        if (text.content.trim().startsWith('$$')) {
-            const parts = text.content.split('::').map(s => s.trim());
-            const firstPart = parts[0];
-            const tokenMatch = firstPart.match(/^\s*\$\$\s*(.+?)\s*$/);
-
-            if (tokenMatch) {
-                const filename = tokenMatch[1];
-                let sizeParam = null;
-                let scaleParam = null;
-
-                // Parse remaining parts
-                for (let j = 1; j < parts.length; j++) {
-                    const part = parts[j];
-                    if (part.startsWith('scale(')) {
-                        scaleParam = part;
-                    } else {
-                        // Assume it's size if not scale
-                        sizeParam = part;
-                    }
-                }
-
-                const token = (
-                    <InlineAssetToken
-                        key={i}
-                        filename={filename}
-                        sizeParam={sizeParam}
-                        scaleParam={scaleParam}
-                    />
-                );
-
-                if (text.link) {
-                    return (
-                        <a
-                            key={i}
-                            href={text.link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center hover:opacity-80 transition-opacity"
-                        >
-                            {token}
-                        </a>
-                    );
-                }
-
-                return token;
-            }
-        }
-
-        // Custom Reference Parsing: **text** -> Small Bold Reference
-        // Relaxed regex to capture content including newlines
-        const refMatch = text.content.match(/\*\*([\s\S]*?)\*\*/);
-        if (refMatch) {
-            const parts = text.content.split(/(\*\*[\s\S]*?\*\*)/g);
-            const refContent = parts.map((part, pIdx) => {
-                if (part.startsWith('**') && part.endsWith('**')) {
-                    const content = part.slice(2, -2);
-                    return (
-                        <span key={`${i}-${pIdx}`} className="font-bold text-[0.85em] text-[#2A4458] align-top">
-                            * {fastNormalize(content)}
-                        </span>
-                    );
-                }
-                return <span key={`${i}-${pIdx}`}>{fastNormalize(part)}</span>;
-            });
-
-            if (text.link) {
-                return (
-                    <a
-                        key={i}
-                        href={text.link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`group font-bold hover:opacity-80 transition-opacity`}
-                    >
-                        {refContent}
-                    </a>
-                );
-            }
-            return <span key={i}>{refContent}</span>;
-        }
-
-        // Default Rich Text Rendering
+        // Custom styling classes
         const className = [
             (bold || text.link) ? "font-bold" : "",
             code ? "bg-gray-100 p-1 rounded font-mono text-sm" : "",
@@ -327,51 +341,73 @@ const Text = ({ text, mounted = true }) => {
 
         const style = color !== "default" ? { color } : {};
 
-        // Helper to Highlight Keywords (Seek, Stand, Transform, Radiate)
-        // Enforces Montserrat Bold (font-english font-bold)
-        const renderContent = (content) => {
-            const regex = /\b(seek|stand|transform|radiate)\b/gi;
-            const parts = content.split(regex);
+        // CONTENT PROCESSING
+        // 1. Normalize
+        let content = fastNormalize(text.content);
 
-            if (parts.length === 1) return fastNormalize(content);
+        // 2. Handle literal \n if present (User report suggests this might happen)
+        content = content.replace(/\\n/g, '\n');
 
-            return parts.map((part, idx) => {
-                if (part.match(regex)) {
-                    return (
-                        <span key={idx} className="font-english font-bold">
-                            {part}
-                        </span>
-                    );
-                }
-                return fastNormalize(part);
-            });
-        };
-
-        if (text.link || value.href) {
-            const url = text.link?.url || value.href;
-            return (
-                <a
-                    key={i}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`group inline-flex items-center gap-1 ${CURRENT_TEXT.link_text} ${className} whitespace-nowrap`}
-                    style={style}
-                >
-                    <span className={className}>{renderContent(text.content)}</span>
-                    <LinkIcon />
-                </a>
-            );
-        }
+        // 3. Highlight Logic (Refactored to support newlines)
+        // We split by newline FIRST, then by keyword.
+        // This ensures <br/> is inserted correctly.
+        const lines = content.split('\n');
 
         return (
-            <span
-                key={i}
-                className={className}
-                style={style}
-            >
-                {renderContent(text.content)}
-            </span>
+            <React.Fragment key={i}>
+                {lines.map((line, lineIdx) => {
+                    // Keyword Highlighting in this line
+                    const HIGHLIGHT = /\b(seek|stand|transform|radiate)\b/gi;
+                    const parts = line.split(HIGHLIGHT);
+
+                    const renderedLine = parts.map((part, pIdx) => {
+                        if (part.match(HIGHLIGHT)) {
+                            return (
+                                <span key={`hl-${i}-${lineIdx}-${pIdx}`} className={`font-english font-bold ${className}`} style={style}>
+                                    {part}
+                                </span>
+                            );
+                        }
+
+                        // Handling Links (if the whole node is a link)
+                        if (text.link || value.href) {
+                            const url = text.link?.url || value.href;
+                            // Remove existing arrow characters from Notion text to prevent duplicates
+                            const cleanPart = part.replace(/[\u2197\u2B08\u2934\u21D7↗➚⬈]/g, '').trim();
+
+                            // Skip empty parts entirely (prevents duplicate icons)
+                            if (!cleanPart) return null;
+
+                            return (
+                                <a
+                                    key={`lnk-${i}-${lineIdx}-${pIdx}`}
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`group inline-flex items-center gap-1 ${CURRENT_TEXT.link_text} ${className} whitespace-pre-wrap`}
+                                    style={style}
+                                >
+                                    {cleanPart}
+                                    <LinkIcon />
+                                </a>
+                            );
+                        }
+
+                        return (
+                            <span key={`txt-${i}-${lineIdx}-${pIdx}`} className={className} style={style}>
+                                {part}
+                            </span>
+                        );
+                    });
+
+                    return (
+                        <React.Fragment key={`line-${i}-${lineIdx}`}>
+                            {renderedLine}
+                            {lineIdx < lines.length - 1 && <br />}
+                        </React.Fragment>
+                    );
+                })}
+            </React.Fragment>
         );
     });
 };
@@ -384,79 +420,8 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
     const { type, [type]: value } = block;
     const gridConfig = useContext(TableAlignmentContext);
 
-    // Helper to wrap blocks in grid span
-    const wrapGrid = (content, className = '') => {
-        if (!gridConfig?.active) return content;
-
-        // Standalone blocks (level 0) span the full width
-        if (level === 0) {
-            return (
-                <div className={`col-span-full ${className}`}>
-                    {content}
-                </div>
-            );
-        }
-
-        // Column blocks (level 1) occupy their allocated tracks
-        if (type === 'column' && level === 1) {
-            let start = 1;
-            let span = 1;
-
-            if (columnIndex === 0) {
-                start = 1;
-                span = gridConfig.c1;
-            } else if (columnIndex === 1) {
-                start = gridConfig.c1 + 1;
-                span = gridConfig.c2;
-            }
-
-            // [MAINTENANCE] BL01: Baseline Alignment Logic
-            // This pt-3 (12px) determines the starting Y-position of all content within columns.
-            // If you feel labels and content are misaligned, ensure this matches the padding on the first block.
-            const isLabel = columnIndex === 0;
-            const topPaddingClass = 'pt-3';
-
-            // Custom Border Color (e.g. "Parking" section in Visit Page)
-            // Default to gray-200. Inherit if provided by column_list
-            let borderColor = inheritedBorderColor || '#E5E7EB';
-            const firstChild = block.children?.[0];
-            const firstRichText = firstChild?.[firstChild.type]?.rich_text;
-            if (isLabel && firstRichText?.[0]?.annotations?.color) {
-                const colorToken = firstRichText[0].annotations.color;
-                if (colorToken.includes('red') || colorToken.includes('orange')) {
-                    borderColor = '#E86452'; // GC Accent Red/Orange
-                } else if (colorToken.includes('blue')) {
-                    borderColor = '#2A4458'; // GC Dark Blue
-                }
-            }
-
-            return (
-                <div
-                    className={`${className} border-t ${topPaddingClass} ${isLabel ? 'font-bold' : ''}`}
-                    style={{
-                        gridColumn: `${start} / span ${span}`,
-                        borderTopColor: borderColor
-                    }}
-                >
-                    {block.children?.map((child, idx) => (
-                        <NotionRenderer
-                            key={child.id}
-                            block={child}
-                            level={level + 1}
-                            bodyClass={bodyClass}
-                            columnIndex={columnIndex}
-                            isFirst={isFirst && idx === 0}
-                            isLast={idx === block.children.length - 1}
-                            inheritedBorderColor={inheritedBorderColor}
-                            mounted={mounted}
-                        />
-                    ))}
-                </div>
-            );
-        }
-
-        return content;
-    };
+    // Helper - just returns content as-is (grid is now handled per-block in column_list)
+    const wrapGrid = (content, className = '') => content;
 
     // Allow table, table_row, columns, and text types for recursive rendering
     if (!value?.rich_text &&
@@ -553,88 +518,42 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
 
     switch (type) {
         case 'table': {
-            const rowCount = block.children?.length || 0;
             const firstRow = block.children?.[0];
-            const colCount = firstRow?.table_row?.cells?.length || 0;
+            const columnCount = firstRow?.table_row?.cells?.length || 0;
 
-            // If we have a shared grid context, use it
-            if (gridConfig?.active) {
+            // sectionType from context determines table style
+            const effectiveTableType = gridConfig?.sectionType || 1;
+
+
+            // TYPE 3: Flexbox horizontal layout for cells
+            if (effectiveTableType === 3) {
                 return (
-                    <div className="contents">
-                        {block.children?.map((child, idx) => (
-                            <NotionRenderer
-                                key={child.id}
-                                block={child}
-                                level={level + 1}
-                                bodyClass={bodyClass}
-                                columnIndex={columnIndex}
-                                isFirst={isFirst && idx === 0}
-                                isLast={isLast && idx === block.children.length - 1}
-                                mounted={mounted}
-                            />
-                        ))}
-                    </div>
-                );
-            }
-
-            // Fallback to legacy fixed column widths if no context
-            // Note: Added mb-8 for spacing at the end of tables
-            let colWidths = [];
-            if (colCount === 2) colWidths = ['w-[30%]', 'w-[70%]'];
-            else if (colCount === 3) colWidths = ['w-[20%]', 'w-[20%]', 'w-[60%]'];
-            else if (colCount === 4) colWidths = ['w-[15%]', 'w-[15%]', 'w-[15%]', 'w-[55%]'];
-
-            return (
-                <div className={`w-full overflow-x-auto ${gridConfig?.active ? 'mt-0' : 'mt-8'} mb-16`}>
-                    <table className="w-full border-collapse text-left border-t border-gray-200 table-fixed">
-                        {colWidths.length > 0 && (
-                            <colgroup>
-                                {colWidths.map((w, idx) => (
-                                    <col key={idx} className={w} />
-                                ))}
-                            </colgroup>
-                        )}
-                        <tbody>
-                            {block.children?.map((child) => (
-                                <NotionRenderer key={child.id} block={child} level={level + 1} bodyClass={bodyClass} mounted={mounted} />
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            );
-        }
-        case 'table_row': {
-            const cells = value.cells || [];
-            const cellCount = cells.length || 0;
-
-            if (gridConfig?.active) {
-                return (
-                    <div className="contents">
-                        {cells.map((cell, cIdx) => {
-                            const _isLastItem = cIdx === cellCount - 1;
-                            const isMeta = cIdx > 0 && !_isLastItem;
-
-                            // Adjust padding: pb-3 for first, py-3 for middle, pb-8 for last row if section ends
-                            const hasBorder = !isFirst;
-                            const paddingClass = isFirst ? 'pb-3' : (isLast ? 'pt-3 pb-8' : 'py-3');
-                            const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
+                    <div className="mt-2 mb-4 w-full overflow-hidden">
+                        {block.children?.map((row, rIdx) => {
+                            const cells = row.table_row?.cells || [];
 
                             return (
                                 <div
-                                    key={cIdx}
-                                    className={`${hasBorder ? 'border-t' : ''} border-gray-200 ${paddingClass} ${tokenClass}`}
-                                    style={{
-                                        gridColumnStart: (columnIndex === 1 ? gridConfig.c1 : 0) + cIdx + 1,
-                                        gridColumnEnd: 'span 1'
-                                    }}
+                                    key={row.id}
+                                    className="flex flex-wrap gap-x-6 gap-y-1"
                                 >
-                                    {_isLastItem ? (
-                                        <div className="flex justify-start">
-                                            <Text text={cell} mounted={mounted} />
-                                        </div>
-                                    ) : (
-                                        <Text text={cell} mounted={mounted} />
-                                    )}
+                                    {cells.map((cell, cIdx) => {
+                                        const normalized = normalizeCellRichText(cell);
+                                        const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
+                                        const borderClass = rIdx === 0 ? 'border-t border-gray-200' : '';
+
+                                        return (
+                                            <div
+                                                key={cIdx}
+                                                className={`py-3 ${tokenClass} ${borderClass}`}
+                                                style={{
+                                                    whiteSpace: 'nowrap'
+                                                }}
+                                            >
+                                                <Text text={normalized} mounted={mounted} />
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             );
                         })}
@@ -642,16 +561,68 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                 );
             }
 
+            // TYPE 1 & 2: Simple HTML table
+            // Use shared first column width for alignment if available
+            const firstColWidth = gridConfig?.tableFirstColWidth;
+
+            return (
+                <div className="overflow-x-auto mt-4 mb-8 w-full">
+                    <table className="table-auto w-full border-separate text-left" style={{ borderSpacing: '16px 0' }}>
+                        <tbody>
+                            {block.children?.map((row, rIdx) => {
+                                const cells = row.table_row?.cells || [];
+
+                                return (
+                                    <tr key={row.id}>
+                                        {cells.map((cell, cIdx) => {
+                                            const normalized = normalizeCellRichText(cell);
+                                            // First column: nowrap + shared width for alignment
+                                            const isFirstCol = cIdx === 0;
+                                            const whitespaceStyle = isFirstCol ? 'nowrap' : 'pre-wrap';
+                                            const tokenClass = isFirstCol ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
+                                            const borderClass = rIdx === 0 ? 'border-t border-gray-200' : '';
+
+                                            // Apply shared width to first column for alignment
+                                            const cellStyle = isFirstCol && firstColWidth
+                                                ? { whiteSpace: whitespaceStyle, width: `${firstColWidth}px`, minWidth: `${firstColWidth}px` }
+                                                : { whiteSpace: whitespaceStyle };
+
+                                            return (
+                                                <td
+                                                    key={cIdx}
+                                                    className={`py-3 align-top ${tokenClass} ${borderClass}`}
+                                                    style={cellStyle}
+                                                >
+                                                    <Text text={normalized} mounted={mounted} />
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+        case 'table_row': {
+            const cells = value.cells || [];
+
+            // table_row is only rendered within standard <table> elements
+            // Grid-based rendering is no longer used for tables
             return (
                 <tr className="border-t border-gray-200">
                     {cells.map((cell, cIdx) => {
-                        const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
+                        const normalizedCell = normalizeCellRichText(cell);
+                        const tokenClass = (cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell) + ' whitespace-pre-wrap';
+
                         return (
                             <td
                                 key={cIdx}
-                                className={tokenClass}
+                                className={`py-3 align-top ${tokenClass}`}
+                                style={{ whiteSpace: 'pre-wrap' }}
                             >
-                                <Text text={cell} mounted={mounted} />
+                                <Text text={normalizedCell} mounted={mounted} />
                             </td>
                         );
                     })}
@@ -744,68 +715,37 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
         case 'column_list': {
             const childCount = block.children?.length || 0;
 
-            // Pre-scan labels for color overrides to synchronize borders
-            let syncColor = null;
-            block.children?.forEach(col => {
-                const labelBlock = col.children?.[0];
-                if (labelBlock) {
-                    const rt = labelBlock[labelBlock.type]?.rich_text;
-                    if (rt?.[0]?.annotations?.color) {
-                        const c = rt[0].annotations.color;
-                        if (c.includes('red') || c.includes('orange')) syncColor = '#E86452';
-                        else if (c.includes('blue')) syncColor = '#2A4458';
-                    }
-                }
-            });
+            // Use shared labelWidth from context for consistent alignment
+            // If labelWidth is set, use it; otherwise fall back to max-content
+            const labelColWidth = gridConfig?.labelWidth
+                ? `${gridConfig.labelWidth}px`
+                : 'max-content';
 
-            if (gridConfig?.active) {
-                return (
-                    <div className="contents">
-                        {block.children?.map((child, idx) => (
-                            <NotionRenderer
-                                key={child.id}
-                                block={child}
-                                level={level + 1}
-                                bodyClass={bodyClass}
-                                columnIndex={idx}
-                                inheritedBorderColor={syncColor}
-                                mounted={mounted}
-                            />
-                        ))}
-                    </div>
-                );
-            }
-            return wrapGrid(
+            return (
                 <div
-                    className="flex flex-col md:grid gap-8 w-full items-start"
+                    className="grid gap-6 w-full items-start mb-6"
                     style={{
-                        gridTemplateColumns: childCount === 2 ? 'auto 1fr' : `repeat(${childCount}, 1fr)`
+                        gridTemplateColumns: childCount === 2
+                            ? `${labelColWidth} 1fr`
+                            : `repeat(${childCount}, 1fr)`
                     }}
                 >
-                    {block.children?.map(child => (
-                        <NotionRenderer key={child.id} block={child} level={level + 1} bodyClass={bodyClass} />
+                    {block.children?.map((child, idx) => (
+                        <NotionRenderer
+                            key={child.id}
+                            block={child}
+                            level={level + 1}
+                            bodyClass={bodyClass}
+                            columnIndex={idx}
+                            mounted={mounted}
+                        />
                     ))}
-                </div>,
-                'mb-8'
+                </div>
             );
         }
         case 'column':
-            if (gridConfig?.active) {
-                return (
-                    <div className="contents [&>*:first-child]:mt-0">
-                        {block.children?.map(child => (
-                            <NotionRenderer
-                                key={child.id}
-                                block={child}
-                                level={level + 1}
-                                bodyClass={bodyClass}
-                                columnIndex={columnIndex}
-                                mounted={mounted}
-                            />
-                        ))}
-                    </div>
-                );
-            }
+            // Column renders its children within grid cell
+            // min-w-0 prevents content from overflowing grid column
             return (
                 <div className="w-full min-w-0 [&>*:first-child]:mt-0">
                     {block.children?.map(child => (
