@@ -7,14 +7,17 @@ export const useFontScale = () => {
 
     useEffect(() => {
         const savedScale = localStorage.getItem('fontScale');
-        if (savedScale === 'large' || savedScale === 'normal') {
+        if (savedScale === 'large' || savedScale === 'xl' || savedScale === 'normal') {
             setFontScale(savedScale);
         }
         setIsSettled(true);
     }, []);
 
     const toggleFontScale = () => {
-        const newScale = fontScale === 'normal' ? 'large' : 'normal';
+        let newScale = 'normal';
+        if (fontScale === 'normal') newScale = 'large';
+        else if (fontScale === 'large') newScale = 'xl';
+
         setIsSettled(false);
         setFontScale(newScale);
         localStorage.setItem('fontScale', newScale);

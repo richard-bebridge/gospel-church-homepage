@@ -3,31 +3,40 @@
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 // Helper to scale up token for 'large' mode (simple replacement for now)
+// Helper to scale up token for 'large' mode (simple replacement for now)
 const makeLarge = (tokenClass) => {
     // Replace typical size classes with larger ones manually, or just append 'text-xl' to override cascade
     return `${tokenClass} !text-xl !leading-loose`;
 };
 
+const makeExtraLarge = (tokenClass) => {
+    return `${tokenClass} !text-2xl !leading-loose`;
+};
+
 // Font Classes based on Scale
 export const bodyTextClasses = {
     normal: `${CURRENT_TEXT.body_ko_default} space-y-6 mb-12 whitespace-pre-wrap`,
-    large: `${makeLarge(CURRENT_TEXT.body_ko_default)} space-y-8 mb-12 whitespace-pre-wrap`
+    large: `${makeLarge(CURRENT_TEXT.body_ko_default)} space-y-8 mb-12 whitespace-pre-wrap`,
+    xl: `${makeExtraLarge(CURRENT_TEXT.body_ko_default)} space-y-10 mb-12 whitespace-pre-wrap`
 };
 
 export const verseTextClasses = {
     normal: `${CURRENT_TEXT.verse_text} mb-2`,
-    large: `${makeLarge(CURRENT_TEXT.verse_text)} mb-3`
+    large: `${makeLarge(CURRENT_TEXT.verse_text)} mb-3`,
+    xl: `${makeExtraLarge(CURRENT_TEXT.verse_text)} mb-4`
 };
 
 export const desktopBodyClasses = {
     normal: `${CURRENT_TEXT.body_ko_default} whitespace-pre-wrap`,
-    large: `${makeLarge(CURRENT_TEXT.body_ko_default)} whitespace-pre-wrap`
+    large: `${makeLarge(CURRENT_TEXT.body_ko_default)} whitespace-pre-wrap`,
+    xl: `${makeExtraLarge(CURRENT_TEXT.body_ko_default)} whitespace-pre-wrap`
 };
 
 export const desktopVerseClasses = {
     // Note: Desktop VerseList adds mb-4 externally
     normal: `${CURRENT_TEXT.verse_text}`,
-    large: `${makeLarge(CURRENT_TEXT.verse_text)}`
+    large: `${makeLarge(CURRENT_TEXT.verse_text)}`,
+    xl: `${makeExtraLarge(CURRENT_TEXT.verse_text)}`
 };
 
 // Layout
