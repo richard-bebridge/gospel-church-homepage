@@ -75,7 +75,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
                     const prevSermonPage = otherSermons[0];
                     try {
                         let contentPageId = prevSermonPage.id;
-                        const sermonRelation = prevSermonPage.properties?.['Sermon']?.relation;
+                        const sermonRelation = prevSermonPage.properties?.['주일예배 DB']?.relation;
                         if (sermonRelation && sermonRelation.length > 0) {
                             contentPageId = sermonRelation[0].id;
                         }
@@ -118,7 +118,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
 
                     messagesSummary.olderSermons = await Promise.all(olderSermonsSlice.map(async (s) => {
                         let title = s.properties?.Name?.title?.[0]?.plain_text || "Untitled";
-                        const sermonRelation = s.properties?.['Sermon']?.relation;
+                        const sermonRelation = s.properties?.['주일예배 DB']?.relation;
 
                         if (sermonRelation && sermonRelation.length > 0) {
                             try {

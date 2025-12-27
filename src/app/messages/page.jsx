@@ -40,7 +40,7 @@ export default async function MessagesPage() {
                 // 2. Logic to get Content Blocks (Hub -> Manuscript)
                 // Check if this page has a 'Sermon' relation
                 let contentPageId = page.id;
-                const sermonRelation = page.properties?.['Sermon']?.relation;
+                const sermonRelation = page.properties?.['주일예배 DB']?.relation;
                 if (sermonRelation && sermonRelation.length > 0) {
                     contentPageId = sermonRelation[0].id;
                 }
@@ -99,8 +99,11 @@ export default async function MessagesPage() {
     const sections = groupSections(blocks);
 
     // 3. Prepare Data for Presentation
+    const titleFromContent = contentPage?.properties?.Name?.title?.[0]?.plain_text;
+    const titleFromHub = page.properties?.Name?.title?.[0]?.plain_text;
+
     const sermonData = {
-        title: (contentPage?.properties?.Name?.title?.[0]?.plain_text) || (page.properties?.Name?.title?.[0]?.plain_text) || "Untitled Sermon",
+        title: titleFromContent || titleFromHub || "Untitled Sermon",
         date: page.properties?.Date?.date?.start || "",
         preacher: page.properties?.Preacher?.rich_text?.[0]?.plain_text || "",
         scripture: page.properties?.Scripture?.rich_text?.[0]?.plain_text || "",
