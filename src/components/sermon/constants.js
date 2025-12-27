@@ -2,15 +2,14 @@
 
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
-// Helper to scale up token for 'large' mode (simple replacement for now)
-// Helper to scale up token for 'large' mode (simple replacement for now)
+// Helper to scale up token for 'large' mode
+// Using explicit pixel values to override clamp() in base tokens
 const makeLarge = (tokenClass) => {
-    // Replace typical size classes with larger ones manually, or just append 'text-xl' to override cascade
-    return `${tokenClass} !text-xl !leading-loose`;
+    return `${tokenClass} !text-[24px] !leading-relaxed`;
 };
 
 const makeExtraLarge = (tokenClass) => {
-    return `${tokenClass} !text-2xl !leading-loose`;
+    return `${tokenClass} !text-[28px] !leading-relaxed`;
 };
 
 // Font Classes based on Scale

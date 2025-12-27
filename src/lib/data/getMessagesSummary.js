@@ -1,9 +1,9 @@
 import { getDatabase, getBlocks, getPage } from '../notion.js';
-import { getGospelLetters } from '../gospel-notion.js';
 import { flattenBlocks } from '../notion-utils.js';
 
-// Update signature to accept currentLetterId
-export const getMessagesSummary = async (currentSermonId, currentLetterId = null, databaseId = process.env.NOTION_SERMON_DB_ID) => {
+// Refactored to use Sunday_DB as hub
+// databaseId should be NOTION_SUNDAY_DB_ID
+export const getMessagesSummary = async (currentSermonId, currentLetterId = null, databaseId = process.env.NOTION_SUNDAY_DB_ID) => {
     let messagesSummary = {
         latestLetter: null,
         olderLetters: [],
@@ -12,132 +12,179 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
     };
 
     try {
-        // 1. GOSPEL LETTERS
-        // Fetch top 5 letters to account for potential exclusion
-        const letters = await getGospelLetters(5);
-        if (letters && letters.length > 0) {
-            const absoluteLatestId = letters[0].id;
+        if (!databaseId) {
+            console.warn("No databaseId provided to getMessagesSummary");
+            return messagesSummary;
+        }
 
-            // Filter out the current letter if provided
-            const otherLetters = currentLetterId
-                ? letters.filter(l => l.id !== currentLetterId)
-                : letters;
+        // Query Sunday_DB (the hub)
+        const sundayEntries = await getDatabase(databaseId, {
+            page_size: 20
+        });
 
-            if (otherLetters.length > 0) {
-                const latestLetterPage = otherLetters[0];
-                // Fetch blocks for snippet
+        if (!sundayEntries || sundayEntries.length === 0) {
+            return messagesSummary;
+        }
+
+        // Sort by Date Descending
+        sundayEntries.sort((a, b) => {
+            const dateA = a.properties?.Date?.date?.start || a.created_time;
+            const dateB = b.properties?.Date?.date?.start || b.created_time;
+            return new Date(dateB) - new Date(dateA);
+        });
+
+        // Helper to get full title from Notion title array
+        const getFullTitle = (titleArray) => {
+            if (!titleArray || !Array.isArray(titleArray)) return "";
+            return titleArray.map(t => t.plain_text || "").join("");
+        };
+
+        // 1. SERMONS - from Sermon_DB relations
+        const sermonsData = [];
+        console.log("📋 SUMMARY: Processing", sundayEntries.length, "Sunday entries");
+
+        for (const entry of sundayEntries) {
+            const sermonRelation = entry.properties?.['Sermon_DB']?.relation;
+            console.log("  Entry:", entry.id, "Sermon_DB:", sermonRelation?.length || 0, "relations");
+
+            if (sermonRelation && sermonRelation.length > 0) {
+                const sermonPageId = sermonRelation[0].id;
                 try {
-                    const letterBlocks = await getBlocks(latestLetterPage.id);
-                    const flatLetter = flattenBlocks(letterBlocks);
-                    const firstPara = flatLetter.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
-                    const snippet = firstPara
-                        ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
-                        : "";
+                    const sermonPage = await getPage(sermonPageId);
+                    const title = getFullTitle(sermonPage.properties?.Name?.title);
+                    console.log("    → Sermon page:", sermonPageId, "title:", title);
 
-                    messagesSummary.latestLetter = {
-                        ...latestLetterPage,
-                        snippet: snippet,
-                        isLatest: latestLetterPage.id === absoluteLatestId
-                    };
-                    // Slice next 3 for the list
-                    messagesSummary.olderLetters = otherLetters.slice(1, 4);
+                    sermonsData.push({
+                        hubId: entry.id,
+                        sermonId: sermonPageId,
+                        title: title || "Untitled",
+                        date: entry.properties?.Date?.date?.start || "",
+                        sermonPage
+                    });
                 } catch (e) {
-                    console.error("Error fetching letter details", e);
-                    messagesSummary.latestLetter = {
-                        ...latestLetterPage,
-                        isLatest: latestLetterPage.id === absoluteLatestId
-                    };
-                    messagesSummary.olderLetters = otherLetters.slice(1, 4);
+                    console.error("    → Error fetching sermon:", e.message);
                 }
             }
         }
 
-        // 2. SERMONS (Previous + Older)
-        if (databaseId) {
-            const sermons = await getDatabase(databaseId, {
-                page_size: 20 // Fetch enough to find previous + 3 older
-            });
+        console.log("📋 SUMMARY: Found", sermonsData.length, "sermons, currentSermonId:", currentSermonId);
 
-            if (sermons && sermons.length > 0) {
-                // Sort by Date Descending
-                sermons.sort((a, b) => {
-                    const dateA = a.properties?.Date?.date?.start || a.created_time;
-                    const dateB = b.properties?.Date?.date?.start || b.created_time;
-                    return new Date(dateB) - new Date(dateA);
-                });
+        // Filter out current sermon
+        const otherSermons = sermonsData.filter(s => s.hubId !== currentSermonId && s.sermonId !== currentSermonId);
 
-                // Identify the absolute latest sermon
-                const absoluteLatestSermon = sermons[0];
+        if (otherSermons.length > 0) {
+            const prevSermon = otherSermons[0];
+            // Get snippet
+            try {
+                const blocks = await getBlocks(prevSermon.sermonId);
+                const flat = flattenBlocks(blocks);
+                const firstPara = flat.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
+                const snippet = firstPara
+                    ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
+                    : "";
+                messagesSummary.previousSermon = {
+                    id: prevSermon.hubId,
+                    title: prevSermon.title,
+                    date: prevSermon.date,
+                    snippet,
+                    isLatest: otherSermons[0] === sermonsData[0]
+                };
+            } catch (e) {
+                messagesSummary.previousSermon = {
+                    id: prevSermon.hubId,
+                    title: prevSermon.title,
+                    date: prevSermon.date,
+                    snippet: "",
+                    isLatest: false
+                };
+            }
 
-                const otherSermons = sermons.filter(s => s.id !== currentSermonId);
+            // Older sermons: next 3
+            messagesSummary.olderSermons = otherSermons.slice(1, 4).map(s => ({
+                id: s.hubId,
+                title: s.title,
+                date: s.date
+            }));
+        }
 
-                if (otherSermons.length > 0) {
-                    const prevSermonPage = otherSermons[0];
-                    try {
-                        let contentPageId = prevSermonPage.id;
-                        const sermonRelation = prevSermonPage.properties?.['주일예배 DB']?.relation;
-                        if (sermonRelation && sermonRelation.length > 0) {
-                            contentPageId = sermonRelation[0].id;
-                        }
+        // 2. LETTERS - from Letter_DB relations
+        const lettersData = [];
+        console.log("📋 SUMMARY: Processing letters...");
 
-                        const prevSermonBlocks = await getBlocks(contentPageId);
-                        const flatSermon = flattenBlocks(prevSermonBlocks);
-                        const firstPara = flatSermon.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
-                        const snippet = firstPara
-                            ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
-                            : "";
+        for (const entry of sundayEntries) {
+            const letterRelation = entry.properties?.['Letter_DB']?.relation;
+            console.log("  Entry:", entry.id, "Letter_DB:", letterRelation?.length || 0, "relations");
 
-                        // Fetch metadata for title
-                        let displayTitle = prevSermonPage.properties?.Name?.title?.[0]?.plain_text || "Untitled";
-                        try {
-                            if (contentPageId !== prevSermonPage.id) {
-                                const contentPageMeta = await getPage(contentPageId);
-                                displayTitle = contentPageMeta.properties?.Name?.title?.[0]?.plain_text || displayTitle;
-                            }
-                        } catch (e) {
-                            console.error("Failed to fetch prev sermon metadata", e);
-                        }
+            if (letterRelation && letterRelation.length > 0) {
+                const letterPageId = letterRelation[0].id;
+                try {
+                    const letterPage = await getPage(letterPageId);
 
-                        messagesSummary.previousSermon = {
-                            id: prevSermonPage.id,
-                            title: displayTitle,
-                            date: prevSermonPage.properties?.Date?.date?.start || "",
-                            snippet: snippet,
-                            isLatest: prevSermonPage.id === absoluteLatestSermon.id
-                        };
-                    } catch (e) {
-                        console.error("Error fetching sermon details", e);
-                    }
+                    // Debug: dump all properties
+                    console.log("    → Letter page ALL PROPERTIES:");
+                    Object.entries(letterPage.properties || {}).forEach(([key, value]) => {
+                        console.log(`      "${key}": type=${value.type}`);
+                    });
 
-                    // Older sermons: We want 3 items in the list.
-                    // slice(1, 4) gives indices 1, 2, 3 (max 3 items).
-                    // We need to fetch the Linked Page title for these too if possible.
-                    // To avoid N+1 slow fetches, we'll try to do it efficiently or just accept it's slower.
-                    // Given it's only 3 items, we can Promise.all fetch.
-                    const olderSermonsSlice = otherSermons.slice(1, 4);
+                    // Letter_DB uses "Title" property, not "Name"
+                    const titleFromName = getFullTitle(letterPage.properties?.Name?.title);
+                    const titleFromTitle = getFullTitle(letterPage.properties?.Title?.title);
+                    const title = titleFromName || titleFromTitle;
+                    console.log("    → Letter page:", letterPageId, "title:", title);
 
-                    messagesSummary.olderSermons = await Promise.all(olderSermonsSlice.map(async (s) => {
-                        let title = s.properties?.Name?.title?.[0]?.plain_text || "Untitled";
-                        const sermonRelation = s.properties?.['주일예배 DB']?.relation;
-
-                        if (sermonRelation && sermonRelation.length > 0) {
-                            try {
-                                const relationId = sermonRelation[0].id;
-                                const relationPage = await getPage(relationId);
-                                title = relationPage.properties?.Name?.title?.[0]?.plain_text || title;
-                            } catch (e) {
-                                // Fallback to hub title
-                            }
-                        }
-                        return {
-                            id: s.id,
-                            title: title,
-                            date: s.properties?.Date?.date?.start || ""
-                        };
-                    }));
+                    lettersData.push({
+                        hubId: entry.id,
+                        letterId: letterPageId,
+                        title: title || "Untitled",
+                        date: entry.properties?.Date?.date?.start || "",
+                        letterPage
+                    });
+                } catch (e) {
+                    console.error("    → Error fetching letter:", e.message);
                 }
             }
         }
+
+        console.log("📋 SUMMARY: Found", lettersData.length, "letters, currentLetterId:", currentLetterId);
+
+        // Filter out current letter
+        const otherLetters = lettersData.filter(l => l.hubId !== currentLetterId && l.letterId !== currentLetterId);
+
+        if (otherLetters.length > 0) {
+            const latestLetter = otherLetters[0];
+            // Get snippet
+            try {
+                const blocks = await getBlocks(latestLetter.letterId);
+                const flat = flattenBlocks(blocks);
+                const firstPara = flat.find(b => b.type === 'paragraph' && b.paragraph.rich_text.length > 0);
+                const snippet = firstPara
+                    ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
+                    : "";
+                messagesSummary.latestLetter = {
+                    id: latestLetter.hubId,
+                    title: latestLetter.title,
+                    date: latestLetter.date,
+                    snippet,
+                    isLatest: otherLetters[0] === lettersData[0]
+                };
+            } catch (e) {
+                messagesSummary.latestLetter = {
+                    id: latestLetter.hubId,
+                    title: latestLetter.title,
+                    date: latestLetter.date,
+                    snippet: "",
+                    isLatest: false
+                };
+            }
+
+            // Older letters: next 3
+            messagesSummary.olderLetters = otherLetters.slice(1, 4).map(l => ({
+                id: l.hubId,
+                title: l.title,
+                date: l.date
+            }));
+        }
+
     } catch (e) {
         console.error("Error fetching summary data", e);
     }

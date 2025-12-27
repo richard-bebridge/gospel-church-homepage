@@ -1,8 +1,10 @@
 import { flattenBlocks, injectVerses, groupSections } from '../notion-utils';
 
-export const buildSermonPresentationData = (page, blocks) => {
-    // 1. Basic Metadata
-    const title = page.properties?.Name?.title?.[0]?.plain_text || "Untitled";
+export const buildSermonPresentationData = (page, blocks, contentPage = null) => {
+    // 1. Basic Metadata - Prioritize linked content page title, fallback to hub page
+    const titleFromContent = contentPage?.properties?.Name?.title?.[0]?.plain_text;
+    const titleFromHub = page.properties?.Name?.title?.[0]?.plain_text;
+    const title = titleFromContent || titleFromHub || "Untitled";
     const date = page.properties?.Date?.date?.start || "";
 
     // Extract media links
