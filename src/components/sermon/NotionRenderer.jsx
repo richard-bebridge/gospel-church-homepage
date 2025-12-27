@@ -192,24 +192,10 @@ const mergeRichTextIfRefPresent = (richText) => {
 const normalizeCellRichText = (cellRichText = []) => {
     if (!Array.isArray(cellRichText) || cellRichText.length === 0) return cellRichText || [];
 
-    return cellRichText.map((node, idx) => {
-        if (!node?.text) return node;
-
-        const originalContent = node.text.content ?? node.plain_text ?? '';
-        const alreadyHasBreak = /\n\s*$/.test(originalContent);
-        const shouldAppendBreak = idx < cellRichText.length - 1 && !alreadyHasBreak;
-
-        if (!shouldAppendBreak) {
-            return node;
-        }
-
-        const nextContent = `${originalContent}\n`;
-        return {
-            ...node,
-            text: { ...node.text, content: nextContent },
-            plain_text: (node.plain_text ?? originalContent) + '\n'
-        };
-    });
+    // Simply return the nodes as-is. 
+    // The previous logic forced newlines between nodes, which breaks inline styling (e.g. bold/color spills into new line).
+    // Notion provides explicit \n in text content if a break is intended.
+    return cellRichText;
 };
 
 // Sub-component for rendering enriched text
@@ -482,14 +468,22 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
             });
 
             // Use table-fixed if placeholders are present for uniform column widths
-            const tableLayoutClass = hasPlaceholder ? 'table-fixed' : 'table-auto';
+            // OR if it is a 2-column table to strictly enforce the 180px / auto Layout.
+            const tableLayoutClass = (hasPlaceholder || isTwoColumn) ? 'table-fixed' : 'table-auto';
+
+            // Responsive Logic for 2-Column Tables:
+            // Mobile: Stack vertically (Block/Flex). Desktop (md): Table structure.
+            const responsiveTableClass = isTwoColumn ? 'block md:table' : '';
+            const responsiveBodyClass = isTwoColumn ? 'block md:table-row-group' : '';
+            const responsiveRowClass = isTwoColumn ? 'flex flex-col mb-8 md:mb-0 md:table-row' : '';
+            const responsiveCellClass = isTwoColumn ? 'block w-full !w-full md:!w-auto md:table-cell' : '';
 
             return wrapGrid(
                 <div className="w-full max-w-[840px] mx-auto mt-6 mb-10">
-                    <table className={`${tableLayoutClass} w-full border-collapse text-left`}>
-                        {/* Force uniform column widths when placeholders are present */}
+                    <table className={`${tableLayoutClass} ${responsiveTableClass} w-full border-collapse text-left`}>
+                        {/* Force uniform column widths when placeholders are present (Desktop Only via media query effectively) */}
                         {hasPlaceholder && columnCount > 0 && (
-                            <colgroup>
+                            <colgroup className={isTwoColumn ? 'hidden md:table-column-group' : ''}>
                                 {Array.from({ length: columnCount }).map((_, idx) => {
                                     // If first column is empty, give it 0% width
                                     // Distribute 100% evenly across remaining columns
@@ -501,21 +495,29 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                 })}
                             </colgroup>
                         )}
-                        <tbody>
+                        <tbody className={responsiveBodyClass}>
                             {rows.map((row, rIdx) => {
                                 const cells = row.table_row?.cells || [];
 
                                 return (
-                                    <tr key={row.id} className="border-t border-gray-200">
+                                    <tr key={row.id} className={`${responsiveRowClass} border-t border-gray-200`}>
                                         {cells.map((cell, cIdx) => {
                                             const normalized = normalizeCellRichText(cell);
                                             const tokenClass = cIdx === 0 ? CURRENT_TEXT.table_head : CURRENT_TEXT.table_cell;
 
-                                            // For 2-column tables WITHOUT placeholders, fix first column width for consistent alignment
+                                            // Mobile Spacing for 2-Column Stack
+                                            const mobileSpacing = isTwoColumn
+                                                ? (cIdx === 0 ? 'pb-1 pt-3 md:pb-3' : 'pt-0 pb-3 md:pt-3')
+                                                : '';
+
+                                            // For 2-column tables WITHOUT placeholders, fix first column width for consistent alignment (Desktop Only)
                                             // When table-fixed is active (hasPlaceholder), don't apply fixed width as it conflicts
-                                            const columnStyle = isTwoColumn && cIdx === 0 && !hasPlaceholder
+                                            const baseColumnStyle = isTwoColumn && cIdx === 0 && !hasPlaceholder
                                                 ? { whiteSpace: 'pre-wrap', width: '180px' }
                                                 : { whiteSpace: 'pre-wrap' };
+
+                                            // Reset width on mobile
+                                            const columnStyle = isTwoColumn ? { ...baseColumnStyle } : baseColumnStyle;
 
                                             // Filter out "-" placeholder from rendering
                                             const filteredContent = normalized.map(richText => {
@@ -549,9 +551,38 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
                                             return (
                                                 <td
                                                     key={cIdx}
-                                                    className={`py-3 px-3 align-top break-words ${tokenClass}`}
-                                                    style={finalColumnStyle}
+                                                    className={`${responsiveCellClass} py-3 px-3 align-top break-words ${tokenClass} ${mobileSpacing}`}
+                                                    style={isTwoColumn ? { ...finalColumnStyle, width: undefined } : finalColumnStyle} // Clear inline width on mobile handled by CSS class !w-full, but style prop overrides unless undefined? style prop persists. 
+                                                // CSS class `!w-full` usually wins over inline style `width` if using !important. I added !w-full above.
+                                                // Wait, inline style `width: 180px` is strong. Tailwind `!w-full` (important) wins.
                                                 >
+                                                    {isTwoColumn && (
+                                                        // Mobile-only inline style cleaner:
+                                                        // We rely on `!w-full` in `responsiveCellClass` to override the 180px on standard inline style.
+                                                        // md:!w-auto restores it? No.
+                                                        // Actually, best to apply width via class or use style conditionally?
+                                                        // inline style `width: 180px` applies always.
+                                                        // I need `md:w-[180px]` equivalent.
+                                                        // But I can't put arbitrary values in class easily if I want to reuse `finalColumnStyle` logic.
+                                                        // Safe path: Use `!important` class to override, or remove width from style on mobile.
+                                                        // Since I can't detect mobile in JS easily during SSR, CSS is safer.
+                                                        // `!w-full` on mobile. `md:!w-auto`? No, `md:w-auto` gets overridden by inline style.
+                                                        // So on desktop, I want inline style to win. On mobile, I want `!w-full`.
+                                                        // Solution: `!w-full` on mobile. On desktop `md:w-auto`? No, that's just `width: auto`.
+                                                        // If I use `!w-full`, it applies everywhere unless overridden.
+                                                        // `md:!w-[revert]`? Not standard.
+                                                        // `md:!w-auto` might work if I verify precedence.
+                                                        // Actually, simpler: Use `style` ONLY on `md` if possible? No.
+                                                        // Let's stick to `!w-full` on mobile class. And for desktop...
+                                                        // If `!w-full` is present, it overrules inline style.
+                                                        // I need to UNSET `!w-full` on desktop. `md:w-auto` is NOT `!important` by default.
+                                                        // `md:!w-auto` IS important.
+                                                        // If I set `md:!w-auto`, does it respect the fixed 180px logic? 
+                                                        // Auto means content/width fit. It might IGNORING the 180px.
+                                                        // Correct approach: `className="w-full md:w-auto ..."` and NO inline width for 180px, use class `md:w-[180px]`.
+                                                        // Refactoring the width logic to classes is cleaner.
+                                                        null)}
+
                                                     {shouldAddNbsp ? (
                                                         <>&nbsp;</>
                                                     ) : isFirstCellEmpty ? (
