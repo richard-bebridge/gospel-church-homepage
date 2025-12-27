@@ -21,24 +21,37 @@ export default async function SermonPage({ params }) {
         const page = await getPage(id);
         if (!page) notFound();
 
-        // 3. Resolve Content Logic (Hub -> Manuscript)
-        // The Hub Page contains metadata (Media) but the Content Blocks are in the linked "Sermon" page.
-        let contentPageId = id;
-        let contentPage = null;
-        const sermonRelation = page.properties?.['Sunday_DB']?.relation;
+        // 3. Resolve Content Logic (Hub vs Manuscript)
+        // Determine if 'id' is Hub (Sunday DB) or Manuscript (Sermon DB)
+        let metaPage = page;    // Should point to Hub (for Metadata)
+        let contentPage = page; // Should point to Manuscript (for Blocks)
+
+        const sermonRelation = page.properties?.['Sermon_DB']?.relation; // Exists if page is Hub
+        const sundayRelation = page.properties?.['Sunday_DB']?.relation; // Exists if page is Manuscript
+
         if (sermonRelation && sermonRelation.length > 0) {
-            contentPageId = sermonRelation[0].id;
-            // Fetch linked page metadata for correct title
+            // Case A: Page is Hub. Fetch linked Manuscript for content.
+            metaPage = page;
+            const contentId = sermonRelation[0].id;
             try {
-                contentPage = await getPage(contentPageId);
+                contentPage = await getPage(contentId);
             } catch (err) {
                 console.error("Failed to fetch linked content page", err);
             }
+        } else if (sundayRelation && sundayRelation.length > 0) {
+            // Case B: Page is Manuscript. Fetch linked Hub for metadata.
+            contentPage = page;
+            const hubId = sundayRelation[0].id;
+            try {
+                metaPage = await getPage(hubId);
+            } catch (err) {
+                console.error("Failed to fetch linked hub page", err);
+            }
         }
 
-        // Fetch blocks from the CONTENT ID (Manuscript), not the Hub ID
-        const blocks = await getBlocks(contentPageId);
-        sermon = buildSermonPresentationData(page, blocks, contentPage);
+        // Fetch blocks from the CONTENT ID (Manuscript)
+        const blocks = await getBlocks(contentPage.id);
+        sermon = buildSermonPresentationData(metaPage, blocks, contentPage);
 
         // Fetch messages summary (passing current ID to exclude it)
         messagesSummary = await getMessagesSummary(id);

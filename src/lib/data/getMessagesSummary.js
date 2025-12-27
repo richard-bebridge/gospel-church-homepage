@@ -83,7 +83,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
                     ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
                     : "";
                 messagesSummary.previousSermon = {
-                    id: prevSermon.hubId,
+                    id: prevSermon.sermonId, // FIX: Use actual Sermon Content Page ID
                     title: prevSermon.title,
                     date: prevSermon.date,
                     snippet,
@@ -91,7 +91,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
                 };
             } catch (e) {
                 messagesSummary.previousSermon = {
-                    id: prevSermon.hubId,
+                    id: prevSermon.sermonId, // FIX: Use actual Sermon Content Page ID
                     title: prevSermon.title,
                     date: prevSermon.date,
                     snippet: "",
@@ -101,7 +101,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
 
             // Older sermons: next 3
             messagesSummary.olderSermons = otherSermons.slice(1, 4).map(s => ({
-                id: s.hubId,
+                id: s.sermonId, // FIX: Use actual Sermon Content Page ID
                 title: s.title,
                 date: s.date
             }));
@@ -158,7 +158,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
                     ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
                     : "";
                 messagesSummary.latestLetter = {
-                    id: latestLetter.hubId,
+                    id: latestLetter.letterId, // FIX: Use actual Letter Page ID, not Sunday Hub ID
                     title: latestLetter.title,
                     date: latestLetter.date,
                     snippet,
@@ -166,7 +166,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
                 };
             } catch (e) {
                 messagesSummary.latestLetter = {
-                    id: latestLetter.hubId,
+                    id: latestLetter.letterId, // FIX: Use actual Letter Page ID
                     title: latestLetter.title,
                     date: latestLetter.date,
                     snippet: "",
@@ -176,7 +176,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
 
             // Older letters: next 3
             messagesSummary.olderLetters = otherLetters.slice(1, 4).map(l => ({
-                id: l.hubId,
+                id: l.letterId, // FIX: Use actual Letter Page ID
                 title: l.title,
                 date: l.date
             }));

@@ -102,6 +102,23 @@ const MessagesSummarySection = ({
         return <span className="whitespace-nowrap inline-block">{title}{badgeComponent}</span>;
     };
 
+    // Helper: Determine if date is within the last 7 days
+    const isThisWeek = (dateString) => {
+        if (!dateString) return false;
+        const targetDate = new Date(dateString);
+        const today = new Date();
+
+        // Reset hours to compare just dates strictly
+        targetDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        const diffTime = today - targetDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        // Allow up to 7 days (e.g. from last Sunday to this Saturday)
+        return diffDays >= 0 && diffDays < 7;
+    };
+
     const badge = (
         <span className={CURRENT_TEXT.badge_pill + " ml-2 align-middle -mt-1"}>
             This Week
@@ -117,7 +134,8 @@ const MessagesSummarySection = ({
                         title="Sermons"
                         latestItem={previousSermon}
                         olderItems={olderSermons}
-                        badgeComponent={previousSermon?.isLatest ? badge : null}
+                        // Only show badge if it IS the latest fetched item AND it is recent (< 7 days)
+                        badgeComponent={(previousSermon?.isLatest && isThisWeek(previousSermon.date)) ? badge : null}
                         basePath="/sermons"
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
@@ -131,7 +149,7 @@ const MessagesSummarySection = ({
                         title="Letters"
                         latestItem={latestLetter}
                         olderItems={olderLetters}
-                        badgeComponent={latestLetter?.isLatest ? badge : null}
+                        badgeComponent={(latestLetter?.isLatest && isThisWeek(latestLetter.date)) ? badge : null}
                         basePath="/letters"
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
@@ -148,7 +166,7 @@ const MessagesSummarySection = ({
                         title="Letters"
                         latestItem={latestLetter}
                         olderItems={olderLetters}
-                        badgeComponent={latestLetter?.isLatest ? badge : null}
+                        badgeComponent={(latestLetter?.isLatest && isThisWeek(latestLetter.date)) ? badge : null}
                         basePath="/letters"
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
@@ -162,7 +180,7 @@ const MessagesSummarySection = ({
                         title="Sermons"
                         latestItem={previousSermon}
                         olderItems={olderSermons}
-                        badgeComponent={previousSermon?.isLatest ? badge : null}
+                        badgeComponent={(previousSermon?.isLatest && isThisWeek(previousSermon.date)) ? badge : null}
                         basePath="/sermons"
                         renderTitleWithBadge={renderTitleWithBadge}
                         formatDate={formatDate}
