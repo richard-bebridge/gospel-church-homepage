@@ -14,6 +14,7 @@ import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
 import { extractMapToken } from '../../lib/utils/visitMapHelpers';
 import LoadingSequence from '../ui/LoadingSequence';
 import FloatingVisitButton from './FloatingVisitButton';
+import FloatingMediaControls from '../sermon/FloatingMediaControls';
 import { waitForFonts } from '../../lib/utils/fontLoader';
 import { fastNormalize } from '../../lib/utils/textPipeline';
 import { useSnapScrollState } from '../../hooks/useSnapScroll';
@@ -37,7 +38,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     const settings = siteSettings || {};
     // Intro & Loading State
     const [fontsReady, setFontsReady] = useState(false);
-    const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
+    const { fontScale, toggleFontScale, desktopBodyClass, desktopVerseClass, verseStyle, isSettled: fontScaleSettled } = useFontScale();
 
     useEffect(() => {
         const checkReady = async () => {
@@ -77,8 +78,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     const sectionRefs = useRef([]);
     const footerRef = useRef(null);
 
-
-    // Use simplified hook
+    // Restoring Snap Scroll State
     const {
         activeIndex,
         isFooter,
@@ -92,6 +92,13 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     const isReady = sections && sections.length > 0 && fontsReady && fontScaleSettled;
 
 
+    // Snap Scroll Effect
+    useEffect(() => {
+        if (!isReady || !containerRef.current) return;
+
+        // Let the snap scroll logic take over
+        // The hook handles event binding and state updates
+    }, [isReady, sections, performSnap]);
 
     // Hash Navigation
     useEffect(() => {
@@ -137,6 +144,8 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 uniqueKey={section.id}
                 contentPaddingClass="pt-32"
                 sectionIndex={activeIndex}
+                verseClassName={desktopVerseClass}
+                verseStyle={verseStyle}
             />
         );
     };
@@ -157,7 +166,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 {/* Main Scroll Container */}
                 <div
                     ref={containerRef}
-                    className="hidden md:block absolute top-0 left-0 w-full h-screen overflow-y-auto snap-y snap-mandatory overscroll-y-none no-scrollbar font-mono"
+                    className="hidden md:block absolute top-0 left-0 w-full h-screen overflow-y-auto snap-y snap-mandatory overscroll-y-none no-scrollbar"
                 >
                     <div className="relative w-full bg-[#F4F3EF]">
 
@@ -372,6 +381,12 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 <Footer siteSettings={siteSettings} />
             </div>
             <FloatingVisitButton footerRef={footerRef} />
+            <FloatingMediaControls
+                footerRef={footerRef}
+                fontScale={fontScale}
+                onToggleFontScale={toggleFontScale}
+                shareTitle="Visit Gospel Church"
+            />
         </div>
     );
 };

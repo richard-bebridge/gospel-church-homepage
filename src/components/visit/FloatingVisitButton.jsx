@@ -65,7 +65,7 @@ const FloatingVisitButton = ({ footerRef }) => {
                         animate="visible"
                         exit="exit"
                         variants={buttonVariants}
-                        className="fixed bottom-6 right-6 z-50 pointer-events-auto"
+                        className="fixed bottom-6 left-6 z-50 pointer-events-auto"
                     >
                         <button
                             data-tally-open="Y5RP46"

@@ -6,6 +6,7 @@ import NotionRenderer, { TableAlignmentProvider } from '../sermon/NotionRenderer
 import AboutSideNav from './AboutSideNav';
 import Header from '../Header';
 import Footer from '../Footer';
+import FloatingMediaControls from '../sermon/FloatingMediaControls';
 import { useFontScale } from '../../hooks/sermon/useFontScale';
 import { HEADER_HEIGHT_PX } from '../../lib/layout-metrics';
 import { RightPanelController } from '../presentation/RightPanelController';
@@ -33,7 +34,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
     // Intro & Loading State
     // ----------------------------------------------------------------
     const [fontsReady, setFontsReady] = useState(false);
-    const { desktopBodyClass, isSettled: fontScaleSettled } = useFontScale();
+    const { fontScale, toggleFontScale, desktopBodyClass, desktopVerseClass, verseStyle, isSettled: fontScaleSettled } = useFontScale();
 
     useEffect(() => {
         const checkReady = async () => {
@@ -118,6 +119,8 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 section={section}
                 contentPaddingClass="pt-32"
                 sectionIndex={activeIndex}
+                verseClassName={desktopVerseClass}
+                verseStyle={verseStyle}
             />
         );
     };
@@ -141,7 +144,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 {/* Main Scroll Container */}
                 <div
                     ref={containerRef}
-                    className="hidden md:block absolute top-0 left-0 w-full h-screen overflow-y-auto snap-y snap-mandatory overscroll-y-none no-scrollbar font-mono"
+                    className="hidden md:block absolute top-0 left-0 w-full h-screen overflow-y-auto snap-y snap-mandatory overscroll-y-none no-scrollbar"
                 >
                     <div className="relative w-full bg-[#F4F3EF]">
 
@@ -315,6 +318,14 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                     }
                     <Footer siteSettings={siteSettings} />
                 </div>
+
+                {/* Floating Font Controls */}
+                <FloatingMediaControls
+                    footerRef={footerRef}
+                    fontScale={fontScale}
+                    onToggleFontScale={toggleFontScale}
+                    shareTitle="About Gospel Church"
+                />
             </div>
         </div>
     );
