@@ -67,10 +67,12 @@ export const RightPanelController = ({
 
             <div className="w-full relative flex-1 min-h-0">
                 {(mode === 'scripture' || mode === 'verse') && (
-                    <div className={`w-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center h-full pointer-events-none`}>
+                    <div className={`absolute inset-0 z-10 w-full flex flex-col pointer-events-none`}>
                         <div
-                            className={`w-full max-h-full ${contentPaddingClass} overflow-hidden ${interactionClass}`}
+                            className={`w-full h-full ${contentPaddingClass} overflow-y-auto no-scrollbar ${interactionClass} flex flex-col items-center justify-center`}
+                        // Wheel listener removed - relying on native event bubbling via PresentationShell layout refactor
                         >
+                            {/* Header Buffer Removed - using paddingTop instead for correct centering space */}
                             {data && data.length > 0 ? (
                                 <VerseList
                                     verses={data}
@@ -82,13 +84,16 @@ export const RightPanelController = ({
                                     transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
                                 />
                             ) : (
-                                <div className="h-full flex items-center justify-center opacity-30 -mt-32">
-                                    <p className="text-[#2A4458] font-korean text-2xl">SOLA SCRIPTURA</p>
-                                </div>
+                                isVisible && (
+                                    <div className="h-full flex items-center justify-center opacity-30 -mt-32">
+                                        <p className="text-[#2A4458] font-korean text-2xl">SOLA SCRIPTURA</p>
+                                    </div>
+                                )
                             )}
                         </div>
                     </div>
                 )}
+
 
                 <AnimatePresence mode="wait">
                     {mode === 'page' && data && (
@@ -98,7 +103,7 @@ export const RightPanelController = ({
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -30 }}
                             transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-                            className="w-full h-full border-l border-[#2A4458]/10 pt-0 pointer-events-none flex flex-col"
+                            className="w-full h-full pt-0 pointer-events-none flex flex-col"
                         >
                             <div
                                 className={`w-full h-full overflow-y-auto no-scrollbar ${interactionClass} flex flex-col`}
@@ -127,7 +132,7 @@ export const RightPanelController = ({
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -30 }}
                             transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-                            className="w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center px-8 lg:px-16 overflow-hidden pointer-events-none"
+                            className="w-full h-full flex flex-col items-center justify-center px-8 lg:px-16 overflow-hidden pointer-events-none"
                         >
                             <div
                                 className={`relative w-full h-full max-h-[60vh] rounded-lg overflow-hidden shadow-xl ${interactionClass}`}
@@ -149,7 +154,7 @@ export const RightPanelController = ({
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -30 }}
                             transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-                            className={`w-full h-full border-l border-[#2A4458]/10 flex flex-col items-center justify-center ${interactionClass}`}
+                            className={`w-full h-full flex flex-col items-center justify-center ${interactionClass}`}
                         >
                             <RightPanelMap
                                 x={data.x}
@@ -159,7 +164,7 @@ export const RightPanelController = ({
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div>
+            </div >
         </motion.div >
     );
 };
