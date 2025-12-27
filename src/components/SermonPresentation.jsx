@@ -14,6 +14,7 @@ import { PresentationShell } from '../components/presentation/PresentationShell'
 import { PresentationSummary } from '../components/presentation/PresentationSummary';
 import { PresentationFooter } from '../components/presentation/PresentationFooter';
 import { RightPanelController } from '../components/presentation/RightPanelController';
+import { VerticalDivider } from '../components/presentation/VerticalDivider';
 
 // Hooks & Metrics
 import MessagesSummarySection from './messages/MessagesSummarySection';
@@ -219,7 +220,9 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                 We need a sticky element that covers the viewport height? 
                 Original: <div className="sticky top-0 w-full ...">...<div absolute left-0 w-1/2 h-full></div></div>
             */}
-            <div style={SCROLL_AREA_HEIGHT_STYLE} className="absolute left-0 top-0 w-1/2 border-r border-gray-200 flex flex-col items-center pt-[var(--layout-pt-title)] pointer-events-none">
+            <div style={SCROLL_AREA_HEIGHT_STYLE} className="absolute left-0 top-0 w-1/2 flex flex-col items-center pt-[var(--layout-pt-title)] pointer-events-none">
+                {/* The Custom Divider Line */}
+                <VerticalDivider />
                 {/* Title Fade */}
                 <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <h1 className={CURRENT_TEXT.page_title_ko}>
@@ -280,7 +283,11 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                     >
                         {/* Note: SermonLeftPanel content extracted above usually, but here mapped inline for simplicity of context access */}
                         {/* Title: Standard (96px) */}
-                        <div className="absolute left-0 top-0 w-1/2 h-full border-r border-gray-200 flex flex-col items-center pt-[96px]">
+                        {/* Title: Standard (96px) */}
+                        {/* REFACTORED: Removed border-r, added custom Divider Line */}
+                        <div className="absolute left-0 top-0 w-1/2 h-full flex flex-col items-center pt-[96px]">
+                            {/* The Custom Divider Line */}
+                            <VerticalDivider className={`transition-opacity duration-500 ${activeSection >= sermon.sections.length ? '!opacity-0' : ''}`} />
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 <AutoScaleTitle
                                     text={sermon.title}

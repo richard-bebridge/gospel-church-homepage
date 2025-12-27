@@ -13,6 +13,7 @@ import { PresentationBody } from '../presentation/PresentationBody';
 import { PresentationSummary } from '../presentation/PresentationSummary';
 import { PresentationFooter } from '../presentation/PresentationFooter';
 import { RightPanelController } from '../presentation/RightPanelController';
+import { VerticalDivider } from '../presentation/VerticalDivider';
 import VerseList from '../presentation/VerseList';
 
 // Contract: fixed header is 80px (HEADER_HEIGHT_PX). Scroll areas use 100vh-80px.
@@ -178,6 +179,9 @@ const GospelLetterPresentation = ({ letter, messagesSummary, children }) => {
                 >
                     {/* Sticky Container Wrapper (Matches AboutPresentation structure) */}
                     <div className="sticky top-0 h-[calc(100vh-80px)] w-full pointer-events-none z-30">
+                        {/* Custom Divider Line */}
+                        <VerticalDivider />
+
                         {/* Sticky Number (Reverted to 384px as requested) */}
 
                     </div>

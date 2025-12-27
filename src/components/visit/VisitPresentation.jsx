@@ -19,8 +19,10 @@ import { waitForFonts } from '../../lib/utils/fontLoader';
 import { fastNormalize } from '../../lib/utils/textPipeline';
 import { useSnapScrollState } from '../../hooks/useSnapScroll';
 import RightPanelMap from './RightPanelMap';
+
 import Image from 'next/image';
 import VerseList from '../presentation/VerseList';
+import { VerticalDivider } from '../presentation/VerticalDivider';
 import { CURRENT_TEXT } from '../../lib/typography-tokens';
 
 import AutoScaleTitle from '../ui/AutoScaleTitle';
@@ -175,7 +177,13 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                             {renderRightPanel()}
 
                             {/* Left Panel Decorative - Centered Sticky Elements */}
-                            <div className="absolute left-0 top-0 w-1/2 h-full border-r border-[#2A4458]/10 pointer-events-none">
+                            {/* REFACTORED: Removed border-r from parent, added custom Divider Line */}
+                            <div className="absolute left-0 top-0 w-1/2 h-full pointer-events-none">
+                                {/* The Custom Divider Line */}
+                                {/* The Custom Divider Line */}
+                                {/* The Custom Divider Line */}
+                                <VerticalDivider isFullScreenParent={true} className={`transition-opacity duration-500 ${isFooter ? '!opacity-0' : ''}`} />
+
                                 <div className="w-full h-full flex flex-col justify-center relative">
                                     <div className={`hidden min-[1600px]:flex absolute left-12 overflow-hidden h-[72px] w-[90px] items-start transition-opacity duration-300 ${isFooter ? 'opacity-0' : 'opacity-100'}`}
                                         style={{ top: '50%', transform: 'translateY(-50%)' }}
@@ -225,7 +233,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                                 : "w-full h-screen snap-start relative overflow-hidden flex flex-col"
                                         }
                                     >
-                                        <div className={`w-full max-w-[50%] ml-0 h-full relative border-r border-transparent`}>
+                                        <div className={`w-full max-w-[50%] ml-0 h-full relative`}>
                                             <div className={`w-full min-h-full flex flex-col items-center ${index === 0 ? 'justify-start pt-64' : 'justify-center pt-32'}`}>
                                                 {/* Adjusted Width inside Left Panel */}
                                                 <div className={`w-full relative ${hasWideContent(section.content) ? 'max-w-[80%] xl:max-w-[70%]' : 'max-w-lg'}`}>
