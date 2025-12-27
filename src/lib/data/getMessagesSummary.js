@@ -1,4 +1,4 @@
-import { getDatabase, getBlocks } from '../notion.js';
+import { getDatabase, getBlocks, getPage } from '../notion.js';
 import { getGospelLetters } from '../gospel-notion.js';
 import { flattenBlocks } from '../notion-utils.js';
 
@@ -87,9 +87,20 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
                             ? firstPara.paragraph.rich_text.map(t => t.plain_text).join('')
                             : "";
 
+                        // Fetch metadata for title
+                        let displayTitle = prevSermonPage.properties?.Name?.title?.[0]?.plain_text || "Untitled";
+                        try {
+                            if (contentPageId !== prevSermonPage.id) {
+                                const contentPageMeta = await getPage(contentPageId);
+                                displayTitle = contentPageMeta.properties?.Name?.title?.[0]?.plain_text || displayTitle;
+                            }
+                        } catch (e) {
+                            console.error("Failed to fetch prev sermon metadata", e);
+                        }
+
                         messagesSummary.previousSermon = {
                             id: prevSermonPage.id,
-                            title: prevSermonPage.properties?.Name?.title?.[0]?.plain_text || "Untitled",
+                            title: displayTitle,
                             date: prevSermonPage.properties?.Date?.date?.start || "",
                             snippet: snippet,
                             isLatest: prevSermonPage.id === absoluteLatestSermon.id
@@ -100,10 +111,29 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
 
                     // Older sermons: We want 3 items in the list.
                     // slice(1, 4) gives indices 1, 2, 3 (max 3 items).
-                    messagesSummary.olderSermons = otherSermons.slice(1, 4).map(s => ({
-                        id: s.id,
-                        title: s.properties?.Name?.title?.[0]?.plain_text || "Untitled",
-                        date: s.properties?.Date?.date?.start || ""
+                    // We need to fetch the Linked Page title for these too if possible.
+                    // To avoid N+1 slow fetches, we'll try to do it efficiently or just accept it's slower.
+                    // Given it's only 3 items, we can Promise.all fetch.
+                    const olderSermonsSlice = otherSermons.slice(1, 4);
+
+                    messagesSummary.olderSermons = await Promise.all(olderSermonsSlice.map(async (s) => {
+                        let title = s.properties?.Name?.title?.[0]?.plain_text || "Untitled";
+                        const sermonRelation = s.properties?.['Sermon']?.relation;
+
+                        if (sermonRelation && sermonRelation.length > 0) {
+                            try {
+                                const relationId = sermonRelation[0].id;
+                                const relationPage = await getPage(relationId);
+                                title = relationPage.properties?.Name?.title?.[0]?.plain_text || title;
+                            } catch (e) {
+                                // Fallback to hub title
+                            }
+                        }
+                        return {
+                            id: s.id,
+                            title: title,
+                            date: s.properties?.Date?.date?.start || ""
+                        };
                     }));
                 }
             }

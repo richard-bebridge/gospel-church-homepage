@@ -2,6 +2,12 @@ import { Client } from '@notionhq/client';
 
 const notion = new Client({
     auth: process.env.NOTION_API_KEY,
+    fetch: (url, options) => {
+        return fetch(url, {
+            ...options,
+            next: { revalidate: 0 }, // Force no-cache for App Router
+        });
+    }
 });
 
 export const getDatabase = async (databaseId, options = {}) => {

@@ -1,19 +1,20 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { getSiteSettings } from '../../lib/site-settings';
-import { getDatabase, getBlocks } from '../../lib/notion';
+import { getDatabase, getBlocks, getPage } from '../../lib/notion';
 import { getMessagesSummary } from '../../lib/data/getMessagesSummary'; // Uses the new utility
 import SermonPresentation from '../../components/SermonPresentation';
 import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-utils';
 
 // Revalidate every hour
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export default async function MessagesPage() {
     const databaseId = process.env.NOTION_SERMON_DB_ID;
     const sundayDbId = process.env.NOTION_SUNDAY_DB_ID || process.env.NOTION_SUNDAY_DB;
 
     let page = null;
+    let contentPage = null;
     let blocks = [];
     let mediaLinks = { youtube: "", audio: "" };
     let fetchError = null;
@@ -42,6 +43,15 @@ export default async function MessagesPage() {
                 const sermonRelation = page.properties?.['Sermon']?.relation;
                 if (sermonRelation && sermonRelation.length > 0) {
                     contentPageId = sermonRelation[0].id;
+                }
+
+                // Fetch metadata for content page to get correct title
+                if (contentPageId !== page.id) {
+                    try {
+                        contentPage = await getPage(contentPageId);
+                    } catch (err) {
+                        console.error("Failed to fetch content page metadata", err);
+                    }
                 }
 
                 // Fetch blocks from the content page (Manuscript)
@@ -90,7 +100,7 @@ export default async function MessagesPage() {
 
     // 3. Prepare Data for Presentation
     const sermonData = {
-        title: page.properties?.Name?.title?.[0]?.plain_text || "Untitled Sermon",
+        title: (contentPage?.properties?.Name?.title?.[0]?.plain_text) || (page.properties?.Name?.title?.[0]?.plain_text) || "Untitled Sermon",
         date: page.properties?.Date?.date?.start || "",
         preacher: page.properties?.Preacher?.rich_text?.[0]?.plain_text || "",
         scripture: page.properties?.Scripture?.rich_text?.[0]?.plain_text || "",
