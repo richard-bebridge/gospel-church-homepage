@@ -10,66 +10,94 @@ import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-uti
 export const revalidate = 0;
 
 export default async function MessagesPage() {
-    const databaseId = process.env.NOTION_SERMON_DB_ID;
+    // Sunday_DB is the HUB - contains Date, YouTube, Sound, and relations to content
     const sundayDbId = process.env.NOTION_SUNDAY_DB_ID || process.env.NOTION_SUNDAY_DB;
 
-    let page = null;
-    let contentPage = null;
+    let page = null;         // Sunday_DB page (hub with media links)
+    let contentPage = null;  // Sermon_DB page (content via relation)
     let blocks = [];
     let mediaLinks = { youtube: "", audio: "" };
     let fetchError = null;
 
-    if (!databaseId) {
-        fetchError = "NOTION_SERMON_DB_ID is not set in .env file.";
+    if (!sundayDbId) {
+        fetchError = "NOTION_SUNDAY_DB_ID is not set in .env file.";
     } else {
         try {
-            // 1. Fetch the latest sermon from Hub DB (NOTION_SERMON_DB_ID)
-            const sermons = await getDatabase(databaseId, {
+            // 1. Fetch the latest entry from Sunday_DB (the hub)
+            const sundayEntries = await getDatabase(sundayDbId, {
                 page_size: 20
             });
 
             // Sort by Date Descending
-            if (sermons && sermons.length > 0) {
-                sermons.sort((a, b) => {
+            if (sundayEntries && sundayEntries.length > 0) {
+                sundayEntries.sort((a, b) => {
                     const dateA = a.properties?.Date?.date?.start || a.created_time;
                     const dateB = b.properties?.Date?.date?.start || b.created_time;
                     return new Date(dateB) - new Date(dateA);
                 });
-                page = sermons[0];
+                page = sundayEntries[0]; // This is the Sunday_DB hub page
 
-                // 2. Logic to get Content Blocks (Hub -> Manuscript)
-                // Check if this page has a 'Sermon' relation
+                // DEBUG: Dump all properties
+                console.log("🔍 SUNDAY_DB HUB PROPERTIES:");
+                Object.entries(page.properties).forEach(([key, value]) => {
+                    console.log(`  "${key}": type=${value.type}, value=`, JSON.stringify(value[value.type] || value).slice(0, 100));
+                });
+
+                // 2. Get content from Sermon_DB relation
                 let contentPageId = page.id;
-                const sermonRelation = page.properties?.['주일예배 DB']?.relation;
+                const sermonRelation = page.properties?.['Sermon_DB']?.relation;
+
                 if (sermonRelation && sermonRelation.length > 0) {
                     contentPageId = sermonRelation[0].id;
-                }
+                    console.log("  ✅ Found Sermon_DB relation:", contentPageId);
 
-                // Fetch metadata for content page to get correct title
-                if (contentPageId !== page.id) {
+                    // Fetch the Sermon_DB page for content
                     try {
                         contentPage = await getPage(contentPageId);
                     } catch (err) {
-                        console.error("Failed to fetch content page metadata", err);
+                        console.error("Failed to fetch Sermon_DB page", err);
                     }
                 }
 
                 // Fetch blocks from the content page (Manuscript)
                 blocks = await getBlocks(contentPageId);
 
-                // 3. Extract Media Links (Directly from Hub Page)
+                // Fallback: If Linked Page is empty, try Hub Page
+                if (blocks.length === 0 && contentPageId !== page.id) {
+                    const hubBlocks = await getBlocks(page.id);
+                    if (hubBlocks.length > 0) {
+                        blocks = hubBlocks;
+                        contentPageId = page.id; // Revert to Hub Page being the source
+                    }
+                }
+
+                // 3. Extract Media Links from Sunday_DB (page) directly
                 const getMediaUrl = (prop) => {
                     if (!prop) return "";
+                    // URL type property
                     if (prop.url) return prop.url;
+                    // Files type property (file or external URL)
                     if (prop.files && prop.files.length > 0) {
                         const fileObj = prop.files[0];
                         return fileObj.file?.url || fileObj.external?.url || "";
                     }
+                    // Rich text type (might contain URL)
+                    if (prop.rich_text && prop.rich_text.length > 0) {
+                        const richText = prop.rich_text[0];
+                        return richText.href || richText.plain_text || "";
+                    }
                     return "";
                 };
 
+                // page IS Sunday_DB now, so get media directly from it
                 mediaLinks.youtube = getMediaUrl(page.properties?.YouTube) || getMediaUrl(page.properties?.Youtube);
                 mediaLinks.audio = getMediaUrl(page.properties?.Sound) || getMediaUrl(page.properties?.Audio);
+                console.log("📺 Media Debug:", {
+                    youtube: mediaLinks.youtube,
+                    audio: mediaLinks.audio,
+                    rawYouTube: JSON.stringify(page.properties?.YouTube),
+                    rawSound: JSON.stringify(page.properties?.Sound)
+                });
             }
         } catch (e) {
             fetchError = "Failed to fetch data. Please check Notion API Keys and DB IDs.";
@@ -99,8 +127,20 @@ export default async function MessagesPage() {
     const sections = groupSections(blocks);
 
     // 3. Prepare Data for Presentation
-    const titleFromContent = contentPage?.properties?.Name?.title?.[0]?.plain_text;
-    const titleFromHub = page.properties?.Name?.title?.[0]?.plain_text;
+    // Concatenate all text blocks in title (Notion can split titles into multiple blocks)
+    const getFullTitle = (titleArray) => {
+        if (!titleArray || !Array.isArray(titleArray)) return "";
+        return titleArray.map(t => t.plain_text || "").join("");
+    };
+
+    const titleFromContent = getFullTitle(contentPage?.properties?.Name?.title);
+    const titleFromHub = getFullTitle(page.properties?.Name?.title);
+
+    console.log("📝 TITLE DEBUG:", {
+        titleFromContent,
+        titleFromHub,
+        finalTitle: titleFromContent || titleFromHub || "Untitled Sermon"
+    });
 
     const sermonData = {
         title: titleFromContent || titleFromHub || "Untitled Sermon",
@@ -115,7 +155,7 @@ export default async function MessagesPage() {
     // --- REFACTORED: MESSAGES SUMMARY DATA FETCHING ---
     // Pass current page ID to exclude from "older messages"
     const [messagesSummary, siteSettings] = await Promise.all([
-        getMessagesSummary(page.id, databaseId),
+        getMessagesSummary(page.id, sundayDbId),
         getSiteSettings()
     ]);
 

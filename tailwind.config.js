@@ -6,6 +6,17 @@ export default {
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
     ],
+    safelist: [
+        // Font scaling toggle classes (dynamically constructed with !important)
+        '!text-[24px]',
+        '!text-[28px]',
+        '!leading-relaxed',
+        // AutoScaleTitle classes (with !important to override clamp)
+        '!text-[56px]',
+        '!text-[48px]',
+        '!text-[40px]',
+        '!text-[32px]'
+    ],
     theme: {
         extend: {
             fontFamily: {

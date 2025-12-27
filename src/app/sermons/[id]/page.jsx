@@ -9,8 +9,8 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { getSiteSettings } from '../../../lib/site-settings';
 
-// Revalidate every hour
-export const revalidate = 3600;
+// Revalidate immediately for development
+export const revalidate = 0;
 
 export default async function SermonPage({ params }) {
     const { id } = await params;
@@ -22,16 +22,23 @@ export default async function SermonPage({ params }) {
         if (!page) notFound();
 
         // 3. Resolve Content Logic (Hub -> Manuscript)
-        // The Hub Page (Image 1) contains metadata (Media) but the Content Blocks are in the linked "Sermon" page (Image 2).
+        // The Hub Page contains metadata (Media) but the Content Blocks are in the linked "Sermon" page.
         let contentPageId = id;
-        const sermonRelation = page.properties?.['Sermon']?.relation;
+        let contentPage = null;
+        const sermonRelation = page.properties?.['Sunday_DB']?.relation;
         if (sermonRelation && sermonRelation.length > 0) {
             contentPageId = sermonRelation[0].id;
+            // Fetch linked page metadata for correct title
+            try {
+                contentPage = await getPage(contentPageId);
+            } catch (err) {
+                console.error("Failed to fetch linked content page", err);
+            }
         }
 
         // Fetch blocks from the CONTENT ID (Manuscript), not the Hub ID
         const blocks = await getBlocks(contentPageId);
-        sermon = buildSermonPresentationData(page, blocks);
+        sermon = buildSermonPresentationData(page, blocks, contentPage);
 
         // Fetch messages summary (passing current ID to exclude it)
         messagesSummary = await getMessagesSummary(id);
