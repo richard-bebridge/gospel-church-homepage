@@ -601,20 +601,26 @@ const NotionRenderer = ({ block, level = 0, bodyClass = '', columnIndex = null, 
             const pFullText = value.rich_text.map(t => t.plain_text).join('').trim();
             const hasLinksInP = value.rich_text.some(t => t.text?.link || t.href);
 
+            // Table Grid Mode: Hide empty paragraphs to prevent large gaps
+            if (gridConfig?.active && pFullText === '' && (!block.children || block.children.length === 0)) {
+                return null;
+            }
+
             if (pFullText.startsWith('**') && pFullText.endsWith('**') && !hasLinksInP) {
                 // [MAINTENANCE] BL03: Reference Text Styling (* 안내문구)
                 // This handles text wrapped in ** ** in Notion. 
                 // Currently set to bold Navy color with minimal margin.
                 const content = pFullText.slice(2, -2).trim();
                 return wrapGrid(
-                    <p className={`!font-bold !text-[0.85em] text-[#2A4458] mb-1 ${CURRENT_TEXT.reference_text} ${bodyClass}`}>
+                    <p className={`${CURRENT_TEXT.reference_text} mb-1`}>
                         * {content}
                     </p>,
                     'mt-0 mb-0'
                 );
             }
+            const pMargin = gridConfig?.active ? '!mb-0' : 'mb-6';
             return wrapGrid(
-                <p className={`mb-6 leading-relaxed break-keep ${bodyClass}`}>
+                <p className={`${pMargin} leading-relaxed break-keep ${bodyClass}`}>
                     <Text text={value.rich_text} mounted={mounted} />
                 </p>,
                 'mb-8'
