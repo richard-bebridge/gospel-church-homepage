@@ -10,8 +10,7 @@ export const getVisitContent = async () => {
         return [];
     }
 
-    // console.log(`[getVisitContent] Starting fetch with DB ID: ${NOTION_VISIT_DB_ID}`);
-    // console.log(`[getVisitContent] Starting fetch with DB ID: ${NOTION_VISIT_DB_ID}`);
+
 
 
     try {
@@ -180,7 +179,7 @@ export const getVisitContent = async () => {
 
             return hasGridContent || hasPageContent;
         });
-        // console.log(`[getVisitContent] Successfully processed ${validSections.length} sections (filtered from ${results.length}).`);
+
         return validSections;
     } catch (error) {
         console.error('[getVisitContent] Error fetching Visit content:', error);

@@ -37,19 +37,13 @@ export default async function MessagesPage() {
                 });
                 page = sundayEntries[0]; // This is the Sunday_DB hub page
 
-                // DEBUG: Dump all properties
-                console.log("🔍 SUNDAY_DB HUB PROPERTIES:");
-                Object.entries(page.properties).forEach(([key, value]) => {
-                    console.log(`  "${key}": type=${value.type}, value=`, JSON.stringify(value[value.type] || value).slice(0, 100));
-                });
-
                 // 2. Get content from Sermon_DB relation
                 let contentPageId = page.id;
                 const sermonRelation = page.properties?.['Sermon_DB']?.relation;
 
                 if (sermonRelation && sermonRelation.length > 0) {
                     contentPageId = sermonRelation[0].id;
-                    console.log("  ✅ Found Sermon_DB relation:", contentPageId);
+
 
                     // Fetch the Sermon_DB page for content
                     try {
@@ -92,12 +86,6 @@ export default async function MessagesPage() {
                 // page IS Sunday_DB now, so get media directly from it
                 mediaLinks.youtube = getMediaUrl(page.properties?.YouTube) || getMediaUrl(page.properties?.Youtube);
                 mediaLinks.audio = getMediaUrl(page.properties?.Sound) || getMediaUrl(page.properties?.Audio);
-                console.log("📺 Media Debug:", {
-                    youtube: mediaLinks.youtube,
-                    audio: mediaLinks.audio,
-                    rawYouTube: JSON.stringify(page.properties?.YouTube),
-                    rawSound: JSON.stringify(page.properties?.Sound)
-                });
             }
         } catch (e) {
             fetchError = "Failed to fetch data. Please check Notion API Keys and DB IDs.";
@@ -135,12 +123,6 @@ export default async function MessagesPage() {
 
     const titleFromContent = getFullTitle(contentPage?.properties?.Name?.title);
     const titleFromHub = getFullTitle(page.properties?.Name?.title);
-
-    console.log("📝 TITLE DEBUG:", {
-        titleFromContent,
-        titleFromHub,
-        finalTitle: titleFromContent || titleFromHub || "Untitled Sermon"
-    });
 
     const sermonData = {
         title: titleFromContent || titleFromHub || "Untitled Sermon",

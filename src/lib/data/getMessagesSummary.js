@@ -41,18 +41,18 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
 
         // 1. SERMONS - from Sermon_DB relations
         const sermonsData = [];
-        console.log("📋 SUMMARY: Processing", sundayEntries.length, "Sunday entries");
+
 
         for (const entry of sundayEntries) {
             const sermonRelation = entry.properties?.['Sermon_DB']?.relation;
-            console.log("  Entry:", entry.id, "Sermon_DB:", sermonRelation?.length || 0, "relations");
+
 
             if (sermonRelation && sermonRelation.length > 0) {
                 const sermonPageId = sermonRelation[0].id;
                 try {
                     const sermonPage = await getPage(sermonPageId);
                     const title = getFullTitle(sermonPage.properties?.Name?.title);
-                    console.log("    → Sermon page:", sermonPageId, "title:", title);
+
 
                     sermonsData.push({
                         hubId: entry.id,
@@ -67,7 +67,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
             }
         }
 
-        console.log("📋 SUMMARY: Found", sermonsData.length, "sermons, currentSermonId:", currentSermonId);
+
 
         // Filter out current sermon
         const otherSermons = sermonsData.filter(s => s.hubId !== currentSermonId && s.sermonId !== currentSermonId);
@@ -109,11 +109,11 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
 
         // 2. LETTERS - from Letter_DB relations
         const lettersData = [];
-        console.log("📋 SUMMARY: Processing letters...");
+
 
         for (const entry of sundayEntries) {
             const letterRelation = entry.properties?.['Letter_DB']?.relation;
-            console.log("  Entry:", entry.id, "Letter_DB:", letterRelation?.length || 0, "relations");
+
 
             if (letterRelation && letterRelation.length > 0) {
                 const letterPageId = letterRelation[0].id;
@@ -121,16 +121,13 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
                     const letterPage = await getPage(letterPageId);
 
                     // Debug: dump all properties
-                    console.log("    → Letter page ALL PROPERTIES:");
-                    Object.entries(letterPage.properties || {}).forEach(([key, value]) => {
-                        console.log(`      "${key}": type=${value.type}`);
-                    });
+
 
                     // Letter_DB uses "Title" property, not "Name"
                     const titleFromName = getFullTitle(letterPage.properties?.Name?.title);
                     const titleFromTitle = getFullTitle(letterPage.properties?.Title?.title);
                     const title = titleFromName || titleFromTitle;
-                    console.log("    → Letter page:", letterPageId, "title:", title);
+
 
                     lettersData.push({
                         hubId: entry.id,
@@ -145,7 +142,7 @@ export const getMessagesSummary = async (currentSermonId, currentLetterId = null
             }
         }
 
-        console.log("📋 SUMMARY: Found", lettersData.length, "letters, currentLetterId:", currentLetterId);
+
 
         // Filter out current letter
         const otherLetters = lettersData.filter(l => l.hubId !== currentLetterId && l.letterId !== currentLetterId);

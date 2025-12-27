@@ -59,7 +59,7 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
             try {
                 await navigator.share({ title, text, url });
             } catch (error) {
-                console.log('Error sharing:', error);
+
             }
         } else {
             try {

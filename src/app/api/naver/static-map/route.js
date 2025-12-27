@@ -34,8 +34,7 @@ export async function GET(request) {
     const keyId = (process.env.NAVER_ID || '').trim();
     const keySecret = (process.env.NAVER_API_KEY || '').trim();
 
-    console.log('[API] Key ID Prefix:', keyId.substring(0, 4) + '***');
-    console.log('[API] Key Length:', keySecret.length);
+
 
     try {
         const response = await fetch(apiUrl, {
@@ -59,7 +58,7 @@ export async function GET(request) {
         headers.set('Content-Type', response.headers.get('Content-Type') || 'image/png');
         headers.set('Cache-Control', 'public, max-age=86400, s-maxage=86400');
 
-        console.log('[API] Naver Map Fetch Success');
+
         return new NextResponse(buffer, {
             status: 200,
             headers,
