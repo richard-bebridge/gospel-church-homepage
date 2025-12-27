@@ -325,12 +325,13 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                     <Footer siteSettings={siteSettings} />
                 </div>
 
-                {/* Floating Font Controls */}
+                {/* Floating Font Controls & Visit Button */}
                 <FloatingMediaControls
                     footerRef={footerRef}
                     fontScale={fontScale}
                     onToggleFontScale={toggleFontScale}
                     shareTitle="About Gospel Church"
+                    showVisitButton={true}
                 />
             </div>
         </div>

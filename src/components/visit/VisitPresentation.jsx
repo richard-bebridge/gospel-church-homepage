@@ -13,7 +13,7 @@ import { RightPanelController } from '../presentation/RightPanelController';
 import { groupGalleryBlocks } from '../../lib/utils/notionBlockMerger';
 import { extractMapToken } from '../../lib/utils/visitMapHelpers';
 import LoadingSequence from '../ui/LoadingSequence';
-import FloatingVisitButton from './FloatingVisitButton';
+// import FloatingVisitButton from './FloatingVisitButton'; // REMOVED
 import FloatingMediaControls from '../sermon/FloatingMediaControls';
 import { waitForFonts } from '../../lib/utils/fontLoader';
 import { fastNormalize } from '../../lib/utils/textPipeline';
@@ -298,7 +298,6 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                             </section>
                         </div>
                     </div>
-                    <FloatingVisitButton footerRef={footerRef} />
                 </div>
             </div>
 
@@ -388,12 +387,13 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                 ))}
                 <Footer siteSettings={siteSettings} />
             </div>
-            <FloatingVisitButton footerRef={footerRef} />
+            {/* <FloatingVisitButton footerRef={footerRef} /> REMOVED */}
             <FloatingMediaControls
                 footerRef={footerRef}
                 fontScale={fontScale}
                 onToggleFontScale={toggleFontScale}
                 shareTitle="Visit Gospel Church"
+                showVisitButton={true}
             />
         </div>
     );

@@ -3,8 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Youtube, AudioLines, Pause, Share2 } from 'lucide-react';
+import Script from 'next/script';
 
-const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onToggleFontScale, shareTitle }) => {
+const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onToggleFontScale, shareTitle, showVisitButton }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFooterVisible, setIsFooterVisible] = useState(false);
@@ -152,33 +153,52 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                     )}
                 </AnimatePresence>
 
-                {/* Main Toggle Button */}
-                <button
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF]"
-                >
-                    <AnimatePresence mode="wait">
-                        {isExpanded ? (
-                            <motion.div
-                                key="close"
-                                initial={{ rotate: -90, opacity: 0 }}
-                                animate={{ rotate: 0, opacity: 1 }}
-                                exit={{ rotate: 90, opacity: 0 }}
+                {/* Main Toggle Button & Optional Visit Button */}
+                <div className="flex flex-row items-center gap-2">
+                    {/* Expand Toggle */}
+                    <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF]"
+                    >
+                        <AnimatePresence mode="wait">
+                            {isExpanded ? (
+                                <motion.div
+                                    key="close"
+                                    initial={{ rotate: -90, opacity: 0 }}
+                                    animate={{ rotate: 0, opacity: 1 }}
+                                    exit={{ rotate: 90, opacity: 0 }}
+                                >
+                                    <X size={20} />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="open"
+                                    initial={{ rotate: 90, opacity: 0 }}
+                                    animate={{ rotate: 0, opacity: 1 }}
+                                    exit={{ rotate: -90, opacity: 0 }}
+                                >
+                                    <Plus size={20} />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </button>
+
+                    {/* Visit Inquiry Button */}
+                    {showVisitButton && (
+                        <>
+                            <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
+                            <button
+                                data-tally-open="Y5RP46"
+                                data-tally-hide-title="1"
+                                data-tally-emoji-text="👋"
+                                data-tally-emoji-animation="wave"
+                                className="h-10 bg-[#05121C] text-[#F4F3EF] px-5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2 ring-2 ring-[#F4F3EF] font-medium font-korean whitespace-nowrap"
                             >
-                                <X size={20} />
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                key="open"
-                                initial={{ rotate: 90, opacity: 0 }}
-                                animate={{ rotate: 0, opacity: 1 }}
-                                exit={{ rotate: -90, opacity: 0 }}
-                            >
-                                <Plus size={20} />
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </button>
+                                <span>방문 문의</span>
+                            </button>
+                        </>
+                    )}
+                </div>
             </div>
         </>
     );
