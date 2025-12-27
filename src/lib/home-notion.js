@@ -14,13 +14,16 @@ async function fetchHomeContentFromNotion() {
         const response = await notion.databases.query({
             database_id: NOTION_HOME_DB_ID,
             sorts: [
-                { timestamp: 'created_time', direction: 'ascending' } // Default sort, allow manual reorder via drag in Notion? Notion mostly respects drag if no sort. But API doesn't guarantee 'user order' without a property. We'll use created_time for stability or just default.
+                { property: 'index', direction: 'ascending' }
             ]
         });
 
         // Map over pages
         const sections = await Promise.all(response.results.map(async (page, index) => {
             const props = page.properties;
+
+            // 0. Index (for explicit ordering if needed locally, though query handles sort)
+            const sortIndex = props.index?.number || 0;
 
             // 1. English Title (Name)
             const titleEn = props.Name?.title?.[0]?.plain_text || "";
@@ -52,8 +55,8 @@ async function fetchHomeContentFromNotion() {
             let linkUrl = null;
             let linkLabel = "";
 
-            const aboutRel = props.About?.relation;
-            const visitRel = props.Visit?.relation; // Correct case from inspection? User image showed "Visit".
+            const aboutRel = props.About_PG?.relation;
+            const visitRel = props.Visit_PG?.relation;
 
             // Helper to slugify
             const toSlug = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -77,7 +80,8 @@ async function fetchHomeContentFromNotion() {
 
             return {
                 id: page.id,
-                index, // For RightPanel logic
+                index, // Keep array index for UI layout logic (RightPanel uses activeSection index)
+                sortIndex,
                 titleEn,
                 koreanParagraphs,
                 verse: verseData, // { text, textEn, normalizedReference }
