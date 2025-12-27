@@ -32,7 +32,9 @@ const SAMPLES = {
     table_cell: "Table Cell Content",
     link_text: "Click here to visit our website",
     verse_text: "태초에 하나님이 천지를 창조하시니라",
-    verse_reference: "창세기 1:1"
+    verse_reference: "창세기 1:1",
+    home_verse_text: "태초에 하나님이 천지를 창조하시니라 (Home Version)",
+    home_verse_reference: "창세기 1:1 (Home Version)"
 };
 
 const ROLE_TAGS = {
@@ -60,7 +62,9 @@ const ROLE_TAGS = {
     table_head: "Th",
     table_cell: "Td",
     link_text: "Link",
-    verse_reference: "V.Ref"
+    verse_reference: "V.Ref",
+    home_verse_text: "H.Verse",
+    home_verse_reference: "H.V.Ref"
 };
 
 const FONTS = ['font-korean', 'font-english', 'font-mono'];
@@ -70,7 +74,7 @@ const MARGINS = ['mb-0', 'mb-1', 'mb-2', 'mb-3', 'mb-4', 'mb-5', 'mb-6', 'mb-8',
 const ALIGNMENTS = ['text-left', 'text-center', 'text-right', 'text-justify'];
 
 const GROUPS = {
-    "Highlights": ["hero_en", "page_title_ko", "section_title_ko_display", "section_heading_ko", "summary_title"],
+    "Highlights": ["hero_en", "page_title_ko", "section_title_ko_display", "section_heading_ko", "summary_title", "home_verse_text", "home_verse_reference"],
     "Body & Content": ["notion_h1", "notion_h3", "body_ko_default", "body_ko_long", "bullet_list", "numbered_list", "quote", "callout", "table_head", "table_cell", "link_text", "verse_text", "verse_reference", "reference_text"],
     "UI Components": ["nav_en", "badge", "badge_pill", "caption", "footer_contact_label", "footer_contact_value"]
 };

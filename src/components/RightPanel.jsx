@@ -5,6 +5,8 @@ import { AnimatePresence } from 'framer-motion';
 import { getDailyVerses } from '../data/verses';
 import ScriptureCard from './ScriptureCard';
 
+import { HOME_LAYOUT_CONFIG } from '../lib/home-layout-config';
+
 const RightPanel = ({ activeSection, sections = [] }) => {
     // Fallback Legacy Verses
     const legacyVerses = useMemo(() => getDailyVerses(), []);
@@ -35,8 +37,11 @@ const RightPanel = ({ activeSection, sections = [] }) => {
 
     const currentVerse = getVerseData();
 
+    // Align verses with Left Panel body text using Layout Lab config
+    const paddingTop = HOME_LAYOUT_CONFIG.sections[activeSection] || HOME_LAYOUT_CONFIG.default;
+
     return (
-        <div className="w-full h-full relative flex items-center justify-center bg-[#F4F3EF] overflow-hidden">
+        <div className="w-full h-full relative flex items-start justify-center bg-[#F4F3EF] overflow-hidden">
             <AnimatePresence mode="wait">
                 <ScriptureCard
                     key={activeSection}
@@ -44,6 +49,7 @@ const RightPanel = ({ activeSection, sections = [] }) => {
                     bodyKo={currentVerse.textKo}
                     reference={currentVerse.ref}
                     animate={true}
+                    className={`w-full flex justify-center ${paddingTop}`}
                 />
             </AnimatePresence>
         </div>
