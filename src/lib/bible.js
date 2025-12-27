@@ -45,13 +45,27 @@ export const BOOK_MAPPING = {
 const loadBibleDataKo = () => {
     if (bibleCacheKo) return bibleCacheKo;
     const csvPath = path.join(process.cwd(), 'src/data/bible_kor.csv');
+    // Updated for new CSV format (Starts at line 1, UTF-8 BOM likely handled by fs.readFileSync or just UTF-8)
+    // CSV Header: Book,Book_Num,Chapter,Verse,Text
+    // Book column contains abbreviations (e.g. "창"), so we map to full name for consistent keys.
     const fileContent = fs.readFileSync(csvPath, 'utf8');
-    const records = parse(fileContent, { columns: true, skip_empty_lines: true, trim: true, from_line: 6 });
+    const records = parse(fileContent, {
+        columns: true,
+        skip_empty_lines: true,
+        trim: true,
+        bom: true // Handle BOM just in case
+    });
     const map = new Map();
     records.forEach(record => {
-        // Key: "BookName:Chapter:Verse" (Using Full Korean Name)
-        if (record['Book Name'] && record['Chapter'] && record['Verse']) {
-            map.set(`${record['Book Name']}:${record['Chapter']}:${record['Verse']}`, record['Text']);
+        const bookAbbrev = record['Book'];
+        const chapter = record['Chapter'];
+        const verse = record['Verse'];
+
+        if (bookAbbrev && chapter && verse) {
+            // Expand abbreviation to full name for the key (e.g. "창" -> "창세기")
+            // If mapping not found, fallback to the value itself
+            const fullName = BOOK_MAPPING[bookAbbrev] || bookAbbrev;
+            map.set(`${fullName}:${chapter}:${verse}`, record['Text']);
         }
     });
     bibleCacheKo = map;
