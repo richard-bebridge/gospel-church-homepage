@@ -44,7 +44,9 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
         toggleFontScale,
         bodyTextClass,
         verseTextClass, // Mobile uses this
-        desktopBodyClass
+        desktopBodyClass,
+        desktopVerseClass, // Desktop verses
+        verseStyle // Inline style for font scaling
     } = useFontScale();
 
     // Desktop Logic
@@ -257,13 +259,15 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                     <RightPanelController
                         isVisible={activeSection < sermon.sections.length}
                         mode="scripture"
-                        data={desktopVerses} // Passes current section verses
-                        title={sermon.title} // Used for ghost alignment
+                        data={desktopVerses}
+                        title={sermon.title}
                         titleClassName={CURRENT_TEXT.page_title_ko}
                         paddingTopClass="pt-[96px]"
                         contentPaddingClass="pt-0"
                         uniqueKey={activeSection}
                         onWheel={handleWheel}
+                        verseClassName={desktopVerseClass}
+                        verseStyle={verseStyle}
                     />
                 }
             >
@@ -281,7 +285,8 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                                 <AutoScaleTitle
                                     text={sermon.title}
                                     className={CURRENT_TEXT.page_title_ko}
-                                    scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                    maxLines={3}
+                                    scales={['', '!text-[56px]', '!text-[48px]', '!text-[40px]', '!text-[32px]']}
                                 />
                             </div>
 

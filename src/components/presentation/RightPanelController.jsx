@@ -23,10 +23,15 @@ export const RightPanelController = ({
     paddingTopClass = "pt-24",
     contentPaddingClass = "pt-96",
     uniqueKey = "default",
-    sectionIndex = 0, // New prop for section index
-    onWheel // New prop
+    sectionIndex = 0,
+    onWheel,
+    verseClassName, // Optional override from parent
+    verseStyle = {} // Receive from parent (inline style for font scaling)
 }) => {
+    // Use internal hook for body class (page mode), but verse styling comes from props
     const { desktopBodyClass, desktopVerseClass } = useFontScale();
+    // Use provided verseClassName or fall back to hook's class
+    const effectiveVerseClass = verseClassName || desktopVerseClass;
     const interactionClass = isVisible ? 'pointer-events-auto' : 'pointer-events-none';
 
     // Dynamic container width - Standardized to avoid layout shifts
@@ -71,7 +76,8 @@ export const RightPanelController = ({
                                     verses={data}
                                     uniqueKey={`${uniqueKey}-scripture`}
                                     containerClassName={getContainerClass('space-y-12', false)}
-                                    verseClassName={`${desktopVerseClass} mb-4 break-keep whitespace-pre-wrap`}
+                                    verseClassName={`${effectiveVerseClass} mb-4 break-keep whitespace-pre-wrap`}
+                                    verseStyle={verseStyle}
                                     referenceClassName={CURRENT_TEXT.verse_reference}
                                     transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
                                 />

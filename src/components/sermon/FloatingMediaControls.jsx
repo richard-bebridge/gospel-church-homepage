@@ -118,7 +118,7 @@ const FloatingMediaControls = ({ audioUrl, youtubeUrl, footerRef, fontScale, onT
                                 onClick={onToggleFontScale}
                                 className="w-10 h-10 rounded-full bg-[#05121C] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform ring-2 ring-[#F4F3EF] font-bold font-serif"
                             >
-                                {fontScale === 'normal' ? 'A+' : 'A-'}
+                                {fontScale === 'normal' ? 'A+' : fontScale === 'large' ? 'A++' : 'A'}
                             </button>
 
                             {/* Audio Button */}

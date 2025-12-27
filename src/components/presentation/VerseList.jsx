@@ -16,6 +16,7 @@ const VerseList = ({
     uniqueKey = 'verses',
     containerClassName = '',
     verseClassName = '',
+    verseStyle = {},  // NEW: inline style for font scaling
     referenceClassName = '',
     animate = true,
     transition = { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] },
@@ -36,7 +37,7 @@ const VerseList = ({
                     }}
                     className="space-y-2"
                 >
-                    <p className={verseClassName}>
+                    <p className={verseClassName} style={verseStyle}>
                         {renderVerseWithStyledFirstWord(verse.text || `(Verse not found: ${verse.reference})`)}
                     </p>
                     <p className={referenceClassName}>{fastNormalize(verse.reference)}</p>
