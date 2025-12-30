@@ -234,7 +234,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                         }
                                     >
                                         <div className={`w-full max-w-[50%] ml-0 h-full relative`}>
-                                            <div className={`w-full min-h-full flex flex-col items-center ${index === 0 ? 'justify-start pt-64' : 'justify-center pt-32'}`}>
+                                            <div className="w-full min-h-full flex flex-col items-center justify-center pt-32">
                                                 {/* Adjusted Width inside Left Panel */}
                                                 <div className={`w-full relative ${hasWideContent(section.content) ? 'max-w-[80%] xl:max-w-[70%]' : 'max-w-lg'}`}>
 
