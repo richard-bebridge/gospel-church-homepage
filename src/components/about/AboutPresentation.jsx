@@ -121,6 +121,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                 contentPaddingClass="pt-32"
                 sectionIndex={activeIndex}
                 verseClassName={desktopVerseClass}
+                bodyClassName={desktopBodyClass}
                 verseStyle={verseStyle}
             />
         );

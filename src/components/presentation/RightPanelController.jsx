@@ -26,12 +26,16 @@ export const RightPanelController = ({
     sectionIndex = 0,
     onWheel,
     verseClassName, // Optional override from parent
-    verseStyle = {} // Receive from parent (inline style for font scaling)
+    verseStyle = {}, // Receive from parent (inline style for font scaling)
+    bodyClassName // New: Receive from parent for sync
 }) => {
-    // Use internal hook for body class (page mode), but verse styling comes from props
-    const { desktopBodyClass, desktopVerseClass } = useFontScale();
-    // Use provided verseClassName or fall back to hook's class
+    // Use internal hook as fallback, but prefer props
+    const { desktopBodyClass: hookBodyClass, desktopVerseClass } = useFontScale();
+
+    // Effective classes: Prop > Hook
+    const effectiveBodyClass = bodyClassName || hookBodyClass;
     const effectiveVerseClass = verseClassName || desktopVerseClass;
+
     const interactionClass = isVisible ? 'pointer-events-auto' : 'pointer-events-none';
 
     // Dynamic container width - Standardized to avoid layout shifts
@@ -115,7 +119,7 @@ export const RightPanelController = ({
                                                 <NotionRenderer
                                                     key={block.id}
                                                     block={block}
-                                                    bodyClass={desktopBodyClass}
+                                                    bodyClass={effectiveBodyClass}
                                                 />
                                             ))}
                                         </TableAlignmentProvider>
