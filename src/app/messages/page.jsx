@@ -10,14 +10,14 @@ import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-uti
 export const revalidate = 0;
 
 export const metadata = {
-    title: 'Messages | Gospel Church',
-    description: '가스펠교회의 말씀 설교와 메시지를 온라인으로 만나보세요.',
+    title: '가스펠교회 말씀 | 복음 중심 설교',
+    description: '가스펠교회의 설교 메시지를 통해 말씀 안에서 하나님을 배우고 삶에 적용하세요.',
     alternates: {
         canonical: 'https://gospelchurch.kr/messages',
     },
     openGraph: {
-        title: 'Messages | Gospel Church',
-        description: '가스펠교회의 말씀 설교와 메시지를 온라인으로 만나보세요.',
+        title: '가스펠교회 말씀 | 복음 중심 설교',
+        description: '가스펠교회의 설교 메시지를 통해 말씀 안에서 하나님을 배우고 삶에 적용하세요.',
         url: 'https://gospelchurch.kr/messages',
         siteName: 'Gospel Church',
         locale: 'ko_KR',
@@ -25,8 +25,8 @@ export const metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Messages | Gospel Church',
-        description: '가스펠교회의 말씀 설교와 메시지를 온라인으로 만나보세요.',
+        title: '가스펠교회 말씀 | 복음 중심 설교',
+        description: '가스펠교회의 설교 메시지를 통해 말씀 안에서 하나님을 배우고 삶에 적용하세요.',
     },
 };
 

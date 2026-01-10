@@ -133,7 +133,11 @@ const AboutPresentation = ({ sections, siteSettings }) => {
 
             {/* Header moved out to escape stacking context of the blurred wrapper */}
             {/* hidden H1 for SEO */}
-            <h1 className="sr-only">About Gospel Church</h1>
+            <h1 className="sr-only">가스펠교회 | 복음으로 연결된 공동체</h1>
+            <p className="sr-only">
+                가스펠교회는 단순한 종교 단체가 아닌, 삶의 모든 영역에서 하나님을 따르는 공동체입니다.
+                우리는 예배, 말씀, 공동체, 그리고 일상 속에서 하나님을 경험하는 교회를 지향합니다.
+            </p>
             <Header siteSettings={siteSettings} />
 
             {/* Structural stability: keep DOM identical during hydration */}

@@ -3,14 +3,14 @@ import { getAboutContent } from '../../lib/about-notion';
 import { getSiteSettings } from '../../lib/site-settings';
 
 export const metadata = {
-    title: 'About | Gospel Church',
-    description: '가스펠교회의 비전, 신앙의 방향, 그리고 우리가 추구하는 공동체의 모습.',
+    title: '가스펠교회 소개 | 복음으로 연결된 공동체',
+    description: '가스펠교회는 지역에 제한되지 않고 복음으로 연결된 공동체입니다. 우리는 말씀을 따라 배우며, 삶 속에서 하나님을 드러내는 교회입니다.',
     alternates: {
         canonical: 'https://gospelchurch.kr/about',
     },
     openGraph: {
-        title: 'About | Gospel Church',
-        description: '가스펠교회의 비전, 신앙의 방향, 그리고 우리가 추구하는 공동체의 모습.',
+        title: '가스펠교회 소개 | 복음으로 연결된 공동체',
+        description: '가스펠교회는 지역에 제한되지 않고 복음으로 연결된 공동체입니다. 우리는 말씀을 따라 배우며, 삶 속에서 하나님을 드러내는 교회입니다.',
         url: 'https://gospelchurch.kr/about',
         siteName: 'Gospel Church',
         locale: 'ko_KR',
@@ -18,8 +18,8 @@ export const metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'About | Gospel Church',
-        description: '가스펠교회의 비전, 신앙의 방향, 그리고 우리가 추구하는 공동체의 모습.',
+        title: '가스펠교회 소개 | 복음으로 연결된 공동체',
+        description: '가스펠교회는 지역에 제한되지 않고 복음으로 연결된 공동체입니다. 우리는 말씀을 따라 배우며, 삶 속에서 하나님을 드러내는 교회입니다.',
     },
 };
 

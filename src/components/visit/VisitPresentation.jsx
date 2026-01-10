@@ -155,7 +155,11 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
             <LoadingSequence isReady={isReady} />
-            <h1 className="sr-only">Visit Gospel Church</h1>
+            <h1 className="sr-only">가스펠교회 | 첫 방문 안내</h1>
+            <p className="sr-only">
+                가스펠교회는 누구에게나 열려 있습니다.
+                처음 방문하시는 분들도 편안하게 예배하고, 공동체를 경험할 수 있도록 돕습니다.
+            </p>
             <Header siteSettings={siteSettings} />
 
             <div

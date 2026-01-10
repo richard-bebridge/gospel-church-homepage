@@ -42,6 +42,11 @@ const Footer = ({ siteSettings }) => {
                         <span className="font-light text-[#5F94BD]" suppressHydrationWarning>
                             {mounted ? (settings.address || '서울특별시 서초구 서초동 1627-5 B1').normalize('NFC') : ''}
                         </span>
+
+                        {/* Local SEO Text (Hidden but present for crawlers) */}
+                        <p className="sr-only">
+                            서울 서초구에 위치한 말씀 중심 교회, 가스펠교회
+                        </p>
                     </div>
                 </div>
 

@@ -288,7 +288,11 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         <div className="absolute left-0 top-0 w-1/2 h-full flex flex-col items-center pt-[96px]">
                             {/* The Custom Divider Line */}
                             <VerticalDivider className={`transition-opacity duration-500 ${activeSection >= sermon.sections.length ? '!opacity-0' : ''}`} />
-                            <h1 className="sr-only">Messages</h1>
+                            <h1 className="sr-only">가스펠교회 말씀 | 복음 중심 설교</h1>
+                            <p className="sr-only">
+                                가스펠교회의 모든 말씀 메시지는 성경을 중심으로,
+                                삶 속에서 하나님의 뜻을 실천할 수 있도록 돕는 데 목적이 있습니다.
+                            </p>
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 <AutoScaleTitle
                                     text={sermon.title}
