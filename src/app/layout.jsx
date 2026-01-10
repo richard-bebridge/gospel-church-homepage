@@ -15,6 +15,11 @@ export const metadata = {
     metadataBase: new URL('https://gospelchurch.kr'),
     title: 'Gospel Church',
     description: 'In the Word, We Rise.',
+    verification: {
+        other: {
+            'naver-site-verification': '44bd46cd821fca036828efe2ac28d60d89922744',
+        },
+    },
 };
 
 export default async function RootLayout({ children }) {
