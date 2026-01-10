@@ -12,6 +12,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
+    metadataBase: new URL('https://gospelchurch.kr'),
     title: 'Gospel Church',
     description: 'In the Word, We Rise.',
 };

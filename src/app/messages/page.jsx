@@ -9,6 +9,27 @@ import { flattenBlocks, injectVerses, groupSections } from '../../lib/notion-uti
 // Revalidate every hour
 export const revalidate = 0;
 
+export const metadata = {
+    title: 'Messages | Gospel Church',
+    description: '가스펠교회의 말씀 설교와 메시지를 온라인으로 만나보세요.',
+    alternates: {
+        canonical: 'https://gospelchurch.kr/messages',
+    },
+    openGraph: {
+        title: 'Messages | Gospel Church',
+        description: '가스펠교회의 말씀 설교와 메시지를 온라인으로 만나보세요.',
+        url: 'https://gospelchurch.kr/messages',
+        siteName: 'Gospel Church',
+        locale: 'ko_KR',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Messages | Gospel Church',
+        description: '가스펠교회의 말씀 설교와 메시지를 온라인으로 만나보세요.',
+    },
+};
+
 export default async function MessagesPage() {
     // Sunday_DB is the HUB - contains Date, YouTube, Sound, and relations to content
     const sundayDbId = process.env.NOTION_SUNDAY_DB_ID || process.env.NOTION_SUNDAY_DB;

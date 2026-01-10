@@ -132,6 +132,8 @@ const AboutPresentation = ({ sections, siteSettings }) => {
             <LoadingSequence isReady={isReady} />
 
             {/* Header moved out to escape stacking context of the blurred wrapper */}
+            {/* hidden H1 for SEO */}
+            <h1 className="sr-only">About Gospel Church</h1>
             <Header siteSettings={siteSettings} />
 
             {/* Structural stability: keep DOM identical during hydration */}
@@ -225,6 +227,7 @@ const AboutPresentation = ({ sections, siteSettings }) => {
                                                             text={fastNormalize(section.heading || section.title)}
                                                             className={CURRENT_TEXT.page_title_ko + " mb-12"}
                                                             scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                                            tag="h2"
                                                         />
                                                     </div>
 

@@ -92,9 +92,9 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                 {/* A. Sticky Sermon Title */}
                 <div ref={stickyTitleRef} className="sticky top-16 z-40 bg-transparent px-8 pt-4 pointer-events-none">
                     <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#F4F3EF] via-[#F4F3EF] via-80% to-[#F4F3EF]/0 z-0 pointer-events-auto" />
-                    <h1 className="text-4xl font-bold font-korean text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto line-clamp-3">
+                    <h2 className="text-4xl font-bold font-korean text-[#05121C] leading-tight break-keep relative z-10 pb-12 pointer-events-auto line-clamp-3">
                         {sermon.title}
-                    </h1>
+                    </h2>
                 </div>
 
                 {/* B. Top Navigation */}
@@ -288,12 +288,14 @@ const SermonPresentation = ({ sermon, children, messagesSummary, siteSettings })
                         <div className="absolute left-0 top-0 w-1/2 h-full flex flex-col items-center pt-[96px]">
                             {/* The Custom Divider Line */}
                             <VerticalDivider className={`transition-opacity duration-500 ${activeSection >= sermon.sections.length ? '!opacity-0' : ''}`} />
+                            <h1 className="sr-only">Messages</h1>
                             <div className={`w-full max-w-[60%] transition-all duration-500 ease-out ${activeSection >= sermon.sections.length ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                                 <AutoScaleTitle
                                     text={sermon.title}
                                     className={CURRENT_TEXT.page_title_ko}
                                     maxLines={3}
                                     scales={['', '!text-[56px]', '!text-[48px]', '!text-[40px]', '!text-[32px]']}
+                                    tag="h2"
                                 />
                             </div>
 

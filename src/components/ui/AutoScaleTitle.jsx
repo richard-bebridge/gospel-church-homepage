@@ -18,7 +18,8 @@ const AutoScaleTitle = ({
     text,
     className,
     maxLines = 2,
-    scales = ['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']
+    scales = ['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]'],
+    tag = 'h1'
 }) => {
     const ref = useRef(null);
     const [scaleIndex, setScaleIndex] = useState(0);
@@ -75,14 +76,16 @@ const AutoScaleTitle = ({
     const activeScale = scales[scaleIndex] || '';
     const appliedClass = `${className || ''} ${activeScale}`.trim();
 
+    const Tag = tag;
+
     return (
-        <h1
+        <Tag
             ref={ref}
             className={appliedClass}
             style={activeScale ? {} : undefined} // If we use classes, no style needed. 
         >
             {text}
-        </h1>
+        </Tag>
     );
 };
 

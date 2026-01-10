@@ -155,6 +155,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
     return (
         <div className="relative min-h-screen bg-[#F4F3EF] text-[#1A1A1A]">
             <LoadingSequence isReady={isReady} />
+            <h1 className="sr-only">Visit Gospel Church</h1>
             <Header siteSettings={siteSettings} />
 
             <div
@@ -247,6 +248,7 @@ const VisitPresentation = ({ sections: rawSections, siteSettings }) => {
                                                             text={fastNormalize(section.heading || section.title)}
                                                             className={CURRENT_TEXT.page_title_ko + " mb-12"}
                                                             scales={['', 'text-[56px]', 'text-[48px]', 'text-[40px]', 'text-[32px]']}
+                                                            tag="h2"
                                                         />
                                                     </div>
 
